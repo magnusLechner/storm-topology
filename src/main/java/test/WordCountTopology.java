@@ -18,6 +18,7 @@ import org.apache.storm.tuple.Values;
 
 public class WordCountTopology {
 
+	@SuppressWarnings("serial")
 	public static class SplitSentence extends ShellBolt implements IRichBolt {
 
 		public SplitSentence() {
@@ -35,6 +36,7 @@ public class WordCountTopology {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	public static class WordCount extends BaseBasicBolt {
 		Map<String, Integer> counts = new HashMap<String, Integer>();
 

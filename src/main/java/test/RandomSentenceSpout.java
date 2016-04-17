@@ -11,10 +11,12 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
 import org.apache.storm.utils.Utils;
 
+@SuppressWarnings("serial")
 public class RandomSentenceSpout extends BaseRichSpout {
 	SpoutOutputCollector _collector;
 	Random _rand;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
 		_collector = collector;
