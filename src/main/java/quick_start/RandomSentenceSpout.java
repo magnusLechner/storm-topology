@@ -1,4 +1,4 @@
-package test;
+package quick_start;
 
 import java.util.Map;
 import java.util.Random;
@@ -36,7 +36,8 @@ public class RandomSentenceSpout extends BaseRichSpout {
 		Utils.sleep(100);
 		// The sentences that will be randomly emitted
 		String[] sentences = new String[] { "the cow jumped over the moon", "an apple a day keeps the doctor away",
-				"four score and seven years ago", "snow white and the seven dwarfs", "i am at two with nature" };
+				"four score and seven years ago", "snow white and the seven dwarfs", "i am at two with nature",
+				"single double double"};
 		// Randomly pick a sentence
 		String sentence = sentences[_rand.nextInt(sentences.length)];
 		// Emit the sentence

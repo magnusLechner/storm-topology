@@ -1,4 +1,4 @@
-package test;
+package quick_start;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

@@ -1,4 +1,4 @@
-package test;
+package quick_start;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class WordCount extends BaseBasicBolt {
 		count++;
 		counts.put(word, count);
 		// Emit the word and the current count
-		collector.emit(new Values(word, count));
+		collector.emit(new Values("CURRENT COUNT", word, count));
 	}
 
 	// Declare that we will emit a tuple containing two fields; word and count

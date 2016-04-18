@@ -1,4 +1,4 @@
-package test;
+package quick_start;
 
 import java.text.BreakIterator;
 
