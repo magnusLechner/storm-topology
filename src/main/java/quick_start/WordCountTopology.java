@@ -8,6 +8,10 @@ import org.apache.storm.tuple.Fields;
 
 public class WordCountTopology {
 
+	//RUN CLUSTER: storm jar ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar quick_start.WordCountTopology demo
+	//RUN LOCAL: 'run' in eclipse
+	//or local: storm jar ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar quick_start.WordCountTopology
+	
 	// Entry point for the topology
 	public static void main(String[] args) throws Exception {
 		// Used to build the topology

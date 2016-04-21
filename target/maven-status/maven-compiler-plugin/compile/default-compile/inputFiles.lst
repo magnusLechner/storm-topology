@@ -1,3 +1,5 @@
-/home/magnus/workspace/storm_sentiment_analysis/src/main/java/topology/Main.java
-/home/magnus/workspace/storm_sentiment_analysis/src/main/java/test/WordCountTopology.java
-/home/magnus/workspace/storm_sentiment_analysis/src/main/java/test/RandomSentenceSpout.java
+/home/magnus/workspace/storm-topology/src/main/java/quick_start/WordCount.java
+/home/magnus/workspace/storm-topology/src/main/java/quick_start/WordCountTopology.java
+/home/magnus/workspace/storm-topology/src/main/java/quick_start/SplitSentence.java
+/home/magnus/workspace/storm-topology/src/main/java/quick_start/RandomSentenceSpout.java
+/home/magnus/workspace/storm-topology/src/main/java/topology/Main.java
