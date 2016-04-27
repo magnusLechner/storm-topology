@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Class-Path: snakeyaml-1.15.jar commons-compress-1.9.jar
 Build-Jdk: 1.7.0_95
 Built-By: magnus
 Created-By: Maven Integration for Eclipse
