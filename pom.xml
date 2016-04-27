@@ -14,7 +14,7 @@
       		<scope>provided</scope>
     	</dependency>
     
-    
+    	<!-- added dependencies for senti-storm -->
 		<dependency>
  		   	<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
@@ -25,14 +25,102 @@
 			<artifactId>commons-compress</artifactId>
 			<version>1.9</version>
 		</dependency>
-		<!--
 		<dependency>
-			<groupId>edu.cmu.cs</groupId>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>twitter-text</artifactId>
+			<version>1.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-core</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-stream</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		
+		
+		
+		<!-- the jar from maven repository differs from the one used by illecker -->
+		<!-- 
+			mvn install:install-file -Dfile=lib/ark-tweet-nlp-0.3.2.jar -DgroupId=illecker -DartifactId=ark-tweet-nlp -Dversion=0.3.2 -Dpackaging=jar -DgeneratePom=true
+		-->
+		<dependency>
+			<groupId>illecker</groupId>
 			<artifactId>ark-tweet-nlp</artifactId>
 			<version>0.3.2</version>
 		</dependency>
+		
+		<!-- not found in maven repository OR not sure which is correct -->
+		<!--
+			mvn install:install-file -Dfile=lib/libsvm-3.2-multithreaded.jar -DgroupId=illecker -DartifactId=libsvm -Dversion=3.2 -Dpackaging=jar -DgeneratePom=true	
 		-->
-	
+		<dependency>
+			<groupId>illecker</groupId>
+			<artifactId>libsvm</artifactId>
+			<version>3.2</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/BerkeleyParser-1.7.jar -DgroupId=illecker -DartifactId=BerkeleyParser -Dversion=1.7 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>illecker</groupId>
+			<artifactId>BerkeleyParser</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/pack.jar -DgroupId=illecker -DartifactId=pack -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>illecker</groupId>
+			<artifactId>pack</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/ant-contrib-0.6.jar -DgroupId=illecker -DartifactId=ant-contrib -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>illecker</groupId>
+			<artifactId>ant-contrib</artifactId>
+			<version>0.6</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/edu.mit.jwi_2.3.3_jdk.jar -DgroupId=illecker -DartifactId=edu.mit.jwi_2.3.3_jdk -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>illecker</groupId>
+			<artifactId>edu.mit.jwi_2.3.3_jdk</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+			
 	</dependencies>
 	<build>
     	<plugins>

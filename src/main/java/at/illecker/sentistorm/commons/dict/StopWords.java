@@ -1,10 +1,5 @@
 package at.illecker.sentistorm.commons.dict;
 
-import java.util.List;
-import java.util.Set;
-
-import org.apache.storm.guava.collect.Sets;
-import org.slf4j.Logger;
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,6 +16,12 @@ import org.slf4j.Logger;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.util.List;
+import java.util.Set;
+
+import org.apache.storm.shade.com.google.common.collect.Sets;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
