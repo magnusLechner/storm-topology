@@ -29,10 +29,12 @@
 # c3.8xlarge
 
 sentistorm.workers.num: 1
-sentistorm.workers.childopts: "-Xmx4g"
+#sentistorm.workers.childopts: "-Xmx4g"
+sentistorm.workers.childopts: "-Xmx512m"
 
 # supervisor childopts are useless - use storm.yaml instead
-sentistorm.supervisor.childopts: "-Xmx4g"
+#sentistorm.supervisor.childopts: "-Xmx4g"
+sentistorm.supervisor.childopts: "-Xmx512m"
 
 sentistorm.spout.parallelism: 1
 sentistorm.spout.max.pending: 150
