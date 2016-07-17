@@ -23,55 +23,54 @@ import java.util.List;
 import java.util.TreeMap;
 
 public class WordListMap<V> extends TreeMap<String, V> {
-  private static final long serialVersionUID = -8818638227574467468L;
-  private List<String> m_startStrings = new ArrayList<String>();
-  private boolean m_startStringsIsSorted = false;
+	private static final long serialVersionUID = -8818638227574467468L;
+	private List<String> m_startStrings = new ArrayList<String>();
+	private boolean m_startStringsIsSorted = false;
 
-  @Override
-  public V put(String key, V value) {
-    if (key.endsWith("*")) {
-      String startString = key.substring(0, key.length() - 1);
-      // LOG.info("Add startStrings: '" + key + "' startingWith: '" +
-      // startString + "'");
-      m_startStrings.add(startString);
-      m_startStringsIsSorted = false;
-    }
-    return super.put(key, value);
-  }
+	@Override
+	public V put(String key, V value) {
+		if (key.endsWith("*")) {
+			String startString = key.substring(0, key.length() - 1);
+			// LOG.info("Add startStrings: '" + key + "' startingWith: '" +
+			// startString + "'");
+			m_startStrings.add(startString);
+			m_startStringsIsSorted = false;
+		}
+		return super.put(key, value);
+	}
 
-  private String searchForMatchingKey(String key) {
-    if (!m_startStringsIsSorted) {
-      Collections.sort(m_startStrings);
-      m_startStringsIsSorted = true;
-    }
-    // Comparator checks if a key starts with given key string
-    Comparator<String> startsWithComparator = new Comparator<String>() {
-      public int compare(String currentItem, String key) {
-        if (key.startsWith(currentItem)) {
-          return 0;
-        }
-        return currentItem.compareTo(key);
-      }
-    };
+	private String searchForMatchingKey(String key) {
+		if (!m_startStringsIsSorted) {
+			Collections.sort(m_startStrings);
+			m_startStringsIsSorted = true;
+		}
+		// Comparator checks if a key starts with given key string
+		Comparator<String> startsWithComparator = new Comparator<String>() {
+			public int compare(String currentItem, String key) {
+				if (key.startsWith(currentItem)) {
+					return 0;
+				}
+				return currentItem.compareTo(key);
+			}
+		};
 
-    // binarySearch in sorted list
-    int index = Collections.binarySearch(m_startStrings, key,
-        startsWithComparator);
-    if (index >= 0) {
-      return m_startStrings.get(index);
-    }
-    return null;
-  }
+		// binarySearch in sorted list
+		int index = Collections.binarySearch(m_startStrings, key, startsWithComparator);
+		if (index >= 0) {
+			return m_startStrings.get(index);
+		}
+		return null;
+	}
 
-  public V matchKey(String key) {
-    V result = super.get(key);
-    if (result == null) {
-      String matchingKey = searchForMatchingKey(key);
-      if (matchingKey != null) {
-        // LOG.info("Found match: " + key + "*" + " for " + key);
-        result = super.get(key + "*");
-      }
-    }
-    return result;
-  }
+	public V matchKey(String key) {
+		V result = super.get(key);
+		if (result == null) {
+			String matchingKey = searchForMatchingKey(key);
+			if (matchingKey != null) {
+				// LOG.info("Found match: " + key + "*" + " for " + key);
+				result = super.get(key + "*");
+			}
+		}
+		return result;
+	}
 }

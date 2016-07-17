@@ -27,56 +27,52 @@ import at.illecker.sentistorm.commons.util.io.IOUtils;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 
 public class FirstNames {
-  private static final Logger LOG = LoggerFactory.getLogger(FirstNames.class);
-  private static final FirstNames INSTANCE = new FirstNames();
+	private static final Logger LOG = LoggerFactory.getLogger(FirstNames.class);
+	private static final FirstNames INSTANCE = new FirstNames();
 
-  private Set<String> m_firstNames = null;
+	private Set<String> m_firstNames = null;
 
-  @SuppressWarnings("unchecked")
-  private FirstNames() {
-    for (String file : Configuration.getFirstNames()) {
-      // Try deserialization of file
-      String serializationFile = file + ".ser";
-      if (IOUtils.exists(serializationFile)) {
-        LOG.info("Deserialize FirstNames from: " + serializationFile);
-        if (m_firstNames == null) {
-          m_firstNames = SerializationUtils.deserialize(serializationFile);
-        } else {
-          m_firstNames.addAll((Set<String>) SerializationUtils
-              .deserialize(serializationFile));
-        }
-      } else {
-        LOG.info("Load FirstNames from: " + file);
-        if (m_firstNames == null) {
-          m_firstNames = FileUtils.readFile(file, true);
-          SerializationUtils.serializeCollection(m_firstNames,
-              serializationFile);
-        } else {
-          Set<String> firstNames = FileUtils.readFile(file, true);
-          SerializationUtils.serializeCollection(firstNames, serializationFile);
-          m_firstNames.addAll(firstNames);
-        }
-      }
-    }
-  }
+	@SuppressWarnings("unchecked")
+	private FirstNames() {
+		for (String file : Configuration.getFirstNames()) {
+			// Try deserialization of file
+			String serializationFile = file + ".ser";
+			if (IOUtils.exists(serializationFile)) {
+				LOG.info("Deserialize FirstNames from: " + serializationFile);
+				if (m_firstNames == null) {
+					m_firstNames = SerializationUtils.deserialize(serializationFile);
+				} else {
+					m_firstNames.addAll((Set<String>) SerializationUtils.deserialize(serializationFile));
+				}
+			} else {
+				LOG.info("Load FirstNames from: " + file);
+				if (m_firstNames == null) {
+					m_firstNames = FileUtils.readFile(file, true);
+					SerializationUtils.serializeCollection(m_firstNames, serializationFile);
+				} else {
+					Set<String> firstNames = FileUtils.readFile(file, true);
+					SerializationUtils.serializeCollection(firstNames, serializationFile);
+					m_firstNames.addAll(firstNames);
+				}
+			}
+		}
+	}
 
-  public static FirstNames getInstance() {
-    return INSTANCE;
-  }
+	public static FirstNames getInstance() {
+		return INSTANCE;
+	}
 
-  public boolean isFirstName(String value) {
-    return m_firstNames.contains(value.toLowerCase());
-  }
+	public boolean isFirstName(String value) {
+		return m_firstNames.contains(value.toLowerCase());
+	}
 
-  public static void main(String[] args) {
-    FirstNames firstNames = FirstNames.getInstance();
-    // Test FirstNames
-    String[] testFirstNames = new String[] { "Kevin", "Martin", "martin",
-        "justin" };
-    for (String s : testFirstNames) {
-      System.out
-          .println("isFirstName(" + s + "): " + firstNames.isFirstName(s));
-    }
-  }
+	public static void main(String[] args) {
+		FirstNames firstNames = FirstNames.getInstance();
+		// Test FirstNames
+		String[] testFirstNames = new String[] { "Kevin", "Martin", "martin", "justin" };
+		for (String s : testFirstNames) {
+			System.out.println("isFirstName(" + s + "): " + firstNames.isFirstName(s));
+		}
+	}
 
 }

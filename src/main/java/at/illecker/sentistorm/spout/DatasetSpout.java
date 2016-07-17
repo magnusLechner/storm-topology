@@ -25,6 +25,8 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
@@ -32,71 +34,79 @@ import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.util.TimeUtils;
 
 public class DatasetSpout extends BaseRichSpout {
-  public static final String ID = "dataset-spout";
-  public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
-  public static final String CONF_TUPLE_SLEEP_MS = ID + ".tuple.sleep.ms";
-  public static final String CONF_TUPLE_SLEEP_NS = ID + ".spout.tuple.sleep.ns";
-  private static final long serialVersionUID = 3028853846518561027L;
-  private Dataset m_dataset;
-  private SpoutOutputCollector m_collector;
-  private List<Tweet> m_tweets;
-  private long m_messageId = 0;
-  private int m_index = 0;
-  private long m_tupleSleepMs = 0;
-  private long m_tupleSleepNs = 0;
+	private static final Logger LOG = LoggerFactory.getLogger(DatasetSpout.class);
+	
+	public static final String ID = "dataset-spout";
+	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
+	public static final String CONF_TUPLE_SLEEP_MS = ID + ".tuple.sleep.ms";
+	public static final String CONF_TUPLE_SLEEP_NS = ID + ".spout.tuple.sleep.ns";
+	private static final long serialVersionUID = 3028853846518561027L;
+	private Dataset m_dataset;
+	private SpoutOutputCollector m_collector;
+	private List<Tweet> m_tweets;
+	private long m_messageId = 0;
+	private int m_index = 0;
+	private long m_tupleSleepMs = 0;
+	private long m_tupleSleepNs = 0;
 
-  public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    // key of output tuples
-    declarer.declare(new Fields("id", "score", "text"));
-  }
+	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		// key of output tuples
+		declarer.declare(new Fields("id", "score", "text"));
+	}
 
-  public void open(Map config, TopologyContext context,
-      SpoutOutputCollector collector) {
-    this.m_collector = collector;
-    this.m_dataset = Configuration.getDataSetSemEval2013();
-    this.m_tweets = m_dataset.getTestTweets();
+	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
+		this.m_collector = collector;
+//		this.m_dataset = Configuration.getDataSetSemEval2013();
+//		this.m_dataset = Configuration.getDataSetSentiment140();
+		this.m_dataset = Configuration.getDataSetTwitch();
+		this.m_tweets = m_dataset.getTestTweets();
 
-    // Optional sleep between tuples emitting
-    if (config.get(CONF_TUPLE_SLEEP_MS) != null) {
-      m_tupleSleepMs = (Long) config.get(CONF_TUPLE_SLEEP_MS);
-    } else {
-      m_tupleSleepMs = 0;
-    }
-    if (config.get(CONF_TUPLE_SLEEP_NS) != null) {
-      m_tupleSleepNs = (Long) config.get(CONF_TUPLE_SLEEP_NS);
-    } else {
-      m_tupleSleepNs = 0;
-    }
+		// Optional sleep between tuples emitting
+		if (config.get(CONF_TUPLE_SLEEP_MS) != null) {
+			m_tupleSleepMs = (Long) config.get(CONF_TUPLE_SLEEP_MS);
+		} else {
+			m_tupleSleepMs = 0;
+		}
+		if (config.get(CONF_TUPLE_SLEEP_NS) != null) {
+			m_tupleSleepNs = (Long) config.get(CONF_TUPLE_SLEEP_NS);
+		} else {
+			m_tupleSleepNs = 0;
+		}
 
-    // Optional startup sleep to finish bolt preparation
-    // before spout starts emitting
-    if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
-      long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
-      TimeUtils.sleepMillis(startupSleepMillis);
-    }
-  }
+		// Optional startup sleep to finish bolt preparation
+		// before spout starts emitting
+		if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
+			long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
+			TimeUtils.sleepMillis(startupSleepMillis);
+		}
+		
+//		LOG.info("SIZE: " + m_dataset.getTestTweets().size());
+//		for(int i = 0; i < m_dataset.getTestTweets().size(); i++) {
+//			Tweet tweet = m_dataset.getTestTweets().get(i);
+//			LOG.info("TEST: " + tweet.getId() + "   " + tweet.getScore() + "   " + tweet.getText());
+//		}
+		
+	}
 
-  public void nextTuple() {
-    Tweet tweet = m_tweets.get(m_index);
+	public void nextTuple() {
+		Tweet tweet = m_tweets.get(m_index);
 
-    // infinite loop
-    m_index++;
-    if (m_index >= m_tweets.size()) {
-      m_index = 0;
-    }
-    m_messageId++; // accept possible overflow
+		// infinite loop
+		m_index++;
+		if (m_index >= m_tweets.size()) {
+			m_index = 0;
+		}
+		m_messageId++; // accept possible overflow
 
-    // Emit tweet
-    m_collector.emit(
-        new Values(tweet.getId(), tweet.getScore(), tweet.getText()),
-        m_messageId);
+		// Emit tweet
+		m_collector.emit(new Values(tweet.getId(), tweet.getScore(), tweet.getText()), m_messageId);
 
-    // Optional sleep
-    if (m_tupleSleepMs != 0) {
-      TimeUtils.sleepMillis(m_tupleSleepMs);
-    }
-    if (m_tupleSleepNs != 0) {
-      TimeUtils.sleepNanos(m_tupleSleepNs);
-    }
-  }
+		// Optional sleep
+		if (m_tupleSleepMs != 0) {
+			TimeUtils.sleepMillis(m_tupleSleepMs);
+		}
+		if (m_tupleSleepNs != 0) {
+			TimeUtils.sleepNanos(m_tupleSleepNs);
+		}
+	}
 }

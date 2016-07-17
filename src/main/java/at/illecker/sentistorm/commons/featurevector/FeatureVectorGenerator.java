@@ -26,31 +26,27 @@ import org.slf4j.LoggerFactory;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public abstract class FeatureVectorGenerator {
-  private static final Logger LOG = LoggerFactory
-      .getLogger(FeatureVectorGenerator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FeatureVectorGenerator.class);
 
-  public abstract int getFeatureVectorSize();
+	public abstract int getFeatureVectorSize();
 
-  public abstract Map<Integer, Double> generateFeatureVector(
-      List<TaggedToken> tweet);
+	public abstract Map<Integer, Double> generateFeatureVector(List<TaggedToken> tweet);
 
-  public List<Map<Integer, Double>> generateFeatureVectors(
-      List<List<TaggedToken>> tweets) {
-    return generateFeatureVectors(tweets, false);
-  }
+	public List<Map<Integer, Double>> generateFeatureVectors(List<List<TaggedToken>> tweets) {
+		return generateFeatureVectors(tweets, false);
+	}
 
-  public List<Map<Integer, Double>> generateFeatureVectors(
-      List<List<TaggedToken>> taggedTweets, boolean logging) {
-    List<Map<Integer, Double>> featuredVectors = new ArrayList<Map<Integer, Double>>();
-    for (List<TaggedToken> tweet : taggedTweets) {
-      Map<Integer, Double> featureVector = generateFeatureVector(tweet);
-      if (logging) {
-        LOG.info("Tweet: " + tweet);
-        LOG.info("FeatureVector: " + featureVector);
-      }
-      featuredVectors.add(featureVector);
-    }
-    return featuredVectors;
-  }
+	public List<Map<Integer, Double>> generateFeatureVectors(List<List<TaggedToken>> taggedTweets, boolean logging) {
+		List<Map<Integer, Double>> featuredVectors = new ArrayList<Map<Integer, Double>>();
+		for (List<TaggedToken> tweet : taggedTweets) {
+			Map<Integer, Double> featureVector = generateFeatureVector(tweet);
+			if (logging) {
+				LOG.info("Tweet: " + tweet);
+				LOG.info("FeatureVector: " + featureVector);
+			}
+			featuredVectors.add(featureVector);
+		}
+		return featuredVectors;
+	}
 
 }

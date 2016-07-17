@@ -20,12 +20,12 @@ package at.illecker.sentistorm.commons.tfidf;
  * Normalization of the TF-IDF vector
  */
 public enum TfIdfNormalization {
-  /**
-   * Do not normalize the vector
-   */
-  NONE,
-  /**
-   * Normalize by the vector elements added in quadrature
-   */
-  COS
+	/**
+	 * Do not normalize the vector
+	 */
+	NONE,
+	/**
+	 * Normalize by the vector elements added in quadrature
+	 */
+	COS
 }

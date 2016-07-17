@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Tweet;
+import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.IOUtils;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import cmu.arktweetnlp.Tagger.TaggedToken;
@@ -34,108 +35,123 @@ import cmu.arktweetnlp.impl.Sentence;
 import cmu.arktweetnlp.impl.features.FeatureExtractor;
 
 public class POSTagger {
-  private static final Logger LOG = LoggerFactory.getLogger(POSTagger.class);
-  private static final POSTagger INSTANCE = new POSTagger();
-  String m_taggingModel;
-  private Model m_model;
-  private FeatureExtractor m_featureExtractor;
+	private static final Logger LOG = LoggerFactory.getLogger(POSTagger.class);
+	private static final POSTagger INSTANCE = new POSTagger();
+	String m_taggingModel;
+	private Model m_model;
+	private FeatureExtractor m_featureExtractor;
 
-  private POSTagger() {
-    // Load POS Tagger
-    try {
-      m_taggingModel = Configuration
-          .get("global.resources.postagger.model.path");
-      if ((Configuration.RUNNING_WITHIN_JAR)
-          && (!m_taggingModel.startsWith("/"))) {
-        m_taggingModel = "/" + m_taggingModel;
-      }
-      if (IOUtils.exists(m_taggingModel)) {
-        LOG.info("Load POS Tagger with model: " + m_taggingModel);
-        m_model = Model.loadModelFromText(m_taggingModel);
-        m_featureExtractor = new FeatureExtractor(m_model, false);
-      } else {
-        LOG.info("Load POS Tagger model: " + m_taggingModel + "_model.ser");
-        m_model = SerializationUtils.deserialize(m_taggingModel + "_model.ser");
-        LOG.info("Load POS Tagger featureExtractor : " + m_taggingModel
-            + "_featureExtractor.ser");
-        m_featureExtractor = SerializationUtils.deserialize(m_taggingModel
-            + "_featureExtractor.ser");
-      }
-    } catch (IOException e) {
-      LOG.error("IOException: " + e.getMessage());
-    }
-  }
+	private POSTagger() {
+		// Load POS Tagger
+		try {
+			m_taggingModel = Configuration.get("global.resources.postagger.model.path");
+			if ((Configuration.RUNNING_WITHIN_JAR) && (!m_taggingModel.startsWith("/"))) {
+				m_taggingModel = "/" + m_taggingModel;
+			}
+			if (IOUtils.exists(m_taggingModel)) {
+				LOG.info("Load POS Tagger with model: " + m_taggingModel);
+				m_model = Model.loadModelFromText(m_taggingModel);
+				m_featureExtractor = new FeatureExtractor(m_model, false);
+			} else {
+				LOG.info("Load POS Tagger model: " + m_taggingModel + "_model.ser");
+				m_model = SerializationUtils.deserialize(m_taggingModel + "_model.ser");
+				LOG.info("Load POS Tagger featureExtractor : " + m_taggingModel + "_featureExtractor.ser");
+				m_featureExtractor = SerializationUtils.deserialize(m_taggingModel + "_featureExtractor.ser");
+			}
+		} catch (IOException e) {
+			LOG.error("IOException: " + e.getMessage());
+		}
+	}
 
-  public static POSTagger getInstance() {
-    return INSTANCE;
-  }
+	public static POSTagger getInstance() {
+		return INSTANCE;
+	}
 
-  public List<List<TaggedToken>> tagTweets(List<List<String>> tweets) {
-    List<List<TaggedToken>> taggedTweets = new ArrayList<List<TaggedToken>>();
-    for (List<String> tweet : tweets) {
-      taggedTweets.add(tag(tweet));
-    }
-    return taggedTweets;
-  }
+	public List<List<TaggedToken>> tagTweets(List<List<String>> tweets) {
+		List<List<TaggedToken>> taggedTweets = new ArrayList<List<TaggedToken>>();
+		for (List<String> tweet : tweets) {
+			taggedTweets.add(tag(tweet));
+		}
+		return taggedTweets;
+	}
 
-  public List<TaggedToken> tag(List<String> tokens) {
-    Sentence sentence = new Sentence();
-    sentence.tokens = tokens;
-    ModelSentence ms = new ModelSentence(sentence.T());
-    m_featureExtractor.computeFeatures(sentence, ms);
-    m_model.greedyDecode(ms, false);
+	public List<TaggedToken> tag(List<String> tokens) {
+		Sentence sentence = new Sentence();
+		sentence.tokens = tokens;
+		ModelSentence ms = new ModelSentence(sentence.T());
+		
+		
+//		m_featureExtractor.dumpMode = true;
+		// POS-Tagging happens here
+		m_featureExtractor.computeFeatures(sentence, ms);
+		m_model.greedyDecode(ms, false);
 
-    List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
-    for (int t = 0; t < sentence.T(); t++) {
-      TaggedToken tt = new TaggedToken(tokens.get(t),
-          m_model.labelVocab.name(ms.labels[t]));
-      taggedTokens.add(tt);
-    }
-    return taggedTokens;
-  }
+		List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
+		for (int t = 0; t < sentence.T(); t++) {
+			
+			//work-around 
+			//TODO add transition probabilities to model.txt
+			//TODO change this also in POSTaggerBolt class 
+			TaggedToken tt = null;
+			if(TwitchEmoticons.getInstance().isTwitchEmoticon(tokens.get(t))) {
+				tt = new TaggedToken(tokens.get(t), "E");
+			} else {
+				tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
+			}
+			
+//			System.out.println(tokens.get(t) + "\t\t" + ms.labels[t] + "\t\t" + m_model.labelVocab.name(ms.labels[t]));
+//			TaggedToken tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
+			
+			taggedTokens.add(tt);
+		}
+		return taggedTokens;
+	}
 
-  public void serializeModel() {
-    SerializationUtils.serialize(m_model, m_taggingModel + "_model.ser");
-  }
+	public void serializeModel() {
+		SerializationUtils.serialize(m_model, m_taggingModel + "_model.ser");
+	}
 
-  public void serializeFeatureExtractor() {
-    SerializationUtils.serialize(m_featureExtractor, m_taggingModel
-        + "_featureExtractor.ser");
-  }
+	public void serializeFeatureExtractor() {
+		SerializationUtils.serialize(m_featureExtractor, m_taggingModel + "_featureExtractor.ser");
+	}
 
-  public static void main(String[] args) {
-    boolean useSerialization = true;
+	public static void main(String[] args) {
+		boolean useSerialization = true;
 
-    // load tweets
-    List<Tweet> tweets = Tweet.getTestTweets();
+		// load tweets
+//		List<Tweet> tweets = Tweet.getTestTweets();
+//		List<Tweet> tweets = Tweet.getSigleTestTweet();
+		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		tweets.add(testTweet1);
+		
+		Preprocessor preprocessor = Preprocessor.getInstance();
+		POSTagger posTagger = POSTagger.getInstance();
 
-    Preprocessor preprocessor = Preprocessor.getInstance();
-    POSTagger posTagger = POSTagger.getInstance();
+		if (useSerialization) {
+			posTagger.serializeModel();
+			posTagger.serializeFeatureExtractor();
+		}
 
-    if (useSerialization) {
-      posTagger.serializeModel();
-      posTagger.serializeFeatureExtractor();
-    }
+		// process tweets
+		long startTime = System.currentTimeMillis();
+		for (Tweet tweet : tweets) {
+			// Tokenize
+			List<String> tokens = Tokenizer.tokenize(tweet.getText());
 
-    // process tweets
-    long startTime = System.currentTimeMillis();
-    for (Tweet tweet : tweets) {
-      // Tokenize
-      List<String> tokens = Tokenizer.tokenize(tweet.getText());
+			// Preprocess
+			List<String> preprocessedTokens = preprocessor.preprocess(tokens);
 
-      // Preprocess
-      List<String> preprocessedTokens = preprocessor.preprocess(tokens);
+			// POS Tagging
+			List<TaggedToken> taggedTokens = posTagger.tag(preprocessedTokens);
 
-      // POS Tagging
-      List<TaggedToken> taggedTokens = posTagger.tag(preprocessedTokens);
-
-      LOG.info("Tweet: '" + tweet + "'");
-      LOG.info("TaggedTweet: " + taggedTokens);
-    }
-    long elapsedTime = System.currentTimeMillis() - startTime;
-    LOG.info("POSTagger finished after " + elapsedTime + " ms");
-    LOG.info("Total tweets: " + tweets.size());
-    LOG.info((elapsedTime / (double) tweets.size()) + " ms per Tweet");
-  }
+			LOG.info("Tweet: '" + tweet + "'");
+			LOG.info("TaggedTweet: " + taggedTokens);
+		}
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		LOG.info("POSTagger finished after " + elapsedTime + " ms");
+		LOG.info("Total tweets: " + tweets.size());
+		LOG.info((elapsedTime / (double) tweets.size()) + " ms per Tweet");
+	}
 
 }

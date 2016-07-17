@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
+import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 import cmu.arktweetnlp.impl.Model;
@@ -97,7 +98,18 @@ public class POSTaggerBolt extends BaseBasicBolt {
 
 		List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
 		for (int t = 0; t < sentence.T(); t++) {
-			TaggedToken tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
+
+			//work-around 
+			//TODO add transition probabilities to model.txt
+			//TODO change this also in POSTagger class
+			TaggedToken tt = null;
+			if(TwitchEmoticons.getInstance().isTwitchEmoticon(tokens.get(t))) {
+				tt = new TaggedToken(tokens.get(t), "E");
+			} else {
+				tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
+			}
+//			
+//			TaggedToken tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
 			taggedTokens.add(tt);
 		}
 		return taggedTokens;

@@ -18,103 +18,102 @@ package at.illecker.sentistorm.commons.util;
 
 public class StringUtils {
 
-  public static boolean isURL(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.URL_PATTERN.matcher(str).matches();
-  }
+	public static boolean isURL(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.URL_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isEmail(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.EMAIL_ADDRESS_PATTERN.matcher(str).matches();
-  }
+	public static boolean isEmail(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.EMAIL_ADDRESS_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isPhone(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.PHONE_PATTERN.matcher(str).matches();
-  }
+	public static boolean isPhone(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.PHONE_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isEmoticon(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.EMOTICON_PATTERN.matcher(str).matches();
-  }
+	public static boolean isEmoticon(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.EMOTICON_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isHashTag(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.HASH_TAG_PATTERN.matcher(str).matches();
-  }
+	public static boolean isHashTag(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.HASH_TAG_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isUser(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.USER_NAME_PATTERN.matcher(str).matches();
-  }
+	public static boolean isUser(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.USER_NAME_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isRetweet(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.RETWEET_PATTERN.matcher(str).matches();
-  }
+	public static boolean isRetweet(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.RETWEET_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean consitsOfPunctuations(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.PUNCTUATIONS_PATTERN.matcher(str).matches();
-  }
+	public static boolean consitsOfPunctuations(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.PUNCTUATIONS_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean consitsOfUnderscores(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.UNDERSCORES_PATTERN.matcher(str).matches();
-  }
+	public static boolean consitsOfUnderscores(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.UNDERSCORES_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isNumeric(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.NUMBER_PATTERN.matcher(str).matches();
-  }
+	public static boolean isNumeric(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.NUMBER_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isSpecialNumeric(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.SPECIAL_NUMBER_PATTERN.matcher(str).matches();
-  }
+	public static boolean isSpecialNumeric(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.SPECIAL_NUMBER_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isSeparatedNumeric(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.SEPARATED_NUMBER_PATTERN.matcher(str).matches();
-  }
+	public static boolean isSeparatedNumeric(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.SEPARATED_NUMBER_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean isSlang(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.SLANG_PATTERN.matcher(str).matches();
-  }
+	public static boolean isSlang(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.SLANG_PATTERN.matcher(str).matches();
+	}
 
-  public static boolean startsWithAlphabeticChar(String str) {
-    if (str == null) {
-      return false;
-    }
-    return RegexUtils.STARTS_WITH_ALPHABETIC_CHAR_PATTERN.matcher(str)
-        .matches();
-  }
+	public static boolean startsWithAlphabeticChar(String str) {
+		if (str == null) {
+			return false;
+		}
+		return RegexUtils.STARTS_WITH_ALPHABETIC_CHAR_PATTERN.matcher(str).matches();
+	}
 
 }

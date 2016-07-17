@@ -20,21 +20,21 @@ import org.apache.storm.utils.Time;
 
 public class TimeUtils {
 
-  public static void sleepMillis(long millis) {
-    try {
-      Time.sleep(millis);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
-  }
+	public static void sleepMillis(long millis) {
+		try {
+			Time.sleep(millis);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-  public static void sleepNanos(long nanos) {
-    long start = System.nanoTime();
-    long end = 0;
-    do {
-      end = System.nanoTime();
-    } while (start + nanos >= end);
-    // System.out.println("waited time: " + (end - start) + " ns");
-  }
+	public static void sleepNanos(long nanos) {
+		long start = System.nanoTime();
+		long end = 0;
+		do {
+			end = System.nanoTime();
+		} while (start + nanos >= end);
+		// System.out.println("waited time: " + (end - start) + " ns");
+	}
 
 }
