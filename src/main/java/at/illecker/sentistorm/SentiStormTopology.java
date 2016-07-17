@@ -27,12 +27,14 @@ import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
 
 import at.illecker.sentistorm.bolt.FeatureGenerationBolt;
+import at.illecker.sentistorm.bolt.JSONBolt;
 import at.illecker.sentistorm.bolt.POSTaggerBolt;
 import at.illecker.sentistorm.bolt.PreprocessorBolt;
 import at.illecker.sentistorm.bolt.SVMBolt;
 import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
+import at.illecker.sentistorm.spout.DatasetJSONSpout;
 import at.illecker.sentistorm.spout.DatasetSpout;
 import at.illecker.sentistorm.spout.TwitterStreamSpout;
 import at.lechner.bolt.PrinterBolt;
@@ -81,20 +83,35 @@ public class SentiStormTopology {
 		IRichSpout spout;
 		String spoutID = "";
 		if (consumerKey.isEmpty()) {
+//			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
+//				conf.put(DatasetSpout.CONF_STARTUP_SLEEP_MS,
+//						(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
+//			}
+//			if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
+//				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_MS,
+//						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
+//			}
+//			if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
+//				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_NS,
+//						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
+//			}
+//			spout = new DatasetSpout();
+//			spoutID = DatasetSpout.ID;
+			
 			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
-				conf.put(DatasetSpout.CONF_STARTUP_SLEEP_MS,
+				conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
 						(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
 			}
 			if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
-				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_MS,
+				conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_MS,
 						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
 			}
 			if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
-				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_NS,
+				conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_NS,
 						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
 			}
-			spout = new DatasetSpout();
-			spoutID = DatasetSpout.ID;
+			spout = new DatasetJSONSpout();
+			spoutID = DatasetJSONSpout.ID;
 		} else {
 			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
 				conf.put(TwitterStreamSpout.CONF_STARTUP_SLEEP_MS,
@@ -106,6 +123,7 @@ public class SentiStormTopology {
 		}
 
 		// Create Bolts
+		JSONBolt jsonBolt = new JSONBolt();
 		TokenizerBolt tokenizerBolt = new TokenizerBolt();
 		PreprocessorBolt preprocessorBolt = new PreprocessorBolt();
 		POSTaggerBolt posTaggerBolt = new POSTaggerBolt();
@@ -118,10 +136,18 @@ public class SentiStormTopology {
 		// Set Spout
 		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
-		// Set Spout --> TokenizerBolt
+		// Set Spout --> JSONBolt
+		builder.setBolt(JSONBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
+		.shuffleGrouping(spoutID);
+		
+		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-				.shuffleGrouping(spoutID);
-
+				.shuffleGrouping(JSONBolt.ID);
+		
+//		// Set Spout --> TokenizerBolt
+//		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
+//				.shuffleGrouping(spoutID);
+		
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
 				Configuration.get("sentistorm.bolt.preprocessor.parallelism", 1)).shuffleGrouping(TokenizerBolt.ID);
@@ -172,6 +198,7 @@ public class SentiStormTopology {
 			conf.put(Config.SUPERVISOR_CHILDOPTS, Configuration.get("sentistorm.supervisor.childopts"));
 		}
 
+		conf.put(JSONBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.json.logging", false));
 		conf.put(TokenizerBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.tokenizer.logging", false));
 		conf.put(PreprocessorBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.preprocessor.logging", false));
 		conf.put(POSTaggerBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.postagger.logging", false));

@@ -266,6 +266,9 @@ sentistorm.spout.tuple.sleep.ms: null
 sentistorm.spout.tuple.sleep.ns: null # 250000 = 0.25 ms
 sentistorm.spout.filter.language: "en"
 
+sentistorm.bolt.json.parallelism: 1
+sentistorm.bolt.json.logging: false
+
 sentistorm.bolt.tokenizer.parallelism: 1
 sentistorm.bolt.tokenizer.logging: false
 
