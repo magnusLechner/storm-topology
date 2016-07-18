@@ -28,9 +28,10 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
 import at.illecker.sentistorm.commons.Configuration;
-import at.illecker.sentistorm.commons.Dataset;
-import at.illecker.sentistorm.commons.Tweet;
+import at.illecker.sentistorm.commons.JSONDataset;
 import at.illecker.sentistorm.commons.util.TimeUtils;
 
 public class DatasetJSONSpout extends BaseRichSpout {
@@ -41,9 +42,9 @@ public class DatasetJSONSpout extends BaseRichSpout {
 	public static final String CONF_TUPLE_SLEEP_MS = ID + ".tuple.sleep.ms";
 	public static final String CONF_TUPLE_SLEEP_NS = ID + ".spout.tuple.sleep.ns";
 	private static final long serialVersionUID = 2312223846518561027L;
-	private Dataset m_dataset;
+	private JSONDataset m_dataset;
 	private SpoutOutputCollector m_collector;
-	private List<Tweet> m_tweets;
+	private List<String> m_jsons;
 	private long m_messageId = 0;
 	private int m_index = 0;
 	private long m_tupleSleepMs = 0;
@@ -58,8 +59,8 @@ public class DatasetJSONSpout extends BaseRichSpout {
 		this.m_collector = collector;
 
 		//TODO i need json not tweet
-		this.m_dataset = Configuration.getDataSetTwitch();
-		this.m_tweets = m_dataset.getTestTweets();
+		this.m_dataset = Configuration.getJSONDataSetTwitch();
+		this.m_jsons = m_dataset.getTestJSON();
 
 		// Optional sleep between tuples emitting
 		if (config.get(CONF_TUPLE_SLEEP_MS) != null) {
@@ -83,17 +84,17 @@ public class DatasetJSONSpout extends BaseRichSpout {
 	}
 
 	public void nextTuple() {
-		Tweet tweet = m_tweets.get(m_index);
+		String json = m_jsons.get(m_index);
 
 		// infinite loop
 		m_index++;
-		if (m_index >= m_tweets.size()) {
+		if (m_index >= m_jsons.size()) {
 			m_index = 0;
 		}
 		m_messageId++; // accept possible overflow
 
 		// Emit tweet
-		m_collector.emit(new Values(tweet.getId(), tweet.getScore(), tweet.getText()), m_messageId);
+		m_collector.emit(new Values(json), m_messageId);
 
 		// Optional sleep
 		if (m_tupleSleepMs != 0) {

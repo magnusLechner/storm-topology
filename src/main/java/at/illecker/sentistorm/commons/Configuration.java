@@ -119,6 +119,10 @@ public class Configuration {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("twitch"));
 	}
 	
+	public static JSONDataset getJSONDataSetTwitch() {
+		return JSONDataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("JSONtwitch"));
+	}
+	
 	public static Dataset getDataSetMyTest() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_MY_TEST)).get("mytest"));
 	}

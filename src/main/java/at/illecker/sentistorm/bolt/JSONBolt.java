@@ -69,7 +69,7 @@ public class JSONBolt extends BaseBasicBolt {
 			 LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.getAsString());
 		}
 		
-		System.out.println("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.getAsString());
+		LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.getAsString());
 
 		// Emit new tuples
 		 collector.emit(new Values(content.getAsString(), jsonObject));

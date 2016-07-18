@@ -31,12 +31,62 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Dataset;
+import at.illecker.sentistorm.commons.JSONDataset;
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.dict.WordListMap;
 
 public class FileUtils {
 	private static final Logger LOG = LoggerFactory.getLogger(FileUtils.class);
 
+	public static List<String> readJSON(String file, JSONDataset property) {
+		return readJSON(IOUtils.getInputStream(file), property);
+	}
+
+	public static List<String> readJSON(InputStream is, JSONDataset dataset) {
+		List<String> jsonsStrings = new ArrayList<String>();
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		if (is == null) {
+			LOG.error("InputStream is null! File could not be found!");
+			return null;
+		}
+		try {
+			isr = new InputStreamReader(is, "UTF-8");
+			br = new BufferedReader(isr);
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				if(line.equals("")) {
+					continue;
+				}
+				jsonsStrings.add(line);
+			}
+
+		} catch (IOException e) {
+			LOG.error("IOException: " + e.getMessage());
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException ignore) {
+				}
+			}
+			if (isr != null) {
+				try {
+					isr.close();
+				} catch (IOException ignore) {
+				}
+			}
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException ignore) {
+				}
+			}
+		}
+		LOG.info("Loaded total " + jsonsStrings.size() + " JSONs");
+		return jsonsStrings;
+	}
+	
 	public static List<Tweet> readTweets(String file, Dataset property) {
 		return readTweets(IOUtils.getInputStream(file), property);
 	}
