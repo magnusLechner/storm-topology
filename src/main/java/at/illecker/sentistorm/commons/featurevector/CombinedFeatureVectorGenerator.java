@@ -50,10 +50,10 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
 						+ m_posFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-		m_undefinedTwitchFeatureVectorGenerator = new UndefinedTwitchFeatureVectorGenerator(
-				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
-						+ m_posFeatureVectorGenerator.getFeatureVectorSize()
-						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
+//		m_undefinedTwitchFeatureVectorGenerator = new UndefinedTwitchFeatureVectorGenerator(
+//				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
+//						+ m_posFeatureVectorGenerator.getFeatureVectorSize()
+//						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
 		LOG.info("VectorSize: " + getFeatureVectorSize());
 	}
@@ -63,7 +63,8 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		return m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
 				+ m_posFeatureVectorGenerator.getFeatureVectorSize()
 				+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize()
-				+ m_undefinedTwitchFeatureVectorGenerator.getFeatureVectorSize();
+//				+ m_undefinedTwitchFeatureVectorGenerator.getFeatureVectorSize()
+				;
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 
 		featureVector.putAll(m_tfidfFeatureVectorGenerator.generateFeatureVector(tweet));
 		
-		featureVector.putAll(m_undefinedTwitchFeatureVectorGenerator.generateFeatureVector(tweet));
+//		featureVector.putAll(m_undefinedTwitchFeatureVectorGenerator.generateFeatureVector(tweet));
 
 		return featureVector;
 	}

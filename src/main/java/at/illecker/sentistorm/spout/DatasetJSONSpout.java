@@ -28,8 +28,6 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.JSONDataset;
 import at.illecker.sentistorm.commons.util.TimeUtils;
@@ -52,7 +50,7 @@ public class DatasetJSONSpout extends BaseRichSpout {
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("id", "score", "text"));
+		declarer.declare(new Fields("json"));
 	}
 
 	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
@@ -93,6 +91,8 @@ public class DatasetJSONSpout extends BaseRichSpout {
 		}
 		m_messageId++; // accept possible overflow
 
+		LOG.info("Emitted JSON-String: " + json);
+		
 		// Emit tweet
 		m_collector.emit(new Values(json), m_messageId);
 

@@ -63,7 +63,7 @@ public class JSONBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		JsonElement jsonElement = jsonParser.parse(tuple.getStringByField("json"));
 		JsonObject jsonObject = jsonElement.getAsJsonObject();
-		JsonObject content = jsonObject.getAsJsonObject("content");
+		JsonObject content = jsonObject.getAsJsonObject("msg");
 
 		if (m_logging) {
 			 LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.getAsString());
