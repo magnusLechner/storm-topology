@@ -48,6 +48,7 @@
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/util/io/SerializationUtils.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/spout/DatasetJSONSpout.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/featurevector/selector/NoPOSFVGSelector.java
+/home/magnus/workspace/storm-topology/src/main/java/at/lechner/quick/QuickTest.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/bolt/JSONBolt.java
 /home/magnus/workspace/storm-topology/src/main/java/at/lechner/util/EvaluationUtil.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/featurevector/POSFeatureVectorGenerator.java

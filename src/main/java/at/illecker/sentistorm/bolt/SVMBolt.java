@@ -33,6 +33,9 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.SentimentClass;
@@ -48,9 +51,11 @@ public class SVMBolt extends BaseBasicBolt {
 	private Dataset m_dataset;
 	private svm_model m_model;
 
+	private JsonParser jsonParser;
+
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("text", "predictedSentiment"));
+		declarer.declare(new Fields("text", "predictedSentiment", "json"));
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public class SVMBolt extends BaseBasicBolt {
 		}
 
 		LOG.info("Loading SVM model...");
-//		m_dataset = Configuration.getDataSetSemEval2013();
+		// m_dataset = Configuration.getDataSetSemEval2013();
 		m_dataset = Configuration.getDataSetTwitch();
 		m_model = SerializationUtils.deserialize(m_dataset.getDatasetPath() + File.separator + SVM.SVM_MODEL_FILE_SER);
 
@@ -72,11 +77,14 @@ public class SVMBolt extends BaseBasicBolt {
 					+ SVM.SVM_MODEL_FILE_SER);
 			throw new RuntimeException();
 		}
+
+		jsonParser = new JsonParser();
 	}
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
+		String json = tuple.getStringByField("json");
 		Map<Integer, Double> featureVector = (Map<Integer, Double>) tuple.getValueByField("featureVector");
 
 		// Create feature nodes
@@ -92,13 +100,20 @@ public class SVMBolt extends BaseBasicBolt {
 
 		double predictedClass = svm.svm_predict(m_model, testNodes);
 
+		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+		jsonObject.addProperty("predictedSentiment",
+				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());
+
 		if (m_logging) {
 			LOG.info("Tweet: " + text + " predictedSentiment: "
-					+ SentimentClass.fromScore(m_dataset, (int) predictedClass));
+					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 		
+		LOG.info("Tweet: " + text + " predictedSentiment: "
+				+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
+
 		// Emit new tuples
-		collector.emit(new Values(text, SentimentClass.fromScore(m_dataset, (int) predictedClass)));
+		collector.emit(new Values(text, SentimentClass.fromScore(m_dataset, (int) predictedClass), jsonObject.toString()));
 	}
 
 }

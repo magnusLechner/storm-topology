@@ -42,7 +42,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "preprocessedTokens"));
+		declarer.declare(new Fields("text", "preprocessedTokens", "json"));
 	}
 
 	@Override
@@ -60,17 +60,18 @@ public class PreprocessorBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
+		String json = tuple.getStringByField("json");
 		List<String> tokens = (List<String>) tuple.getValueByField("tokens");
 
 		// Preprocess
 		List<String> preprocessedTokens = m_preprocessor.preprocess(tokens);
 
 		if (m_logging) {
-			LOG.info("Tweet: " + preprocessedTokens);
+			LOG.info("PREPROCESSOR:  TOKENS " + preprocessedTokens + "    JSON: " + json);
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, preprocessedTokens));
+		collector.emit(new Values(text, preprocessedTokens, json));
 	}
 
 }

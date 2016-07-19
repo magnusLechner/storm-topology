@@ -52,7 +52,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "featureVector"));
+		declarer.declare(new Fields("text", "featureVector", "json"));
 	}
 
 	@Override
@@ -85,6 +85,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
+		String json = tuple.getStringByField("json");
 		
 		List<TaggedToken> taggedTokens = (List<TaggedToken>) tuple.getValueByField("taggedTokens");
 		
@@ -94,9 +95,11 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 		if (m_logging) {
 			LOG.info("Tweet: " + text + " FeatureVector: " + featureVector);
 		}
+		
+		LOG.info("Tweet: " + text + " FeatureVector: " + featureVector);
 
 		// Emit new tuples
-		collector.emit(new Values(text, featureVector));
+		collector.emit(new Values(text, featureVector, json));
 	}
 
 }

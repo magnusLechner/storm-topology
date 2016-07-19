@@ -65,11 +65,11 @@ public class JSONBolt extends BaseBasicBolt {
 		JsonElement content = jsonObject.get("msg");
 
 		if (m_logging) {
-			 LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.getAsString());
+			 LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.toString());
 		}
 
 		// Emit new tuples
-		 collector.emit(new Values(content.getAsString(), jsonObject));
+		 collector.emit(new Values(content.getAsString(), jsonObject.toString()));
 	}
 
 }

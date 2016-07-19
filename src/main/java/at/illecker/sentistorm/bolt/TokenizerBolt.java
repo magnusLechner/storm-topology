@@ -29,6 +29,8 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
@@ -41,7 +43,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "tokens"));
+		declarer.declare(new Fields("text", "tokens", "json"));
 	}
 
 	@Override
@@ -61,11 +63,11 @@ public class TokenizerBolt extends BaseBasicBolt {
 		List<String> tokens = Tokenizer.tokenize(text);
 
 		if (m_logging) {
-			LOG.info("Tweet: \"" + text + "\" Tokenized: " + tokens);
+			LOG.info("Tweet: \"" + text + "\" Tokenized: " + tokens + "  json: " + tuple.getStringByField("json"));
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, tokens));
+		collector.emit(new Values(text, tokens, tuple.getStringByField("json")));
 	}
 
 }

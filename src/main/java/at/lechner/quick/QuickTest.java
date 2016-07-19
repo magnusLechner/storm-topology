@@ -19,7 +19,7 @@ public class QuickTest {
 		JsonElement content = jsonObject.get("msg");
 		
 		System.out.println("THIS IS THE CONTENT: " + content.getAsString());
-		System.out.println("THIS IS THE JSON: " + jsonObject);
+		System.out.println("THIS IS THE JSON: " + jsonObject.toString());
 	}
 	
 }

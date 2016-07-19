@@ -90,8 +90,6 @@ public class DatasetJSONSpout extends BaseRichSpout {
 			m_index = 0;
 		}
 		m_messageId++; // accept possible overflow
-
-		LOG.info("Emitted JSON-String: " + json);
 		
 		// Emit tweet
 		m_collector.emit(new Values(json), m_messageId);
