@@ -17,12 +17,14 @@
 
 package at.illecker.sentistorm;
 
-import java.util.Arrays;
-import java.util.Properties;
 import java.util.TreeMap;
 
 import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.LocalDRPC;
 import org.apache.storm.StormSubmitter;
+import org.apache.storm.drpc.DRPCSpout;
+import org.apache.storm.drpc.ReturnResults;
 import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
 
@@ -35,14 +37,7 @@ import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
 import at.illecker.sentistorm.spout.DatasetJSONSpout;
-import at.illecker.sentistorm.spout.DatasetSpout;
-import at.illecker.sentistorm.spout.TwitterStreamSpout;
-import at.lechner.bolt.PrinterBolt;
 import cmu.arktweetnlp.Tagger.TaggedToken;
-import storm.kafka.KafkaSpout;
-import storm.kafka.bolt.KafkaBolt;
-import storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper;
-import storm.kafka.bolt.selector.DefaultTopicSelector;
 
 import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerializer;
 
@@ -50,77 +45,30 @@ public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 
 	public static void main(String[] args) throws Exception {
-		String consumerKey = "";
-		String consumerSecret = "";
-		String accessToken = "";
-		String accessTokenSecret = "";
-		String[] keyWords = null;
-
-		if (args.length > 0) {
-			if (args.length >= 4) {
-				consumerKey = args[0];
-				System.out.println("TwitterSpout using ConsumerKey: " + consumerKey);
-				consumerSecret = args[1];
-				accessToken = args[2];
-				accessTokenSecret = args[3];
-				if (args.length == 5) {
-					keyWords = args[4].split(" ");
-					System.out.println("TwitterSpout using KeyWords: " + Arrays.toString(keyWords));
-				}
-			} else {
-				System.out.println("Wrong argument size!");
-				System.out.println("    Argument1=consumerKey");
-				System.out.println("    Argument2=consumerSecret");
-				System.out.println("    Argument3=accessToken");
-				System.out.println("    Argument4=accessTokenSecret");
-				System.out.println("    [Argument5=keyWords]");
-			}
-		}
-
 		Config conf = new Config();
 
 		// Create Spout
-		IRichSpout spout;
-		String spoutID = "";
-		if (consumerKey.isEmpty()) {
-//			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
-//				conf.put(DatasetSpout.CONF_STARTUP_SLEEP_MS,
-//						(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
-//			}
-//			if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
-//				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_MS,
-//						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
-//			}
-//			if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
-//				conf.put(DatasetSpout.CONF_TUPLE_SLEEP_NS,
-//						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
-//			}
-//			spout = new DatasetSpout();
-//			spoutID = DatasetSpout.ID;
-			
-			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
-				conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
-						(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
-			}
-			if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
-				conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_MS,
-						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
-			}
-			if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
-				conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_NS,
-						(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
-			}
-			spout = new DatasetJSONSpout();
-			spoutID = DatasetJSONSpout.ID;
-		} else {
-			if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
-				conf.put(TwitterStreamSpout.CONF_STARTUP_SLEEP_MS,
-						(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
-			}
-			spout = new TwitterStreamSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords,
-					(String) Configuration.get("sentistorm.spout.filter.language"));
-			spoutID = TwitterStreamSpout.ID;
-		}
+//		if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
+//			conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
+//					(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
+//		}
+//		if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
+//			conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_MS,
+//					(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
+//		}
+//		if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
+//			conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_NS,
+//					(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
+//		}
+//		IRichSpout spout = new DatasetJSONSpout();
+//		String spoutID = DatasetJSONSpout.ID;
+		
+		
+		
+//		LocalDRPC drpc = new LocalDRPC();
+//		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
+		IRichSpout spout = new DRPCSpout("getSentiment");
+		String spoutID = "DRPCSpout";
 
 		// Create Bolts
 		JSONBolt jsonBolt = new JSONBolt();
@@ -129,6 +77,7 @@ public class SentiStormTopology {
 		POSTaggerBolt posTaggerBolt = new POSTaggerBolt();
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
+		ReturnResults returnBolt = new ReturnResults();
 
 		// Create Topology
 		TopologyBuilder builder = new TopologyBuilder();
@@ -138,16 +87,12 @@ public class SentiStormTopology {
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JSONBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-		.shuffleGrouping(spoutID);
-		
+				.shuffleGrouping(spoutID);
+
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
 				.shuffleGrouping(JSONBolt.ID);
-		
-//		// Set Spout --> TokenizerBolt
-//		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-//				.shuffleGrouping(spoutID);
-		
+
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
 				Configuration.get("sentistorm.bolt.preprocessor.parallelism", 1)).shuffleGrouping(TokenizerBolt.ID);
@@ -165,24 +110,9 @@ public class SentiStormTopology {
 		builder.setBolt(SVMBolt.ID, svmBolt, Configuration.get("sentistorm.bolt.svm.parallelism", 1))
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
-		// ##########################
-
-//		PrinterBolt printerBold = new PrinterBolt();
-//		builder.setBolt(PrinterBolt.ID, printerBold, 1).shuffleGrouping(SVMBolt.ID);
-
-//	    KafkaBolt kafkaBolt = new KafkaBolt()
-//	            .withTopicSelector(new DefaultTopicSelector("predictedSentiment"))
-//	            .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper());
-//	    builder.setBolt("KafkaID", kafkaBolt, 1).shuffleGrouping(SVMBolt.ID);
-//		
-//		Properties props = new Properties();
-//		props.put("metadata.broker.list", "localhost:9092");
-//	    props.put("request.required.acks", "1");
-//	    props.put("serializer.class", "kafka.serializer.StringEncoder");
-//		
-//		conf.put(KafkaBolt.KAFKA_BROKER_PROPERTIES, props);
-		
-		// ##########################
+		// SVMBolt --> ReturnResults
+		builder.setBolt("return", returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
+				.shuffleGrouping(SVMBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -211,11 +141,20 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		// conf.put(Config.TOPOLOGY_RECEIVER_BUFFER_SIZE, 8);
-		// conf.put(Config.TOPOLOGY_TRANSFER_BUFFER_SIZE, 32);
-		// conf.put(Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE, 16384);
-		// conf.put(Config.TOPOLOGY_EXECUTOR_SEND_BUFFER_SIZE, 16384);
+		
+		
+		
+		
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+//		for(int i = 0; i < 100000; i++) {
+//			System.out.println("HALLO: " + drpc.execute("getSentiment", "{\"msg\":\"Kreygasm\"}"));	
+//		}
+//	    cluster.shutdown();
+//	    drpc.shutdown();
+	    
 
+	    
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run:");

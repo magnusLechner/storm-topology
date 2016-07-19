@@ -44,7 +44,7 @@ public class JSONBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "json"));
+		declarer.declare(new Fields("text", "json", "return-info"));
 	}
 
 	@Override
@@ -61,7 +61,11 @@ public class JSONBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		JsonObject jsonObject = (JsonObject)jsonParser.parse(tuple.getStringByField("json"));
+//		String json = tuple.getStringByField("json");
+		String json = tuple.getString(0);
+		Object retInfo = tuple.getValue(1);
+		
+		JsonObject jsonObject = (JsonObject)jsonParser.parse(json);
 		JsonElement content = jsonObject.get("msg");
 
 		if (m_logging) {
@@ -69,7 +73,7 @@ public class JSONBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		 collector.emit(new Values(content.getAsString(), jsonObject.toString()));
+		 collector.emit(new Values(content.getAsString(), jsonObject.toString(), retInfo));
 	}
 
 }

@@ -55,7 +55,8 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("text", "predictedSentiment", "json"));
+//		declarer.declare(new Fields("text", "predictedSentiment", "json"));
+		declarer.declare(new Fields("json", "return-Info"));
 	}
 
 	@Override
@@ -85,6 +86,7 @@ public class SVMBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
 		String json = tuple.getStringByField("json");
+		Object retInfo = tuple.getValue(3);
 		Map<Integer, Double> featureVector = (Map<Integer, Double>) tuple.getValueByField("featureVector");
 
 		// Create feature nodes
@@ -108,12 +110,10 @@ public class SVMBolt extends BaseBasicBolt {
 			LOG.info("Tweet: " + text + " predictedSentiment: "
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
-		
-		LOG.info("Tweet: " + text + " predictedSentiment: "
-				+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 
 		// Emit new tuples
-		collector.emit(new Values(text, SentimentClass.fromScore(m_dataset, (int) predictedClass), jsonObject.toString()));
+//		collector.emit(new Values(text, SentimentClass.fromScore(m_dataset, (int) predictedClass), jsonObject.toString()));
+		collector.emit(new Values(jsonObject.toString(), retInfo));
 	}
 
 }

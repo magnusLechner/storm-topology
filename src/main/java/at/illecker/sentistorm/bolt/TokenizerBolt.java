@@ -43,7 +43,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "tokens", "json"));
+		declarer.declare(new Fields("text", "tokens", "json", "return-info"));
 	}
 
 	@Override
@@ -59,6 +59,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
+		Object retInfo = tuple.getValue(2);
 
 		List<String> tokens = Tokenizer.tokenize(text);
 
@@ -67,7 +68,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, tokens, tuple.getStringByField("json")));
+		collector.emit(new Values(text, tokens, tuple.getStringByField("json"), retInfo));
 	}
 
 }

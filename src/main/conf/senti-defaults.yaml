@@ -309,4 +309,7 @@ sentistorm.bolt.featuregeneration.parallelism: 1
 sentistorm.bolt.featuregeneration.logging: false
 
 sentistorm.bolt.svm.parallelism: 1
-sentistorm.bolt.svm.logging: true
+sentistorm.bolt.svm.logging: false
+
+sentistorm.bolt.return.parallelism: 1
+sentistorm.bolt.return.logging: false

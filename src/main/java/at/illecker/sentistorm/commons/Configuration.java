@@ -39,6 +39,9 @@ public class Configuration {
 	public static final String WORKING_DIR_PATH = (RUNNING_WITHIN_JAR) ? ""
 			: System.getProperty("user.dir") + File.separator;
 
+	//For local testing
+//	public static final String WORKING_DIR_PATH = "/home/magnus/workspace/storm-topology/src/main/conf/";
+	
 	public static final String TEMP_DIR_PATH = System.getProperty("java.io.tmpdir");
 
 	public static final String GLOBAL_RESOURCES_DATASETS_SEMEVAL = "global.resources.datasets.semeval";

@@ -41,6 +41,7 @@
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/dict/WordListMap.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/featurevector/selector/FVGSelector.java
 /home/magnus/workspace/storm-topology/src/main/java/at/lechner/lenn/LennMessages.java
+/home/magnus/workspace/storm-topology/src/main/java/at/lechner/quick/ManualDRPC.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/util/RegexUtils.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/featurevector/nopos/NoPOSSentimentFeatureVectorGenerator.java
 /home/magnus/workspace/storm-topology/src/main/java/at/illecker/sentistorm/commons/tfidf/TfIdf.java
