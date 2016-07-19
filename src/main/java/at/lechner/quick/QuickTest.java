@@ -21,5 +21,4 @@ public class QuickTest {
 		System.out.println("THIS IS THE CONTENT: " + content.getAsString());
 		System.out.println("THIS IS THE JSON: " + jsonObject.toString());
 	}
-	
 }

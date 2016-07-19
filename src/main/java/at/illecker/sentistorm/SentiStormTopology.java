@@ -63,8 +63,6 @@ public class SentiStormTopology {
 //		IRichSpout spout = new DatasetJSONSpout();
 //		String spoutID = DatasetJSONSpout.ID;
 		
-		
-		
 //		LocalDRPC drpc = new LocalDRPC();
 //		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
 		IRichSpout spout = new DRPCSpout("getSentiment");
@@ -140,10 +138,6 @@ public class SentiStormTopology {
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
-
-		
-		
-		
 		
 //		LocalCluster cluster = new LocalCluster();
 //		cluster.submitTopology("getSentiment", conf, builder.createTopology());
@@ -152,8 +146,6 @@ public class SentiStormTopology {
 //		}
 //	    cluster.shutdown();
 //	    drpc.shutdown();
-	    
-
 	    
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 

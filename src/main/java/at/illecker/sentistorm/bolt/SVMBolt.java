@@ -55,7 +55,6 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-//		declarer.declare(new Fields("text", "predictedSentiment", "json"));
 		declarer.declare(new Fields("json", "return-Info"));
 	}
 
@@ -69,7 +68,6 @@ public class SVMBolt extends BaseBasicBolt {
 		}
 
 		LOG.info("Loading SVM model...");
-		// m_dataset = Configuration.getDataSetSemEval2013();
 		m_dataset = Configuration.getDataSetTwitch();
 		m_model = SerializationUtils.deserialize(m_dataset.getDatasetPath() + File.separator + SVM.SVM_MODEL_FILE_SER);
 
@@ -112,7 +110,6 @@ public class SVMBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-//		collector.emit(new Values(text, SentimentClass.fromScore(m_dataset, (int) predictedClass), jsonObject.toString()));
 		collector.emit(new Values(jsonObject.toString(), retInfo));
 	}
 
