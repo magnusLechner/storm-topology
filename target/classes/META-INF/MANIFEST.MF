@@ -7,7 +7,7 @@ Class-Path: snakeyaml-1.15.jar commons-compress-1.9.jar commons-codec-
   javax.json-api-1.0.jar slf4j-api-1.7.12.jar slf4j-simple-1.7.12.jar 
  ark-tweet-nlp-0.3.2.jar libsvm-3.2.jar BerkeleyParser-1.7.jar pack-1.
  0.jar ant-contrib-0.6.jar edu.mit.jwi_2.3.3_jdk-1.0.jar
-Build-Jdk: 1.7.0_95
+Build-Jdk: 1.7.0_101
 Built-By: magnus
 Created-By: Maven Integration for Eclipse
 Main-Class: fully.qualified.MainClass
