@@ -15,6 +15,7 @@ public class DRPCTest {
 	        conf.put(Config.STORM_NIMBUS_RETRY_TIMES, 3);
 	        conf.put(Config.STORM_NIMBUS_RETRY_INTERVAL, 10);
 	        conf.put(Config.STORM_NIMBUS_RETRY_INTERVAL_CEILING, 20);
+	        conf.put(Config.DRPC_MAX_BUFFER_SIZE, 1048576);
 			
 			client = new DRPCClient(conf, "localhost", 3772);
 			
