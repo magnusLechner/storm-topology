@@ -25,7 +25,6 @@ at/illecker/sentistorm/spout/DatasetJSONSpout.class
 at/lechner/bolt/PrinterBolt.class
 at/lechner/util/UnzipUtil.class
 at/illecker/sentistorm/commons/svm/box/NoPOSSVMBox.class
-META-INF/maven/cheer.gg/storm_sentiment_analysis/pom.properties
 at/lechner/preparation/EmoticonTSVCreator.class
 at/illecker/sentistorm/commons/tfidf/TfIdfNormalization.class
 at/illecker/sentistorm/commons/svm/SVM.class
@@ -34,7 +33,6 @@ at/illecker/sentistorm/drpc/DRPCTest.class
 at/illecker/sentistorm/commons/svm/box/AggregationBox.class
 at/illecker/sentistorm/commons/tfidf/TweetTfIdf.class
 at/illecker/sentistorm/commons/forest/MyRandomForest.class
-META-INF/maven/cheer.gg/storm_sentiment_analysis/pom.xml
 at/illecker/sentistorm/commons/featurevector/selector/NoPOSFVGSelector.class
 at/illecker/sentistorm/commons/featurevector/nopos/NoPOSTfIdfFeatureVectorGenerator.class
 at/illecker/sentistorm/commons/featurevector/aggregate/AggregationFeatureVectorGenerator.class
@@ -67,7 +65,6 @@ at/illecker/sentistorm/commons/tfidf/TfIdf.class
 at/illecker/sentistorm/components/POSTagger.class
 at/illecker/sentistorm/spout/DatasetSpout.class
 at/illecker/sentistorm/bolt/JSONBolt.class
-META-INF/MANIFEST.MF
 at/illecker/sentistorm/commons/svm/prediction/statistic/PredictionStatistic.class
 at/illecker/sentistorm/commons/featurevector/aggregate/ListResultsFeatureVectorGenerator.class
 at/lechner/util/BasicUtil.class
