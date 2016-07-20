@@ -32,46 +32,47 @@ import org.slf4j.LoggerFactory;
 import at.illecker.sentistorm.components.Preprocessor;
 
 public class PreprocessorBolt extends BaseBasicBolt {
-  public static final String ID = "preprocessor-bolt";
-  public static final String CONF_LOGGING = ID + ".logging";
-  private static final long serialVersionUID = -8518185528053643981L;
-  private static final Logger LOG = LoggerFactory
-      .getLogger(PreprocessorBolt.class);
-  private boolean m_logging = false;
-  private Preprocessor m_preprocessor;
+	public static final String ID = "preprocessor-bolt";
+	public static final String CONF_LOGGING = ID + ".logging";
+	private static final long serialVersionUID = -8518185528053643981L;
+	private static final Logger LOG = LoggerFactory.getLogger(PreprocessorBolt.class);
+	private boolean m_logging = false;
+	private Preprocessor m_preprocessor;
 
-  @Override
-  public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    // key of output tuples
-    declarer.declare(new Fields("text", "preprocessedTokens"));
-  }
+	@Override
+	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		// key of output tuples
+		declarer.declare(new Fields("text", "preprocessedTokens", "json", "return-info"));
+	}
 
-  @Override
-  public void prepare(Map config, TopologyContext context) {
-    // Optional set logging
-    if (config.get(CONF_LOGGING) != null) {
-      m_logging = (Boolean) config.get(CONF_LOGGING);
-    } else {
-      m_logging = false;
-    }
-    // Load Preprocessor
-    m_preprocessor = Preprocessor.getInstance();
-  }
+	@Override
+	public void prepare(Map config, TopologyContext context) {
+		// Optional set logging
+		if (config.get(CONF_LOGGING) != null) {
+			m_logging = (Boolean) config.get(CONF_LOGGING);
+		} else {
+			m_logging = false;
+		}
+		// Load Preprocessor
+		m_preprocessor = Preprocessor.getInstance();
+	}
 
-  @Override
-  public void execute(Tuple tuple, BasicOutputCollector collector) {
-    String text = tuple.getStringByField("text");
-    List<String> tokens = (List<String>) tuple.getValueByField("tokens");
+	@Override
+	public void execute(Tuple tuple, BasicOutputCollector collector) {
+		String text = tuple.getStringByField("text");
+		String json = tuple.getStringByField("json");
+		Object retInfo = tuple.getValue(3);
+		List<String> tokens = (List<String>) tuple.getValueByField("tokens");
 
-    // Preprocess
-    List<String> preprocessedTokens = m_preprocessor.preprocess(tokens);
+		// Preprocess
+		List<String> preprocessedTokens = m_preprocessor.preprocess(tokens);
 
-    if (m_logging) {
-      LOG.info("Tweet: " + preprocessedTokens);
-    }
+		if (m_logging) {
+			LOG.info("PREPROCESSOR:  TOKENS " + preprocessedTokens + "    JSON: " + json);
+		}
 
-    // Emit new tuples
-    collector.emit(new Values(text, preprocessedTokens));
-  }
+		// Emit new tuples
+		collector.emit(new Values(text, preprocessedTokens, json, retInfo));
+	}
 
 }

@@ -1,0 +1,315 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Specific configuration values can be overridden by config.yaml
+
+##############################################################################
+### global.resources.* configs are resources configurations
+##############################################################################
+global.resources.datasets.semeval:
+    "2013":
+        path: "datasets/SemEval2013"
+        train.file: "twitter-train-full-B.tsv"
+        dev.file: "twitter-dev-gold-B.tsv"
+        test.file: "twitter-test-gold-B.tsv"
+        delimiter: "\\t"
+        tweetId.index: 0
+        label.index: 2
+        text.index: 3
+        positive.labels: [positive]
+        negative.labels: [negative, \"negative\"]
+        neutral.labels: [neutral, objective-OR-neutral, objective]
+        positive.class.value: 0
+        negative.class.value: 1
+        neutral.class.value: 2
+        svm.kernel: 2 # RBF # 0 Linear
+        svm.c: 512.0 # 0.5
+        svm.gamma: 0.000488281 # null
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
+            0: 1.26
+            1: 2.96
+            2: 1.0
+
+global.resources.datasets.sentiment140:
+    "140":
+        path: "datasets/Sentiment140"
+        train.file: "sent-training.csv" #train.file: "sent-training.csv"
+        dev.file: "sent-dev.csv"
+        test.file: "sent-test.csv"
+        delimiter: ","
+        tweetId.index: 1
+        label.index: 0
+        text.index: 5
+        positive.labels: ["4", 4, "\"4\""]
+        negative.labels: ["0", 0, "\"0\""]
+        neutral.labels: ["2", 2, "\"2\""]
+        positive.class.value: 2
+        negative.class.value: 0
+        neutral.class.value: 1
+        svm.kernel: 2 # RBF # 0 Linear
+        svm.c: 512.0 # 0.5
+        svm.gamma: 0.000488281 # null
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
+            0: 1.0
+            1: 1.0
+            2: 1.0
+
+global.resources.datasets.twitch:
+    "twitch":
+        path: "datasets/Twitch"
+        train.file: "twitch-training.tsv"
+        dev.file: "twitch-dev.tsv"
+        test.file: "twitch-test.tsv"
+        delimiter: "\\t"
+        tweetId.index: 0
+        label.index: 1
+        text.index: 2
+        positive.labels: ["POSITIVE"]
+        negative.labels: ["NEGATIVE"]
+        neutral.labels: ["NEUTRAL"]
+        positive.class.value: 2
+        negative.class.value: 0
+        neutral.class.value: 1
+        svm.kernel: 2 # RBF # 0 Linear
+        svm.c: 4096.0 # 0.5
+        svm.gamma: 1.220703125 # null
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
+            #0: 1.6464088397790055
+            #1: 1.0
+            #2: 1.8395061728395061           
+            0: 1.0
+            1: 1.0
+            2: 1.0
+    "JSONtwitch":
+        path: "datasets/JSONTwitch"
+        train.file: "twitch-training.txt"
+        dev.file: "twitch-dev.txt"
+        test.file: "twitch-test.txt"
+        delimiter: "\\t"
+        tweetId.index: 0
+        label.index: 1
+        text.index: 2
+        positive.labels: ["POSITIVE"]
+        negative.labels: ["NEGATIVE"]
+        neutral.labels: ["NEUTRAL"]
+        positive.class.value: 2
+        negative.class.value: 0
+        neutral.class.value: 1
+        svm.kernel: 2 # RBF # 0 Linear
+        svm.c: 4096.0 # 0.5
+        svm.gamma: 1.220703125 # null
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
+            #0: 1.6464088397790055
+            #1: 1.0
+            #2: 1.8395061728395061           
+            0: 1.0
+            1: 1.0
+            2: 1.0
+
+global.resources.datasets.mytest:
+    "mytest":
+        path: "datasets/MyTest"
+        train.file: "myTraining.tsv"
+        dev.file: "myDev.tsv"
+        test.file: "myTest.tsv"
+        delimiter: "\\t"
+        tweetId.index: 0
+        label.index: 1
+        text.index: 2
+        positive.labels: ["POSITIVE"]
+        negative.labels: ["NEGATIVE"]
+        neutral.labels: ["NEUTRAL"]
+        positive.class.value: 2
+        negative.class.value: 0
+        neutral.class.value: 1
+        svm.kernel: 2 # RBF # 0 Linear
+        svm.c: 4096.0 # 0.5
+        svm.gamma: 1.220703125 # null
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
+            #0: 1.6464088397790055
+            #1: 1.0
+            #2: 1.8395061728395061           
+            0: 1.0
+            1: 1.0
+            2: 1.0
+
+global.resources.dict:
+    FirstNames: # http://www.oxfordreference.com/view/10.1093/acref/9780198610601.001.0001/acref-9780198610601?hide=true&pageSize=100&sort=titlesort
+        - "dictionaries/FirstNames.txt"
+    StopWords:
+        - "dictionaries/Stopwords.txt"
+    TwitchEmoticons:
+        - "dictionaries/TwitchEmoticons.txt"
+
+global.resources.dict.sentiment:
+    # AFINN http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010
+    - path: "dictionaries/sentiment/AFINN-111.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -5.0
+      maxValue: 5.0
+      enabled: true
+      name: "afinn"
+    # SentiStrengthEmotion http://sentistrength.wlv.ac.uk/#Download
+    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmotionLookupTable.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: true
+      featureScaling: true
+      minValue: -5.0
+      maxValue: 5.0
+      enabled: true
+      name: "sentistrength_emotion"
+    # SentiStrengthEmoticon http://sentistrength.wlv.ac.uk/#Download
+    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmoticonLookupTable.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "sentistrength_emoticon"
+    # SentiWords https://hlt.fbk.eu/technologies/sentiwords # words might contain an underscore (bi-gram)
+    - path: "dictionaries/sentiment/SentiWords_1.0.txt"
+      delimiter: "\\t"
+      containsPOSTags: true
+      containsRegex: false
+      featureScaling: true
+      minValue: -0.935
+      maxValue: 0.88257
+      enabled: true
+      name: "sentiwords"
+    # Sentiment140 http://www.saifmohammad.com/WebPages/lexicons.html
+    - path: "dictionaries/sentiment/Sentiment140_unigrams_pmilexicon.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -4.999
+      maxValue: 5.0
+      enabled: true
+      name: "sentiment140"
+    # BingLiu http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon
+    - path: "dictionaries/sentiment/Bing_Liu.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "bing_liu"
+    # MPQASubjectivity http://mpqa.cs.pitt.edu/lexicons/subj_lexicon/
+    - path: "dictionaries/sentiment/MPQA_subjclueslen1-HLTEMNLP05.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "mpqa"
+    - path: "dictionaries/sentiment/twitch-emoticons.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "twitch_emoticons"
+
+global.resources.dict.slang:
+    # InternetSlang http://www.internetslang.com/
+    - path: "dictionaries/slang/InternetSlang.txt"
+      delimiter: "\\t"
+      enabled: true
+    # NoSlang http://www.noslang.com/dictionary/
+    - path: "dictionaries/slang/NoSlang.txt"
+      delimiter: "\\t"
+      enabled: true
+    # GATE https://gate.ac.uk/wiki/twitter-postagger.html (orth.en)
+    - path: "dictionaries/slang/GATE_slang.en.csv"
+      delimiter: ","
+      enabled: true
+    # SentiStrength http://sentistrength.wlv.ac.uk/#Download
+    - path: "dictionaries/slang/SentiStrength_Data_Sept2011_SlangLookupTable.txt"
+      delimiter: "\\t"
+      enabled: true
+
+#global.resources.dict.wordnet.path: "src/main/resources/dictionaries/wordnet/wn3.1.dict.tar.gz"
+global.resources.dict.wordnet.path: "dictionaries/wordnet/wn3.1.dict.tar.gz"
+
+# POS Tagger Model http://www.ark.cs.cmu.edu/TweetNLP/
+global.resources.postagger.model.path: "models/ark.model.20120919.txt"
+#global.resources.postagger.model.path: "resources/models/model.txt"
+
+##############################################################################
+### commons.* configs are for the commons package
+##############################################################################
+
+commons.preprocessor.logging: false
+commons.postagger.logging: false
+commons.sentimentdictionary.logging: false
+commons.tfidf.logging: false
+commons.featurevectorgenerator.pos.logging: false
+commons.featurevectorgenerator.sentiment.logging: false
+commons.featurevectorgenerator.tfidf.logging: false
+
+##############################################################################
+### sentistorm.* configs are for the SentiStorm application
+##############################################################################
+
+sentistorm.workers.num: 1
+#sentistorm.workers.childopts: "-Xmx4g"
+sentistorm.workers.childopts: "-Xmx512m"
+
+# supervisor childopts are useless - use storm.yaml instead
+#sentistorm.supervisor.childopts: "-Xmx4g"
+sentistorm.supervisor.childopts: "-Xmx512m"
+
+sentistorm.spout.parallelism: 1
+sentistorm.spout.max.pending: 150
+sentistorm.spout.startup.sleep.ms: 20000 # 20 sec
+sentistorm.spout.tuple.sleep.ms: null
+sentistorm.spout.tuple.sleep.ns: null # 250000 = 0.25 ms
+sentistorm.spout.filter.language: "en"
+
+sentistorm.bolt.json.parallelism: 1
+sentistorm.bolt.json.logging: false
+
+sentistorm.bolt.tokenizer.parallelism: 1
+sentistorm.bolt.tokenizer.logging: false
+
+sentistorm.bolt.preprocessor.parallelism: 1
+sentistorm.bolt.preprocessor.logging: false
+
+sentistorm.bolt.postagger.parallelism: 1
+sentistorm.bolt.postagger.logging: false
+sentistorm.bolt.postagger.model: "models/ark.model.20120919.txt"
+#sentistorm.bolt.postagger.model: "src/main/resources/models/model.txt"
+
+sentistorm.bolt.featuregeneration.parallelism: 1
+sentistorm.bolt.featuregeneration.logging: false
+
+sentistorm.bolt.svm.parallelism: 1
+sentistorm.bolt.svm.logging: false
+
+sentistorm.bolt.return.parallelism: 1
+sentistorm.bolt.return.logging: false

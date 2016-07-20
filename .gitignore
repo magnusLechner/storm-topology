@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 /target/
+=======
+target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+target/storm_sentiment_analysis-0.0.1-SNAPSHOT.jar
+>>>>>>> 7f7af5ed26357595059cb05455757ffa8df3c9f5

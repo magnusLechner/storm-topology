@@ -29,44 +29,46 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
-  public static final String ID = "tokenizer-bolt";
-  public static final String CONF_LOGGING = ID + ".logging";
-  private static final long serialVersionUID = -2447717633925641497L;
-  private static final Logger LOG = LoggerFactory
-      .getLogger(TokenizerBolt.class);
-  private boolean m_logging = false;
+	public static final String ID = "tokenizer-bolt";
+	public static final String CONF_LOGGING = ID + ".logging";
+	private static final long serialVersionUID = -2447717633925641497L;
+	private static final Logger LOG = LoggerFactory.getLogger(TokenizerBolt.class);
+	private boolean m_logging = false;
 
-  @Override
-  public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    // key of output tuples
-    declarer.declare(new Fields("text", "tokens"));
-  }
+	@Override
+	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		// key of output tuples
+		declarer.declare(new Fields("text", "tokens", "json", "return-info"));
+	}
 
-  @Override
-  public void prepare(Map config, TopologyContext context) {
-    // Optional set logging
-    if (config.get(CONF_LOGGING) != null) {
-      m_logging = (Boolean) config.get(CONF_LOGGING);
-    } else {
-      m_logging = false;
-    }
-  }
+	@Override
+	public void prepare(Map config, TopologyContext context) {
+		// Optional set logging
+		if (config.get(CONF_LOGGING) != null) {
+			m_logging = (Boolean) config.get(CONF_LOGGING);
+		} else {
+			m_logging = false;
+		}
+	}
 
-  @Override
-  public void execute(Tuple tuple, BasicOutputCollector collector) {
-    String text = tuple.getStringByField("text");
+	@Override
+	public void execute(Tuple tuple, BasicOutputCollector collector) {
+		String text = tuple.getStringByField("text");
+		Object retInfo = tuple.getValue(2);
 
-    List<String> tokens = Tokenizer.tokenize(text);
+		List<String> tokens = Tokenizer.tokenize(text);
 
-    if (m_logging) {
-      LOG.info("Tweet: \"" + text + "\" Tokenized: " + tokens);
-    }
+		if (m_logging) {
+			LOG.info("Tweet: \"" + text + "\" Tokenized: " + tokens + "  json: " + tuple.getStringByField("json"));
+		}
 
-    // Emit new tuples
-    collector.emit(new Values(text, tokens));
-  }
+		// Emit new tuples
+		collector.emit(new Values(text, tokens, tuple.getStringByField("json"), retInfo));
+	}
 
 }

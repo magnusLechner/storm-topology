@@ -1,0 +1,30 @@
+package at.illecker.sentistorm.drpc;
+
+import org.apache.storm.Config;
+import org.apache.storm.thrift.TException;
+import org.apache.storm.utils.DRPCClient;
+
+public class DRPCTest {
+
+	public static void main(String[] args) {
+		DRPCClient client;
+		try {
+			Config conf = new Config();
+	        conf.setDebug(false);
+	        conf.put("storm.thrift.transport", "org.apache.storm.security.auth.SimpleTransportPlugin");
+	        conf.put(Config.STORM_NIMBUS_RETRY_TIMES, 3);
+	        conf.put(Config.STORM_NIMBUS_RETRY_INTERVAL, 10);
+	        conf.put(Config.STORM_NIMBUS_RETRY_INTERVAL_CEILING, 20);
+			
+			client = new DRPCClient(conf, "localhost", 3772);
+			
+			for(int i = 0; i < 100000; i++) {
+				String result = client.execute("getSentiment", "{\"msg\":\"Kreygasm\"}");
+				System.out.println(result);	
+			}
+		} catch (TException e) {
+			e.printStackTrace();
+		}
+	}
+	
+}

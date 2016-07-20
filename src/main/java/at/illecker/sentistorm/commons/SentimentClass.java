@@ -20,22 +20,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum SentimentClass {
-  POSITIVE, NEGATIVE, NEUTRAL;
+	POSITIVE, NEGATIVE, NEUTRAL;
 
-  private static final Logger LOG = LoggerFactory
-      .getLogger(SentimentClass.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SentimentClass.class);
 
-  public static SentimentClass fromScore(Dataset dataset, int score) {
-    if (score == dataset.getPositiveValue()) {
-      return POSITIVE;
-    } else if (score == dataset.getNegativeValue()) {
-      return NEGATIVE;
-    } else if (score == dataset.getNeutralValue()) {
-      return NEUTRAL;
-    } else {
-      LOG.error("Score: '" + score + "' is not valid!");
-    }
-    return null;
-  }
+	public static SentimentClass fromScore(Dataset dataset, int score) {
+		if (score == dataset.getPositiveValue()) {
+			return POSITIVE;
+		} else if (score == dataset.getNegativeValue()) {
+			return NEGATIVE;
+		} else if (score == dataset.getNeutralValue()) {
+			return NEUTRAL;
+		} else {
+			LOG.error("Score: '" + score + "' is not valid!");
+		}
+		return null;
+	}
 
+	public static SentimentClass fromZeroToTwoScore(int score) {
+		if (score == 2) {
+			return POSITIVE;
+		} else if (score == 0) {
+			return NEGATIVE;
+		} else if (score == 1) {
+			return NEUTRAL;
+		} else {
+			LOG.error("Score: '" + score + "' is not valid!");
+		}
+		return null;
+	}
+	
 }

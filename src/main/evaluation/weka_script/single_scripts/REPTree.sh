@@ -1,0 +1,25 @@
+#REPTree
+# Num Folds: 5,10,20,50
+echo start REPTree
+
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 5 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row3_1.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 10 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row3_2.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 20 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row3_3.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 50 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_3/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row3_4.txt
+
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 5 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row4_1.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 10 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row4_2.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 20 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row4_3.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 50 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_4/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row4_4.txt
+
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 5 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row5_1.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 10 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row5_2.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 20 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row5_3.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 50 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_5/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row5_4.txt
+
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 5 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row6_1.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 10 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row6_2.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 20 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row6_3.txt
+java weka.classifiers.trees.REPTree -M 1 -V 0.001 -N 50 -S 1 -L -1 -I 0.0 -o -t ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Training.arff -T ~/workspace/my-sentistorm/resources/arff/Twitch/row_6/Test.arff &> ~/workspace/my-sentistorm/evaluation/weka_script/script_results/REPTree_row6_4.txt
+
+echo end REPTree

@@ -20,19 +20,20 @@ package at.illecker.sentistorm.commons.tfidf;
  * Word count method used for term frequencies
  */
 public enum TfType {
-  /**
-   * Raw frequency: tf(t,d) = f(t,d) The number of times that term t occurs in
-   * document d.
-   */
-  RAW,
+	/**
+	 * Raw frequency: tf(t,d) = f(t,d) The number of times that term t occurs in
+	 * document d.
+	 */
+	RAW,
 
-  /**
-   * Log scaled frequency: tf(t,d) = 1 + log f(t,d), or zero if f(t,d) is zero;
-   */
-  LOG,
+	/**
+	 * Log scaled frequency: tf(t,d) = 1 + log f(t,d), or zero if f(t,d) is
+	 * zero;
+	 */
+	LOG,
 
-  /**
-   * Boolean frequency: tf(t,d) = 1 if t occurs in d and 0 otherwise;
-   */
-  BOOL
+	/**
+	 * Boolean frequency: tf(t,d) = 1 if t occurs in d and 0 otherwise;
+	 */
+	BOOL
 }

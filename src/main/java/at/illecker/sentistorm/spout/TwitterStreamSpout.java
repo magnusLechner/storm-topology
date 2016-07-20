@@ -39,131 +39,129 @@ import twitter4j.conf.ConfigurationBuilder;
 import at.illecker.sentistorm.commons.util.TimeUtils;
 
 public class TwitterStreamSpout extends BaseRichSpout {
-  public static final String ID = "twitter-stream-spout";
-  public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
-  private static final long serialVersionUID = -4657730220755697034L;
-  private SpoutOutputCollector m_collector;
-  private LinkedBlockingQueue<Status> m_tweetsQueue = null;
-  private TwitterStream m_twitterStream;
-  private String m_consumerKey;
-  private String m_consumerSecret;
-  private String m_accessToken;
-  private String m_accessTokenSecret;
-  private String[] m_keyWords;
-  private String m_filterLanguage;
+	public static final String ID = "twitter-stream-spout";
+	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
+	private static final long serialVersionUID = -4657730220755697034L;
+	private SpoutOutputCollector m_collector;
+	private LinkedBlockingQueue<Status> m_tweetsQueue = null;
+	private TwitterStream m_twitterStream;
+	private String m_consumerKey;
+	private String m_consumerSecret;
+	private String m_accessToken;
+	private String m_accessTokenSecret;
+	private String[] m_keyWords;
+	private String m_filterLanguage;
 
-  public TwitterStreamSpout(String consumerKey, String consumerSecret,
-      String accessToken, String accessTokenSecret, String[] keyWords,
-      String filterLanguage) {
-    this.m_consumerKey = consumerKey;
-    this.m_consumerSecret = consumerSecret;
-    this.m_accessToken = accessToken;
-    this.m_accessTokenSecret = accessTokenSecret;
-    this.m_keyWords = keyWords;
-    this.m_filterLanguage = filterLanguage; // "en"
-  }
+	public TwitterStreamSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret,
+			String[] keyWords, String filterLanguage) {
+		this.m_consumerKey = consumerKey;
+		this.m_consumerSecret = consumerSecret;
+		this.m_accessToken = accessToken;
+		this.m_accessTokenSecret = accessTokenSecret;
+		this.m_keyWords = keyWords;
+		this.m_filterLanguage = filterLanguage; // "en"
+	}
 
-  @Override
-  public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    // key of output tuples
-    declarer.declare(new Fields("id", "text", "score"));
-  }
+	@Override
+	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		// key of output tuples
+		declarer.declare(new Fields("id", "text", "score"));
+	}
 
-  @Override
-  public void open(Map config, TopologyContext context,
-      SpoutOutputCollector collector) {
-    m_collector = collector;
-    m_tweetsQueue = new LinkedBlockingQueue<Status>(1000);
+	@Override
+	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
+		m_collector = collector;
+		m_tweetsQueue = new LinkedBlockingQueue<Status>(1000);
 
-    // Optional startup sleep to finish bolt preparation
-    // before spout starts emitting
-    if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
-      long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
-      TimeUtils.sleepMillis(startupSleepMillis);
-    }
+		// Optional startup sleep to finish bolt preparation
+		// before spout starts emitting
+		if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
+			long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
+			TimeUtils.sleepMillis(startupSleepMillis);
+		}
 
-    TwitterStream twitterStream = new TwitterStreamFactory(
-        new ConfigurationBuilder().setJSONStoreEnabled(true).build())
-        .getInstance();
+		TwitterStream twitterStream = new TwitterStreamFactory(
+				new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
 
-    // Set Listener
-    twitterStream.addListener(new StatusListener() {
-      @Override
-      public void onStatus(Status status) {
-        m_tweetsQueue.offer(status); // add tweet into queue
-      }
+		// Set Listener
+		twitterStream.addListener(new StatusListener() {
+			@Override
+			public void onStatus(Status status) {
+				m_tweetsQueue.offer(status); // add tweet into queue
+			}
 
-      @Override
-      public void onException(Exception arg0) {
-      }
+			@Override
+			public void onException(Exception arg0) {
+			}
 
-      @Override
-      public void onDeletionNotice(StatusDeletionNotice arg0) {
-      }
+			@Override
+			public void onDeletionNotice(StatusDeletionNotice arg0) {
+			}
 
-      @Override
-      public void onScrubGeo(long arg0, long arg1) {
-      }
+			@Override
+			public void onScrubGeo(long arg0, long arg1) {
+			}
 
-      @Override
-      public void onStallWarning(StallWarning arg0) {
-      }
+			@Override
+			public void onStallWarning(StallWarning arg0) {
+			}
 
-      @Override
-      public void onTrackLimitationNotice(int arg0) {
-      }
-    });
+			@Override
+			public void onTrackLimitationNotice(int arg0) {
+			}
+		});
 
-    // Set credentials
-    twitterStream.setOAuthConsumer(m_consumerKey, m_consumerSecret);
-    AccessToken token = new AccessToken(m_accessToken, m_accessTokenSecret);
-    twitterStream.setOAuthAccessToken(token);
+		// Set credentials
+		twitterStream.setOAuthConsumer(m_consumerKey, m_consumerSecret);
+		AccessToken token = new AccessToken(m_accessToken, m_accessTokenSecret);
+		twitterStream.setOAuthAccessToken(token);
 
-    // Filter twitter stream
-    FilterQuery tweetFilterQuery = new FilterQuery();
-    if (m_keyWords != null) {
-      tweetFilterQuery.track(m_keyWords);
-    }
+		// Filter twitter stream
+		FilterQuery tweetFilterQuery = new FilterQuery();
+		if (m_keyWords != null) {
+			tweetFilterQuery.track(m_keyWords);
+		}
 
-    // Filter location
-    // https://dev.twitter.com/docs/streaming-apis/parameters#locations
-    tweetFilterQuery.locations(new double[][] { new double[] { -180, -90, },
-        new double[] { 180, 90 } }); // any geotagged tweet
+		// Filter location
+		// https://dev.twitter.com/docs/streaming-apis/parameters#locations
+		tweetFilterQuery.locations(new double[][] { new double[] { -180, -90, }, new double[] { 180, 90 } }); // any
+																												// geotagged
+																												// tweet
 
-    // Filter language
-    tweetFilterQuery.language(new String[] { m_filterLanguage });
+		// Filter language
+		tweetFilterQuery.language(new String[] { m_filterLanguage });
 
-    twitterStream.filter(tweetFilterQuery);
-  }
+		twitterStream.filter(tweetFilterQuery);
+	}
 
-  @Override
-  public void nextTuple() {
-    Status tweet = m_tweetsQueue.poll();
-    if (tweet == null) {
-      TimeUtils.sleepMillis(50); // sleep 50 ms
-    } else {
-      // Emit tweet
-      m_collector.emit(new Values(tweet.getId(), tweet.getText(), null));
-    }
-  }
+	@Override
+	public void nextTuple() {
+		Status tweet = m_tweetsQueue.poll();
+		if (tweet == null) {
+			TimeUtils.sleepMillis(50); // sleep 50 ms
+		} else {
+			// Emit tweet
+			m_collector.emit(new Values(tweet.getId(), tweet.getText(), null));
+		}
+	}
 
-  @Override
-  public void close() {
-    m_twitterStream.shutdown();
-  }
+	@Override
+	public void close() {
+		m_twitterStream.shutdown();
+	}
 
-  @Override
-  public Map<String, Object> getComponentConfiguration() {
-    Config ret = new Config();
-    ret.setMaxTaskParallelism(1);
-    return ret;
-  }
+	@Override
+	public Map<String, Object> getComponentConfiguration() {
+		Config ret = new Config();
+		ret.setMaxTaskParallelism(1);
+		return ret;
+	}
 
-  @Override
-  public void ack(Object id) {
-  }
+	@Override
+	public void ack(Object id) {
+	}
 
-  @Override
-  public void fail(Object id) {
-  }
+	@Override
+	public void fail(Object id) {
+	}
 }

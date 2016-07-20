@@ -33,95 +33,93 @@ import at.illecker.sentistorm.components.Tokenizer;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
-  private static final Logger LOG = LoggerFactory
-      .getLogger(CombinedFeatureVectorGenerator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CombinedFeatureVectorGenerator.class);
 
-  private SentimentFeatureVectorGenerator m_sentimentFeatureVectorGenerator = null;
-  private TfIdfFeatureVectorGenerator m_tfidfFeatureVectorGenerator = null;
-  private POSFeatureVectorGenerator m_POSFeatureVectorGenerator = null;
+	private SentimentFeatureVectorGenerator m_sentimentFeatureVectorGenerator = null;
+	private TfIdfFeatureVectorGenerator m_tfidfFeatureVectorGenerator = null;
+	private POSFeatureVectorGenerator m_posFeatureVectorGenerator = null;
+	private UndefinedTwitchFeatureVectorGenerator m_undefinedTwitchFeatureVectorGenerator = null;
 
-  public CombinedFeatureVectorGenerator(boolean normalizePOSCounts,
-      TweetTfIdf tweetTfIdf) {
-    m_sentimentFeatureVectorGenerator = new SentimentFeatureVectorGenerator(1);
+	public CombinedFeatureVectorGenerator(boolean normalizePOSCounts, TweetTfIdf tweetTfIdf) {
+		m_sentimentFeatureVectorGenerator = new SentimentFeatureVectorGenerator(1);
 
-    m_POSFeatureVectorGenerator = new POSFeatureVectorGenerator(
-        normalizePOSCounts,
-        m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
+		m_posFeatureVectorGenerator = new POSFeatureVectorGenerator(normalizePOSCounts,
+				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-    m_tfidfFeatureVectorGenerator = new TfIdfFeatureVectorGenerator(tweetTfIdf,
-        m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
-            + m_POSFeatureVectorGenerator.getFeatureVectorSize() + 1);
+		m_tfidfFeatureVectorGenerator = new TfIdfFeatureVectorGenerator(tweetTfIdf,
+				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
+						+ m_posFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-    LOG.info("VectorSize: " + getFeatureVectorSize());
-  }
+//		m_undefinedTwitchFeatureVectorGenerator = new UndefinedTwitchFeatureVectorGenerator(
+//				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
+//						+ m_posFeatureVectorGenerator.getFeatureVectorSize()
+//						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-  @Override
-  public int getFeatureVectorSize() {
-    return m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
-        + m_POSFeatureVectorGenerator.getFeatureVectorSize()
-        + m_tfidfFeatureVectorGenerator.getFeatureVectorSize();
-  }
+		LOG.info("VectorSize: " + getFeatureVectorSize());
+	}
 
-  @Override
-  public Map<Integer, Double> generateFeatureVector(List<TaggedToken> tweet) {
-    Map<Integer, Double> featureVector = m_sentimentFeatureVectorGenerator
-        .generateFeatureVector(tweet);
+	@Override
+	public int getFeatureVectorSize() {
+		return m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
+				+ m_posFeatureVectorGenerator.getFeatureVectorSize()
+				+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize()
+//				+ m_undefinedTwitchFeatureVectorGenerator.getFeatureVectorSize()
+				;
+	}
 
-    featureVector.putAll(m_POSFeatureVectorGenerator
-        .generateFeatureVector(tweet));
+	@Override
+	public Map<Integer, Double> generateFeatureVector(List<TaggedToken> tweet) {
+		Map<Integer, Double> featureVector = m_sentimentFeatureVectorGenerator.generateFeatureVector(tweet);
 
-    featureVector.putAll(m_tfidfFeatureVectorGenerator
-        .generateFeatureVector(tweet));
+		featureVector.putAll(m_posFeatureVectorGenerator.generateFeatureVector(tweet));
 
-    return featureVector;
-  }
+		featureVector.putAll(m_tfidfFeatureVectorGenerator.generateFeatureVector(tweet));
+		
+//		featureVector.putAll(m_undefinedTwitchFeatureVectorGenerator.generateFeatureVector(tweet));
 
-  public static void main(String[] args) {
-    boolean usePOSTags = true; // use POS tags in terms
-    Preprocessor preprocessor = Preprocessor.getInstance();
-    POSTagger posTagger = POSTagger.getInstance();
+		return featureVector;
+	}
 
-    // Load tweets
-    List<Tweet> tweets = Configuration.getDataSetSemEval2013().getTrainTweets(
-        true);
+	public static void main(String[] args) {
+		boolean usePOSTags = true; // use POS tags in terms
+		Preprocessor preprocessor = Preprocessor.getInstance();
+		POSTagger posTagger = POSTagger.getInstance();
 
-    // Tokenize
-    List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);
+		// Load tweets
+		// List<Tweet> tweets =
+		// Configuration.getDataSetSemEval2013().getTrainTweets(true);
+		List<Tweet> tweets = Configuration.getDataSetTwitch().getTrainTweets(true);
 
-    // Preprocess
-    long startTime = System.currentTimeMillis();
-    List<List<String>> preprocessedTweets = preprocessor
-        .preprocessTweets(tokenizedTweets);
-    LOG.info("Preprocess finished after "
-        + (System.currentTimeMillis() - startTime) + " ms");
+		// Tokenize
+		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);
 
-    // POS Tagging
-    startTime = System.currentTimeMillis();
-    List<List<TaggedToken>> taggedTweets = posTagger
-        .tagTweets(preprocessedTweets);
-    LOG.info("POS Tagger finished after "
-        + (System.currentTimeMillis() - startTime) + " ms");
+		// Preprocess
+		long startTime = System.currentTimeMillis();
+		List<List<String>> preprocessedTweets = preprocessor.preprocessTweets(tokenizedTweets);
+		LOG.info("Preprocess finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
-    // Generate CombinedFeatureVectorGenerator
-    TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets,
-        TfType.LOG, TfIdfNormalization.COS, usePOSTags);
-    CombinedFeatureVectorGenerator cfvg = new CombinedFeatureVectorGenerator(
-        true, tweetTfIdf);
+		// POS Tagging
+		startTime = System.currentTimeMillis();
+		List<List<TaggedToken>> taggedTweets = posTagger.tagTweets(preprocessedTweets);
+		LOG.info("POS Tagger finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
-    // Combined Feature Vector Generation
-    for (List<TaggedToken> taggedTokens : taggedTweets) {
-      Map<Integer, Double> combinedFeatureVector = cfvg
-          .generateFeatureVector(taggedTokens);
+		// Generate CombinedFeatureVectorGenerator
+		TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
+				usePOSTags);
+		CombinedFeatureVectorGenerator cfvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);
 
-      // Generate feature vector string
-      String featureVectorStr = "";
-      for (Map.Entry<Integer, Double> feature : combinedFeatureVector
-          .entrySet()) {
-        featureVectorStr += " " + feature.getKey() + ":" + feature.getValue();
-      }
-      LOG.info("Tweet: '" + taggedTokens + "'");
-      LOG.info("CombinedFeatureVector: " + featureVectorStr);
-    }
-  }
+		// Combined Feature Vector Generation
+		for (List<TaggedToken> taggedTokens : taggedTweets) {
+			Map<Integer, Double> combinedFeatureVector = cfvg.generateFeatureVector(taggedTokens);
+
+			// Generate feature vector string
+			String featureVectorStr = "";
+			for (Map.Entry<Integer, Double> feature : combinedFeatureVector.entrySet()) {
+				featureVectorStr += " " + feature.getKey() + ":" + feature.getValue();
+			}
+			LOG.info("Tweet: '" + taggedTokens + "'");
+			LOG.info("CombinedFeatureVector: " + featureVectorStr);
+		}
+	}
 
 }

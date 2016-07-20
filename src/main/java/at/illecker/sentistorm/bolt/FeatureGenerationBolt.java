@@ -41,65 +41,64 @@ import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class FeatureGenerationBolt extends BaseBasicBolt {
-  public static final String ID = "feature-generation-bolt";
-  public static final String CONF_LOGGING = ID + ".logging";
-  private static final long serialVersionUID = 5340637976415982170L;
-  private static final Logger LOG = LoggerFactory
-      .getLogger(FeatureGenerationBolt.class);
-  private boolean m_logging = false;
-  private Dataset m_dataset;
-  private FeatureVectorGenerator m_fvg = null;
+	public static final String ID = "feature-generation-bolt";
+	public static final String CONF_LOGGING = ID + ".logging";
+	private static final long serialVersionUID = 5340637976415982170L;
+	private static final Logger LOG = LoggerFactory.getLogger(FeatureGenerationBolt.class);
+	private boolean m_logging = false;
+	private Dataset m_dataset;
+	private FeatureVectorGenerator m_fvg = null;
 
-  @Override
-  public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    // key of output tuples
-    declarer.declare(new Fields("text", "featureVector"));
-  }
+	@Override
+	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		// key of output tuples
+		declarer.declare(new Fields("text", "featureVector", "json", "return-info"));
+	}
 
-  @Override
-  public void prepare(Map config, TopologyContext context) {
-    this.m_dataset = Configuration.getDataSetSemEval2013();
+	@Override
+	public void prepare(Map config, TopologyContext context) {
+//		this.m_dataset = Configuration.getDataSetSemEval2013();
+		this.m_dataset = Configuration.getDataSetTwitch();
 
-    // Optional set logging
-    if (config.get(CONF_LOGGING) != null) {
-      m_logging = (Boolean) config.get(CONF_LOGGING);
-    } else {
-      m_logging = false;
-    }
+		// Optional set logging
+		if (config.get(CONF_LOGGING) != null) {
+			m_logging = (Boolean) config.get(CONF_LOGGING);
+		} else {
+			m_logging = false;
+		}
 
-    // TODO serialize CombinedFeatureVectorGenerator
-    List<FeaturedTweet> featuredTrainTweets = SerializationUtils
-        .deserialize(m_dataset.getTrainDataSerializationFile());
-    if (featuredTrainTweets != null) {
-      TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(
-          FeaturedTweet.getTaggedTokensFromTweets(featuredTrainTweets),
-          TfType.LOG, TfIdfNormalization.COS, true);
+		// TODO serialize CombinedFeatureVectorGenerator
+		List<FeaturedTweet> featuredTrainTweets = SerializationUtils
+				.deserialize(m_dataset.getTrainDataSerializationFile());
+		if (featuredTrainTweets != null) {
+			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(
+					FeaturedTweet.getTaggedTokensFromTweets(featuredTrainTweets), TfType.LOG, TfIdfNormalization.COS,
+					true);
 
-      LOG.info("Load CombinedFeatureVectorGenerator...");
-      m_fvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);
+			LOG.info("Load CombinedFeatureVectorGenerator...");
+			m_fvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);			
+		} else {
+			LOG.error("TaggedTweets could not be found! File is missing: " + m_dataset.getTrainDataSerializationFile());
+		}
+	}
 
-    } else {
-      LOG.error("TaggedTweets could not be found! File is missing: "
-          + m_dataset.getTrainDataSerializationFile());
-    }
-  }
+	@Override
+	public void execute(Tuple tuple, BasicOutputCollector collector) {
+		String text = tuple.getStringByField("text");
+		String json = tuple.getStringByField("json");
+		Object retInfo = tuple.getValue(3);
+		
+		List<TaggedToken> taggedTokens = (List<TaggedToken>) tuple.getValueByField("taggedTokens");
+		
+		// Generate Feature Vector
+		Map<Integer, Double> featureVector = m_fvg.generateFeatureVector(taggedTokens);
+		
+		if (m_logging) {
+			LOG.info("Tweet: " + text + " FeatureVector: " + featureVector);
+		}
 
-  @Override
-  public void execute(Tuple tuple, BasicOutputCollector collector) {
-    String text = tuple.getStringByField("text");
-    List<TaggedToken> taggedTokens = (List<TaggedToken>) tuple
-        .getValueByField("taggedTokens");
-
-    // Generate Feature Vector
-    Map<Integer, Double> featureVector = m_fvg
-        .generateFeatureVector(taggedTokens);
-
-    if (m_logging) {
-      LOG.info("Tweet: " + text + " FeatureVector: " + featureVector);
-    }
-
-    // Emit new tuples
-    collector.emit(new Values(text, featureVector));
-  }
+		// Emit new tuples
+		collector.emit(new Values(text, featureVector, json, retInfo));
+	}
 
 }
