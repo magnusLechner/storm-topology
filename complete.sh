@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+./login.sh
+./build.sh
+./push.sh
