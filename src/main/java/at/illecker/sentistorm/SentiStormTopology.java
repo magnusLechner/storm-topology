@@ -44,6 +44,8 @@ import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerialize
 public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 
+	//storm jar ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar at/illecker/sentistorm/SentiStormTopology
+	
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
