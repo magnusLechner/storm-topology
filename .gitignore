@@ -1,1 +1,4 @@
 target/
+push.sh
+login.sh
+complete.sh
