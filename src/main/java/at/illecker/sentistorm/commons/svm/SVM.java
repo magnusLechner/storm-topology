@@ -955,7 +955,7 @@ public class SVM {
 		int iterations = 3;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 300, 300);
+		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 100, 50);
 		
 //		if (featureVectorLevel == 0) {
 //			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
