@@ -21,7 +21,7 @@ public class DRPCTest {
 			client = new DRPCClient(conf, "localhost", 3772, 60000);
 //			client = new DRPCClient(conf, "eventstorm", 3772, 60000);
 			
-			for(int i = 0; i < 100000; i++) {
+			for(int i = 0; i < 1000; i++) {
 				String result = client.execute("getSentiment", "{\"msg\":\"Kreygasm\"}");
 				System.out.println(result);	
 			}

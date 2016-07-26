@@ -25,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -44,6 +45,7 @@ import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
 
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -779,6 +781,8 @@ public class SVM {
 
 	public static void evaluateDynamicSlices(Dataset dataset, int iterations, int nFold, int startTrainingSetSize,
 			int testSizeSteps) throws IOException {
+		List<List<Double>> trainingSize = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> testSize = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> cpuTime = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> precision = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> macroAvgPrecision = new ArrayList<List<Double>>(iterations);
@@ -801,6 +805,8 @@ public class SVM {
 
 		try {
 			for (int k = -10; k < iterations; k++) {
+				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
+				List<Double> testSizeSingleRun = new ArrayList<Double>();
 				List<Double> cpuTimeSingleRun = new ArrayList<Double>();
 				List<Double> recallSingleRun = new ArrayList<Double>();
 				List<Double> macroAvgRecallSingleRun = new ArrayList<Double>();
@@ -817,6 +823,8 @@ public class SVM {
 				List<Double> fMeasureSingleRun = new ArrayList<Double>();
 
 				if (k >= 0) {
+					trainingSize.add(trainingSizeSingleRun);
+					testSize.add(testSizeSingleRun);
 					cpuTime.add(cpuTimeSingleRun);
 					recall.add(recallSingleRun);
 					macroAvgRecall.add(macroAvgRecallSingleRun);
@@ -833,12 +841,12 @@ public class SVM {
 					fMeasure.add(fMeasureSingleRun);
 				}
 
-				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionRun(startTrainingSetSize,
+//				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsRestSubsetRun(startTrainingSetSize,
+//						testSizeSteps);
+				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize,
 						testSizeSteps);
-//				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize,
-//						testSizeSteps);
 //				List<List<List<MyTupel>>> slices = SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize,
-//						testSizeSteps);
+//						testSizeSteps);				
 				
 				Iterator<List<List<MyTupel>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -847,13 +855,13 @@ public class SVM {
 
 					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
 							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
-					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, true);
+					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
 					// FeatureVectorGenerator posFVG =
 					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
 					// true),
 					// SentimentFeatureVectorGenerator.class);
 					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
-					// true);
+					// false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -866,6 +874,8 @@ public class SVM {
 					System.out.println("Test finished.");
 
 					if (k >= 0) {
+						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
+						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
 						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
 						macroAvgRecallSingleRun
@@ -928,6 +938,8 @@ public class SVM {
 		statistics.put("negativePrecision", negativePrecision);
 		statistics.put("f-Measure", fMeasure);
 		statistics.put("cpu-time (for complete test-set)", cpuTime);
+		statistics.put("training-size", trainingSize);
+		statistics.put("test-size", testSize);
 
 		printDynamicSlicesResults(iterations, statistics);
 	}
@@ -940,7 +952,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 3;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 100, 50);
@@ -955,6 +967,58 @@ public class SVM {
 //			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
 //					useSerialization);
 //		}
+	}
+
+	private static void printDynamicSlicesResults(int iterations, Map<String, List<List<Double>>> statistics) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < iterations; i++) {
+			sb.append("RUN: " + (i + 1));
+			sb.append("\n");
+			for (Entry<String, List<List<Double>>> entry : statistics.entrySet()) {
+				List<Double> singleRun = entry.getValue().get(i);
+				sb.append(entry.getKey());
+				sb.append("\t");
+				for (Double value : singleRun) {
+					sb.append(String.valueOf(value).replace(".", ","));
+					sb.append("\t");
+				}
+				sb.append("\n");
+			}
+			sb.append("\n");
+		}
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/pipeline_results.tsv", sb.toString());
+		
+		StandardDeviation mathStdDev = new StandardDeviation();
+		Map<String, List<Double>> results = new LinkedHashMap<String, List<Double>>();
+		int lengthOfSingleRun = statistics.get("recall").get(0).size();
+		
+		for (Entry<String, List<List<Double>>> entry : statistics.entrySet()) { 
+			List<Double> avgOfSteps = new ArrayList<Double>();
+			List<Double> stdDevOfSteps = new ArrayList<Double>();
+			for(int i = 0; i < lengthOfSingleRun; i++) {
+				double sum = 0.0;
+				double[] stdDevValues = new double[iterations];
+				for(int j = 0; j < iterations; j++) {
+					sum += entry.getValue().get(j).get(i);
+					stdDevValues[j] = entry.getValue().get(j).get(i);
+				}
+				stdDevOfSteps.add(mathStdDev.evaluate(stdDevValues));
+				avgOfSteps.add(sum/iterations);
+			}
+			results.put(entry.getKey(), avgOfSteps);
+			results.put(entry.getKey() + " StdDev", stdDevOfSteps);
+		}
+		sb = new StringBuilder();
+		for (Entry<String, List<Double>> entry : results.entrySet()) {
+			sb.append(entry.getKey());
+			sb.append("\t");
+			for(Double value : entry.getValue()) {
+				sb.append(String.valueOf(value).replace(".", ","));
+				sb.append("\t");
+			}
+			sb.append("\n");
+		}
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/end_results.tsv", sb.toString());
 	}
 
 	private static void printPipelineResults(int iterations, Map<String, Double[]> statistics) {
@@ -979,28 +1043,7 @@ public class SVM {
 		String pipelineAnalysis = PipelineEvaluation.createPipelineAnalysis(iterations, statisticList);
 		EvaluationUtil.generateTSV("src/main/evaluation/pipeline_analyse.tsv", pipelineAnalysis);
 	}
-
-	private static void printDynamicSlicesResults(int iterations, Map<String, List<List<Double>>> statistics) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < iterations; i++) {
-			sb.append(i + 1);
-			sb.append("\n");
-			for (Entry<String, List<List<Double>>> entry : statistics.entrySet()) {
-				List<Double> singleRun = entry.getValue().get(i);
-				sb.append(entry.getKey());
-				sb.append("\t");
-				for (Double value : singleRun) {
-					sb.append(String.valueOf(value).replace(".", ","));
-					sb.append("\t");
-				}
-				sb.append("\n");
-			}
-			sb.append("\n");
-		}
-
-		EvaluationUtil.generateTSV("src/main/evaluation/addition_pipeline_result.tsv", sb.toString());
-	}
-
+	
 	private static void writeWrongPredictedMessages(PredictionStatistic predictionStatistic) {
 		String outputPath = "src/main/evaluation/WrongPredictedMessages.tsv";
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath), "utf-8"))) {
