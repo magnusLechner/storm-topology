@@ -80,6 +80,10 @@ public abstract class Predictor {
 	public double predict(FeaturedTweet featuredTweet) {
 		Map<Integer, Double> featureVector = featuredTweet.getFeatureVector();
 
+		
+		System.out.println(featuredTweet.getText());
+		System.out.println(featureVector);
+		
 		double predictedClass = evaluate(featureVector, svmModel, TOTAL_CLASSES);
 
 		countTwitchEmoticons(featuredTweet);

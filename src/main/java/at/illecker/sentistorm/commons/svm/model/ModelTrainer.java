@@ -26,14 +26,14 @@ public abstract class ModelTrainer {
 	private Dataset dataset;
 	private int nFold;
 	private double crossValidationStatistic = -1.0;
-	
+
 	public ModelTrainer(Dataset dataset, int nFold) {
 		this.dataset = dataset;
 		this.nFold = nFold;
 	}
-	
+
 	public abstract svm_model generateModel();
-	
+
 	public svm_model generateModel(List<FeaturedTweet> featuredTweets) {
 		svm_problem svmProb = generateProblem(featuredTweets);
 		saveProblem(svmProb, dataset.getDatasetPath() + File.separator + SVM_PROBLEM_FILE);
@@ -44,9 +44,12 @@ public abstract class ModelTrainer {
 			double accuracy = crossValidate(svmProb, dataset.getSVMParam(), nFold, false);
 			crossValidationStatistic = accuracy;
 		}
+
+		System.out.println("TRAINING-SIZE: " + dataset.getTrainTweets(false, true).size());
+
 		return svmModel;
 	}
-	
+
 	public static void saveProblem(svm_problem svmProb, String file) {
 		// save problem in libSVM format
 		// <label> <index1>:<value1> <index2>:<value2> ...
@@ -101,7 +104,7 @@ public abstract class ModelTrainer {
 
 		return svmProb;
 	}
-	
+
 	public static svm_model train(svm_problem svmProb, svm_parameter svmParam) {
 		// set gamma to default 1/num_features if not specified
 		if (svmParam.gamma == Double.MIN_VALUE) {
@@ -112,6 +115,13 @@ public abstract class ModelTrainer {
 		if (paramCheck != null) {
 			LOG.error("svm_check_parameter: " + paramCheck);
 		}
+
+		// Disables SVM output
+		svm.svm_set_print_string_function(new libsvm.svm_print_interface() {
+			@Override
+			public void print(String s) {
+			}
+		});
 
 		return svm.svm_train(svmProb, svmParam);
 	}
@@ -143,7 +153,7 @@ public abstract class ModelTrainer {
 
 		return accuracy;
 	}
-	
+
 	public static int[][] getConfusionMatrix(double[] actualClass, double[] predictedClass) {
 		if (actualClass.length != predictedClass.length) {
 			return null;
@@ -252,11 +262,11 @@ public abstract class ModelTrainer {
 	public Dataset getDataset() {
 		return dataset;
 	}
-	
+
 	public int getnFold() {
 		return nFold;
 	}
-	
+
 	public double getCrossValidationStatistic() {
 		return crossValidationStatistic;
 	}
@@ -265,5 +275,5 @@ public abstract class ModelTrainer {
 		String outputPath = "resources/arff/Twitch/Training.arff";
 		ARFFParser.generateARFF(featuredTweets, featureVectorSize, outputPath);
 	}
-	
+
 }

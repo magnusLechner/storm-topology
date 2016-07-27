@@ -16,23 +16,24 @@ public class PredictionStatistic {
 	private StopWatchCPU stopWatchCPU;
 	private int testSize = 0;
 
+	//TODO make variables private again - only for testing
 	// statistics
 	private double elapsedTime = 0.0;
 
-	private double countRecall = 0;
-	private double countPrecision = 0;
+	public double countRecall = 0;
+	public double countPrecision = 0;
 
-	private double countTestPositive = 0;
-	private double countTestNeutral = 0;
-	private double countTestNegative = 0;
+	public double countTestPositive = 0;
+	public double countTestNeutral = 0;
+	public double countTestNegative = 0;
 
-	private int countPositive = 0;
-	private int countNeutral = 0;
-	private int countNegative = 0;
+	public int countPositive = 0;
+	public int countNeutral = 0;
+	public int countNegative = 0;
 
-	private int countCorrectPositive = 0;
-	private int countCorrectNeutral = 0;
-	private int countCorrectNegative = 0;
+	public int countCorrectPositive = 0;
+	public int countCorrectNeutral = 0;
+	public int countCorrectNegative = 0;
 
 	//TODO remove everything below some day - testing stuff only
 	private List<List<String>> wrongTwitchEmotePrediction = new ArrayList<List<String>>();
@@ -130,17 +131,20 @@ public class PredictionStatistic {
 
 	public Double getRecall() {
 		if(countRecall == 0 && testSize == 0) {
-			return 1.0;
+			return null;
 		}
 		if(testSize == 0) {
 			return null;
 		}
+		
+		System.out.println("GET RECALL: " + countRecall + "  /  " + testSize + "  = " +  ((double) countRecall / testSize));
+		
 		return (double) countRecall / testSize;
 	}
 
 	public Double getPrecision() {
 		if(countPrecision == 0 && countRecall == 0) {
-			return 1.0;
+			return null;
 		}
 		if(countRecall == 0) {
 			return null;
@@ -225,13 +229,15 @@ public class PredictionStatistic {
 	}
 	
 	public Double getFMeasure() {
-		if(getPrecision() == null || getRecall() == null) {
+		Double recall = getRecall();
+		Double precision = getPrecision();
+		if(precision == null || recall == null) {
 			return null;
 		}
-		if(getPrecision() == 0 && getRecall() == 0) {
+		if(precision == 0 && recall == 0) {
 			return null;
 		}
-		return (2 * getPrecision() * getRecall()) / (getPrecision() + getRecall()); 
+		return (2 * precision * recall) / (precision + recall); 
 	}
 	
 	//######## everything below is for testing - remove it some day #################

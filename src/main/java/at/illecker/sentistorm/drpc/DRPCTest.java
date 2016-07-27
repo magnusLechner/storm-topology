@@ -18,6 +18,8 @@ public class DRPCTest {
 	        conf.put(Config.STORM_NIMBUS_RETRY_INTERVAL_CEILING, 20);
 	        conf.put(Config.DRPC_MAX_BUFFER_SIZE, 1048576);
 			
+	        //oc port-forward sentistorm-2-yibs7 3772:3772
+	        
 			client = new DRPCClient(conf, "localhost", 3772, 60000);
 //			client = new DRPCClient(conf, "eventstorm", 3772, 60000);
 			

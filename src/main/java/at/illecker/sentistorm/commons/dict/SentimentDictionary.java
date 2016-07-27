@@ -43,6 +43,9 @@ public class SentimentDictionary {
 	private List<Map<String, Double>> m_wordLists = null;
 	private List<WordListMap<Double>> m_wordListMaps = null;
 
+	private List<String> namesWordlists = new ArrayList<String>();
+	private List<String> namesWordlistsWithRegex = new ArrayList<String>();
+	
 	private SentimentDictionary() {
 		m_wordnet = WordNet.getInstance();
 		m_wordLists = new ArrayList<Map<String, Double>>();
@@ -59,6 +62,7 @@ public class SentimentDictionary {
 			double minValue = (Double) wordListEntry.get("minValue");
 			double maxValue = (Double) wordListEntry.get("maxValue");
 			boolean isEnabled = (Boolean) wordListEntry.get("enabled");
+			String name = (String) wordListEntry.get("name");
 			if (isEnabled) {
 				if (containsRegex) {
 					// Try deserialization of file
@@ -66,12 +70,14 @@ public class SentimentDictionary {
 					if (IOUtils.exists(serializationFile)) {
 						LOG.info("Deserialize WordListMap from: " + serializationFile);
 						m_wordListMaps.add((WordListMap<Double>) SerializationUtils.deserialize(serializationFile));
+						namesWordlistsWithRegex.add(name);
 					} else {
 						LOG.info("Load WordListMap including Regex from: " + file);
 						WordListMap<Double> wordListMap = FileUtils.readWordListMap(file, separator, containsPOSTags,
 								featureScaling, minValue, maxValue);
 						SerializationUtils.serialize(wordListMap, serializationFile);
 						m_wordListMaps.add(wordListMap);
+						namesWordlistsWithRegex.add(name);
 					}
 				} else {
 					// Try deserialization of file
@@ -79,12 +85,14 @@ public class SentimentDictionary {
 					if (IOUtils.exists(serializationFile)) {
 						LOG.info("Deserialize WordList from: " + serializationFile);
 						m_wordLists.add((Map<String, Double>) SerializationUtils.deserialize(serializationFile));
+						namesWordlists.add(name);
 					} else {
 						LOG.info("Load WordList from: " + file);
 						Map<String, Double> wordList = FileUtils.readFile(file, separator, containsPOSTags,
 								featureScaling, minValue, maxValue);
 						SerializationUtils.serializeMap(wordList, serializationFile);
 						m_wordLists.add(wordList);
+						namesWordlists.add(name);
 					}
 				}
 			}
@@ -116,6 +124,9 @@ public class SentimentDictionary {
 		for (int i = 0; i < m_wordLists.size(); i++) {
 			Double sentimentScore = m_wordLists.get(i).get(word);
 			if (sentimentScore != null) {
+				
+				System.out.println(namesWordlists.get(i) + "   Word: " + word + "  " + i + "=" + sentimentScore);
+				
 				sentimentScores.put(i, sentimentScore);
 			}
 		}
@@ -125,6 +136,9 @@ public class SentimentDictionary {
 		for (int i = 0; i < m_wordListMaps.size(); i++) {
 			Double sentimentScore = m_wordListMaps.get(i).matchKey(word);
 			if (sentimentScore != null) {
+			
+				System.out.println(namesWordlistsWithRegex.get(i) + "   Word: " + word + "  " + (i + wordListMapOffset) +  "=" + sentimentScore);
+				
 				sentimentScores.put(i + wordListMapOffset, sentimentScore);
 			}
 		}
@@ -210,31 +224,6 @@ public class SentimentDictionary {
 		}
 
 		Map<Integer, Double> sentimentScores = getWordSentiments(word);
-		
-		//TODO test without stemming - and show influence on accuracy
-		//Result has NO significant influence on result
-//		if (sentimentScores == null) {
-//			
-//			// if word is Twitch-Emoticon but has no score -> no stemming allowed!
-//			if(TwitchEmoticons.getInstance().isTwitchEmoticon(word)) {
-//				return null;
-//			}
-//			if (LOGGING) {
-//				LOG.info("findStems for (" + word + ")");
-//			}
-//			List<String> stemmedWords = m_wordnet.findStems(word, null);
-//			for (String stemmedWord : stemmedWords) {
-//				if (!stemmedWord.equals(word)) {
-//					sentimentScores = getWordSentiments(stemmedWord);
-//				}
-//				if (sentimentScores != null) {
-//					break;
-//				}
-//			}
-//			if (LOGGING) {
-//				LOG.info("getWordSentimentWithStemming('" + word + "'): " + sentimentScores);
-//			}
-//		}
 
 		if (LOGGING) {
 			LOG.info("getWordSentimentNoPOS('" + word + "'): " + sentimentScores);
@@ -316,42 +305,43 @@ public class SentimentDictionary {
 		SentimentDictionary sentimentDictionary = SentimentDictionary.getInstance();
 
 		//with tagging
-		TaggedToken man = new TaggedToken("man", "!");
-		TaggedToken you = new TaggedToken("you", "O");
-		TaggedToken suck = new TaggedToken("suck", "V");
-		TaggedToken sad = new TaggedToken(":(", "E");
-		TaggedToken kappa = new TaggedToken("Kappa", "E");
-		TaggedToken wutface = new TaggedToken("WutFace", "E");
-		TaggedToken head = new TaggedToken("4Head", "E");
-		TaggedToken nonsense = new TaggedToken("S21AD3", "!");
-		TaggedToken dansgame = new TaggedToken("DANSGAME", "E");
-		
-		List<TaggedToken> sentence = new ArrayList<TaggedToken>();
+//		TaggedToken man = new TaggedToken("man", "!");
+//		TaggedToken you = new TaggedToken("you", "O");
+//		TaggedToken suck = new TaggedToken("suck", "V");
+//		TaggedToken sad = new TaggedToken(":(", "E");
+//		TaggedToken kappa = new TaggedToken("Kappa", "E");
+//		TaggedToken wutface = new TaggedToken("WutFace", "E");
+//		TaggedToken head = new TaggedToken("4Head", "E");
+//		TaggedToken nonsense = new TaggedToken("S21AD3", "!");
+//		TaggedToken dansgame = new TaggedToken("DANSGAME", "E");
+//		
+//		List<TaggedToken> sentence = new ArrayList<TaggedToken>();
 		
 		//no tagging
-//		String man = "man";
-//		String you = "you";
-//		String suck = "suck";
-//		String sad = ":(";
-//		String kappa = "KAPPA";
-//		String wutface = "WutFace";
-//		String head = "4heaD";
-//		String nonsense = "ASDaA21ASD";
-//		
-//		List<String> sentence = new ArrayList<String>();
+		String man = "man";
+		String you = "you";
+		String suck = "suck";
+		String sad = ":(";
+		String kappa = "KAPPA";
+		String wutface = "WutFace";
+		String head = "4heaD";
+		String nonsense = "ASDaA21ASD";
+		String dansgame = "DANSGAME";
 		
-//		sentence.add(man);
-//		sentence.add(you);
-//		sentence.add(suck);
-//		sentence.add(sad);
-//		sentence.add(kappa);
-//		sentence.add(wutface);
-//		sentence.add(head);
-//		sentence.add(nonsense);
+		List<String> sentence = new ArrayList<String>();
+		
+		sentence.add(man);
+		sentence.add(you);
+		sentence.add(suck);
+		sentence.add(sad);
+		sentence.add(kappa);
+		sentence.add(wutface);
+		sentence.add(head);
+		sentence.add(nonsense);
 		sentence.add(dansgame);
 		
-		Map<Integer, SentimentResult> test = sentimentDictionary.getSentenceSentiment(sentence);
-//		Map<Integer, SentimentResult> test = sentimentDictionary.getSentenceSentimentNotTagged(sentence);
+//		Map<Integer, SentimentResult> test = sentimentDictionary.getSentenceSentiment(sentence);
+		Map<Integer, SentimentResult> test = sentimentDictionary.getSentenceSentimentNotTagged(sentence);
 		
 		System.out.println("#### TEST ####");
 		for (Map.Entry<Integer, SentimentResult> tweetSentiment : test.entrySet()) {

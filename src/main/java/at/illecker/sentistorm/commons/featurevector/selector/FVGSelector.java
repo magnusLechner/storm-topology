@@ -23,6 +23,9 @@ public class FVGSelector {
 	//changind arguments around feels like cheating...
 	public static FeatureVectorGenerator selectFVG(List<Tweet> trainTweets,
 			Class<? extends FeatureVectorGenerator> featureVectorGenerator) {
+		
+		System.out.println("FVG: trainTweets.size:   " + trainTweets.size());
+		
 		return selectFVG(featureVectorGenerator, getTaggedTweets(trainTweets));
 	}
 
