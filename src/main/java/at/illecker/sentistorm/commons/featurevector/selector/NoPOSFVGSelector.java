@@ -18,9 +18,6 @@ public class NoPOSFVGSelector {
 	//changind arguments around feels like cheating...
 	public static NoPOSFeatureVectorGenerator selectFVG(List<Tweet> trainTweets,
 			Class<? extends NoPOSFeatureVectorGenerator> noPOSFeatureVectorGenerator) {
-		
-		System.out.println("no POS FVG: preprocessedTweets.size:   " + trainTweets.size());
-		
 		return selectFVG(noPOSFeatureVectorGenerator, getPreprocessedTweets(trainTweets));
 	}
 	

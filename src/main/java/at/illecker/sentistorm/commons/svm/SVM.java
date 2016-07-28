@@ -884,25 +884,25 @@ public class SVM {
 					if (currentIteration >= 0) {
 
 						System.out.println();
-						System.out.println("RUN: " + (currentIteration + 1) + "  NEW SLICE");
-						System.out.println("TRAINING-SIZE: " + dataset.getTrainTweets(false, true).size());
-						System.out.println("TEST-SIZE: " + dataset.getTestTweets(true).size());
-						System.out.println(
-								"RECALL-COUNT: " + pipelineBox.getPredictor().getPredictionStatistic().countRecall);
-						System.out.println("PRECISION-COUNT: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countPrecision);
-						System.out.println("POSITIVE-TEST: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countTestPositive);
-						System.out.println("NEUTRAL-TEST: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNeutral);
-						System.out.println("NEGATIVE-TEST: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNegative);
-						System.out.println("POSITIVE-CORRECT: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectPositive);
-						System.out.println("NEUTRAL-CORRECT: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNeutral);
-						System.out.println("NEGATIVE-CORRECT: "
-								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNegative);
+//						System.out.println("RUN: " + (currentIteration + 1) + "  NEW SLICE");
+//						System.out.println("TRAINING-SIZE: " + dataset.getTrainTweets(false, true).size());
+//						System.out.println("TEST-SIZE: " + dataset.getTestTweets(true).size());
+//						System.out.println(
+//								"RECALL-COUNT: " + pipelineBox.getPredictor().getPredictionStatistic().countRecall);
+//						System.out.println("PRECISION-COUNT: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countPrecision);
+//						System.out.println("POSITIVE-TEST: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestPositive);
+//						System.out.println("NEUTRAL-TEST: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNeutral);
+//						System.out.println("NEGATIVE-TEST: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNegative);
+//						System.out.println("POSITIVE-CORRECT: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectPositive);
+//						System.out.println("NEUTRAL-CORRECT: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNeutral);
+//						System.out.println("NEGATIVE-CORRECT: "
+//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNegative);
 
 						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
@@ -941,9 +941,15 @@ public class SVM {
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
 						fMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getFMeasure());
 
-						if (currentIteration == iterations - 1) {
-							writeWrongPredictedMessages(pipelineBox.getPredictor().getPredictionStatistic());
-							writeNoFeatureVectorMessages(pipelineBox.getPredictor().getPredictionStatistic());
+						//dont use currentIteration here:
+						//each run has the same test set but it changes each iteration
+						if (iter.hasNext()) {
+//							writeWrongPredictedMessages(currentIteration, pipelineBox.getPredictor().getPredictionStatistic());
+							writeNoFeatureVectorMessages(1, pipelineBox.getPredictor().getPredictionStatistic());
+						}
+						if (!iter.hasNext()) {
+//							writeWrongPredictedMessages(currentIteration, pipelineBox.getPredictor().getPredictionStatistic());
+							writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
 						}
 					}
 				}
@@ -982,10 +988,10 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 3;
+		int iterations = 1;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 10, 500, 200);
+		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 100, 500, 109);
 
 		// if (featureVectorLevel == 0) {
 		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
@@ -1079,12 +1085,12 @@ public class SVM {
 		EvaluationUtil.generateTSV("src/main/evaluation/pipeline_analyse.tsv", pipelineAnalysis);
 	}
 
-	private static void writeWrongPredictedMessages(PredictionStatistic predictionStatistic) {
-		String outputPath = "src/main/evaluation/WrongPredictedMessages.tsv";
+	private static void writeWrongPredictedMessages(int iteration, PredictionStatistic predictionStatistic) {
+		String outputPath = "src/main/evaluation/WrongPredictedMessages_" + iteration + ".tsv";
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath), "utf-8"))) {
 			List<List<String>> wrongPredictedMessages = predictionStatistic.getWrongPredictedMessages();
 
-			writer.write("TEXT" + "\t" + "ACTUAL-CLASS" + "\t" + "PREDICTED-CLASS" + "\t" + "FeatureVector" + "\n");
+			writer.write("TEXT" + "\t" + "ACTUAL-CLASS" + "\t" + "PREDICTED-CLASS" + "\t" + "FEATURE-VECTOR" + "\n");
 
 			for (int i = 0; i < wrongPredictedMessages.size(); i++) {
 				for (int j = 0; j < wrongPredictedMessages.get(i).size(); j++) {
@@ -1123,8 +1129,8 @@ public class SVM {
 		}
 	}
 
-	private static void writeNoFeatureVectorMessages(PredictionStatistic predictionStatistic) {
-		String outputPath = "src/main/evaluation/NoFeatureVectorMessages.tsv";
+	private static void writeNoFeatureVectorMessages(int iteration, PredictionStatistic predictionStatistic) {
+		String outputPath = "src/main/evaluation/NoFeatureVectorMessages_" + iteration + ".tsv";
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath), "utf-8"))) {
 			List<FeaturedTweet> featuredTweets = predictionStatistic.getNoFeatureVectorMessages();
 			for (int i = 0; i < featuredTweets.size(); i++) {

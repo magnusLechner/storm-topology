@@ -57,11 +57,7 @@ public class NoPOSSentimentFeatureVectorGenerator extends NoPOSFeatureVectorGene
 
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<String> preprocessedTokens) {
-
 		Map<Integer, SentimentResult> tweetSentiments = m_sentimentDict.getSentenceSentimentNotTagged(preprocessedTokens);
-		
-		System.out.println("TOKENS: " + preprocessedTokens);
-
 		return generateFeatureVector(tweetSentiments);
 	}
 

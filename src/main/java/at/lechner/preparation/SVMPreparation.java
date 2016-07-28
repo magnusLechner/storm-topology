@@ -540,7 +540,7 @@ public class SVMPreparation implements PreparationTool {
 		// prepareForCrossValidation();
 		// }
 
-		List<List<List<MyTupel>>> slices = prepareRandomVsRestSubsetRun(100, 50);
+		List<List<List<MyTupel>>> slices = prepareAdditionVsTestRun(100, 100, 109);
 		for (int i = 0; i < slices.size(); i++) {
 			List<List<MyTupel>> slice = slices.get(i);
 
@@ -549,6 +549,8 @@ public class SVMPreparation implements PreparationTool {
 			System.out.println("New slice: ");
 			System.out.println(slice.get(0).size());
 			System.out.println(slice.get(1).size());
+
+			System.out.println();
 		}
 	}
 

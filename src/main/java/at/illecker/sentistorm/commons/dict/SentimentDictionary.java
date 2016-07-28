@@ -124,9 +124,6 @@ public class SentimentDictionary {
 		for (int i = 0; i < m_wordLists.size(); i++) {
 			Double sentimentScore = m_wordLists.get(i).get(word);
 			if (sentimentScore != null) {
-				
-				System.out.println(namesWordlists.get(i) + "   Word: " + word + "  " + i + "=" + sentimentScore);
-				
 				sentimentScores.put(i, sentimentScore);
 			}
 		}
@@ -136,9 +133,6 @@ public class SentimentDictionary {
 		for (int i = 0; i < m_wordListMaps.size(); i++) {
 			Double sentimentScore = m_wordListMaps.get(i).matchKey(word);
 			if (sentimentScore != null) {
-			
-				System.out.println(namesWordlistsWithRegex.get(i) + "   Word: " + word + "  " + (i + wordListMapOffset) +  "=" + sentimentScore);
-				
 				sentimentScores.put(i + wordListMapOffset, sentimentScore);
 			}
 		}

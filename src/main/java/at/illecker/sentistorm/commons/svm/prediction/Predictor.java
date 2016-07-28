@@ -81,18 +81,22 @@ public abstract class Predictor {
 		Map<Integer, Double> featureVector = featuredTweet.getFeatureVector();
 
 		
-		System.out.println(featuredTweet.getText());
-		System.out.println(featureVector);
+		String s = featureVector.toString();
+		if(s.length() > 2) {
+			s = "";
+		}
 		
+		System.out.println(featuredTweet.getText() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + s);
+
 		double predictedClass = evaluate(featureVector, svmModel, TOTAL_CLASSES);
 
 		countTwitchEmoticons(featuredTweet);
-		
-		//for lenns evaluation
+
+		// for lenns evaluation
 		updateLennSum(predictedClass);
 
-		// if FV.size == 0 -> always neutral => only count the message if there
-		// is a featureVector
+		// if FV.size == 0 -> always neutral => only count the message if FV is
+		// not empty
 		if (featureVector.size() > 0) {
 			// class 0: Negative, 1: Neutral, 2: Positive
 			int actualClass = featuredTweet.getScore().intValue();
@@ -224,13 +228,13 @@ public abstract class Predictor {
 			}
 		}
 	}
-	
+
 	private void updateLennSum(double predictedClass) {
-		if(predictedClass == 0.0) {
+		if (predictedClass == 0.0) {
 			predictionStatistic.addToLennSum(-1.0);
-		} else if(predictedClass == 1.0) {
+		} else if (predictedClass == 1.0) {
 			predictionStatistic.addToLennSum(0.0);
-		} else if(predictedClass == 2.0) {
+		} else if (predictedClass == 2.0) {
 			predictionStatistic.addToLennSum(1.0);
 		}
 	}

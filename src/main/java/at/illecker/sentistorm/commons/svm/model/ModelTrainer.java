@@ -44,9 +44,6 @@ public abstract class ModelTrainer {
 			double accuracy = crossValidate(svmProb, dataset.getSVMParam(), nFold, false);
 			crossValidationStatistic = accuracy;
 		}
-
-		System.out.println("TRAINING-SIZE: " + dataset.getTrainTweets(false, true).size());
-
 		return svmModel;
 	}
 

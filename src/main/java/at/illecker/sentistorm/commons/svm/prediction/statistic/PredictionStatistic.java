@@ -35,11 +35,10 @@ public class PredictionStatistic {
 	public int countCorrectNeutral = 0;
 	public int countCorrectNegative = 0;
 
-	//TODO remove everything below some day - testing stuff only
-	private List<List<String>> wrongTwitchEmotePrediction = new ArrayList<List<String>>();
-	private Map<String, Integer> wrongPredictedClasses = new LinkedHashMap<String, Integer>();
 	private int countMsgsWithTwitchEmote = 0;
 	private int countMsgsWithSentimentTwitchEmote = 0;
+	private List<List<String>> wrongTwitchEmotePrediction = new ArrayList<List<String>>();
+	private Map<String, Integer> wrongPredictedClasses = new LinkedHashMap<String, Integer>();
 	private List<List<String>> wrongPredictedMessages = new ArrayList<List<String>>();
 	private List<FeaturedTweet> noFeatureVectorMessages = new ArrayList<FeaturedTweet>();
 	
