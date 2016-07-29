@@ -16,24 +16,23 @@ public class PredictionStatistic {
 	private StopWatchCPU stopWatchCPU;
 	private int testSize = 0;
 
-	//TODO make variables private again - only for testing
 	// statistics
 	private double elapsedTime = 0.0;
 
-	public double countRecall = 0;
-	public double countPrecision = 0;
+	private double countRecall = 0;
+	private double countPrecision = 0;
 
-	public double countTestPositive = 0;
-	public double countTestNeutral = 0;
-	public double countTestNegative = 0;
+	private double countTestPositive = 0;
+	private double countTestNeutral = 0;
+	private double countTestNegative = 0;
 
-	public int countPositive = 0;
-	public int countNeutral = 0;
-	public int countNegative = 0;
+	private int countPositive = 0;
+	private int countNeutral = 0;
+	private int countNegative = 0;
 
-	public int countCorrectPositive = 0;
-	public int countCorrectNeutral = 0;
-	public int countCorrectNegative = 0;
+	private int countCorrectPositive = 0;
+	private int countCorrectNeutral = 0;
+	private int countCorrectNegative = 0;
 
 	private int countMsgsWithTwitchEmote = 0;
 	private int countMsgsWithSentimentTwitchEmote = 0;
@@ -135,9 +134,6 @@ public class PredictionStatistic {
 		if(testSize == 0) {
 			return null;
 		}
-		
-		System.out.println("GET RECALL: " + countRecall + "  /  " + testSize + "  = " +  ((double) countRecall / testSize));
-		
 		return (double) countRecall / testSize;
 	}
 

@@ -779,8 +779,8 @@ public class SVM {
 		printPipelineResults(iterations, statistics);
 	}
 
-	public static void evaluateDynamicSlices(Dataset dataset, int iterations, int nFold, int startTrainingSetSize,
-			int stepSize, int startTestSize) throws IOException {
+	public static void evaluateDynamicSlices(Dataset dataset, int iterations, int nFold, boolean shutdown,
+			int startTrainingSetSize, int stepSize, int startTestSize) throws IOException {
 		List<List<Double>> trainingSize = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> testSize = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> cpuTime = new ArrayList<List<Double>>(iterations);
@@ -800,13 +800,11 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		 NoPOSSVMBox pipelineBox = null;
-//		POSSVMBox pipelineBox = null;
+		NoPOSSVMBox pipelineBox = null;
+		// POSSVMBox pipelineBox = null;
 
 		try {
-			//TODO
-			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
-//			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
 				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
 				List<Double> testSizeSingleRun = new ArrayList<Double>();
 				List<Double> cpuTimeSingleRun = new ArrayList<Double>();
@@ -843,19 +841,19 @@ public class SVM {
 					fMeasure.add(fMeasureSingleRun);
 				}
 
+				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize,
+						stepSize);
 				// List<List<List<MyTupel>>> slices =
 				// SVMPreparation.prepareAdditionVsRestSubsetRun(startTrainingSetSize,
 				// stepSize);
-				// List<List<List<MyTupel>>> slices =
-				// SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize,
-				// stepSize);
-				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize,
-						stepSize, startTestSize);
-				// List<List<List<MyTupel>>> slices =
-				// SVMPreparation.prepareRandomVsRestSubsetRun(startTrainingSetSize,
-				// stepSize);
+//				List<List<List<MyTupel>>> slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize,
+//						stepSize, startTestSize);
+				
 				// List<List<List<MyTupel>>> slices =
 				// SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize,
+				// stepSize);
+				// List<List<List<MyTupel>>> slices =
+				// SVMPreparation.prepareRandomVsRestSubsetRun(startTrainingSetSize,
 				// stepSize);
 				// List<List<List<MyTupel>>> slices =
 				// SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize,
@@ -866,14 +864,15 @@ public class SVM {
 					List<List<MyTupel>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
-					 NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
-					 .selectFVG(dataset.getTrainTweets(false, true),
-					 NoPOSCombinedFeatureVectorGenerator.class);
-					 pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
-					 false);
-//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//							SentimentFeatureVectorGenerator.class);
-//					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
+					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
+							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
+					// FeatureVectorGenerator posFVG =
+					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
+					// true),
+					// SentimentFeatureVectorGenerator.class);
+					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
+					// false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -882,28 +881,6 @@ public class SVM {
 					pipelineBox.getPredictor().getPredictionStatistic().elapsedTime();
 
 					if (currentIteration >= 0) {
-
-						System.out.println();
-//						System.out.println("RUN: " + (currentIteration + 1) + "  NEW SLICE");
-//						System.out.println("TRAINING-SIZE: " + dataset.getTrainTweets(false, true).size());
-//						System.out.println("TEST-SIZE: " + dataset.getTestTweets(true).size());
-//						System.out.println(
-//								"RECALL-COUNT: " + pipelineBox.getPredictor().getPredictionStatistic().countRecall);
-//						System.out.println("PRECISION-COUNT: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countPrecision);
-//						System.out.println("POSITIVE-TEST: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestPositive);
-//						System.out.println("NEUTRAL-TEST: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNeutral);
-//						System.out.println("NEGATIVE-TEST: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countTestNegative);
-//						System.out.println("POSITIVE-CORRECT: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectPositive);
-//						System.out.println("NEUTRAL-CORRECT: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNeutral);
-//						System.out.println("NEGATIVE-CORRECT: "
-//								+ pipelineBox.getPredictor().getPredictionStatistic().countCorrectNegative);
-
 						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
@@ -941,21 +918,28 @@ public class SVM {
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
 						fMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getFMeasure());
 
-						//dont use currentIteration here:
-						//each run has the same test set but it changes each iteration
+						// dont use currentIteration here:
+						// each run has the same test set but it changes each
+						// iteration
 						if (iter.hasNext()) {
-//							writeWrongPredictedMessages(currentIteration, pipelineBox.getPredictor().getPredictionStatistic());
-							writeNoFeatureVectorMessages(1, pipelineBox.getPredictor().getPredictionStatistic());
+							// writeWrongPredictedMessages(currentIteration,
+							// pipelineBox.getPredictor().getPredictionStatistic());
+							// writeNoFeatureVectorMessages(1,
+							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 						if (!iter.hasNext()) {
-//							writeWrongPredictedMessages(currentIteration, pipelineBox.getPredictor().getPredictionStatistic());
-							writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
+							// writeWrongPredictedMessages(currentIteration,
+							// pipelineBox.getPredictor().getPredictionStatistic());
+							// writeNoFeatureVectorMessages(2,
+							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
-			if (pipelineBox != null) {
+			if (shutdown && pipelineBox != null) {
 				pipelineBox.shutdown();
 			}
 		}
@@ -977,7 +961,7 @@ public class SVM {
 		statistics.put("training-size", trainingSize);
 		statistics.put("test-size", testSize);
 
-		printDynamicSlicesResults(iterations, statistics);
+		printDynamicSlicesResults(iterations, statistics, startTrainingSetSize, stepSize, startTestSize);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -988,10 +972,42 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 100;
+
+		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
+		List<Integer> stepList = new ArrayList<Integer>();
+		List<Integer> testSizeList = new ArrayList<Integer>();
+
+//		startTrainingSizeList.add(10);
+		startTrainingSizeList.add(100);
+		startTrainingSizeList.add(100);
+		startTrainingSizeList.add(100);
+		startTrainingSizeList.add(100);
+
+		stepList.add(50);
+		stepList.add(50);
+		stepList.add(50);
+		stepList.add(50);
+
+//		testSizeList.add(209);
+		testSizeList.add(109);
+		testSizeList.add(109);
+		testSizeList.add(209);
+		testSizeList.add(309);
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, 100, 500, 109);
+		// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+		// true, 100, 50, 109);
+
+		for (int i = 0; i < startTrainingSizeList.size(); i++) {
+			if (i + 1 < startTrainingSizeList.size()) {
+				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, startTrainingSizeList.get(i),
+						stepList.get(i), testSizeList.get(i));
+			} else {
+				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, true, startTrainingSizeList.get(i),
+						stepList.get(i), testSizeList.get(i));
+			}
+		}
 
 		// if (featureVectorLevel == 0) {
 		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
@@ -1008,7 +1024,8 @@ public class SVM {
 		// }
 	}
 
-	private static void printDynamicSlicesResults(int iterations, Map<String, List<List<Double>>> statistics) {
+	private static void printDynamicSlicesResults(int iterations, Map<String, List<List<Double>>> statistics,
+			int startTrainingSize, int stepSize, int testSize) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < iterations; i++) {
 			sb.append("RUN: " + (i + 1));
@@ -1025,8 +1042,8 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results.tsv",
-				sb.toString());
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results_"
+				+ startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
 
 		StandardDeviation mathStdDev = new StandardDeviation();
 		Map<String, List<Double>> results = new LinkedHashMap<String, List<Double>>();
@@ -1058,8 +1075,8 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-		EvaluationUtil.generateTSV(
-				"src/main/evaluation/successive_addition_evaluation/averaged_results_with_stdDev.tsv", sb.toString());
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/averaged_results_"
+				+ startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
 	}
 
 	private static void printPipelineResults(int iterations, Map<String, Double[]> statistics) {

@@ -29,37 +29,30 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 
 	public NoPOSCombinedFeatureVectorGenerator(boolean normalizePOSCounts, NoPOSTweetTfIdf tweetTfIdfNoPOS) {
 		m_sentimentFeatureVectorGenerator = new NoPOSSentimentFeatureVectorGenerator(1);
-//
-//		m_tfidfNoPOSFVG = new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS,
-//				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
-//
+
+		m_tfidfNoPOSFVG = new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS,
+				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
+
 //		m_undefinedTwitchFVG = new NoPOSUndefinedTwitchFeatureVectorGenerator(
 //				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize() + 1);
-		
-		//TODO remove - only testing
-//		m_tfidfNoPOSFVG = new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS, 1);
 	}
 
 	@Override
 	public int getFeatureVectorSize() {
 		return 
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() 
-//				+ m_tfidfNoPOSFVG.getFeatureVectorSize()
+				+ m_tfidfNoPOSFVG.getFeatureVectorSize()
 //				+ m_undefinedTwitchFVG.getFeatureVectorSize()
-//				m_tfidfNoPOSFVG.getFeatureVectorSize()
-		;
+				;
 	}
 
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<String> tweet) {
 		Map<Integer, Double> featureVector = m_sentimentFeatureVectorGenerator.generateFeatureVector(tweet);
 //
-//		featureVector.putAll(m_tfidfNoPOSFVG.generateFeatureVector(tweet));
+		featureVector.putAll(m_tfidfNoPOSFVG.generateFeatureVector(tweet));
 //
 //		featureVector.putAll(m_undefinedTwitchFVG.generateFeatureVector(tweet));
-		
-		//TODO remove - only testing
-//		Map<Integer, Double> featureVector = m_tfidfNoPOSFVG.generateFeatureVector(tweet);
 
 		return featureVector;
 	}
