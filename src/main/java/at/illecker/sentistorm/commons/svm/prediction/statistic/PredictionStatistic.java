@@ -128,81 +128,81 @@ public class PredictionStatistic {
 	}
 
 	public Double getRecall() {
-		if(countRecall == 0 && testSize == 0) {
-			return null;
-		}
 		if(testSize == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countRecall == 0) {
+			return 0.0;
 		}
 		return (double) countRecall / testSize;
 	}
 
 	public Double getPrecision() {
-		if(countPrecision == 0 && countRecall == 0) {
-			return null;
-		}
 		if(countRecall == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countPrecision == 0) {
+			return 0.0;
 		}
 		return (double) countPrecision / countRecall;
 	}
 
 	public Double getRecallPositives() {
-		if(countPositive == 0 && countTestPositive == 0) {
-			return 1.0;
-		}
 		if(countTestPositive == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countPositive == 0) {
+			return 0.0;
 		}
 		return (double) countPositive / countTestPositive;
 	}
 
 	public Double getPrecisionPositives() {
-		if(countPrecision == 0 && countRecall == 0) {
-			return 1.0;
-		}
 		if(countPositive == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countCorrectPositive == 0) {
+			return 0.0;
 		}
 		return (double) countCorrectPositive / countPositive;
 	}
 
 	public Double getRecallNeutrals() {
-		if(countNeutral == 0 && countTestNeutral == 0) {
-			return 1.0;
-		}
 		if(countTestNeutral == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countNeutral == 0) {
+			return 0.0;
 		}
 		return (double) countNeutral / countTestNeutral;
 	}
 
 	public Double getPrecisionNeutrals() {
-		if(countCorrectNeutral == 0 && countNeutral == 0) {
-			return 1.0;
-		}
 		if(countNeutral == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countCorrectNeutral == 0) {
+			return 0.0;
 		}
 		return (double) countCorrectNeutral / countNeutral;
 	}
 
 	public Double getRecallNegatives() {
-		if(countNegative == 0 && countTestNegative == 0) {
-			return 1.0;
-		}
 		if(countTestNegative == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countNegative == 0) {
+			return 0.0;
 		}
 		return (double) countNegative / countTestNegative;
 	}
 
 	public Double getPrecisionNegatives() {
-		if(countCorrectNegative == 0 && countNegative == 0) {
-			return 1.0;
-		}
 		if(countNegative == 0) {
-			return null;
+			return -1.0;
+		}
+		if(countCorrectNegative == 0) {
+			return 0.0;
 		}
 		return (double) countCorrectNegative / countNegative;
 	}
@@ -226,11 +226,8 @@ public class PredictionStatistic {
 	public Double getFMeasure() {
 		Double recall = getRecall();
 		Double precision = getPrecision();
-		if(precision == null || recall == null) {
-			return null;
-		}
 		if(precision == 0 && recall == 0) {
-			return null;
+			return -1.0;
 		}
 		return (2 * precision * recall) / (precision + recall); 
 	}

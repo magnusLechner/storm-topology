@@ -275,6 +275,12 @@ public class SVMPreparation implements PreparationTool {
 				testSet.add(tupels[randoms[randomIndex]]);
 				randomIndex++;
 			}
+			if(randomIndex + testSizeAndTrainingStepSize > randoms.length) {
+				for(int i = randomIndex; i < randoms.length; i++) {
+					testSet.add(tupels[randoms[randomIndex]]);
+					randomIndex++;
+				}
+			}
 			slice.add(trainingSet);
 			slice.add(testSet);
 			slices.add(slice);
@@ -318,6 +324,9 @@ public class SVMPreparation implements PreparationTool {
 			testSet = new ArrayList<MyTupel>();
 			for (int i = randomIndex; i < tupels.length; i++) {
 				testSet.add(tupels[randoms[i]]);
+			}
+			if(randomIndex + 2 * trainingSteps > randoms.length) {
+				randomIndex = randoms.length;
 			}
 			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
 			slice.add(newTrainingSet);
@@ -410,8 +419,12 @@ public class SVMPreparation implements PreparationTool {
 				}
 			}
 			trainingSetSize += testSizeAndTrainingStepSize;
-			if(trainingSetSize >= tupels.length) {
+			if(trainingSetSize + testSizeAndTrainingStepSize >= tupels.length) {
 				lastRun = true;
+				for(int i = randomIndex; i < randoms.length; i++) {
+					testSet.add(tupels[randoms[randomIndex]]);
+					randomIndex++;
+				}
 			}
 
 			slice.add(trainingSet);
@@ -433,7 +446,8 @@ public class SVMPreparation implements PreparationTool {
 		List<MyTupel> trainingSet = null;
 		List<MyTupel> testSet = null;
 
-		while (startTrainingSetSize < tupels.length) {
+		boolean lastRun = false;
+		while (!lastRun) {
 			slice = new ArrayList<List<MyTupel>>();
 
 			int[] randoms = getRandoms(tupels.length, tupels.length);
@@ -447,6 +461,9 @@ public class SVMPreparation implements PreparationTool {
 				testSet.add(tupels[randoms[i]]);
 			}
 			startTrainingSetSize += trainingSteps;
+			if(startTrainingSetSize + trainingSteps > randoms.length) {
+				lastRun = true;
+			}
 			slice.add(trainingSet);
 			slice.add(testSet);
 			slices.add(slice);
@@ -540,7 +557,7 @@ public class SVMPreparation implements PreparationTool {
 		// prepareForCrossValidation();
 		// }
 
-		List<List<List<MyTupel>>> slices = prepareAdditionVsRestRun(100, 100);
+		List<List<List<MyTupel>>> slices = prepareRandomVsRestRun(100, 50);
 		for (int i = 0; i < slices.size(); i++) {
 			List<List<MyTupel>> slice = slices.get(i);
 
