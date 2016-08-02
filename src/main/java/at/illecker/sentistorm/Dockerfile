@@ -9,8 +9,9 @@
 #
 FROM eventstorm/dockerstorm
 
+RUN apt-get update
 RUN apt-get install telnet
-RUN apt-get install ping
+RUN apt-get install iputils-ping -y
 
 # Overwrite Supervisor conf
 ADD src/main/java/at/illecker/sentistorm/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
