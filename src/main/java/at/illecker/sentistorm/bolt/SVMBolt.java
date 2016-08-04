@@ -17,6 +17,7 @@
 package at.illecker.sentistorm.bolt;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Map;
 
 import libsvm.svm;
@@ -33,6 +34,7 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -55,9 +57,11 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("json", "return-Info"));
+		declarer.declareStream("pipeline-stream", new Fields("json", "return-Info"));
+		declarer.declareStream("statistic-stream", new Fields("id", "topology-timestamp"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void prepare(Map config, TopologyContext context) {
 		// Optional set logging
@@ -80,6 +84,7 @@ public class SVMBolt extends BaseBasicBolt {
 		jsonParser = new JsonParser();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");
@@ -101,6 +106,9 @@ public class SVMBolt extends BaseBasicBolt {
 		double predictedClass = svm.svm_predict(m_model, testNodes);
 
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+		JsonElement user = jsonObject.get("user");
+		JsonElement timestamp = jsonObject.get("timeStamp");
+		
 		jsonObject.addProperty("predictedSentiment",
 				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());
 
@@ -109,8 +117,12 @@ public class SVMBolt extends BaseBasicBolt {
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 
+		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
+		
 		// Emit new tuples
-		collector.emit(new Values(jsonObject.toString(), retInfo));
+		collector.emit("pipeline-stream", new Values(jsonObject.toString(), retInfo));
+		// Statistic
+		collector.emit("statistic-stream", new Values(user.getAsString() + "_" + timestamp.getAsString(), topologyTimestamp));
 	}
 
 }

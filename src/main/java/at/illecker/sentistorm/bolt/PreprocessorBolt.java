@@ -45,6 +45,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		declarer.declare(new Fields("text", "preprocessedTokens", "json", "return-info"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void prepare(Map config, TopologyContext context) {
 		// Optional set logging
@@ -57,6 +58,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		m_preprocessor = Preprocessor.getInstance();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String text = tuple.getStringByField("text");

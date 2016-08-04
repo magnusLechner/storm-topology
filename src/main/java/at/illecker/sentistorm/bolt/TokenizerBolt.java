@@ -29,8 +29,6 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
@@ -46,6 +44,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 		declarer.declare(new Fields("text", "tokens", "json", "return-info"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void prepare(Map config, TopologyContext context) {
 		// Optional set logging

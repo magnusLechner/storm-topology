@@ -16,9 +16,13 @@ public class QuickTest {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject jsonObject = (JsonObject)parser.parse(json);
-		JsonElement content = jsonObject.get("msg");
+		JsonElement msg = jsonObject.get("msg");
+		JsonElement user = jsonObject.get("user");
+		JsonElement timestamp = jsonObject.get("timeStamp");
 		
-		System.out.println("THIS IS THE CONTENT: " + content.getAsString());
+		System.out.println("THIS IS THE MSG: " + msg.getAsString());
+		System.out.println("THIS IS THE USER: " + user.getAsString());
+		System.out.println("THIS IS THE TIMESTAMP: " + timestamp.getAsString());
 		System.out.println("THIS IS THE JSON: " + jsonObject.toString());
 	}
 }

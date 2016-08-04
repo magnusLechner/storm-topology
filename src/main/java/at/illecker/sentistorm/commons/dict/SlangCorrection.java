@@ -35,6 +35,7 @@ public class SlangCorrection {
 
 	private Map<String, String[]> m_slangWordList = new HashMap<String, String[]>();
 
+	@SuppressWarnings("rawtypes")
 	private SlangCorrection() {
 		List<Map> slangWordLists = Configuration.getSlangWordlists();
 		for (Map slangWordListEntry : slangWordLists) {

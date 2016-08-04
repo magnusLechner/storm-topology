@@ -16,6 +16,7 @@
  */
 package at.illecker.sentistorm.bolt;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import org.apache.storm.task.TopologyContext;
@@ -44,9 +45,11 @@ public class JSONBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "json", "return-info"));
+		declarer.declareStream("pipeline-stream", new Fields("text", "json", "return-info"));
+		declarer.declareStream("statistic-stream", new Fields("id", "json-timestamp", "topology-timestamp"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void prepare(Map config, TopologyContext context) {
 		// Optional set logging
@@ -61,19 +64,26 @@ public class JSONBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-//		String json = tuple.getStringByField("json");
+		// String json = tuple.getStringByField("json");
 		String json = tuple.getString(0);
 		Object retInfo = tuple.getValue(1);
-		
-		JsonObject jsonObject = (JsonObject)jsonParser.parse(json);
-		JsonElement content = jsonObject.get("msg");
+
+		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
+
+		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+		JsonElement msg = jsonObject.get("msg");
+		JsonElement user = jsonObject.get("user");
+		JsonElement timestamp = jsonObject.get("timeStamp");
 
 		if (m_logging) {
-			 LOG.info("content: \"" + content.getAsString() + "\" JSON: " + jsonObject.toString());
+			LOG.info("content: \"" + msg.getAsString() + "\" JSON: " + jsonObject.toString());
 		}
 
 		// Emit new tuples
-		 collector.emit(new Values(content.getAsString(), jsonObject.toString(), retInfo));
+		collector.emit("pipeline-stream", new Values(msg.getAsString(), jsonObject.toString(), retInfo));
+		// Statistic
+		collector.emit("statistic-stream", new Values(user.getAsString() + "_" + timestamp.getAsString(),
+				timestamp.getAsString(), topologyTimestamp));
 	}
 
 }

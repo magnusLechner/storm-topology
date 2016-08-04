@@ -33,6 +33,7 @@ import at.illecker.sentistorm.bolt.JSONBolt;
 import at.illecker.sentistorm.bolt.POSTaggerBolt;
 import at.illecker.sentistorm.bolt.PreprocessorBolt;
 import at.illecker.sentistorm.bolt.SVMBolt;
+import at.illecker.sentistorm.bolt.StatisticBolt;
 import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
@@ -44,29 +45,31 @@ import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerialize
 public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 
-	//storm jar ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar at/illecker/sentistorm/SentiStormTopology
-	
+	// storm jar
+	// ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+	// at/illecker/sentistorm/SentiStormTopology
+
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
 		// Create Spout
-//		if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
-//			conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
-//					(Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
-//		}
-//		if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
-//			conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_MS,
-//					(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
-//		}
-//		if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
-//			conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_NS,
-//					(Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
-//		}
-//		IRichSpout spout = new DatasetJSONSpout();
-//		String spoutID = DatasetJSONSpout.ID;
-		
-//		LocalDRPC drpc = new LocalDRPC();
-//		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
+		// if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
+		// conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
+		// (Integer) Configuration.get("sentistorm.spout.startup.sleep.ms"));
+		// }
+		// if (Configuration.get("sentistorm.spout.tuple.sleep.ms") != null) {
+		// conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_MS,
+		// (Integer) Configuration.get("sentistorm.spout.tuple.sleep.ms"));
+		// }
+		// if (Configuration.get("sentistorm.spout.tuple.sleep.ns") != null) {
+		// conf.put(DatasetJSONSpout.CONF_TUPLE_SLEEP_NS,
+		// (Integer) Configuration.get("sentistorm.spout.tuple.sleep.ns"));
+		// }
+		// IRichSpout spout = new DatasetJSONSpout();
+		// String spoutID = DatasetJSONSpout.ID;
+
+		// LocalDRPC drpc = new LocalDRPC();
+		// IRichSpout spout = new DRPCSpout("getSentiment", drpc);
 		IRichSpout spout = new DRPCSpout("getSentiment");
 		String spoutID = "DRPCSpout";
 
@@ -78,6 +81,9 @@ public class SentiStormTopology {
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
 		ReturnResults returnBolt = new ReturnResults();
+		String returnBoltID = "return";
+
+		StatisticBolt statisticBolt = new StatisticBolt();
 
 		// Create Topology
 		TopologyBuilder builder = new TopologyBuilder();
@@ -91,7 +97,7 @@ public class SentiStormTopology {
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-				.shuffleGrouping(JSONBolt.ID);
+				.shuffleGrouping(JSONBolt.ID, "pipeline-stream");
 
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
@@ -111,8 +117,12 @@ public class SentiStormTopology {
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
 		// SVMBolt --> ReturnResults
-		builder.setBolt("return", returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
-				.shuffleGrouping(SVMBolt.ID);
+		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
+				.shuffleGrouping(SVMBolt.ID, "pipeline-stream");
+
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(JSONBolt.ID, "statistic-stream")
+				.shuffleGrouping(SVMBolt.ID, "statistic-stream");
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -140,15 +150,17 @@ public class SentiStormTopology {
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
-		
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-//		for(int i = 0; i < 100000; i++) {
-//			System.out.println("HALLO: " + drpc.execute("getSentiment", "{\"msg\":\"Kreygasm\"}"));	
-//		}
-//	    cluster.shutdown();
-//	    drpc.shutdown();
-	    
+
+		// LocalCluster cluster = new LocalCluster();
+		// cluster.submitTopology("getSentiment", conf,
+		// builder.createTopology());
+		// for(int i = 0; i < 100000; i++) {
+		// System.out.println("HALLO: " + drpc.execute("getSentiment",
+		// "{\"msg\":\"Kreygasm\"}"));
+		// }
+		// cluster.shutdown();
+		// drpc.shutdown();
+
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started local):");

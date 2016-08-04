@@ -46,6 +46,7 @@ public class SentimentDictionary {
 	private List<String> namesWordlists = new ArrayList<String>();
 	private List<String> namesWordlistsWithRegex = new ArrayList<String>();
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private SentimentDictionary() {
 		m_wordnet = WordNet.getInstance();
 		m_wordLists = new ArrayList<Map<String, Double>>();
