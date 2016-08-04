@@ -1,7 +1,10 @@
 package at.illecker.sentistorm.bolt;
 
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.storm.task.TopologyContext;
@@ -9,8 +12,13 @@ import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
 import org.apache.storm.tuple.Tuple;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class StatisticBolt extends BaseBasicBolt {
 	public static final String ID = "statistic-bolt";
@@ -20,7 +28,8 @@ public class StatisticBolt extends BaseBasicBolt {
 	private boolean m_logging = false;
 	
 	private Map<String, String> timestamps;
-	private int count;
+	private List<Long> cycleTimes;
+	private Socket socket;
 	
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
@@ -31,7 +40,13 @@ public class StatisticBolt extends BaseBasicBolt {
 	@Override
 	public void prepare(Map config, TopologyContext context) {
 		 timestamps = new HashMap<String, String>();
-		 count = 0;
+		 cycleTimes = new ArrayList<Long>();
+		 try {
+			socket = IO.socket("eventstorm-back-sentiment-producer.os.cggstack.cheergg.com");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -44,8 +59,8 @@ public class StatisticBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 
-		//TODO reset count after x seconds
-		//TODO create json with max, min, avg, stdDev
+		//TODO reset list after x seconds
+		//TODO create json with max, min, avg, stdDev, count
 		//TODO send to backend
 		
 		String id = (String) tuple.getValue(0);
@@ -54,8 +69,15 @@ public class StatisticBolt extends BaseBasicBolt {
 			timestamps.put(id, (String) tuple.getValue(2));
 		} else {
 //			long endTimestamp = Calendar.getInstance().getTimeInMillis();
-			long endTimestamp =  (long) tuple.getValue(1);
-			count++;
+			cycleTimes.add((Long) tuple.getValue(1));
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("hello", "server");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			socket.emit("receiveSentimentStormStatistic", obj);
 		}
 		
 		if(m_logging) {
