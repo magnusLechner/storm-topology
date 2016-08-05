@@ -46,7 +46,7 @@ public class JSONBolt extends BaseBasicBolt {
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
 		declarer.declareStream("pipeline-stream", new Fields("text", "json", "return-info"));
-		declarer.declareStream("statistic-stream", new Fields("id", "json-timestamp", "topology-timestamp"));
+		declarer.declareStream("start-statistic-stream", new Fields("id", "json-timestamp", "topology-timestamp"));
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -58,7 +58,7 @@ public class SVMBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declareStream("pipeline-stream", new Fields("json", "return-Info"));
-		declarer.declareStream("statistic-stream", new Fields("id", "topology-timestamp"));
+		declarer.declareStream("end-statistic-stream", new Fields("id", "topology-timestamp"));
 	}
 
 	@SuppressWarnings("rawtypes")

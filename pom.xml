@@ -70,7 +70,6 @@
     		<artifactId>weka-stable</artifactId>
     		<version>3.8.0</version>
 		</dependency>
-		
 		<dependency>
     		<groupId>io.socket</groupId>
     		<artifactId>socket.io-client</artifactId>

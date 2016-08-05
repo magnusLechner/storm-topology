@@ -100,8 +100,8 @@ public class SentiStormTopology {
 				.shuffleGrouping(JSONBolt.ID, "pipeline-stream");
 
 		// TokenizerBolt --> PreprocessorBolt
-		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
-				Configuration.get("sentistorm.bolt.preprocessor.parallelism", 1)).shuffleGrouping(TokenizerBolt.ID);
+		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt, Configuration.get("sentistorm.bolt.preprocessor.parallelism", 1))
+				.shuffleGrouping(TokenizerBolt.ID);
 
 		// PreprocessorBolt --> POSTaggerBolt
 		builder.setBolt(POSTaggerBolt.ID, posTaggerBolt, Configuration.get("sentistorm.bolt.postagger.parallelism", 1))
@@ -121,8 +121,8 @@ public class SentiStormTopology {
 				.shuffleGrouping(SVMBolt.ID, "pipeline-stream");
 
 		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-				.shuffleGrouping(JSONBolt.ID, "statistic-stream")
-				.shuffleGrouping(SVMBolt.ID, "statistic-stream");
+				.shuffleGrouping(JSONBolt.ID, "start-statistic-stream")
+				.shuffleGrouping(SVMBolt.ID, "end-statistic-stream");
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
