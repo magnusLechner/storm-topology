@@ -29,6 +29,10 @@ import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
+import at.illecker.sentistorm.bolt.values.data.PreprocessorValue;
+import at.illecker.sentistorm.bolt.values.data.TokenizerValue;
 import at.illecker.sentistorm.components.Preprocessor;
 
 public class PreprocessorBolt extends BaseBasicBolt {
@@ -42,7 +46,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "preprocessedTokens", "json", "return-info"));
+		declarer.declare(PreprocessorValue.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -61,20 +65,21 @@ public class PreprocessorBolt extends BaseBasicBolt {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		String text = tuple.getStringByField("text");
-		String json = tuple.getStringByField("json");
-		Object retInfo = tuple.getValue(3);
-		List<String> tokens = (List<String>) tuple.getValueByField("tokens");
+		TokenizerValue tokenizerBoltValue = TokenizerValue.getFromTuple(tuple);
+		
+		Object returnInfo = tokenizerBoltValue.getReturnInfo();
+		JsonObject jsonObject = tokenizerBoltValue.getJsonObject();
+		List<String> tokens = (List<String>) tokenizerBoltValue.getTokens();
 
 		// Preprocess
 		List<String> preprocessedTokens = m_preprocessor.preprocess(tokens);
 
 		if (m_logging) {
-			LOG.info("PREPROCESSOR:  TOKENS " + preprocessedTokens + "    JSON: " + json);
+			LOG.info("PREPROCESSOR:  TOKENS " + preprocessedTokens + "    JSON: " + jsonObject.toString());
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, preprocessedTokens, json, retInfo));
+		collector.emit(new PreprocessorValue(returnInfo, jsonObject, preprocessedTokens));
 	}
 
 }

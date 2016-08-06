@@ -23,12 +23,14 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
+import at.illecker.sentistorm.bolt.values.data.JsonValue;
+import at.illecker.sentistorm.bolt.values.data.TokenizerValue;
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
@@ -41,7 +43,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "tokens", "json", "return-info"));
+		declarer.declare(TokenizerValue.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -57,17 +59,19 @@ public class TokenizerBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		String text = tuple.getStringByField("text");
-		Object retInfo = tuple.getValue(2);
+		JsonValue jsonBoltValue = JsonValue.getFromTuple(tuple);
+		Object returnInfo = jsonBoltValue.getReturnInfo();
+		JsonObject jsonObject = jsonBoltValue.getJsonObject();
+		String msg = jsonObject.get("msg").getAsString();
 
-		List<String> tokens = Tokenizer.tokenize(text);
+		List<String> tokens = Tokenizer.tokenize(msg);
 
 		if (m_logging) {
-			LOG.info("Tweet: \"" + text + "\" Tokenized: " + tokens + "  json: " + tuple.getStringByField("json"));
+			LOG.info("Tweet: \"" + msg + "\" Tokenized: " + tokens + "  json: " + jsonObject.toString());
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, tokens, tuple.getStringByField("json"), retInfo));
+		collector.emit(new TokenizerValue(returnInfo, jsonObject, tokens));
 	}
 
 }

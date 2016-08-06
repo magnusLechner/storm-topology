@@ -23,12 +23,14 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
+import at.illecker.sentistorm.bolt.values.data.FeatureGenerationValue;
+import at.illecker.sentistorm.bolt.values.data.POSTaggerValue;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
@@ -52,7 +54,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "featureVector", "json", "return-info"));
+		declarer.declare(FeatureGenerationValue.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -83,24 +85,22 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		String text = tuple.getStringByField("text");
-		String json = tuple.getStringByField("json");
-		Object retInfo = tuple.getValue(3);
-		
-		List<TaggedToken> taggedTokens = (List<TaggedToken>) tuple.getValueByField("taggedTokens");
+		POSTaggerValue posTaggerValue = POSTaggerValue.getFromTuple(tuple);
+		Object returnInfo = posTaggerValue.getReturnInfo();
+		JsonObject jsonObject = posTaggerValue.getJsonObject();
+		List<TaggedToken> taggedTokens = posTaggerValue.getTaggedTokens();  
 		
 		// Generate Feature Vector
 		Map<Integer, Double> featureVector = m_fvg.generateFeatureVector(taggedTokens);
 		
 		if (m_logging) {
-			LOG.info("Tweet: " + text + " FeatureVector: " + featureVector);
+			LOG.info("Tweet: " + jsonObject.get("msg").getAsString() + " FeatureVector: " + featureVector);
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, featureVector, json, retInfo));
+		collector.emit(new FeatureGenerationValue(returnInfo, jsonObject, featureVector));
 	}
 
 }

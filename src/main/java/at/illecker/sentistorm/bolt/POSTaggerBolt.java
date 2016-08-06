@@ -24,12 +24,14 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+
+import at.illecker.sentistorm.bolt.values.data.POSTaggerValue;
+import at.illecker.sentistorm.bolt.values.data.PreprocessorValue;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
@@ -53,7 +55,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(new Fields("text", "taggedTokens", "json", "return-info"));
+		declarer.declare(POSTaggerValue.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -74,13 +76,12 @@ public class POSTaggerBolt extends BaseBasicBolt {
 		m_featureExtractor = SerializationUtils.deserialize(taggingModel + "_featureExtractor.ser");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		String text = tuple.getStringByField("text");
-		String json = tuple.getStringByField("json");
-		Object retInfo = tuple.getValue(3);
-		List<String> preprocessedTokens = (List<String>) tuple.getValueByField("preprocessedTokens");
+		PreprocessorValue preprocessedTokensValue = PreprocessorValue.getFromTuple(tuple);
+		Object returnInfo = preprocessedTokensValue.getReturnInfo();
+		JsonObject jsonObject = preprocessedTokensValue.getJsonObject();
+		List<String> preprocessedTokens = preprocessedTokensValue.getPreprocessedTokens();
 
 		// POS Tagging
 		List<TaggedToken> taggedTokens = tag(preprocessedTokens);
@@ -90,7 +91,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new Values(text, taggedTokens, json, retInfo));
+		collector.emit(new POSTaggerValue(returnInfo, jsonObject, taggedTokens));
 	}
 
 	private List<TaggedToken> tag(List<String> tokens) {
@@ -102,11 +103,8 @@ public class POSTaggerBolt extends BaseBasicBolt {
 
 		List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
 		for (int t = 0; t < sentence.T(); t++) {
-
-			//work-around 
-			//TODO add transition probabilities to model.txt
-			//TODO change this also in POSTagger class
 			TaggedToken tt = null;
+			//re-tag twitch emoticons manually
 			if(TwitchEmoticons.getInstance().isTwitchEmoticon(tokens.get(t))) {
 				tt = new TaggedToken(tokens.get(t), "E");
 			} else {

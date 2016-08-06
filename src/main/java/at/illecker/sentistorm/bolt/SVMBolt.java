@@ -36,8 +36,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
+import at.illecker.sentistorm.bolt.values.data.FeatureGenerationValue;
+import at.illecker.sentistorm.bolt.values.data.SVMValue;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.SentimentClass;
@@ -49,15 +50,17 @@ public class SVMBolt extends BaseBasicBolt {
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -6790858930924043126L;
 	private static final Logger LOG = LoggerFactory.getLogger(SVMBolt.class);
+
+	public static final String PIPELINE_STREAM = "pipeline-stream";
+	public static final String END_STATISTIC_STREAM = "end-statistic-stream";
+
 	private boolean m_logging = false;
 	private Dataset m_dataset;
 	private svm_model m_model;
 
-	private JsonParser jsonParser;
-
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declareStream("pipeline-stream", new Fields("json", "return-Info"));
+		declarer.declareStream("pipeline-stream", SVMValue.getSchema());
 		declarer.declareStream("end-statistic-stream", new Fields("id", "topology-timestamp"));
 	}
 
@@ -80,17 +83,14 @@ public class SVMBolt extends BaseBasicBolt {
 					+ SVM.SVM_MODEL_FILE_SER);
 			throw new RuntimeException();
 		}
-
-		jsonParser = new JsonParser();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		String text = tuple.getStringByField("text");
-		String json = tuple.getStringByField("json");
-		Object retInfo = tuple.getValue(3);
-		Map<Integer, Double> featureVector = (Map<Integer, Double>) tuple.getValueByField("featureVector");
+		FeatureGenerationValue featureGenerationValue = FeatureGenerationValue.getFromTuple(tuple);
+		Object returnInfo = featureGenerationValue.getReturnInfo();
+		JsonObject jsonObject = featureGenerationValue.getJsonObject();
+		Map<Integer, Double> featureVector = featureGenerationValue.getFeatureVector();
 
 		// Create feature nodes
 		svm_node[] testNodes = new svm_node[featureVector.size()];
@@ -105,24 +105,29 @@ public class SVMBolt extends BaseBasicBolt {
 
 		double predictedClass = svm.svm_predict(m_model, testNodes);
 
-		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
 		JsonElement user = jsonObject.get("user");
+		JsonElement channel = jsonObject.get("channel");
 		JsonElement timestamp = jsonObject.get("timeStamp");
-		
+
 		jsonObject.addProperty("predictedSentiment",
 				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());
 
 		if (m_logging) {
-			LOG.info("Tweet: " + text + " predictedSentiment: "
+			LOG.info("Tweet: " + jsonObject.get("msg").getAsString() + " predictedSentiment: "
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
-		
+
 		// Emit new tuples
-		collector.emit("pipeline-stream", new Values(jsonObject.toString(), retInfo));
+		// collector.emit(PIPELINE_STREAM, new Values(jsonObject.toString(),
+		// retInfo));
+
+		// TODO change argument position???
+		collector.emit(PIPELINE_STREAM, new SVMValue(returnInfo, jsonObject));
 		// Statistic
-		collector.emit("statistic-stream", new Values(user.getAsString() + "_" + timestamp.getAsString(), topologyTimestamp));
+		collector.emit(END_STATISTIC_STREAM, new Values(
+				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
 	}
 
 }

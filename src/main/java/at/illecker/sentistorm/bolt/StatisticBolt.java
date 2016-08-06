@@ -18,12 +18,16 @@ import org.slf4j.LoggerFactory;
 import at.illecker.sentistorm.commons.TopologyRawStatistic;
 
 public class StatisticBolt extends BaseBasicBolt {
-	public static final String ID = "statistic-bolt";
+	public static final String ID = "statistic";
 	public static final String CONF_LOGGING = ID + ".logging";
+	public static final String CONFIG_INTERVAL = ID + ".interval";
 	private static final long serialVersionUID = -1118183211053643981L;
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticBolt.class);
-	public static final String CONFIG_INTERVAL = ID + ".interval";
 	private boolean m_logging = false;
+	
+	public static final String RESULT_STATISTIC_STREAM = "result-statistic-stream";
+	public static final String START_STATISTIC_STREAM = "start-statistic-stream";
+	public static final String END_STATISTIC_STREAM = "end-statistic-stream";
 
 	private long last;
 	private long interval;
@@ -56,9 +60,9 @@ public class StatisticBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String sourceID = tuple.getSourceComponent();
 		String id = (String) tuple.getValue(0);
-		if (sourceID.startsWith("start-statistic-stream")) {
+		if (sourceID.startsWith(START_STATISTIC_STREAM)) {
 			timestamps.put(id, (String) tuple.getValue(2));
-		} else if (sourceID.startsWith("end-statistic-stream")) {
+		} else if (sourceID.startsWith(END_STATISTIC_STREAM)) {
 			cycleTimes.add((Long) tuple.getValue(1));
 			// long endTimestamp = Calendar.getInstance().getTimeInMillis();
 			timestamps.remove(id);
@@ -67,7 +71,7 @@ public class StatisticBolt extends BaseBasicBolt {
 
 			if (current - last >= interval) {
 				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(cycleTimes);
-				collector.emit("result-statistic-stream", rawStatistic);
+				collector.emit(RESULT_STATISTIC_STREAM, rawStatistic);
 				clear();
 				last = current;
 			}

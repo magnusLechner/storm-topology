@@ -33,20 +33,25 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import at.illecker.sentistorm.bolt.values.data.JsonValue;
+
 public class JSONBolt extends BaseBasicBolt {
 	public static final String ID = "json-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -8847712312925641497L;
 	private static final Logger LOG = LoggerFactory.getLogger(JSONBolt.class);
-	private boolean m_logging = false;
 
+	public static final String PIPELINE_STREAM = "pipeline-stream";
+	public static final String START_STATISTIC_STREAM = "start-statistic-stream";
+
+	private boolean m_logging = false;
 	private JsonParser jsonParser;
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declareStream("pipeline-stream", new Fields("text", "json", "return-info"));
-		declarer.declareStream("start-statistic-stream", new Fields("id", "json-timestamp", "topology-timestamp"));
+		declarer.declareStream(PIPELINE_STREAM, JsonValue.getSchema());
+		declarer.declareStream(START_STATISTIC_STREAM, new Fields("id", "json-timestamp", "topology-timestamp"));
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -66,24 +71,29 @@ public class JSONBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		// String json = tuple.getStringByField("json");
 		String json = tuple.getString(0);
-		Object retInfo = tuple.getValue(1);
+		Object returnInfo = tuple.getValue(1);
+		
+		LOG.info("FIRST ARG: " + tuple.getString(0));
+		LOG.info("SECOND ARG: " + tuple.getValue(0).toString());
+		LOG.info("THIRD ARG: " + tuple.getValue(1));
 
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
-		JsonElement msg = jsonObject.get("msg");
 		JsonElement user = jsonObject.get("user");
+		JsonElement channel = jsonObject.get("channel");
 		JsonElement timestamp = jsonObject.get("timeStamp");
 
 		if (m_logging) {
-			LOG.info("content: \"" + msg.getAsString() + "\" JSON: " + jsonObject.toString());
+			LOG.info("JSON: " + jsonObject.toString());
 		}
 
 		// Emit new tuples
-		collector.emit("pipeline-stream", new Values(msg.getAsString(), jsonObject.toString(), retInfo));
+		collector.emit(PIPELINE_STREAM, new JsonValue(returnInfo, jsonObject));
 		// Statistic
-		collector.emit("statistic-stream", new Values(user.getAsString() + "_" + timestamp.getAsString(),
-				timestamp.getAsString(), topologyTimestamp));
+		collector.emit(START_STATISTIC_STREAM,
+				new Values(user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(),
+						timestamp.getAsString(), topologyTimestamp));
 	}
 
 }

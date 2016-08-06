@@ -32,8 +32,8 @@ import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.JSONDataset;
 import at.illecker.sentistorm.commons.util.TimeUtils;
 
-public class DatasetJSONSpout extends BaseRichSpout {
-	private static final Logger LOG = LoggerFactory.getLogger(DatasetJSONSpout.class);
+public class DatasetJsonSpout extends BaseRichSpout {
+	private static final Logger LOG = LoggerFactory.getLogger(DatasetJsonSpout.class);
 	
 	public static final String ID = "datasetJSON-spout";
 	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
