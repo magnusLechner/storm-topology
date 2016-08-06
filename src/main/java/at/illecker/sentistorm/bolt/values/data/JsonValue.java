@@ -7,15 +7,15 @@ import com.google.gson.JsonObject;
 public class JsonValue extends DataValue {
 	private static final long serialVersionUID = -8852108291994569661L;
 
-	public JsonValue(Object returnInfo, JsonObject jsonObject) {
-		super(returnInfo, jsonObject);
+	public JsonValue(JsonObject jsonObject, Object returnInfo) {
+		super(jsonObject, returnInfo);
 	}
 	
 	public static JsonValue getFromTuple(Tuple tuple) {
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
+		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 	
-		return new JsonValue(returnInfo, jsonObject);
+		return new JsonValue(jsonObject, returnInfo);
 	}
 	
 }

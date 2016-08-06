@@ -119,12 +119,7 @@ public class SVMBolt extends BaseBasicBolt {
 
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-		// Emit new tuples
-		// collector.emit(PIPELINE_STREAM, new Values(jsonObject.toString(),
-		// retInfo));
-
-		// TODO change argument position???
-		collector.emit(PIPELINE_STREAM, new SVMValue(returnInfo, jsonObject));
+		collector.emit(PIPELINE_STREAM, new SVMValue(jsonObject, returnInfo));
 		// Statistic
 		collector.emit(END_STATISTIC_STREAM, new Values(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));

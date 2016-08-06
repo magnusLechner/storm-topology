@@ -71,7 +71,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new TokenizerValue(returnInfo, jsonObject, tokens));
+		collector.emit(new TokenizerValue(jsonObject, returnInfo, tokens));
 	}
 
 }

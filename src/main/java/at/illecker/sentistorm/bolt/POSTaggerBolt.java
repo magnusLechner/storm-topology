@@ -79,8 +79,8 @@ public class POSTaggerBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		PreprocessorValue preprocessedTokensValue = PreprocessorValue.getFromTuple(tuple);
-		Object returnInfo = preprocessedTokensValue.getReturnInfo();
 		JsonObject jsonObject = preprocessedTokensValue.getJsonObject();
+		Object returnInfo = preprocessedTokensValue.getReturnInfo();
 		List<String> preprocessedTokens = preprocessedTokensValue.getPreprocessedTokens();
 
 		// POS Tagging
@@ -91,7 +91,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new POSTaggerValue(returnInfo, jsonObject, taggedTokens));
+		collector.emit(new POSTaggerValue(jsonObject, returnInfo, taggedTokens));
 	}
 
 	private List<TaggedToken> tag(List<String> tokens) {

@@ -14,8 +14,8 @@ public class PreprocessorValue extends DataValue {
 	
 	private static final int PREPROCESSED_TOKENS_INDEX = 2;
 	
-	public PreprocessorValue(Object returnInfo, JsonObject jsonObject, List<String> preprocessedTokens) {
-		super(returnInfo, jsonObject);
+	public PreprocessorValue(JsonObject jsonObject, Object returnInfo, List<String> preprocessedTokens) {
+		super(jsonObject, returnInfo);
 		super.add(preprocessedTokens);
 	}
 
@@ -25,11 +25,11 @@ public class PreprocessorValue extends DataValue {
 	
 	@SuppressWarnings("unchecked")
 	public static PreprocessorValue getFromTuple(Tuple tuple) {
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
+		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		List<String> preprocessedTokens = (List<String>) tuple.getValueByField(PREPROCESSED_TOKENS_ATTRIBUTE);
 	
-		return new PreprocessorValue(returnInfo, jsonObject, preprocessedTokens);
+		return new PreprocessorValue(jsonObject, returnInfo, preprocessedTokens);
 	}
 	
 	@SuppressWarnings("unchecked")

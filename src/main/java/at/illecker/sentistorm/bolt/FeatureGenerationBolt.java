@@ -88,8 +88,8 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		POSTaggerValue posTaggerValue = POSTaggerValue.getFromTuple(tuple);
-		Object returnInfo = posTaggerValue.getReturnInfo();
 		JsonObject jsonObject = posTaggerValue.getJsonObject();
+		Object returnInfo = posTaggerValue.getReturnInfo();
 		List<TaggedToken> taggedTokens = posTaggerValue.getTaggedTokens();  
 		
 		// Generate Feature Vector
@@ -100,7 +100,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new FeatureGenerationValue(returnInfo, jsonObject, featureVector));
+		collector.emit(new FeatureGenerationValue(jsonObject, returnInfo, featureVector));
 	}
 
 }

@@ -155,7 +155,7 @@ public class SentiStormTopology {
 
 		LocalCluster cluster = new LocalCluster();
 		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 1; i++) {
 			System.out.println("HALLO: " + drpc.execute("getSentiment",
 					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
 		}

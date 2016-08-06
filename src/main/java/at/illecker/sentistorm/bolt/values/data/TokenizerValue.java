@@ -14,8 +14,8 @@ public class TokenizerValue extends DataValue {
 	
 	private static final int TOKENS_INDEX = 2;
 	
-	public TokenizerValue(Object returnInfo, JsonObject jsonObject, List<String> tokens) {
-		super(returnInfo, jsonObject);
+	public TokenizerValue(JsonObject jsonObject, Object returnInfo, List<String> tokens) {
+		super(jsonObject, returnInfo);
 		super.add(tokens);
 	}
 
@@ -25,11 +25,11 @@ public class TokenizerValue extends DataValue {
 	
 	@SuppressWarnings("unchecked")
 	public static TokenizerValue getFromTuple(Tuple tuple) {
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
+		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		List<String> tokens = (List<String>) tuple.getValueByField(TOKENS_ATTRIBUTE);
 	
-		return new TokenizerValue(returnInfo, jsonObject, tokens);
+		return new TokenizerValue(jsonObject, returnInfo, tokens);
 	}
 	
 	@SuppressWarnings("unchecked")

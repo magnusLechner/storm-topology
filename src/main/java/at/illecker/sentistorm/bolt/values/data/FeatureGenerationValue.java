@@ -14,8 +14,8 @@ public class FeatureGenerationValue extends DataValue {
 	
 	private static final int FEATURE_VECTOR_INDEX = 2;
 	
-	public FeatureGenerationValue(Object returnInfo, JsonObject jsonObject, Map<Integer, Double> featureVector) {
-		super(returnInfo, jsonObject);
+	public FeatureGenerationValue(JsonObject jsonObject, Object returnInfo, Map<Integer, Double> featureVector) {
+		super(jsonObject, returnInfo);
 		super.add(featureVector);
 	}
 	
@@ -25,11 +25,11 @@ public class FeatureGenerationValue extends DataValue {
 	
 	@SuppressWarnings("unchecked")
 	public static FeatureGenerationValue getFromTuple(Tuple tuple) {
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
+		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		Map<Integer, Double> featureVector = (Map<Integer, Double>) tuple.getValueByField(FEATURE_VECTOR_ATTRIBUTE);
 	
-		return new FeatureGenerationValue(returnInfo, jsonObject, featureVector);
+		return new FeatureGenerationValue(jsonObject, returnInfo, featureVector);
 	}
 	
 	@SuppressWarnings("unchecked")

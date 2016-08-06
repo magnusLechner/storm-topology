@@ -23,9 +23,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,13 +60,12 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		m_preprocessor = Preprocessor.getInstance();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		TokenizerValue tokenizerBoltValue = TokenizerValue.getFromTuple(tuple);
 		
-		Object returnInfo = tokenizerBoltValue.getReturnInfo();
 		JsonObject jsonObject = tokenizerBoltValue.getJsonObject();
+		Object returnInfo = tokenizerBoltValue.getReturnInfo();
 		List<String> tokens = (List<String>) tokenizerBoltValue.getTokens();
 
 		// Preprocess
@@ -79,7 +76,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new PreprocessorValue(returnInfo, jsonObject, preprocessedTokens));
+		collector.emit(new PreprocessorValue(jsonObject, returnInfo, preprocessedTokens));
 	}
 
 }

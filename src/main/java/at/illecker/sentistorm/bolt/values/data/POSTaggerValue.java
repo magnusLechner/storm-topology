@@ -16,8 +16,8 @@ public class POSTaggerValue extends DataValue {
 	
 	private static final int TAGGED_TOKENS_INDEX = 2;
 	
-	public POSTaggerValue(Object returnInfo, JsonObject jsonObject, List<TaggedToken> taggedTokens) {
-		super(returnInfo, jsonObject);
+	public POSTaggerValue(JsonObject jsonObject, Object returnInfo, List<TaggedToken> taggedTokens) {
+		super(jsonObject, returnInfo);
 		super.add(taggedTokens);
 	}
 	
@@ -27,11 +27,11 @@ public class POSTaggerValue extends DataValue {
 	
 	@SuppressWarnings("unchecked")
 	public static POSTaggerValue getFromTuple(Tuple tuple) {
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
+		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		List<TaggedToken> taggedTokens = (List<TaggedToken>) tuple.getValueByField(TAGGED_TOKENS_ATTRIBUTE);
 	
-		return new POSTaggerValue(returnInfo, jsonObject, taggedTokens);
+		return new POSTaggerValue(jsonObject, returnInfo, taggedTokens);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -69,17 +69,12 @@ public class JSONBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		// String json = tuple.getStringByField("json");
-		String json = tuple.getString(0);
+		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
-		
-		LOG.info("FIRST ARG: " + tuple.getString(0));
-		LOG.info("SECOND ARG: " + tuple.getValue(0).toString());
-		LOG.info("THIRD ARG: " + tuple.getValue(1));
 
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+		JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
 		JsonElement user = jsonObject.get("user");
 		JsonElement channel = jsonObject.get("channel");
 		JsonElement timestamp = jsonObject.get("timeStamp");
@@ -89,7 +84,7 @@ public class JSONBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(PIPELINE_STREAM, new JsonValue(returnInfo, jsonObject));
+		collector.emit(PIPELINE_STREAM, new JsonValue(jsonObject, returnInfo));
 		// Statistic
 		collector.emit(START_STATISTIC_STREAM,
 				new Values(user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(),
