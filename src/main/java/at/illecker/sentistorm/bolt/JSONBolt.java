@@ -33,7 +33,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import at.illecker.sentistorm.bolt.values.data.JsonValue;
+import at.illecker.sentistorm.bolt.values.data.JsonData;
 
 public class JSONBolt extends BaseBasicBolt {
 	public static final String ID = "json-bolt";
@@ -50,7 +50,7 @@ public class JSONBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declareStream(PIPELINE_STREAM, JsonValue.getSchema());
+		declarer.declareStream(PIPELINE_STREAM, JsonData.getSchema());
 		declarer.declareStream(START_STATISTIC_STREAM, new Fields("id", "json-timestamp", "topology-timestamp"));
 	}
 
@@ -71,7 +71,7 @@ public class JSONBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
-
+		
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
@@ -84,7 +84,7 @@ public class JSONBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(PIPELINE_STREAM, new JsonValue(jsonObject, returnInfo));
+		collector.emit(PIPELINE_STREAM, new JsonData(jsonObject, returnInfo));
 		// Statistic
 		collector.emit(START_STATISTIC_STREAM,
 				new Values(user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(),

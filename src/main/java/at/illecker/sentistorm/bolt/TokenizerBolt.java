@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.JsonValue;
-import at.illecker.sentistorm.bolt.values.data.TokenizerValue;
+import at.illecker.sentistorm.bolt.values.data.JsonData;
+import at.illecker.sentistorm.bolt.values.data.TokenizerData;
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
@@ -43,7 +43,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(TokenizerValue.getSchema());
+		declarer.declare(TokenizerData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -59,7 +59,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		JsonValue jsonBoltValue = JsonValue.getFromTuple(tuple);
+		JsonData jsonBoltValue = JsonData.getFromTuple(tuple);
 		Object returnInfo = jsonBoltValue.getReturnInfo();
 		JsonObject jsonObject = jsonBoltValue.getJsonObject();
 		String msg = jsonObject.get("msg").getAsString();
@@ -69,9 +69,9 @@ public class TokenizerBolt extends BaseBasicBolt {
 		if (m_logging) {
 			LOG.info("Tweet: \"" + msg + "\" Tokenized: " + tokens + "  json: " + jsonObject.toString());
 		}
-
+		
 		// Emit new tuples
-		collector.emit(new TokenizerValue(jsonObject, returnInfo, tokens));
+		collector.emit(new TokenizerData(jsonObject, returnInfo, tokens));
 	}
 
 }

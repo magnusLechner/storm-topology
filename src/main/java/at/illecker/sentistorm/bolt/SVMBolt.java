@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.FeatureGenerationValue;
-import at.illecker.sentistorm.bolt.values.data.SVMValue;
+import at.illecker.sentistorm.bolt.values.data.FeatureGenerationData;
+import at.illecker.sentistorm.bolt.values.data.SVMData;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.SentimentClass;
@@ -60,7 +60,7 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declareStream("pipeline-stream", SVMValue.getSchema());
+		declarer.declareStream("pipeline-stream", SVMData.getSchema());
 		declarer.declareStream("end-statistic-stream", new Fields("id", "topology-timestamp"));
 	}
 
@@ -87,7 +87,7 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		FeatureGenerationValue featureGenerationValue = FeatureGenerationValue.getFromTuple(tuple);
+		FeatureGenerationData featureGenerationValue = FeatureGenerationData.getFromTuple(tuple);
 		Object returnInfo = featureGenerationValue.getReturnInfo();
 		JsonObject jsonObject = featureGenerationValue.getJsonObject();
 		Map<Integer, Double> featureVector = featureGenerationValue.getFeatureVector();
@@ -119,7 +119,8 @@ public class SVMBolt extends BaseBasicBolt {
 
 		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-		collector.emit(PIPELINE_STREAM, new SVMValue(jsonObject, returnInfo));
+		// Pipeline result - json must be a string
+		collector.emit(PIPELINE_STREAM, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
 		// Statistic
 		collector.emit(END_STATISTIC_STREAM, new Values(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));

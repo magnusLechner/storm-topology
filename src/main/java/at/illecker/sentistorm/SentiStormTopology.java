@@ -45,10 +45,6 @@ import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerialize
 public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 
-	// storm jar
-	// ~/workspace/storm-topology/target/storm_sentiment_analysis-0.0.1-SNAPSHOT-jar-with-dependencies.jar
-	// at/illecker/sentistorm/SentiStormTopology
-
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
@@ -68,11 +64,10 @@ public class SentiStormTopology {
 		// IRichSpout spout = new DatasetJSONSpout();
 		// String spoutID = DatasetJSONSpout.ID;
 
-		//TODO
-		LocalDRPC drpc = new LocalDRPC();
-		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
+//		LocalDRPC drpc = new LocalDRPC();
+//		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
 
-		// IRichSpout spout = new DRPCSpout("getSentiment");
+		 IRichSpout spout = new DRPCSpout("getSentiment");
 		String spoutID = "DRPCSpout";
 
 		// Create Bolts
@@ -153,17 +148,16 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		LocalCluster cluster = new LocalCluster();
-		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-		for (int i = 0; i < 1; i++) {
-			System.out.println("HALLO: " + drpc.execute("getSentiment",
-					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
-		}
-		cluster.shutdown();
-		drpc.shutdown();
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+//		for (int i = 0; i < 1; i++) {
+//			System.out.println("HALLO: " + drpc.execute("getSentiment",
+//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
+//		}
+//		cluster.shutdown();
+//		drpc.shutdown();
 
-		//TODO
-//		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);

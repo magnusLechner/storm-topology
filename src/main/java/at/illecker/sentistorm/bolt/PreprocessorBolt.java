@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.PreprocessorValue;
-import at.illecker.sentistorm.bolt.values.data.TokenizerValue;
+import at.illecker.sentistorm.bolt.values.data.PreprocessorData;
+import at.illecker.sentistorm.bolt.values.data.TokenizerData;
 import at.illecker.sentistorm.components.Preprocessor;
 
 public class PreprocessorBolt extends BaseBasicBolt {
@@ -44,7 +44,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(PreprocessorValue.getSchema());
+		declarer.declare(PreprocessorData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -62,7 +62,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		TokenizerValue tokenizerBoltValue = TokenizerValue.getFromTuple(tuple);
+		TokenizerData tokenizerBoltValue = TokenizerData.getFromTuple(tuple);
 		
 		JsonObject jsonObject = tokenizerBoltValue.getJsonObject();
 		Object returnInfo = tokenizerBoltValue.getReturnInfo();
@@ -76,7 +76,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new PreprocessorValue(jsonObject, returnInfo, preprocessedTokens));
+		collector.emit(new PreprocessorData(jsonObject, returnInfo, preprocessedTokens));
 	}
 
 }
