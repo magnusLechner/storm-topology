@@ -28,9 +28,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +37,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.FeatureGenerationData;
 import at.illecker.sentistorm.bolt.values.data.SVMData;
+import at.illecker.sentistorm.bolt.values.statistic.SVMStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.SentimentClass;
@@ -52,7 +51,7 @@ public class SVMBolt extends BaseBasicBolt {
 	private static final Logger LOG = LoggerFactory.getLogger(SVMBolt.class);
 
 	public static final String PIPELINE_STREAM = "pipeline-stream";
-	public static final String END_STATISTIC_STREAM = "end-statistic-stream";
+	public static final String SVM_BOLT_STATISTIC_STREAM = "svm-bolt-statistic-stream";
 
 	private boolean m_logging = false;
 	private Dataset m_dataset;
@@ -60,8 +59,8 @@ public class SVMBolt extends BaseBasicBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declareStream("pipeline-stream", SVMData.getSchema());
-		declarer.declareStream("end-statistic-stream", new Fields("id", "topology-timestamp"));
+		declarer.declareStream(PIPELINE_STREAM, SVMData.getSchema());
+		declarer.declareStream(SVM_BOLT_STATISTIC_STREAM, SVMStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -117,12 +116,14 @@ public class SVMBolt extends BaseBasicBolt {
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 
-		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
+		// String topologyTimestamp =
+		// String.valueOf(Calendar.getInstance().getTimeInMillis());
+		long topologyTimestamp = Calendar.getInstance().getTimeInMillis();
 
 		// Pipeline result - json must be a string
 		collector.emit(PIPELINE_STREAM, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
 		// Statistic
-		collector.emit(END_STATISTIC_STREAM, new Values(
+		collector.emit(SVM_BOLT_STATISTIC_STREAM, new SVMStatistic(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
 	}
 

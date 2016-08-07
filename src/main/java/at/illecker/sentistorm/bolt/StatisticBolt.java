@@ -1,52 +1,58 @@
 package at.illecker.sentistorm.bolt;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.storm.state.KeyValueState;
+import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
+import org.apache.storm.topology.base.BaseStatefulBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.OverallStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.SVMStatistic;
 import at.illecker.sentistorm.commons.TopologyRawStatistic;
 
-public class StatisticBolt extends BaseBasicBolt {
+public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object>> {
 	public static final String ID = "statistic";
 	public static final String CONF_LOGGING = ID + ".logging";
 	public static final String CONFIG_INTERVAL = ID + ".interval";
 	private static final long serialVersionUID = -1118183211053643981L;
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticBolt.class);
 	private boolean m_logging = false;
-	
-	public static final String RESULT_STATISTIC_STREAM = "result-statistic-stream";
-	public static final String START_STATISTIC_STREAM = "start-statistic-stream";
-	public static final String END_STATISTIC_STREAM = "end-statistic-stream";
+
+	private static final String PROCESSING_TUPELS = "processing-tupels";
+	private static final String CYCLE_TIMES = "cycle-time";
 
 	private long last;
 	private long interval;
-	private List<Long> cycleTimes;
-	private Map<String, String> timestamps;
+	private OutputCollector collector;
+	private KeyValueState<String, Object> state;
+
+	@Override
+	public void initState(KeyValueState<String, Object> state) {
+		state.put(CYCLE_TIMES, new ArrayList<Long>());
+		state.put(PROCESSING_TUPELS, new HashMap<String, Long>());
+	}
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("statistic-json"));
+		declarer.declare(OverallStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void prepare(Map config, TopologyContext context) {
-		timestamps = new HashMap<String, String>();
-		cycleTimes = new ArrayList<Long>();
+	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 
-		interval = (Long) config.get(CONFIG_INTERVAL);
-		last = System.currentTimeMillis();
+		this.collector = collector;
+		this.interval = (Long) config.get(CONFIG_INTERVAL);
+		this.last = System.currentTimeMillis();
 
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -57,21 +63,23 @@ public class StatisticBolt extends BaseBasicBolt {
 	}
 
 	@Override
-	public void execute(Tuple tuple, BasicOutputCollector collector) {
+	public void execute(Tuple tuple) {
 		String sourceID = tuple.getSourceComponent();
-		String id = (String) tuple.getValue(0);
-		if (sourceID.startsWith(START_STATISTIC_STREAM)) {
-			timestamps.put(id, (String) tuple.getValue(2));
-		} else if (sourceID.startsWith(END_STATISTIC_STREAM)) {
-			cycleTimes.add((Long) tuple.getValue(1));
+		if (sourceID.startsWith(JsonBolt.JSON_BOLT_STATISTIC_STREAM)) {
+			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
+			addProcessingTupel(jsonStatistic.getID(), jsonStatistic.getTimestamp());
+		} else if (sourceID.startsWith(SVMBolt.SVM_BOLT_STATISTIC_STREAM)) {
 			// long endTimestamp = Calendar.getInstance().getTimeInMillis();
-			timestamps.remove(id);
+			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
+			long startTimestamp = getStartTime(svmStatistic.getID());
+			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
+			removeProcessingTupel(svmStatistic.getID());
 
 			final long current = System.currentTimeMillis();
-
 			if (current - last >= interval) {
-				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(cycleTimes);
-				collector.emit(RESULT_STATISTIC_STREAM, rawStatistic);
+				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(getProcessingTupelCount(),
+						getCycleTimes());
+				collector.emit(rawStatistic);
 				clear();
 				last = current;
 			}
@@ -83,7 +91,49 @@ public class StatisticBolt extends BaseBasicBolt {
 	}
 
 	private void clear() {
-		cycleTimes = new ArrayList<Long>();
+		clearCycleTimes();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void removeProcessingTupel(String id) {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		processingTupels.remove(id);
+		state.put(PROCESSING_TUPELS, processingTupels);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addProcessingTupel(String id, Long timestamp) {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		processingTupels.put(id, timestamp);
+		state.put(PROCESSING_TUPELS, processingTupels);
+	}
+
+	@SuppressWarnings("unchecked")
+	private int getProcessingTupelCount() {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		return processingTupels.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addCycleTime(Long cycleTime) {
+		List<Long> cycleTimes = (List<Long>) state.get(CYCLE_TIMES);
+		cycleTimes.add(cycleTime);
+		state.put(CYCLE_TIMES, cycleTimes);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Long getStartTime(String id) {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		return processingTupels.get(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Long> getCycleTimes() {
+		return (List<Long>) state.get(CYCLE_TIMES);
+	}
+
+	private void clearCycleTimes() {
+		state.put(CYCLE_TIMES, new ArrayList<Long>());
 	}
 
 }

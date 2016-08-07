@@ -29,7 +29,7 @@ import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
 
 import at.illecker.sentistorm.bolt.FeatureGenerationBolt;
-import at.illecker.sentistorm.bolt.JSONBolt;
+import at.illecker.sentistorm.bolt.JsonBolt;
 import at.illecker.sentistorm.bolt.POSTaggerBolt;
 import at.illecker.sentistorm.bolt.PreprocessorBolt;
 import at.illecker.sentistorm.bolt.SVMBolt;
@@ -71,7 +71,7 @@ public class SentiStormTopology {
 		String spoutID = "DRPCSpout";
 
 		// Create Bolts
-		JSONBolt jsonBolt = new JSONBolt();
+		JsonBolt jsonBolt = new JsonBolt();
 		TokenizerBolt tokenizerBolt = new TokenizerBolt();
 		PreprocessorBolt preprocessorBolt = new PreprocessorBolt();
 		POSTaggerBolt posTaggerBolt = new POSTaggerBolt();
@@ -89,12 +89,12 @@ public class SentiStormTopology {
 		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
 		// Set Spout --> JSONBolt
-		builder.setBolt(JSONBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
+		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
 				.shuffleGrouping(spoutID);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-				.shuffleGrouping(JSONBolt.ID, JSONBolt.PIPELINE_STREAM);
+				.shuffleGrouping(JsonBolt.ID, JsonBolt.PIPELINE_STREAM);
 
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
@@ -117,9 +117,10 @@ public class SentiStormTopology {
 		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
+		//TODO
 //		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-//				.shuffleGrouping(JSONBolt.ID, JSONBolt.START_STATISTIC_STREAM)
-//				.shuffleGrouping(SVMBolt.ID, SVMBolt.END_STATISTIC_STREAM);
+//				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+//				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -135,7 +136,7 @@ public class SentiStormTopology {
 			conf.put(Config.SUPERVISOR_CHILDOPTS, Configuration.get("sentistorm.supervisor.childopts"));
 		}
 
-		conf.put(JSONBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.json.logging", false));
+		conf.put(JsonBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.json.logging", false));
 		conf.put(TokenizerBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.tokenizer.logging", false));
 		conf.put(PreprocessorBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.preprocessor.logging", false));
 		conf.put(POSTaggerBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.postagger.logging", false));

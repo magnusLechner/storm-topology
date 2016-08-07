@@ -23,9 +23,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseBasicBolt;
-import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +32,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import at.illecker.sentistorm.bolt.values.data.JsonData;
+import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
 
-public class JSONBolt extends BaseBasicBolt {
+public class JsonBolt extends BaseBasicBolt {
 	public static final String ID = "json-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -8847712312925641497L;
-	private static final Logger LOG = LoggerFactory.getLogger(JSONBolt.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JsonBolt.class);
 
 	public static final String PIPELINE_STREAM = "pipeline-stream";
-	public static final String START_STATISTIC_STREAM = "start-statistic-stream";
+	public static final String JSON_BOLT_STATISTIC_STREAM = "json-bolt-statistic-stream";
 
 	private boolean m_logging = false;
 	private JsonParser jsonParser;
@@ -51,7 +50,7 @@ public class JSONBolt extends BaseBasicBolt {
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
 		declarer.declareStream(PIPELINE_STREAM, JsonData.getSchema());
-		declarer.declareStream(START_STATISTIC_STREAM, new Fields("id", "json-timestamp", "topology-timestamp"));
+		declarer.declareStream(JSON_BOLT_STATISTIC_STREAM, JsonStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -71,8 +70,10 @@ public class JSONBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
-		
-		String topologyTimestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
+
+		// String topologyTimestamp =
+		// String.valueOf(Calendar.getInstance().getTimeInMillis());
+		long topologyTimestamp = Calendar.getInstance().getTimeInMillis();
 
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
 		JsonElement user = jsonObject.get("user");
@@ -86,9 +87,8 @@ public class JSONBolt extends BaseBasicBolt {
 		// Emit new tuples
 		collector.emit(PIPELINE_STREAM, new JsonData(jsonObject, returnInfo));
 		// Statistic
-		collector.emit(START_STATISTIC_STREAM,
-				new Values(user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(),
-						timestamp.getAsString(), topologyTimestamp));
+		collector.emit(JSON_BOLT_STATISTIC_STREAM, new JsonStatistic(
+				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
 	}
 
 }
