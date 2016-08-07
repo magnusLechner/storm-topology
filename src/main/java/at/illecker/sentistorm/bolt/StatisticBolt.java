@@ -22,7 +22,7 @@ import at.illecker.sentistorm.commons.TopologyRawStatistic;
 public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object>> {
 	public static final String ID = "statistic";
 	public static final String CONF_LOGGING = ID + ".logging";
-	public static final String CONFIG_INTERVAL = ID + ".interval";
+	public static final String CONF_INTERVAL = ID + ".interval";
 	private static final long serialVersionUID = -1118183211053643981L;
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticBolt.class);
 	private boolean m_logging = false;
@@ -51,7 +51,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 
 		this.collector = collector;
-		this.interval = (Long) config.get(CONFIG_INTERVAL);
+		this.interval = (Long) config.get(CONF_INTERVAL);
 		this.last = System.currentTimeMillis();
 
 		// Optional set logging
@@ -79,9 +79,9 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			if (current - last >= interval) {
 				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(getProcessingTupelCount(),
 						getCycleTimes());
-				collector.emit(rawStatistic);
+				collector.emit(new OverallStatistic(rawStatistic));
 				clear();
-				last = current;
+				last = current;				
 			}
 		}
 

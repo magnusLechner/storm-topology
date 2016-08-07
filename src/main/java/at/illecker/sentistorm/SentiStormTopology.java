@@ -44,7 +44,10 @@ import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerialize
 
 public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
-
+	public static final String DRPC_SPOUT_ID = "DRPCSpoutID";
+	public static final String DRPC_FUNCTION_CALL = "getSentiment";
+	public static final String RETURN_RESULT_BOLT_ID = "returnResultBoltID";
+	
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
@@ -64,11 +67,11 @@ public class SentiStormTopology {
 		// IRichSpout spout = new DatasetJSONSpout();
 		// String spoutID = DatasetJSONSpout.ID;
 
-//		LocalDRPC drpc = new LocalDRPC();
-//		IRichSpout spout = new DRPCSpout("getSentiment", drpc);
+		LocalDRPC drpc = new LocalDRPC();
+		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-		 IRichSpout spout = new DRPCSpout("getSentiment");
-		String spoutID = "DRPCSpout";
+//		 IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		String spoutID = DRPC_SPOUT_ID;
 
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
@@ -78,8 +81,7 @@ public class SentiStormTopology {
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
 		ReturnResults returnBolt = new ReturnResults();
-		String returnBoltID = "return";
-
+		String returnBoltID = RETURN_RESULT_BOLT_ID;
 		StatisticBolt statisticBolt = new StatisticBolt();
 
 		// Create Topology
@@ -117,10 +119,9 @@ public class SentiStormTopology {
 		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
-		//TODO
-//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-//				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-//				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -144,21 +145,24 @@ public class SentiStormTopology {
 		conf.put(FeatureGenerationBolt.CONF_LOGGING,
 				Configuration.get("sentistorm.bolt.featuregeneration.logging", false));
 		conf.put(SVMBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.svm.logging", false));
+		conf.put(StatisticBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statistic.logging", false));
 
+		conf.put(StatisticBolt.CONF_INTERVAL, Configuration.get("sentistorm.bolt.statistic.interval", 500));
+		
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-//		for (int i = 0; i < 1; i++) {
-//			System.out.println("HALLO: " + drpc.execute("getSentiment",
-//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
-//		}
-//		cluster.shutdown();
-//		drpc.shutdown();
+		LocalCluster cluster = new LocalCluster();
+		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+		for (int i = 0; i < 1000; i++) {
+			System.out.println("HALLO: " + drpc.execute("getSentiment",
+					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
+		}
+		cluster.shutdown();
+		drpc.shutdown();
 
-		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+//		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);
