@@ -27,6 +27,15 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	
 	private static final String SOCKET_IO_IDENTIFIER = "sendSentimentStormStatistic";
 	
+	//TODO
+	private static final String TOPOLOGY = "topology";
+	private static final String CYCLE = "cycle";
+	private static final String COUNT = "count";
+	private static final String MIN = "min";
+	private static final String MAX = "max";
+	private static final String AVG = "avg";
+	private static final String STDDEV = "stdDev";
+	
 	private OutputCollector collector;
 	private Socket socket;
 	
@@ -73,6 +82,11 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	public JsonObject statisticToJson(TopologyStatistic statistic) {
 		JsonObject obj = new JsonObject();
 		//TODO
+        final JsonObject cycleJsonObject = new JsonObject();
+//        cycleJsonObject.addProperty(MAX, check(cycleValues.getMax()));
+//        cycleJsonObject.addProperty(MEAN, check(cycleValues.getMean()));
+//        cycleJsonObject.addProperty(MIN, check(cycleValues.getMin()));
+//        cycleJsonObject.addProperty(DRV, check(cycleValues.getDrv()));
 		return obj;
 	}
 	
