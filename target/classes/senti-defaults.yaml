@@ -317,3 +317,6 @@ sentistorm.bolt.return.parallelism: 1
 sentistorm.bolt.statistic.parallelism: 1
 sentistorm.bolt.statistic.logging: false
 sentistorm.bolt.statistic.interval: 500
+
+sentistorm.bolt.statisticJson.parallelism: 1
+sentistorm.bolt.statisticJson.logging: false

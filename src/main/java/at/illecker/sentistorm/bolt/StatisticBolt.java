@@ -15,9 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
-import at.illecker.sentistorm.bolt.values.statistic.OverallStatistic;
 import at.illecker.sentistorm.bolt.values.statistic.SVMStatistic;
-import at.illecker.sentistorm.commons.TopologyRawStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.TopologyRawStatistic;
 
 public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object>> {
 	public static final String ID = "statistic";
@@ -44,7 +43,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(OverallStatistic.getSchema());
+		declarer.declare(TopologyRawStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -52,7 +51,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 		this.collector = collector;
 		this.interval = (Long) config.get(CONF_INTERVAL);
-//		this.interval = 50L;
+		// this.interval = 50L;
 
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -60,39 +59,37 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		} else {
 			m_logging = false;
 		}
-		
+
 		this.last = System.currentTimeMillis();
 	}
 
 	@Override
 	public void execute(Tuple tuple) {
 		String sourceID = tuple.getSourceComponent();
-		
+
 		if (sourceID.startsWith(JsonBolt.ID)) {
 			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
-			addProcessingTupel(jsonStatistic.getID(), jsonStatistic.getTimestamp());
+			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
 		} else if (sourceID.startsWith(SVMBolt.ID)) {
 			// long endTimestamp = Calendar.getInstance().getTimeInMillis();
 			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
 			long startTimestamp = getStartTime(svmStatistic.getID());
 			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
-			removeProcessingTupel(svmStatistic.getID());
+			removeProcessingTuple(svmStatistic.getID());
 
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
-				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(getProcessingTupelCount(),
-						getCycleTimes());
-				
-				int a  = 0; 
-				for(int i = 0; i < rawStatistic.getCycleTimes().size(); i++) {
-					a += rawStatistic.getCycleTimes().get(i);
+
+				int a = 0;
+				for (int i = 0; i < getCycleTimes().size(); i++) {
+					a += getCycleTimes().get(i);
 				}
-				
-				LOG.info("HELLO: " + rawStatistic.getCycleTimes() + "    a: " + a  + "  " + rawStatistic.getTupelInTupologyCount());
-				
-				collector.emit(tuple, new OverallStatistic(rawStatistic));
+
+				LOG.info("HELLO: " + getCycleTimes() + "    a: " + a + "  " + getProcessingTuplesCount());
+
+				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
 				clear();
-				last = current;				
+				last = current;
 				collector.ack(tuple);
 			}
 		}
@@ -107,21 +104,21 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	}
 
 	@SuppressWarnings("unchecked")
-	private void removeProcessingTupel(String id) {
+	private void removeProcessingTuple(String id) {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		processingTupels.remove(id);
 		state.put(PROCESSING_TUPELS, processingTupels);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addProcessingTupel(String id, Long timestamp) {
+	private void addProcessingTuple(String id, Long timestamp) {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		processingTupels.put(id, timestamp);
 		state.put(PROCESSING_TUPELS, processingTupels);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private int getProcessingTupelCount() {
+	private int getProcessingTuplesCount() {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		return processingTupels.size();
 	}

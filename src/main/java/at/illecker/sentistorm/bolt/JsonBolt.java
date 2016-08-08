@@ -47,7 +47,6 @@ public class JsonBolt extends BaseRichBolt {
 	private boolean m_logging = false;
 	private JsonParser jsonParser;
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
 		declarer.declareStream(PIPELINE_STREAM, JsonData.getSchema());
@@ -55,7 +54,6 @@ public class JsonBolt extends BaseRichBolt {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Override
 	public void prepare(Map config, TopologyContext context,  OutputCollector collector) {
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -68,7 +66,6 @@ public class JsonBolt extends BaseRichBolt {
 		jsonParser = new JsonParser();
 	}
 
-	@Override
 	public void execute(Tuple tuple) {
 		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
