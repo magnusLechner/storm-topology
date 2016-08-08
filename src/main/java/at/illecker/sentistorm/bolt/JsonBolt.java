@@ -19,10 +19,10 @@ package at.illecker.sentistorm.bolt;
 import java.util.Calendar;
 import java.util.Map;
 
+import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseBasicBolt;
+import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import com.google.gson.JsonParser;
 import at.illecker.sentistorm.bolt.values.data.JsonData;
 import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
 
-public class JsonBolt extends BaseBasicBolt {
+public class JsonBolt extends BaseRichBolt {
 	public static final String ID = "json-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -8847712312925641497L;
@@ -43,6 +43,7 @@ public class JsonBolt extends BaseBasicBolt {
 	public static final String PIPELINE_STREAM = "pipeline-stream";
 	public static final String JSON_BOLT_STATISTIC_STREAM = "json-bolt-statistic-stream";
 
+	private OutputCollector collector;
 	private boolean m_logging = false;
 	private JsonParser jsonParser;
 
@@ -55,7 +56,7 @@ public class JsonBolt extends BaseBasicBolt {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void prepare(Map config, TopologyContext context) {
+	public void prepare(Map config, TopologyContext context,  OutputCollector collector) {
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
@@ -63,11 +64,12 @@ public class JsonBolt extends BaseBasicBolt {
 			m_logging = false;
 		}
 
+		this.collector = collector;
 		jsonParser = new JsonParser();
 	}
 
 	@Override
-	public void execute(Tuple tuple, BasicOutputCollector collector) {
+	public void execute(Tuple tuple) {
 		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
 
@@ -85,10 +87,11 @@ public class JsonBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(PIPELINE_STREAM, new JsonData(jsonObject, returnInfo));
+		collector.emit(PIPELINE_STREAM, tuple, new JsonData(jsonObject, returnInfo));
 		// Statistic
-		collector.emit(JSON_BOLT_STATISTIC_STREAM, new JsonStatistic(
+		collector.emit(JSON_BOLT_STATISTIC_STREAM, tuple, new JsonStatistic(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
+		collector.ack(tuple);
 	}
 
 }

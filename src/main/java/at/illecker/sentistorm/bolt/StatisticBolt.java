@@ -37,8 +37,9 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 
 	@Override
 	public void initState(KeyValueState<String, Object> state) {
-		state.put(CYCLE_TIMES, new ArrayList<Long>());
-		state.put(PROCESSING_TUPELS, new HashMap<String, Long>());
+		this.state = state;
+		this.state.put(CYCLE_TIMES, new ArrayList<Long>());
+		this.state.put(PROCESSING_TUPELS, new HashMap<String, Long>());
 	}
 
 	@Override
@@ -49,10 +50,9 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
-
 		this.collector = collector;
 		this.interval = (Long) config.get(CONF_INTERVAL);
-		this.last = System.currentTimeMillis();
+//		this.interval = 50L;
 
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -60,15 +60,18 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		} else {
 			m_logging = false;
 		}
+		
+		this.last = System.currentTimeMillis();
 	}
 
 	@Override
 	public void execute(Tuple tuple) {
 		String sourceID = tuple.getSourceComponent();
-		if (sourceID.startsWith(JsonBolt.JSON_BOLT_STATISTIC_STREAM)) {
+		
+		if (sourceID.startsWith(JsonBolt.ID)) {
 			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
 			addProcessingTupel(jsonStatistic.getID(), jsonStatistic.getTimestamp());
-		} else if (sourceID.startsWith(SVMBolt.SVM_BOLT_STATISTIC_STREAM)) {
+		} else if (sourceID.startsWith(SVMBolt.ID)) {
 			// long endTimestamp = Calendar.getInstance().getTimeInMillis();
 			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
 			long startTimestamp = getStartTime(svmStatistic.getID());
@@ -79,9 +82,18 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			if (current - last >= interval) {
 				TopologyRawStatistic rawStatistic = new TopologyRawStatistic(getProcessingTupelCount(),
 						getCycleTimes());
-				collector.emit(new OverallStatistic(rawStatistic));
+				
+				int a  = 0; 
+				for(int i = 0; i < rawStatistic.getCycleTimes().size(); i++) {
+					a += rawStatistic.getCycleTimes().get(i);
+				}
+				
+				LOG.info("HELLO: " + rawStatistic.getCycleTimes() + "    a: " + a  + "  " + rawStatistic.getTupelInTupologyCount());
+				
+				collector.emit(tuple, new OverallStatistic(rawStatistic));
 				clear();
 				last = current;				
+				collector.ack(tuple);
 			}
 		}
 
@@ -107,7 +119,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		processingTupels.put(id, timestamp);
 		state.put(PROCESSING_TUPELS, processingTupels);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private int getProcessingTupelCount() {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);

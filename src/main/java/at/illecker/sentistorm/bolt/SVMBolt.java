@@ -24,10 +24,10 @@ import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
 
+import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseBasicBolt;
+import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ import at.illecker.sentistorm.commons.SentimentClass;
 import at.illecker.sentistorm.commons.svm.SVM;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 
-public class SVMBolt extends BaseBasicBolt {
+public class SVMBolt extends BaseRichBolt {
 	public static final String ID = "support-vector-maschine-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -6790858930924043126L;
@@ -53,25 +53,26 @@ public class SVMBolt extends BaseBasicBolt {
 	public static final String PIPELINE_STREAM = "pipeline-stream";
 	public static final String SVM_BOLT_STATISTIC_STREAM = "svm-bolt-statistic-stream";
 
+	private OutputCollector collector;
 	private boolean m_logging = false;
 	private Dataset m_dataset;
 	private svm_model m_model;
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declareStream(PIPELINE_STREAM, SVMData.getSchema());
 		declarer.declareStream(SVM_BOLT_STATISTIC_STREAM, SVMStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Override
-	public void prepare(Map config, TopologyContext context) {
+	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
 		} else {
 			m_logging = false;
 		}
+		
+		this.collector = collector;
 
 		LOG.info("Loading SVM model...");
 		m_dataset = Configuration.getDataSetTwitch();
@@ -84,8 +85,7 @@ public class SVMBolt extends BaseBasicBolt {
 		}
 	}
 
-	@Override
-	public void execute(Tuple tuple, BasicOutputCollector collector) {
+	public void execute(Tuple tuple) {
 		FeatureGenerationData featureGenerationValue = FeatureGenerationData.getFromTuple(tuple);
 		Object returnInfo = featureGenerationValue.getReturnInfo();
 		JsonObject jsonObject = featureGenerationValue.getJsonObject();
@@ -121,10 +121,11 @@ public class SVMBolt extends BaseBasicBolt {
 		long topologyTimestamp = Calendar.getInstance().getTimeInMillis();
 
 		// Pipeline result - json must be a string
-		collector.emit(PIPELINE_STREAM, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
+		collector.emit(PIPELINE_STREAM, tuple, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
 		// Statistic
-		collector.emit(SVM_BOLT_STATISTIC_STREAM, new SVMStatistic(
+		collector.emit(SVM_BOLT_STATISTIC_STREAM, tuple, new SVMStatistic(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
+		collector.ack(tuple);
 	}
 
 }
