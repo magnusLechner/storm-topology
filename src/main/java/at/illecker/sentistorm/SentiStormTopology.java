@@ -34,6 +34,7 @@ import at.illecker.sentistorm.bolt.POSTaggerBolt;
 import at.illecker.sentistorm.bolt.PreprocessorBolt;
 import at.illecker.sentistorm.bolt.SVMBolt;
 import at.illecker.sentistorm.bolt.StatisticBolt;
+import at.illecker.sentistorm.bolt.StatisticJsonBolt;
 import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
@@ -47,7 +48,7 @@ public class SentiStormTopology {
 	public static final String DRPC_SPOUT_ID = "DRPCSpoutID";
 	public static final String DRPC_FUNCTION_CALL = "getSentiment";
 	public static final String RETURN_RESULT_BOLT_ID = "returnResultBoltID";
-	
+
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
@@ -70,7 +71,7 @@ public class SentiStormTopology {
 		LocalDRPC drpc = new LocalDRPC();
 		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-//		 IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
 		String spoutID = DRPC_SPOUT_ID;
 
 		// Create Bolts
@@ -83,6 +84,7 @@ public class SentiStormTopology {
 		ReturnResults returnBolt = new ReturnResults();
 		String returnBoltID = RETURN_RESULT_BOLT_ID;
 		StatisticBolt statisticBolt = new StatisticBolt();
+		StatisticJsonBolt statisticJsonBolt = new StatisticJsonBolt();
 
 		// Create Topology
 		TopologyBuilder builder = new TopologyBuilder();
@@ -119,9 +121,14 @@ public class SentiStormTopology {
 		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
+		// JSONBolt & SVMBolt --> StatisticBolt
 		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
 				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+
+		// StatisticBolt --> StatisticJsonBolt
+		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -148,7 +155,7 @@ public class SentiStormTopology {
 		conf.put(StatisticBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statistic.logging", false));
 
 		conf.put(StatisticBolt.CONF_INTERVAL, Configuration.get("sentistorm.bolt.statistic.interval", 500));
-		
+
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
@@ -162,7 +169,8 @@ public class SentiStormTopology {
 		cluster.shutdown();
 		drpc.shutdown();
 
-//		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+		// StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
+		// builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);

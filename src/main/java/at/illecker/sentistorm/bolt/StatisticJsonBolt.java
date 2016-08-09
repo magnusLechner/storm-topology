@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -30,7 +29,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 	private static final String SOCKET_IO_IDENTIFIER = "sendSentimentStormStatistic";
 
-	// TODO
 	private static final String TOPOLOGY = "topology";
 	private static final String CYCLE = "cycle";
 	private static final String COUNT = "count";
@@ -72,7 +70,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		JsonObject jsonObject = statisticToJson(statistic);
 
 		if (m_logging) {
-			LOG.info(jsonObject.toString());
+			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
 		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
@@ -87,19 +85,24 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	}
 
 	public JsonObject statisticToJson(TopologyStatistic statistic) {
-		JsonObject obj = new JsonObject();
-		// TODO
-		final JsonObject cycleJsonObject = new JsonObject();
-		// cycleJsonObject.addProperty(MAX, check(cycleValues.getMax()));
-		// cycleJsonObject.addProperty(MEAN, check(cycleValues.getMean()));
-		// cycleJsonObject.addProperty(MIN, check(cycleValues.getMin()));
-		// cycleJsonObject.addProperty(DRV, check(cycleValues.getDrv()));
-		return obj;
+		JsonObject cycle = new JsonObject();
+		cycle.addProperty(MIN, statistic.getCycleTimeMin());
+		cycle.addProperty(MAX, statistic.getCycleTimeMax());
+		cycle.addProperty(AVG, statistic.getCycleTimeAvg());
+		cycle.addProperty(STDDEV, statistic.getCycleTimeStdDev());
+
+		JsonObject topology = new JsonObject();
+		topology.addProperty(COUNT, statistic.getProcessingTuplesCount());
+		topology.add(CYCLE, cycle);
+		
+		JsonObject json = new JsonObject();
+		json.add(TOPOLOGY, topology);
+		return json;
 	}
 
 	private double[] calcBasicAggregations(List<Long> values) {
-		if(values.size() == 0) {
-			double[] res = {0.0, 0.0, 0.0, 0.0};
+		if (values.size() == 0) {
+			double[] res = { 0.0, 0.0, 0.0, 0.0 };
 			return res;
 		}
 		double[] tmp = new double[values.size()];
@@ -116,7 +119,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		}
 		double avg = sum / values.size();
 		double stdDev = mathStdDev.evaluate(tmp);
-		double[] res = {min, max, avg, stdDev};
+		double[] res = { min, max, avg, stdDev };
 		return res;
 	}
 }

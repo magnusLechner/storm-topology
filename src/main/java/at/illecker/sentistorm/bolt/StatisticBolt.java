@@ -85,7 +85,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 					a += getCycleTimes().get(i);
 				}
 
-				LOG.info("HELLO: " + getCycleTimes() + "    a: " + a + "  " + getProcessingTuplesCount());
+//				LOG.info("STATISTIC-BOLT: " + getCycleTimes() + "    a: " + a + "  " + getProcessingTuplesCount());
 
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
 				clear();

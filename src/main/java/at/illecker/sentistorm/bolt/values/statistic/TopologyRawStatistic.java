@@ -16,17 +16,20 @@ public class TopologyRawStatistic extends StatisticValue {
 
 	public TopologyRawStatistic(int processingTuplesCount, List<Long> cycleTimes) {
 		super();
-		super.add(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
-		super.add(CYCLE_TIMES_ATTRIBUTE);
+		super.add(PROCESSING_TUPLES_COUNT_INDEX, processingTuplesCount);
+		super.add(CYCLE_TIMES_INDEX, cycleTimes);
 	}
 
 	public static Fields getSchema() {
-		return new Fields(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
+		return new Fields(PROCESSING_TUPLES_COUNT_ATTRIBUTE, CYCLE_TIMES_ATTRIBUTE);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static TopologyRawStatistic getFromTuple(Tuple tuple) {
-		int processingTuplesCount = (int) tuple.getValueByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
+		
+		System.out.println("ASDASD: " + tuple.getValueByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE));
+		
+		int processingTuplesCount = tuple.getIntegerByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
 		List<Long> cycleTimes = (List<Long>) tuple.getValueByField(CYCLE_TIMES_ATTRIBUTE);
 
 		return new TopologyRawStatistic(processingTuplesCount, cycleTimes);

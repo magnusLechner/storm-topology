@@ -19,17 +19,18 @@ public class TopologyStatistic extends StatisticValue {
 	private static final int CYCLE_TIME_STDDEV_INDEX = 4;
 
 	public TopologyStatistic(int processingTuplesCount, double cycleTimeMin, double cycleTimeMax, double cycleTimeAvg,
-			double cycleTimeStdDevF) {
+			double cycleTimeStdDev) {
 		super();
-		super.add(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
-		super.add(CYCLE_TIME_MIN_ATTRIBUTE);
-		super.add(CYCLE_TIME_MAX_ATTRIBUTE);
-		super.add(CYCLE_TIME_AVG_ATTRIBUTE);
-		super.add(CYCLE_TIME_STDDEV_ATTRIBUTE);
+		super.add(PROCESSING_TUPLES_COUNT_INDEX, processingTuplesCount);
+		super.add(CYCLE_TIME_MIN_INDEX, cycleTimeMin);
+		super.add(CYCLE_TIME_MAX_INDEX, cycleTimeMax);
+		super.add(CYCLE_TIME_AVG_INDEX, cycleTimeAvg);
+		super.add(CYCLE_TIME_STDDEV_INDEX, cycleTimeStdDev);
 	}
 
 	public static Fields getSchema() {
-		return new Fields(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
+		return new Fields(PROCESSING_TUPLES_COUNT_ATTRIBUTE, CYCLE_TIME_MIN_ATTRIBUTE, CYCLE_TIME_MAX_ATTRIBUTE,
+				CYCLE_TIME_AVG_ATTRIBUTE, CYCLE_TIME_STDDEV_ATTRIBUTE);
 	}
 
 	public static TopologyStatistic getFromTuple(Tuple tuple) {
@@ -49,15 +50,15 @@ public class TopologyStatistic extends StatisticValue {
 	public double getCycleTimeMin() {
 		return (double) super.get(CYCLE_TIME_MIN_INDEX);
 	}
-	
+
 	public double getCycleTimeMax() {
 		return (double) super.get(CYCLE_TIME_MAX_INDEX);
 	}
-	
+
 	public double getCycleTimeAvg() {
 		return (double) super.get(CYCLE_TIME_AVG_INDEX);
 	}
-	
+
 	public double getCycleTimeStdDev() {
 		return (double) super.get(CYCLE_TIME_STDDEV_INDEX);
 	}
