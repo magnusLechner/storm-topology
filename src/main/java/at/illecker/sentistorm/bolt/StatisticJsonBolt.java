@@ -81,11 +81,11 @@ public class StatisticJsonBolt extends BaseRichBolt {
 //						+ statistic.getCycleTimeAvg() + "  STDDEV: " + statistic.getCycleTimeStdDev());
 //		LOG.info("EMITTED JSON: " + jsonObject.toString());
 		
-		//TODO high delays make graph unreadable
-		if(statistic.getCycleTimeMax() <= 500.0) {
-			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
-		}
-//		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
+//		// high delays make graph unreadable for debugging
+//		if(statistic.getCycleTimeMax() <= 500.0) {
+//			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
+//		}
+		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 
 		collector.ack(tuple);
 	}
