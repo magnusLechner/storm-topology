@@ -26,9 +26,6 @@ public class TopologyRawStatistic extends StatisticValue {
 
 	@SuppressWarnings("unchecked")
 	public static TopologyRawStatistic getFromTuple(Tuple tuple) {
-		
-		System.out.println("ASDASD: " + tuple.getValueByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE));
-		
 		int processingTuplesCount = tuple.getIntegerByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
 		List<Long> cycleTimes = (List<Long>) tuple.getValueByField(CYCLE_TIMES_ATTRIBUTE);
 
@@ -37,6 +34,10 @@ public class TopologyRawStatistic extends StatisticValue {
 
 	public int getProcessingTuplesCount() {
 		return (int) super.get(PROCESSING_TUPLES_COUNT_INDEX);
+	}
+	
+	public int getProcessedTuplesCount() {
+		return (int) getCycleTimes().size();
 	}
 
 	@SuppressWarnings("unchecked")

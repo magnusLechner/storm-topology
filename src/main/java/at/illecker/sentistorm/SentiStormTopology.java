@@ -52,6 +52,9 @@ public class SentiStormTopology {
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
+		//no more storm log-output
+		conf.put(Config.TOPOLOGY_DEBUG, false);
+		
 		// Create Spout
 		// if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
 		// conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,

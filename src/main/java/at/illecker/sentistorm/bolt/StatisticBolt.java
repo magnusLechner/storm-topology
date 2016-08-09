@@ -79,14 +79,6 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
-
-				int a = 0;
-				for (int i = 0; i < getCycleTimes().size(); i++) {
-					a += getCycleTimes().get(i);
-				}
-
-//				LOG.info("STATISTIC-BOLT: " + getCycleTimes() + "    a: " + a + "  " + getProcessingTuplesCount());
-
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
 				clear();
 				last = current;

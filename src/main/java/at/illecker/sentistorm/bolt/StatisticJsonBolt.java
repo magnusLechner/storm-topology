@@ -30,8 +30,9 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	private static final String SOCKET_IO_IDENTIFIER = "sendSentimentStormStatistic";
 
 	private static final String TOPOLOGY = "topology";
+	private static final String PROCESSING_TUPLES_COUNT = "processingTuplesCount";
+	private static final String PROCESSED_TUPLES_COUNT = "processedTuplesCount";
 	private static final String CYCLE = "cycle";
-	private static final String COUNT = "count";
 	private static final String MIN = "min";
 	private static final String MAX = "max";
 	private static final String AVG = "avg";
@@ -73,15 +74,26 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
-		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
+//		LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
+//		LOG.info(
+//				"STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: " + statistic.getProcessedTuplesCount()
+//						+ "  MIN: " + statistic.getCycleTimeMin() + "  MAX: " + statistic.getCycleTimeMax() + "  AVG: "
+//						+ statistic.getCycleTimeAvg() + "  STDDEV: " + statistic.getCycleTimeStdDev());
+//		LOG.info("EMITTED JSON: " + jsonObject.toString());
+		
+		//TODO high delays make graph unreadable
+		if(statistic.getCycleTimeMax() <= 500.0) {
+			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
+		}
+//		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 
 		collector.ack(tuple);
 	}
 
 	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
 		double[] basicCycleAgg = calcBasicAggregations(rawStatistic.getCycleTimes());
-		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), basicCycleAgg[0], basicCycleAgg[1],
-				basicCycleAgg[2], basicCycleAgg[3]);
+		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), rawStatistic.getProcessedTuplesCount(),
+				basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2], basicCycleAgg[3]);
 	}
 
 	public JsonObject statisticToJson(TopologyStatistic statistic) {
@@ -92,9 +104,10 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		cycle.addProperty(STDDEV, statistic.getCycleTimeStdDev());
 
 		JsonObject topology = new JsonObject();
-		topology.addProperty(COUNT, statistic.getProcessingTuplesCount());
+		topology.addProperty(PROCESSING_TUPLES_COUNT, statistic.getProcessingTuplesCount());
+		topology.addProperty(PROCESSED_TUPLES_COUNT, statistic.getProcessedTuplesCount());
 		topology.add(CYCLE, cycle);
-		
+
 		JsonObject json = new JsonObject();
 		json.add(TOPOLOGY, topology);
 		return json;
