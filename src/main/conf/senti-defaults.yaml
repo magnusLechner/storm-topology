@@ -319,5 +319,5 @@ sentistorm.bolt.statistic.parallelism: 1  #only 1 here: contains KeyValueState
 sentistorm.bolt.statistic.logging: false
 sentistorm.bolt.statistic.interval: 1000
 
-sentistorm.bolt.statisticJson.parallelism: 2
+sentistorm.bolt.statisticJson.parallelism: 1
 sentistorm.bolt.statisticJson.logging: false
