@@ -693,8 +693,8 @@ public class SVM {
 
 		Map<String, Double[]> statistics = new LinkedHashMap<String, Double[]>();
 
-		NoPOSSVMBox pipelineBox = null;
-		// POSSVMBox pipelineBox = null;
+//		NoPOSSVMBox pipelineBox = null;
+		POSSVMBox pipelineBox = null;
 
 		try {
 			for (int k = -10; k < iterations; k++) {
@@ -702,13 +702,12 @@ public class SVM {
 				// random split in test and training data
 				SVMPreparation.prepareForCrossValidation();
 
-				NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-						NoPOSCombinedFeatureVectorGenerator.class);
-				pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, true);
-				// FeatureVectorGenerator posFVG =
-				// FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-				// SentimentFeatureVectorGenerator.class);
-				// pipelineBox = new POSSVMBox(dataset, posFVG, nFold, true);
+//				NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+//						NoPOSCombinedFeatureVectorGenerator.class);
+//				pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, true);
+				FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+						SentimentFeatureVectorGenerator.class);
+				pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 				pipelineBox.setName("PipeLine-Box");
 
@@ -963,56 +962,57 @@ public class SVM {
 
 	public static void main(String[] args) throws IOException {
 		Dataset dataset = Configuration.getDataSetTwitch();
-		// Dataset dataSet = Configuration.getDataSetMyTest();
 
 		boolean parameterSearch = false;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 100;
+		int iterations = 1;
 
-		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
-		List<Integer> stepList = new ArrayList<Integer>();
-		List<Integer> testSizeList = new ArrayList<Integer>();
+//		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
+//		List<Integer> stepList = new ArrayList<Integer>();
+//		List<Integer> testSizeList = new ArrayList<Integer>();
+//
+//		startTrainingSizeList.add(50);
+//		startTrainingSizeList.add(100);
+//		startTrainingSizeList.add(100);
+//		startTrainingSizeList.add(100);
+//
+//		stepList.add(50);
+//		stepList.add(50);
+//		stepList.add(50);
+//		stepList.add(50);
+//
+//		testSizeList.add(209);
+//		testSizeList.add(109);
+//		testSizeList.add(209);
+//		testSizeList.add(309);
 
-		startTrainingSizeList.add(50);
-		startTrainingSizeList.add(100);
-		startTrainingSizeList.add(100);
-		startTrainingSizeList.add(100);
+		
+//		 evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
+		
+		//for creating SVM-model with 709 examples
+//		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, 1, 709,
+//				0, 0);
+		
+//		for (int i = 0; i < 6; i++) {
+//			for (int j = 0; j < startTrainingSizeList.size(); j++) {
+//				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
+//						stepList.get(j), testSizeList.get(j));
+//			}
+//		}
+//		svm.EXEC_SERV.shutdown();
 
-		stepList.add(50);
-		stepList.add(50);
-		stepList.add(50);
-		stepList.add(50);
-
-		testSizeList.add(209);
-		testSizeList.add(109);
-		testSizeList.add(209);
-		testSizeList.add(309);
-
-		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-
-		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < startTrainingSizeList.size(); j++) {
-				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
-						stepList.get(j), testSizeList.get(j));
-			}
-		}
-		svm.EXEC_SERV.shutdown();
-
-		// if (featureVectorLevel == 0) {
-		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else if (featureVectorLevel == 1) {
-		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else {
-		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// }
+//		if (featureVectorLevel == 0) {
+//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else if (featureVectorLevel == 1) {
+//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else {
+//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		}
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,

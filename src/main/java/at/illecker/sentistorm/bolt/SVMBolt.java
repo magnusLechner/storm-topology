@@ -106,7 +106,7 @@ public class SVMBolt extends BaseRichBolt {
 
 		JsonElement user = jsonObject.get("user");
 		JsonElement channel = jsonObject.get("channel");
-		JsonElement timestamp = jsonObject.get("timeStamp");
+		JsonElement timestamp = jsonObject.get("timestamp");
 
 		jsonObject.addProperty("predictedSentiment",
 				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());

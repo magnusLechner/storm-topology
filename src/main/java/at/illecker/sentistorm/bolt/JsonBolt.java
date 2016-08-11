@@ -77,7 +77,7 @@ public class JsonBolt extends BaseRichBolt {
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
 		JsonElement user = jsonObject.get("user");
 		JsonElement channel = jsonObject.get("channel");
-		JsonElement timestamp = jsonObject.get("timeStamp");
+		JsonElement timestamp = jsonObject.get("timestamp");
 
 		if (m_logging) {
 			LOG.info("JSON: " + jsonObject.toString());

@@ -47,14 +47,21 @@ public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 	public static final String DRPC_SPOUT_ID = "DRPCSpoutID";
 	public static final String DRPC_FUNCTION_CALL = "getSentiment";
-	public static final String RETURN_RESULT_BOLT_ID = "returnResultBoltID";
+	public static final String RETURN_RESULT_BOLT_ID = "return-result-bolt";
 
 	public static void main(String[] args) throws Exception {
 		Config conf = new Config();
 
-		//no more storm log-output
+		// TODO Things to remember:
+		// - check Configuration class if local path or jar path
+		// - check senti-defaults.yaml if local path or jar path in Twitch
+		// - check if model.ser is there
+		// - check senti-defaults.yaml for parallelism
+		// - check senti-defaults.yaml and storm.yaml for RAM usage
+
+		// no more storm log-output
 		conf.put(Config.TOPOLOGY_DEBUG, false);
-		
+
 		// Create Spout
 		// if (Configuration.get("sentistorm.spout.startup.sleep.ms") != null) {
 		// conf.put(DatasetJSONSpout.CONF_STARTUP_SLEEP_MS,
@@ -71,10 +78,10 @@ public class SentiStormTopology {
 		// IRichSpout spout = new DatasetJSONSpout();
 		// String spoutID = DatasetJSONSpout.ID;
 
-		LocalDRPC drpc = new LocalDRPC();
-		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
+//		LocalDRPC drpc = new LocalDRPC();
+//		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		 IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
 		String spoutID = DRPC_SPOUT_ID;
 
 		// Create Bolts
@@ -163,17 +170,16 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		LocalCluster cluster = new LocalCluster();
-		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-		for (int i = 0; i < 1000; i++) {
-			System.out.println("HALLO: " + drpc.execute("getSentiment",
-					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timeStamp\":\"TheTimeStamp\"}"));
-		}
-		cluster.shutdown();
-		drpc.shutdown();
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+//		for (int i = 0; i < 1000; i++) {
+//			System.out.println("HALLO: " + drpc.execute("getSentiment",
+//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\"TheTimeStamp\"}"));
+//		}
+//		cluster.shutdown();
+//		drpc.shutdown();
 
-		// StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
-		// builder.createTopology());
+		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);

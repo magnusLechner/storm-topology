@@ -85,6 +85,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 //		if(statistic.getCycleTimeMax() <= 500.0) {
 //			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
 //		}
+		
 		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 
 		collector.ack(tuple);

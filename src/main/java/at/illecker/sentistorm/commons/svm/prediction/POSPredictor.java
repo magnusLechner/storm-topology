@@ -47,13 +47,14 @@ public class POSPredictor extends Predictor {
 
 	@Override
 	public List<FeaturedTweet> prepareFeatureTweets(List<Tweet> tweets) {
+		
 		List<FeaturedTweet> featuredTestTweets = new ArrayList<FeaturedTweet>();
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);
 		Preprocessor preprocessor = Preprocessor.getInstance();
 		List<List<String>> preprocessedTweets = preprocessor.preprocessTweets(tokenizedTweets);
 		POSTagger posTagger = POSTagger.getInstance();
 		List<List<TaggedToken>> taggedTweets = posTagger.tagTweets(preprocessedTweets);
-
+		
 		for (int i = 0; i < taggedTweets.size(); i++) {
 			List<TaggedToken> taggedTweet = taggedTweets.get(i);
 			Map<Integer, Double> featureVector = fvg.generateFeatureVector(taggedTweet);
