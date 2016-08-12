@@ -71,7 +71,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
 			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
 		} else if (sourceID.startsWith(SVMBolt.ID)) {
-			// long endTimestamp = Calendar.getInstance().getTimeInMillis();
+//			 long endTimestamp = System.currentTimeMillis();
 			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
 			long startTimestamp = getStartTime(svmStatistic.getID());
 			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
@@ -82,13 +82,14 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
 				clear();
 				last = current;
-				collector.ack(tuple);
 			}
 		}
 
 		if (m_logging) {
 			LOG.info("STATISTIC-BOLT LOGGING ACTIVE");
 		}
+		
+		collector.ack(tuple);
 	}
 
 	private void clear() {

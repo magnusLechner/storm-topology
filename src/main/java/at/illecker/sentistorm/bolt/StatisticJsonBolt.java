@@ -42,6 +42,8 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	private Socket socket;
 	private StandardDeviation mathStdDev;
 
+	private boolean firstTupelFlag;
+	
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// nothing here - result send in execute per socket.io to back-end
 	}
@@ -57,6 +59,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 		this.collector = collector;
 		mathStdDev = new StandardDeviation();
+		firstTupelFlag = true;
 
 		try {
 			socket = IO.socket("http://eventstorm-back-sentiment-producer.os.cggstack.cheergg.com/").connect();
@@ -74,19 +77,23 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
-//		LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
-//		LOG.info(
-//				"STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: " + statistic.getProcessedTuplesCount()
-//						+ "  MIN: " + statistic.getCycleTimeMin() + "  MAX: " + statistic.getCycleTimeMax() + "  AVG: "
-//						+ statistic.getCycleTimeAvg() + "  STDDEV: " + statistic.getCycleTimeStdDev());
-//		LOG.info("EMITTED JSON: " + jsonObject.toString());
-		
-//		// high delays make graph unreadable for debugging
-//		if(statistic.getCycleTimeMax() <= 500.0) {
-//			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
-//		}
-		
-		socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
+		LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
+		LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
+				+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
+				+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
+				+ statistic.getCycleTimeStdDev());
+		LOG.info("EMITTED JSON: " + jsonObject.toString());
+
+		// // high delays make graph unreadable for debugging
+		// if(statistic.getCycleTimeMax() <= 500.0) {
+		// socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
+		// }
+
+		if(!firstTupelFlag) {
+			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
+		} else {
+			firstTupelFlag = false;
+		}
 
 		collector.ack(tuple);
 	}

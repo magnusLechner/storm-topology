@@ -28,5 +28,6 @@ public class QuickTest {
 //		System.out.println("THIS IS THE JSON: " + jsonObject.toString());
 		
 		System.out.println(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+		System.out.println(System.currentTimeMillis());
 	}
 }

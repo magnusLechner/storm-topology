@@ -135,8 +135,8 @@ public class SentiStormTopology {
 		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
 				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-
-		// StatisticBolt --> StatisticJsonBolt
+//
+//		// StatisticBolt --> StatisticJsonBolt
 		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
 				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
@@ -172,9 +172,10 @@ public class SentiStormTopology {
 
 //		LocalCluster cluster = new LocalCluster();
 //		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+//		long time = System.currentTimeMillis();
 //		for (int i = 0; i < 1000; i++) {
 //			System.out.println("HALLO: " + drpc.execute("getSentiment",
-//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\"TheTimeStamp\"}"));
+//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\"" + (time + i) +"\"}"));
 //		}
 //		cluster.shutdown();
 //		drpc.shutdown();
