@@ -78,10 +78,10 @@ public class SentiStormTopology {
 		// IRichSpout spout = new DatasetJSONSpout();
 		// String spoutID = DatasetJSONSpout.ID;
 
-//		LocalDRPC drpc = new LocalDRPC();
-//		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
+		// LocalDRPC drpc = new LocalDRPC();
+		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-		 IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
 		String spoutID = DRPC_SPOUT_ID;
 
 		// Create Bolts
@@ -131,14 +131,14 @@ public class SentiStormTopology {
 		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
-		// JSONBolt & SVMBolt --> StatisticBolt
-		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-//
+//		// JSONBolt & SVMBolt --> StatisticBolt
+//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+//				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+//				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+//		
 //		// StatisticBolt --> StatisticJsonBolt
-		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
+//		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+//				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -170,15 +170,17 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-//		long time = System.currentTimeMillis();
-//		for (int i = 0; i < 1000; i++) {
-//			System.out.println("HALLO: " + drpc.execute("getSentiment",
-//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\"" + (time + i) +"\"}"));
-//		}
-//		cluster.shutdown();
-//		drpc.shutdown();
+		// LocalCluster cluster = new LocalCluster();
+		// cluster.submitTopology("getSentiment", conf,
+		// builder.createTopology());
+		// long time = System.currentTimeMillis();
+		// for (int i = 0; i < 1000; i++) {
+		// System.out.println("HALLO: " + drpc.execute("getSentiment",
+		// "{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
+		// + (time + i) +"\"}"));
+		// }
+		// cluster.shutdown();
+		// drpc.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 

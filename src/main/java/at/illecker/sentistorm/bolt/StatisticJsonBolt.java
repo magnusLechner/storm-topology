@@ -98,6 +98,12 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		collector.ack(tuple);
 	}
 
+//	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
+//		double[] basicCycleAgg = {0,0,0,0};
+//		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), rawStatistic.getCount(),
+//				basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2], basicCycleAgg[3]);
+//	}
+	
 	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
 		double[] basicCycleAgg = calcBasicAggregations(rawStatistic.getCycleTimes());
 		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), rawStatistic.getProcessedTuplesCount(),

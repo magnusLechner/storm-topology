@@ -34,6 +34,8 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	private OutputCollector collector;
 	private KeyValueState<String, Object> state;
 
+//	private int count = 0;
+
 	@Override
 	public void initState(KeyValueState<String, Object> state) {
 		this.state = state;
@@ -51,7 +53,6 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 		this.collector = collector;
 		this.interval = (Long) config.get(CONF_INTERVAL);
-		// this.interval = 50L;
 
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
@@ -71,15 +72,15 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
 			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
 		} else if (sourceID.startsWith(SVMBolt.ID)) {
-//			 long endTimestamp = System.currentTimeMillis();
 			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
 			long startTimestamp = getStartTime(svmStatistic.getID());
 			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
 			removeProcessingTuple(svmStatistic.getID());
-
+//			count++;
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
+//				collector.emit(tuple, new TopologyRawStatistic(0, count));
 				clear();
 				last = current;
 			}
@@ -94,6 +95,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 
 	private void clear() {
 		clearCycleTimes();
+//		count = 0;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -14,6 +14,12 @@ public class TopologyRawStatistic extends StatisticValue {
 	private static final int PROCESSING_TUPLES_COUNT_INDEX = 0;
 	private static final int CYCLE_TIMES_INDEX = 1;
 
+//	public TopologyRawStatistic(int processingTuplesCount, int count) {
+//		super();
+//		super.add(PROCESSING_TUPLES_COUNT_INDEX, processingTuplesCount);
+//		super.add(CYCLE_TIMES_INDEX, count);
+//	}
+	
 	public TopologyRawStatistic(int processingTuplesCount, List<Long> cycleTimes) {
 		super();
 		super.add(PROCESSING_TUPLES_COUNT_INDEX, processingTuplesCount);
@@ -24,6 +30,13 @@ public class TopologyRawStatistic extends StatisticValue {
 		return new Fields(PROCESSING_TUPLES_COUNT_ATTRIBUTE, CYCLE_TIMES_ATTRIBUTE);
 	}
 
+//	public static TopologyRawStatistic getFromTuple(Tuple tuple) {
+//		int processingTuplesCount = tuple.getIntegerByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
+//		int cycleTimes = tuple.getIntegerByField(CYCLE_TIMES_ATTRIBUTE);
+//
+//		return new TopologyRawStatistic(processingTuplesCount, cycleTimes);
+//	}
+	
 	@SuppressWarnings("unchecked")
 	public static TopologyRawStatistic getFromTuple(Tuple tuple) {
 		int processingTuplesCount = tuple.getIntegerByField(PROCESSING_TUPLES_COUNT_ATTRIBUTE);
@@ -40,6 +53,10 @@ public class TopologyRawStatistic extends StatisticValue {
 		return (int) getCycleTimes().size();
 	}
 
+//	public int getCount() {
+//		return (int) super.get(CYCLE_TIMES_INDEX);
+//	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Long> getCycleTimes() {
 		return (List<Long>) super.get(CYCLE_TIMES_INDEX);
