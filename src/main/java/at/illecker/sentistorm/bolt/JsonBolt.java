@@ -16,7 +16,6 @@
  */
 package at.illecker.sentistorm.bolt;
 
-import java.util.Calendar;
 import java.util.Map;
 
 import org.apache.storm.task.OutputCollector;
@@ -70,9 +69,7 @@ public class JsonBolt extends BaseRichBolt {
 		String jsonString = tuple.getString(0);
 		Object returnInfo = tuple.getValue(1);
 
-		// String topologyTimestamp =
-		// String.valueOf(Calendar.getInstance().getTimeInMillis());
-		long topologyTimestamp = Calendar.getInstance().getTimeInMillis();
+		long topologyTimestamp = System.currentTimeMillis();
 
 		JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
 		JsonElement user = jsonObject.get("user");

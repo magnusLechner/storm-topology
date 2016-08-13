@@ -17,7 +17,6 @@
 package at.illecker.sentistorm.bolt;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Map;
 
 import libsvm.svm;
@@ -116,10 +115,8 @@ public class SVMBolt extends BaseRichBolt {
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 
-		// String topologyTimestamp =
-		// String.valueOf(Calendar.getInstance().getTimeInMillis());
-		long topologyTimestamp = Calendar.getInstance().getTimeInMillis();
-
+		long topologyTimestamp = System.currentTimeMillis();
+		
 		// Pipeline result - json must be a string
 		collector.emit(PIPELINE_STREAM, tuple, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
 		// Statistic

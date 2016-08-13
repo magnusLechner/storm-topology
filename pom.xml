@@ -75,6 +75,13 @@
     		<artifactId>socket.io-client</artifactId>
     		<version>0.7.0</version>
   		</dependency>
+  		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<dependency>
+    		<groupId>redis.clients</groupId>
+    		<artifactId>jedis</artifactId>
+    		<version>2.9.0</version>
+		</dependency>
+  		
 		
 		
 		<!-- the jar from maven repository differs from the one used by illecker -->

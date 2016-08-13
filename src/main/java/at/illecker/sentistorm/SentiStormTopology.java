@@ -39,6 +39,7 @@ import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
 import at.illecker.sentistorm.spout.DatasetJsonSpout;
+import at.illecker.sentistorm.spout.RedisSpout;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerializer;
@@ -53,6 +54,7 @@ public class SentiStormTopology {
 		Config conf = new Config();
 
 		// TODO Things to remember:
+		// - check if LocalCluster or SubmitTopology
 		// - check Configuration class if local path or jar path
 		// - check senti-defaults.yaml if local path or jar path in Twitch
 		// - check if model.ser is there
@@ -81,8 +83,11 @@ public class SentiStormTopology {
 		// LocalDRPC drpc = new LocalDRPC();
 		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
-		String spoutID = DRPC_SPOUT_ID;
+		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		// String spoutID = DRPC_SPOUT_ID;
+
+		IRichSpout spout = new RedisSpout("127.0.0.1", 6379, "amb:*chatMessages*");
+		String spoutID = "redis-id";
 
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
@@ -127,18 +132,20 @@ public class SentiStormTopology {
 		builder.setBolt(SVMBolt.ID, svmBolt, Configuration.get("sentistorm.bolt.svm.parallelism", 1))
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
-		// SVMBolt --> ReturnResults
-		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
-				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
+//		// SVMBolt --> ReturnResults
+//		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
+//				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
-//		// JSONBolt & SVMBolt --> StatisticBolt
-//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-//				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-//				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-//		
-//		// StatisticBolt --> StatisticJsonBolt
-//		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-//				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
+		// // JSONBolt & SVMBolt --> StatisticBolt
+		// builder.setBolt(StatisticBolt.ID, statisticBolt,
+		// Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+		// .shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+		// .shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+		//
+		// // StatisticBolt --> StatisticJsonBolt
+		// builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+		// Configuration.get("sentistorm.bolt.statisticJson.parallelism",
+		// 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -170,19 +177,22 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		// LocalCluster cluster = new LocalCluster();
-		// cluster.submitTopology("getSentiment", conf,
-		// builder.createTopology());
-		// long time = System.currentTimeMillis();
-		// for (int i = 0; i < 1000; i++) {
-		// System.out.println("HALLO: " + drpc.execute("getSentiment",
-		// "{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
-		// + (time + i) +"\"}"));
-		// }
-		// cluster.shutdown();
-		// drpc.shutdown();
+		
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
+		
+//		long time = System.currentTimeMillis();
+//		for (int i = 0; i < 1000; i++) {
+//			System.out.println("HALLO: " + drpc.execute("getSentiment",
+//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
+//							+ (time + i) + "\"}"));
+//		}
+//		cluster.shutdown();
+//		drpc.shutdown();
 
-		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+		
+		 StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
+		 builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);
