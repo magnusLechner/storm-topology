@@ -88,7 +88,10 @@ public class SentiStormTopology {
 
 		IRichSpout spout = new RedisSpout("127.0.0.1", 6379, "amb:*chatMessages*");
 		String spoutID = "redis-id";
-
+		IRichSpout spout2 = new RedisSpout("127.0.0.1", 3772, "amb:*chatMessages*");
+		String spoutID2 = "redis-id-2";
+		
+		
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
 		TokenizerBolt tokenizerBolt = new TokenizerBolt();
@@ -97,19 +100,22 @@ public class SentiStormTopology {
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
 		ReturnResults returnBolt = new ReturnResults();
-		String returnBoltID = RETURN_RESULT_BOLT_ID;
 		StatisticBolt statisticBolt = new StatisticBolt();
 		StatisticJsonBolt statisticJsonBolt = new StatisticJsonBolt();
 
 		// Create Topology
 		TopologyBuilder builder = new TopologyBuilder();
 
+		// Set Spout NR. 2
+		builder.setSpout(spoutID2, spout2, Configuration.get("sentistorm.spout.parallelism", 1));
+		
 		// Set Spout
 		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(spoutID);
+				.shuffleGrouping(spoutID)
+				.shuffleGrouping(spoutID2);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
@@ -133,7 +139,7 @@ public class SentiStormTopology {
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
 //		// SVMBolt --> ReturnResults
-//		builder.setBolt(returnBoltID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
+//		builder.setBolt(RETURN_RESULT_BOLT_ID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
 //				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
 		// // JSONBolt & SVMBolt --> StatisticBolt
