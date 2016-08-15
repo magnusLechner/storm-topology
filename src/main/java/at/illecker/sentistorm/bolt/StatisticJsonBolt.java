@@ -63,7 +63,9 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 		try {
 			socket = IO.socket("http://eventstorm-back-sentiment-producer.os.cggstack.cheergg.com/").connect();
+			LOG.error("SOCKET IO SUCCESSFULLY CONNECT");
 		} catch (URISyntaxException e) {
+			LOG.error("SOCKET IO COULDNT CONNECT");
 			e.printStackTrace();
 		}
 	}
@@ -77,19 +79,20 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
-//		LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
-//		LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
-//				+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
-//				+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
-//				+ statistic.getCycleTimeStdDev());
-//		LOG.info("EMITTED JSON: " + jsonObject.toString());
-
 		// // high delays make graph unreadable for debugging
 		// if(statistic.getCycleTimeMax() <= 500.0) {
 		// socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 		// }
 
 		if(!firstTupelFlag) {
+		
+			LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
+			LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
+					+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
+					+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
+					+ statistic.getCycleTimeStdDev());
+			LOG.info("EMITTED JSON: " + jsonObject.toString());
+			
 			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
 		} else {
 			firstTupelFlag = false;

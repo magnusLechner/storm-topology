@@ -25,9 +25,12 @@ import org.apache.storm.LocalDRPC;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.drpc.DRPCSpout;
 import org.apache.storm.drpc.ReturnResults;
+import org.apache.storm.shade.org.eclipse.jetty.util.log.Log;
 import org.apache.storm.spout.CheckPointState.Action;
 import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.bolt.FeatureGenerationBolt;
 import at.illecker.sentistorm.bolt.JsonBolt;
@@ -49,6 +52,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class SentiStormTopology {
+	private static final Logger LOG = LoggerFactory.getLogger(SentiStormTopology.class);
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
 	public static final String DRPC_SPOUT_ID = "DRPCSpoutID";
 	public static final String DRPC_FUNCTION_CALL = "getSentiment";
@@ -122,9 +126,7 @@ public class SentiStormTopology {
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(spoutID)
-				.shuffleGrouping(spoutID2)
-				;
+				.shuffleGrouping(spoutID).shuffleGrouping(spoutID2);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))

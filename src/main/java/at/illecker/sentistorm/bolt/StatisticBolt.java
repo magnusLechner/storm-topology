@@ -34,8 +34,6 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	private OutputCollector collector;
 	private KeyValueState<String, Object> state;
 
-//	private int count = 0;
-
 	@Override
 	public void initState(KeyValueState<String, Object> state) {
 		this.state = state;
@@ -64,6 +62,10 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		this.last = System.currentTimeMillis();
 	}
 
+	// TODO if cycle time is not so important: set a long at index 2: every time
+	// i get a json-bolt tuple i can increase the long
+	// ,every time i get a svm tuple decrease the long -> count of tupels in
+	// topology
 	@Override
 	public void execute(Tuple tuple) {
 		String sourceID = tuple.getSourceComponent();
@@ -76,11 +78,9 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			long startTimestamp = getStartTime(svmStatistic.getID());
 			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
 			removeProcessingTuple(svmStatistic.getID());
-//			count++;
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
-//				collector.emit(tuple, new TopologyRawStatistic(0, count));
 				clear();
 				last = current;
 			}
@@ -89,13 +89,12 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		if (m_logging) {
 			LOG.info("STATISTIC-BOLT LOGGING ACTIVE");
 		}
-		
+
 		collector.ack(tuple);
 	}
 
 	private void clear() {
 		clearCycleTimes();
-//		count = 0;
 	}
 
 	@SuppressWarnings("unchecked")
