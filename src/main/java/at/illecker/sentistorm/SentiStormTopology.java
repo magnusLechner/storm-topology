@@ -25,6 +25,7 @@ import org.apache.storm.LocalDRPC;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.drpc.DRPCSpout;
 import org.apache.storm.drpc.ReturnResults;
+import org.apache.storm.spout.CheckPointState.Action;
 import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
 
@@ -43,6 +44,9 @@ import at.illecker.sentistorm.spout.RedisSpout;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerializer;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.internal.LinkedTreeMap;
 
 public class SentiStormTopology {
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
@@ -82,16 +86,20 @@ public class SentiStormTopology {
 
 		// LocalDRPC drpc = new LocalDRPC();
 		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
+		// IRichSpout spout2 = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
-		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
-		// String spoutID = DRPC_SPOUT_ID;
+		IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
+		IRichSpout spout2 = new DRPCSpout(DRPC_FUNCTION_CALL);
+		String spoutID = DRPC_SPOUT_ID;
+		String spoutID2 = DRPC_SPOUT_ID + "2";
 
-		IRichSpout spout = new RedisSpout("127.0.0.1", 6379, "amb:*chatMessages*");
-		String spoutID = "redis-id";
-		IRichSpout spout2 = new RedisSpout("127.0.0.1", 3772, "amb:*chatMessages*");
-		String spoutID2 = "redis-id-2";
-		
-		
+		// IRichSpout spout = new RedisSpout("127.0.0.1", 6379,
+		// "amb:*chatMessages*");
+		// String spoutID = "redis-id";
+		// IRichSpout spout2 = new RedisSpout("127.0.0.1", 3772,
+		// "amb:*chatMessages*");
+		// String spoutID2 = "redis-id-2";
+
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
 		TokenizerBolt tokenizerBolt = new TokenizerBolt();
@@ -106,16 +114,17 @@ public class SentiStormTopology {
 		// Create Topology
 		TopologyBuilder builder = new TopologyBuilder();
 
-		// Set Spout NR. 2
-		builder.setSpout(spoutID2, spout2, Configuration.get("sentistorm.spout.parallelism", 1));
-		
 		// Set Spout
 		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
+
+		// // Set Spout NR. 2
+		builder.setSpout(spoutID2, spout2, Configuration.get("sentistorm.spout.parallelism", 1));
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
 				.shuffleGrouping(spoutID)
-				.shuffleGrouping(spoutID2);
+				.shuffleGrouping(spoutID2)
+				;
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
@@ -138,20 +147,18 @@ public class SentiStormTopology {
 		builder.setBolt(SVMBolt.ID, svmBolt, Configuration.get("sentistorm.bolt.svm.parallelism", 1))
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
-//		// SVMBolt --> ReturnResults
-//		builder.setBolt(RETURN_RESULT_BOLT_ID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
-//				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
+		// SVMBolt --> ReturnResults
+		builder.setBolt(RETURN_RESULT_BOLT_ID, returnBolt, Configuration.get("sentistorm.bolt.return.parallelism", 1))
+				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
-		// // JSONBolt & SVMBolt --> StatisticBolt
-		// builder.setBolt(StatisticBolt.ID, statisticBolt,
-		// Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-		// .shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-		// .shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-		//
-		// // StatisticBolt --> StatisticJsonBolt
-		// builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-		// Configuration.get("sentistorm.bolt.statisticJson.parallelism",
-		// 1)).shuffleGrouping(StatisticBolt.ID);
+		// JSONBolt & SVMBolt --> StatisticBolt
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+
+		// StatisticBolt --> StatisticJsonBolt
+		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -183,22 +190,25 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology("getSentiment", conf, builder.createTopology());
-		
-//		long time = System.currentTimeMillis();
-//		for (int i = 0; i < 1000; i++) {
-//			System.out.println("HALLO: " + drpc.execute("getSentiment",
-//					"{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
-//							+ (time + i) + "\"}"));
-//		}
-//		cluster.shutdown();
-//		drpc.shutdown();
+		// added registrations for workers.num = 2 but still problems
+		// conf.registerSerialization(Action.class);
+		// conf.registerSerialization(JsonPrimitive.class);
+		// conf.registerSerialization(LinkedTreeMap.class);
+		// conf.registerSerialization(JsonObject.class);
 
-		
-		 StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
-		 builder.createTopology());
+		// LocalCluster cluster = new LocalCluster();
+		// cluster.submitTopology("getSentiment", conf,
+		// builder.createTopology());
+		// long time = System.currentTimeMillis();
+		// for (int i = 0; i < 1000; i++) {
+		// System.out.println("HALLO: " + drpc.execute("getSentiment",
+		// "{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
+		// + (time + i) + "\"}"));
+		// }
+		// cluster.shutdown();
+		// drpc.shutdown();
+
+		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);
