@@ -9,23 +9,28 @@ public class DRPCTest {
 
 	private static final String MSG_FIRST_PART = "{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":";
 	private static final String MSG_SECOND_PART = "}";
+	private static final String DRPC_FUNCTION_CALL = "senti-storm-topology";
 
 	public static void main(String[] args) {
-		 Runnable r1 = new MyTestDRPCClient(0);
-		 Thread t1 = new Thread(r1);
-		 t1.start();
+		Runnable r1 = new MyTestDRPCClient(0);
+		Thread t1 = new Thread(r1);
+		t1.start();
 
-//		 Runnable r2 = new MyTestDRPCClient(100000);
-//		 Thread t2 = new Thread(r2);
-//		 t2.start();
-//		 
-//		 Runnable r3 = new MyTestDRPCClient(200000);
-//		 Thread t3 = new Thread(r3);
-//		 t3.start();
-//
-//		 Runnable r4 = new MyTestDRPCClient(300000);
-//		 Thread t4 = new Thread(r4);
-//		 t4.start();
+		Runnable r2 = new MyTestDRPCClient(100000);
+		Thread t2 = new Thread(r2);
+		t2.start();
+
+		Runnable r3 = new MyTestDRPCClient(200000);
+		Thread t3 = new Thread(r3);
+		t3.start();
+
+		Runnable r4 = new MyTestDRPCClient(300000);
+		Thread t4 = new Thread(r4);
+		t4.start();
+
+		Runnable r5 = new MyStopWatch(1000);
+		Thread t5 = new Thread(r5);
+		t5.start();
 	}
 
 	static class MyTestDRPCClient implements Runnable {
@@ -42,8 +47,8 @@ public class DRPCTest {
 				System.out.println("RUN WITH OFFSET: " + timestampOffset + " STARTED");
 				client = getDRPCClient();
 				long timestamp = System.currentTimeMillis();
-				for (int i = 0; i < 1000; i++) {
-					String result = client.execute("getSentiment",
+				for (int i = 0; i < 10000; i++) {
+					String result = client.execute(DRPC_FUNCTION_CALL,
 							MSG_FIRST_PART + (timestamp + timestampOffset + i) + MSG_SECOND_PART);
 					System.out.println(result);
 				}
@@ -65,6 +70,27 @@ public class DRPCTest {
 
 			return new DRPCClient(conf, "localhost", 3772, 60000);
 		}
+	}
+
+	static class MyStopWatch implements Runnable {
+		private long sleepTime;
+
+		public MyStopWatch(long sleepTime) {
+			this.sleepTime = sleepTime;
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(sleepTime);
+					System.out.println("SECOND OVER");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 }

@@ -86,12 +86,12 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 		if(!firstTupelFlag) {
 		
-			LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
-			LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
-					+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
-					+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
-					+ statistic.getCycleTimeStdDev());
-			LOG.info("EMITTED JSON: " + jsonObject.toString());
+//			LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
+//			LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
+//					+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
+//					+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
+//					+ statistic.getCycleTimeStdDev());
+//			LOG.info("EMITTED JSON: " + jsonObject.toString());
 			
 			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
 		} else {

@@ -114,6 +114,8 @@ public class SVMBolt extends BaseRichBolt {
 			LOG.info("Tweet: " + jsonObject.get("msg").getAsString() + " predictedSentiment: "
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
+		
+		LOG.info("RESULT SVM JSON: " + jsonObject.toString());
 
 		long topologyTimestamp = System.currentTimeMillis();
 		
