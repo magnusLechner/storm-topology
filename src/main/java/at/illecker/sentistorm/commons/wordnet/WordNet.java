@@ -18,6 +18,7 @@ package at.illecker.sentistorm.commons.wordnet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -92,6 +93,9 @@ public class WordNet {
 	}
 
 	public boolean contains(String word) {
+		if(word.trim().equals("")) {
+			return false;
+		}
 		for (POS pos : POS.values()) {
 			for (String stem : m_wordnetStemmer.findStems(word, pos)) {
 				IIndexWord indexWord = m_dict.getIndexWord(stem, pos);
@@ -126,7 +130,11 @@ public class WordNet {
 			// or
 			// underscores, and may be in mixed case.
 			word = word.replaceAll("\\s", "").replaceAll("_", "");
-
+			//stemmer doesnt like empty or all white-space strings
+			if(word.trim().equals("")) {
+				return null;
+			}
+			
 			List<String> stems = m_wordnetStemmer.findStems(word, pos);
 			for (String stem : stems) {
 				IIndexWord indexWord = m_dict.getIndexWord(stem, pos);
@@ -150,6 +158,10 @@ public class WordNet {
 	}
 
 	public List<String> findStems(String word, POS pos) {
+		//stemmer doesnt like empty or all white-space strings
+		if(word.trim().equals("")) {
+			return new ArrayList<String>();
+		}		
 		return m_wordnetStemmer.findStems(word, pos);
 	}
 
