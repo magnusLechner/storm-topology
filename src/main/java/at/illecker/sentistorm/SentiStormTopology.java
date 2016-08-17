@@ -74,19 +74,15 @@ public class SentiStormTopology {
 
 		// LocalDRPC drpc = new LocalDRPC();
 		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
-		// IRichSpout spout2 = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
 
 		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
-		// IRichSpout spout2 = new DRPCSpout(DRPC_FUNCTION_CALL);
 
 		// String spoutID = DRPC_SPOUT_ID;
 		// String spoutID2 = DRPC_SPOUT_ID + "-2";
-
-		IRichSpout spout = new RedisSpout("127.0.0.1", 6379, "amb:*chatMessages*");
+		
+//		IRichSpout spout = new RedisSpout("127.0.0.1", 6379, "amb:*chatMessages*");
+		IRichSpout spout = new RedisSpout("redis.test.svc.cluster.local", 6379, "amb:*chatMessages*");
 		String spoutID = "redis-id";
-		// IRichSpout spout2 = new RedisSpout("127.0.0.1", 3772,
-		// "amb:*chatMessages*");
-		// String spoutID2 = "redis-id-2";
 
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
@@ -105,15 +101,9 @@ public class SentiStormTopology {
 		// Set Spout
 		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
-		// // Set Spout NR. 2
-		// builder.setSpout(spoutID2, spout2,
-		// Configuration.get("sentistorm.spout.parallelism", 1));
-
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(spoutID)
-		// .shuffleGrouping(spoutID2)
-		;
+				.shuffleGrouping(spoutID);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
@@ -141,14 +131,14 @@ public class SentiStormTopology {
 		// Configuration.get("sentistorm.bolt.return.parallelism", 1))
 		// .shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
 
-//		// JSONBolt & SVMBolt --> StatisticBolt
-//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-//				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-//				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
+		// JSONBolt & SVMBolt --> StatisticBolt
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
+				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
 //
-//		// StatisticBolt --> StatisticJsonBolt
-//		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-//				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
+		// StatisticBolt --> StatisticJsonBolt
+		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -186,13 +176,14 @@ public class SentiStormTopology {
 		// conf.registerSerialization(LinkedTreeMap.class);
 		// conf.registerSerialization(JsonObject.class);
 
-		Runnable stopWatch = new MyStopWatch(1000);
-		Thread stopWatchThread = new Thread(stopWatch);
-		stopWatchThread.start();
 		
-		LocalCluster cluster = new LocalCluster();
-		cluster.submitTopology(DRPC_FUNCTION_CALL, conf, builder.createTopology());
+//		Runnable stopWatch = new MyStopWatch(1000);
+//		Thread stopWatchThread = new Thread(stopWatch);
+//		stopWatchThread.start();
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology(DRPC_FUNCTION_CALL, conf, builder.createTopology());
 
+		
 		// // DRPC-Setup
 		// long time = System.currentTimeMillis();
 		// for (int i = 0; i < 1000; i++) {
@@ -203,8 +194,9 @@ public class SentiStormTopology {
 		// cluster.shutdown();
 		// drpc.shutdown();
 
-		// StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
-		// builder.createTopology());
+		
+		 StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
+		 builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);

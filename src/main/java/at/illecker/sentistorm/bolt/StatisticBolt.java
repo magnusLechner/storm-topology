@@ -75,9 +75,12 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
 		} else if (sourceID.startsWith(SVMBolt.ID)) {
 			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
-			long startTimestamp = getStartTime(svmStatistic.getID());
-			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
-			removeProcessingTuple(svmStatistic.getID());
+//			Long startTimestamp = getStartTime(svmStatistic.getID());
+//			removeProcessingTuple(svmStatistic.getID());
+			Long startTimestamp = getStartTimeAndRemove(svmStatistic.getID());
+			if(startTimestamp != null) {
+				addCycleTime(svmStatistic.getTimestamp() - startTimestamp);	
+			}
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
@@ -128,6 +131,15 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	private Long getStartTime(String id) {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		return processingTupels.get(id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Long getStartTimeAndRemove(String id) {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		Long startTime = processingTupels.get(id);
+		processingTupels.remove(id);
+		state.put(PROCESSING_TUPELS, processingTupels);
+		return startTime;
 	}
 
 	@SuppressWarnings("unchecked")

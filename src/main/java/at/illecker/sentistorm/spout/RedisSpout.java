@@ -99,7 +99,7 @@ public class RedisSpout extends BaseRichSpout {
 	@SuppressWarnings("rawtypes")
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
 		this.collector = collector;
-		queue = new LinkedBlockingQueue<String>(1000);
+		queue = new LinkedBlockingQueue<String>(5000);
 		pool = new JedisPool(new JedisPoolConfig(), host, port);
 
 		ListenerThread listener = new ListenerThread(queue, pool, pattern);
