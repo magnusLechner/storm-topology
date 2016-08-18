@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.FeatureGenerationData;
-import at.illecker.sentistorm.bolt.values.data.SVMData;
-import at.illecker.sentistorm.bolt.values.statistic.SVMStatistic;
+import at.illecker.sentistorm.bolt.values.data.FeatureGenerationBoltData;
+import at.illecker.sentistorm.bolt.values.data.SVMBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.SVMBoltStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.SentimentClass;
@@ -58,8 +58,8 @@ public class SVMBolt extends BaseRichBolt {
 	private svm_model m_model;
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declareStream(PIPELINE_STREAM, SVMData.getSchema());
-		declarer.declareStream(SVM_BOLT_STATISTIC_STREAM, SVMStatistic.getSchema());
+		declarer.declareStream(PIPELINE_STREAM, SVMBoltData.getSchema());
+		declarer.declareStream(SVM_BOLT_STATISTIC_STREAM, SVMBoltStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -85,8 +85,7 @@ public class SVMBolt extends BaseRichBolt {
 	}
 
 	public void execute(Tuple tuple) {
-		FeatureGenerationData featureGenerationValue = FeatureGenerationData.getFromTuple(tuple);
-		Object returnInfo = featureGenerationValue.getReturnInfo();
+		FeatureGenerationBoltData featureGenerationValue = FeatureGenerationBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = featureGenerationValue.getJsonObject();
 		Map<Integer, Double> featureVector = featureGenerationValue.getFeatureVector();
 
@@ -115,14 +114,13 @@ public class SVMBolt extends BaseRichBolt {
 					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
 		}
 		
-		LOG.info("RESULT SVM JSON: " + jsonObject.toString());
+//		LOG.info("RESULT SVM JSON: " + jsonObject.toString());
 
 		long topologyTimestamp = System.currentTimeMillis();
 		
-		// Pipeline result - json must be a string
-		collector.emit(PIPELINE_STREAM, tuple, SVMData.modifyForReturnResult(new SVMData(jsonObject, returnInfo)));
+		collector.emit(PIPELINE_STREAM, tuple, new SVMBoltData(jsonObject));
 		// Statistic
-		collector.emit(SVM_BOLT_STATISTIC_STREAM, tuple, new SVMStatistic(
+		collector.emit(SVM_BOLT_STATISTIC_STREAM, tuple, new SVMBoltStatistic(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
 		collector.ack(tuple);
 	}

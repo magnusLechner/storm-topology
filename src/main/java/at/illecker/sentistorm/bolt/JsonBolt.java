@@ -30,8 +30,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import at.illecker.sentistorm.bolt.values.data.JsonData;
-import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
+import at.illecker.sentistorm.bolt.values.data.JsonBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.JsonBoltStatistic;
 
 public class JsonBolt extends BaseRichBolt {
 	public static final String ID = "json-bolt";
@@ -48,8 +48,8 @@ public class JsonBolt extends BaseRichBolt {
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declareStream(PIPELINE_STREAM, JsonData.getSchema());
-		declarer.declareStream(JSON_BOLT_STATISTIC_STREAM, JsonStatistic.getSchema());
+		declarer.declareStream(PIPELINE_STREAM, JsonBoltData.getSchema());
+		declarer.declareStream(JSON_BOLT_STATISTIC_STREAM, JsonBoltStatistic.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -67,7 +67,6 @@ public class JsonBolt extends BaseRichBolt {
 
 	public void execute(Tuple tuple) {
 		String jsonString = tuple.getString(0);
-		Object returnInfo = tuple.getValue(1);
 
 		long topologyTimestamp = System.currentTimeMillis();
 
@@ -81,9 +80,9 @@ public class JsonBolt extends BaseRichBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(PIPELINE_STREAM, tuple, new JsonData(jsonObject, returnInfo));
+		collector.emit(PIPELINE_STREAM, tuple, new JsonBoltData(jsonObject));
 		// Statistic
-		collector.emit(JSON_BOLT_STATISTIC_STREAM, tuple, new JsonStatistic(
+		collector.emit(JSON_BOLT_STATISTIC_STREAM, tuple, new JsonBoltStatistic(
 				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
 		collector.ack(tuple);
 	}

@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.FeatureGenerationData;
-import at.illecker.sentistorm.bolt.values.data.POSTaggerData;
+import at.illecker.sentistorm.bolt.values.data.FeatureGenerationBoltData;
+import at.illecker.sentistorm.bolt.values.data.POSTaggerBoltData;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
@@ -54,7 +54,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(FeatureGenerationData.getSchema());
+		declarer.declare(FeatureGenerationBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -87,9 +87,8 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		POSTaggerData posTaggerValue = POSTaggerData.getFromTuple(tuple);
+		POSTaggerBoltData posTaggerValue = POSTaggerBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = posTaggerValue.getJsonObject();
-		Object returnInfo = posTaggerValue.getReturnInfo();
 		List<TaggedToken> taggedTokens = posTaggerValue.getTaggedTokens();  
 		
 		// Generate Feature Vector
@@ -100,7 +99,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new FeatureGenerationData(jsonObject, returnInfo, featureVector));
+		collector.emit(new FeatureGenerationBoltData(jsonObject, featureVector));
 	}
 
 }

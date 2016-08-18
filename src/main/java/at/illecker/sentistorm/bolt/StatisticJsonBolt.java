@@ -79,11 +79,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
-		// // high delays make graph unreadable for debugging
-		// if(statistic.getCycleTimeMax() <= 500.0) {
-		// socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
-		// }
-
 		if(!firstTupelFlag) {
 		
 //			LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());

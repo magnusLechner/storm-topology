@@ -43,7 +43,6 @@ public class DatasetJsonSpout extends BaseRichSpout {
 	private JSONDataset m_dataset;
 	private SpoutOutputCollector m_collector;
 	private List<String> m_jsons;
-	private long m_messageId = 0;
 	private int m_index = 0;
 	private long m_tupleSleepMs = 0;
 	private long m_tupleSleepNs = 0;
@@ -53,6 +52,7 @@ public class DatasetJsonSpout extends BaseRichSpout {
 		declarer.declare(new Fields("json"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
 		this.m_collector = collector;
 
@@ -89,10 +89,11 @@ public class DatasetJsonSpout extends BaseRichSpout {
 		if (m_index >= m_jsons.size()) {
 			m_index = 0;
 		}
-		m_messageId++; // accept possible overflow
+		
+		LOG.info("DATASET-JSON-SPOUT JSON: " + json);
 		
 		// Emit tweet
-		m_collector.emit(new Values(json), m_messageId);
+		m_collector.emit(new Values(json));
 
 		// Optional sleep
 		if (m_tupleSleepMs != 0) {

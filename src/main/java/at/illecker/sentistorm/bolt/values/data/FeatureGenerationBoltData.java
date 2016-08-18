@@ -7,29 +7,28 @@ import org.apache.storm.tuple.Tuple;
 
 import com.google.gson.JsonObject;
 
-public class FeatureGenerationData extends DataValue {
+public class FeatureGenerationBoltData extends DataValue {
 	private static final long serialVersionUID = -4540574656312690470L;
 
 	private static final String FEATURE_VECTOR_ATTRIBUTE = "featureVector";
 	
-	private static final int FEATURE_VECTOR_INDEX = 2;
+	private static final int FEATURE_VECTOR_INDEX = 1;
 	
-	public FeatureGenerationData(JsonObject jsonObject, Object returnInfo, Map<Integer, Double> featureVector) {
-		super(jsonObject, returnInfo);
+	public FeatureGenerationBoltData(JsonObject jsonObject, Map<Integer, Double> featureVector) {
+		super(jsonObject);
 		super.add(featureVector);
 	}
 	
 	public static Fields getSchema() {
-		return new Fields(JSON_ATTRIBUTE, RETURN_INFO_ATTRIBUTE, FEATURE_VECTOR_ATTRIBUTE);
+		return new Fields(JSON_ATTRIBUTE, FEATURE_VECTOR_ATTRIBUTE);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static FeatureGenerationData getFromTuple(Tuple tuple) {
+	public static FeatureGenerationBoltData getFromTuple(Tuple tuple) {
 		JsonObject jsonObject = (JsonObject) tuple.getValueByField(JSON_ATTRIBUTE);
-		Object returnInfo = tuple.getStringByField(RETURN_INFO_ATTRIBUTE);
 		Map<Integer, Double> featureVector = (Map<Integer, Double>) tuple.getValueByField(FEATURE_VECTOR_ATTRIBUTE);
 	
-		return new FeatureGenerationData(jsonObject, returnInfo, featureVector);
+		return new FeatureGenerationBoltData(jsonObject, featureVector);
 	}
 	
 	@SuppressWarnings("unchecked")

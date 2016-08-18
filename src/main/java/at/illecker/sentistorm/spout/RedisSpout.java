@@ -49,7 +49,6 @@ public class RedisSpout extends BaseRichSpout {
 			this.pattern = pattern;
 		}
 
-		@SuppressWarnings("deprecation")
 		public void run() {
 
 			JedisPubSub listener = new JedisPubSub() {
@@ -91,7 +90,10 @@ public class RedisSpout extends BaseRichSpout {
 			try {
 				jedis.psubscribe(listener, pattern);
 			} finally {
-				pool.returnResource(jedis);
+				if(jedis != null) {
+					jedis.close();	
+				}
+//				pool.returnResource(jedis);
 			}
 		}
 	};
@@ -112,16 +114,15 @@ public class RedisSpout extends BaseRichSpout {
 	}
 
 	public void nextTuple() {
-		String ret = queue.poll();
-		if (ret == null) {
+		String jsonAsString = queue.poll();
+		if (jsonAsString == null) {
 			Utils.sleep(20);
 		} else {
 			if (m_logging) {
-				LOG.info("REDIS-SPOUT: " + ret);
+				LOG.info("REDIS-SPOUT: " + jsonAsString);
 			}
 			
-			String drpcEmpty = "DRPC_EMPTY_NO_ERROR";
-			collector.emit(new Values(ret, drpcEmpty));
+			collector.emit(new Values(jsonAsString));
 		}
 	}
 
@@ -134,7 +135,7 @@ public class RedisSpout extends BaseRichSpout {
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("message", "emptyDRPC"));
+		declarer.declare(new Fields("message"));
 	}
 
 	public boolean isDistributed() {
