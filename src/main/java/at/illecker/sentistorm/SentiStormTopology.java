@@ -21,16 +21,9 @@ import java.util.TreeMap;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
-import org.apache.storm.LocalDRPC;
 import org.apache.storm.StormSubmitter;
-import org.apache.storm.drpc.DRPCSpout;
-import org.apache.storm.drpc.ReturnResults;
-import org.apache.storm.shade.org.eclipse.jetty.util.log.Log;
-import org.apache.storm.spout.CheckPointState.Action;
 import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.TopologyBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.bolt.FeatureGenerationBolt;
 import at.illecker.sentistorm.bolt.JsonBolt;
@@ -42,20 +35,13 @@ import at.illecker.sentistorm.bolt.StatisticJsonBolt;
 import at.illecker.sentistorm.bolt.TokenizerBolt;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.util.io.kyro.TaggedTokenSerializer;
-import at.illecker.sentistorm.spout.DatasetJsonSpout;
 import at.illecker.sentistorm.spout.RedisSpout;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 import com.esotericsoftware.kryo.serializers.DefaultSerializers.TreeMapSerializer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.internal.LinkedTreeMap;
 
 public class SentiStormTopology {
-	private static final Logger LOG = LoggerFactory.getLogger(SentiStormTopology.class);
 	public static final String TOPOLOGY_NAME = "senti-storm-topology";
-	public static final String DRPC_SPOUT_ID = "DRPCSpoutID";
-	public static final String DRPC_FUNCTION_CALL = TOPOLOGY_NAME;
 	public static final String RETURN_RESULT_BOLT_ID = "return-result-bolt";
 
 	public static void main(String[] args) throws Exception {
@@ -74,14 +60,6 @@ public class SentiStormTopology {
 		// no more storm log-output
 		conf.put(Config.TOPOLOGY_DEBUG, false);
 
-		// LocalDRPC drpc = new LocalDRPC();
-		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL, drpc);
-
-		// IRichSpout spout = new DRPCSpout(DRPC_FUNCTION_CALL);
-
-		// String spoutID = DRPC_SPOUT_ID;
-		// String spoutID2 = DRPC_SPOUT_ID + "-2";
-
 		// IRichSpout spout = new RedisSpout("127.0.0.1", 6379,
 		// "amb:*chatMessages*");
 		IRichSpout spout = new RedisSpout("redis.test.svc.cluster.local", 6379, "amb:*chatMessages*");
@@ -94,7 +72,6 @@ public class SentiStormTopology {
 		POSTaggerBolt posTaggerBolt = new POSTaggerBolt();
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
-		ReturnResults returnBolt = new ReturnResults();
 		StatisticBolt statisticBolt = new StatisticBolt();
 		StatisticJsonBolt statisticJsonBolt = new StatisticJsonBolt();
 
@@ -168,27 +145,9 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		// added registrations for workers.num = 2 but still problems
-		// conf.registerSerialization(Action.class);
-		// conf.registerSerialization(JsonPrimitive.class);
-		// conf.registerSerialization(LinkedTreeMap.class);
-		// conf.registerSerialization(JsonObject.class);
-
-		// Runnable stopWatch = new MyStopWatch(1000);
-		// Thread stopWatchThread = new Thread(stopWatch);
-		// stopWatchThread.start();
-		// LocalCluster cluster = new LocalCluster();
-		// cluster.submitTopology(DRPC_FUNCTION_CALL, conf,
-		// builder.createTopology());
-
-		// // DRPC-Setup
-		// long time = System.currentTimeMillis();
-		// System.out.println("HALLO: " + drpc.execute(DRPC_FUNCTION_CALL,
-		// "{\"msg\":\"Kreygasm\",\"user\":\"theUser\",\"channel\":\"TheChannel\",\"timestamp\":\""
-		// + (time + i) + "\"}"));
-		// }
-		// cluster.shutdown();
-		// drpc.shutdown();
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+//		cluster.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
