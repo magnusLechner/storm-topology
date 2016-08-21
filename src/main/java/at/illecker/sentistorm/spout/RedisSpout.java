@@ -77,12 +77,14 @@ public class RedisSpout extends BaseRichSpout {
 
 				@Override
 				public void onSubscribe(String channel, int subscribedChannels) {
-
+					// TODO Auto-generated method stub
+					
 				}
 
 				@Override
 				public void onUnsubscribe(String channel, int subscribedChannels) {
-
+					// TODO Auto-generated method stub
+					
 				}
 			};
 
