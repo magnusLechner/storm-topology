@@ -59,6 +59,10 @@ public class Preprocessor {
 	public List<String> preprocess(List<String> tokens) {
 		List<String> preprocessedTokens = new ArrayList<String>();
 		for (String token : tokens) {
+			if(token.trim().equals("")) {
+				continue;
+			}
+			
 			// identify token
 			boolean tokenContainsPunctuation = StringUtils.consitsOfPunctuations(token);
 			boolean tokenConsistsOfUnderscores = StringUtils.consitsOfUnderscores(token);
