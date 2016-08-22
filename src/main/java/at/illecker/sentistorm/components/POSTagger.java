@@ -76,6 +76,11 @@ public class POSTagger {
 	}
 
 	public List<TaggedToken> tag(List<String> tokens) {
+		List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
+		if(tokens.size() == 0) {
+			return taggedTokens;
+		}
+		
 		Sentence sentence = new Sentence();
 		sentence.tokens = tokens;
 		ModelSentence ms = new ModelSentence(sentence.T());
@@ -86,7 +91,6 @@ public class POSTagger {
 		m_featureExtractor.computeFeatures(sentence, ms);
 		m_model.greedyDecode(ms, false);
 
-		List<TaggedToken> taggedTokens = new ArrayList<TaggedToken>();
 		for (int t = 0; t < sentence.T(); t++) {
 			
 			//work-around 
@@ -116,22 +120,26 @@ public class POSTagger {
 	}
 
 	public static void main(String[] args) {
-		boolean useSerialization = true;
-
-		// load tweets
-//		List<Tweet> tweets = Tweet.getTestTweets();
-//		List<Tweet> tweets = Tweet.getSigleTestTweet();
-		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
-		List<Tweet> tweets = new ArrayList<Tweet>();
-		tweets.add(testTweet1);
-		
+		boolean useSerialization = false;
 		Preprocessor preprocessor = Preprocessor.getInstance();
 		POSTagger posTagger = POSTagger.getInstance();
-
+		
 		if (useSerialization) {
 			posTagger.serializeModel();
 			posTagger.serializeFeatureExtractor();
 		}
+		
+		// load tweets
+//		List<Tweet> tweets = Tweet.getTestTweets();
+//		List<Tweet> tweets = Tweet.getSigleTestTweet();
+		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
+		Tweet testTweet2 = new Tweet(0L, "  asd ");
+		Tweet testTweet3 = new Tweet(0L, " ");
+		
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		tweets.add(testTweet1);
+		tweets.add(testTweet2);
+		tweets.add(testTweet3);
 
 		// process tweets
 		long startTime = System.currentTimeMillis();
@@ -142,6 +150,10 @@ public class POSTagger {
 			// Preprocess
 			List<String> preprocessedTokens = preprocessor.preprocess(tokens);
 
+			for(int i = 0; i < preprocessedTokens.size(); i++) {
+				System.out.println("TOKEN: " + preprocessedTokens.get(i));
+			}
+			
 			// POS Tagging
 			List<TaggedToken> taggedTokens = posTagger.tag(preprocessedTokens);
 

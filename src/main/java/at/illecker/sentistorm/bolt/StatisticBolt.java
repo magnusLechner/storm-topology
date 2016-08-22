@@ -14,8 +14,8 @@ import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.illecker.sentistorm.bolt.values.statistic.JsonStatistic;
-import at.illecker.sentistorm.bolt.values.statistic.SVMStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.JsonBoltStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.SVMBoltStatistic;
 import at.illecker.sentistorm.bolt.values.statistic.TopologyRawStatistic;
 
 public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object>> {
@@ -71,13 +71,16 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		String sourceID = tuple.getSourceComponent();
 
 		if (sourceID.startsWith(JsonBolt.ID)) {
-			JsonStatistic jsonStatistic = JsonStatistic.getFromTuple(tuple);
+			JsonBoltStatistic jsonStatistic = JsonBoltStatistic.getFromTuple(tuple);
 			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
 		} else if (sourceID.startsWith(SVMBolt.ID)) {
-			SVMStatistic svmStatistic = SVMStatistic.getFromTuple(tuple);
-			long startTimestamp = getStartTime(svmStatistic.getID());
-			addCycleTime(svmStatistic.getTimestamp() - startTimestamp);
-			removeProcessingTuple(svmStatistic.getID());
+			SVMBoltStatistic svmStatistic = SVMBoltStatistic.getFromTuple(tuple);
+//			Long startTimestamp = getStartTime(svmStatistic.getID());
+//			removeProcessingTuple(svmStatistic.getID());
+			Long startTimestamp = getStartTimeAndRemove(svmStatistic.getID());
+			if(startTimestamp != null) {
+				addCycleTime(svmStatistic.getTimestamp() - startTimestamp);	
+			}
 			final long current = System.currentTimeMillis();
 			if (current - last >= interval) {
 				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
@@ -98,13 +101,6 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	}
 
 	@SuppressWarnings("unchecked")
-	private void removeProcessingTuple(String id) {
-		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-		processingTupels.remove(id);
-		state.put(PROCESSING_TUPELS, processingTupels);
-	}
-
-	@SuppressWarnings("unchecked")
 	private void addProcessingTuple(String id, Long timestamp) {
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		processingTupels.put(id, timestamp);
@@ -116,18 +112,35 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
 		return processingTupels.size();
 	}
+	
+//	@SuppressWarnings("unchecked")
+//	private Long getStartTime(String id) {
+//		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+//		return processingTupels.get(id);
+//	}
 
+//	@SuppressWarnings("unchecked")
+//	private void removeProcessingTuple(String id) {
+//		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+//		processingTupels.remove(id);
+//		state.put(PROCESSING_TUPELS, processingTupels);
+//	}
+	
+	//get StartTime and remove in one stop to evade casting twice
+	@SuppressWarnings("unchecked")
+	private Long getStartTimeAndRemove(String id) {
+		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
+		Long startTime = processingTupels.get(id);
+		processingTupels.remove(id);
+		state.put(PROCESSING_TUPELS, processingTupels);
+		return startTime;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void addCycleTime(Long cycleTime) {
 		List<Long> cycleTimes = (List<Long>) state.get(CYCLE_TIMES);
 		cycleTimes.add(cycleTime);
 		state.put(CYCLE_TIMES, cycleTimes);
-	}
-
-	@SuppressWarnings("unchecked")
-	private Long getStartTime(String id) {
-		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-		return processingTupels.get(id);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -38,7 +38,7 @@ public class Configuration {
 
 	public static final String WORKING_DIR_PATH = (RUNNING_WITHIN_JAR) ? ""
 			: System.getProperty("user.dir") + File.separator;
-	
+
 	public static final String TEMP_DIR_PATH = System.getProperty("java.io.tmpdir");
 
 	public static final String GLOBAL_RESOURCES_DATASETS_SEMEVAL = "global.resources.datasets.semeval";
@@ -54,12 +54,11 @@ public class Configuration {
 
 	@SuppressWarnings("rawtypes")
 	public static Map readConfig() {
-		//for running SVM local
-		String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
-		Map conf = readConfigFile(file + "senti-defaults.yaml", true);
-		
-		
-//		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
+		// for running SVM local
+		// String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
+		// Map conf = readConfigFile(file + "senti-defaults.yaml", true);
+
+		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
 		// read custom config
 		LOG.info("Try to load user-specific config...");
 		Map customConfig = readConfigFile(WORKING_DIR_PATH + "configuration.yaml", false);
@@ -115,19 +114,19 @@ public class Configuration {
 	public static Dataset getDataSetSemEval2013() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_SEMEVAL)).get("2013"));
 	}
-	
+
 	public static Dataset getDataSetSentiment140() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_SENTIMENT140)).get("140"));
 	}
-	
+
 	public static Dataset getDataSetTwitch() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("twitch"));
 	}
-	
+
 	public static JSONDataset getJSONDataSetTwitch() {
 		return JSONDataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("JSONtwitch"));
 	}
-	
+
 	public static Dataset getDataSetMyTest() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_MY_TEST)).get("mytest"));
 	}
@@ -155,5 +154,5 @@ public class Configuration {
 	public static List<String> getTwitchEmoticons() {
 		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("TwitchEmoticons");
 	}
-	
+
 }

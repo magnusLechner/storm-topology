@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import at.illecker.sentistorm.bolt.values.data.POSTaggerData;
-import at.illecker.sentistorm.bolt.values.data.PreprocessorData;
+import at.illecker.sentistorm.bolt.values.data.POSTaggerBoltData;
+import at.illecker.sentistorm.bolt.values.data.PreprocessorBoltData;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
@@ -55,7 +55,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// key of output tuples
-		declarer.declare(POSTaggerData.getSchema());
+		declarer.declare(POSTaggerBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -78,9 +78,8 @@ public class POSTaggerBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		PreprocessorData preprocessedTokensValue = PreprocessorData.getFromTuple(tuple);
+		PreprocessorBoltData preprocessedTokensValue = PreprocessorBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = preprocessedTokensValue.getJsonObject();
-		Object returnInfo = preprocessedTokensValue.getReturnInfo();
 		List<String> preprocessedTokens = preprocessedTokensValue.getPreprocessedTokens();
 
 		// POS Tagging
@@ -91,7 +90,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new POSTaggerData(jsonObject, returnInfo, taggedTokens));
+		collector.emit(new POSTaggerBoltData(jsonObject, taggedTokens));
 	}
 
 	private List<TaggedToken> tag(List<String> tokens) {
