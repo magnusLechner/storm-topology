@@ -2,7 +2,7 @@ package at.lechner.commons;
 
 public enum Sentiment {
 
-	POSITIVE, NEGATIVE, MIXED, NEUTRAL;
+	POSITIVE, NEGATIVE, MIXED, NEUTRAL, UNDEFINED;
 	
 	public static Sentiment getSentiment(String stringSentiment) {
 		switch (stringSentiment) {
@@ -14,6 +14,8 @@ public enum Sentiment {
 			return Sentiment.NEGATIVE;
 		case "MIXED":
 			return Sentiment.MIXED;
+		case "UNDEFINED":
+			return Sentiment.UNDEFINED;
 		}
 		return null;
 	}

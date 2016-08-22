@@ -155,24 +155,4 @@ public class SentiStormTopology {
 		System.out.println("storm kill " + TOPOLOGY_NAME);
 	}
 
-	static class MyStopWatch implements Runnable {
-		private long sleepTime;
-
-		public MyStopWatch(long sleepTime) {
-			this.sleepTime = sleepTime;
-		}
-
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					Thread.sleep(sleepTime);
-					System.out.println("SECOND OVER");
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 }

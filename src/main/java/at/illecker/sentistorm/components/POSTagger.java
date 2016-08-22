@@ -135,11 +135,13 @@ public class POSTagger {
 		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
 		Tweet testTweet2 = new Tweet(0L, "  asd ");
 		Tweet testTweet3 = new Tweet(0L, " ");
+		Tweet testTweet4 = new Tweet(0L, "");
 		
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		tweets.add(testTweet1);
 		tweets.add(testTweet2);
 		tweets.add(testTweet3);
+		tweets.add(testTweet4);
 
 		// process tweets
 		long startTime = System.currentTimeMillis();

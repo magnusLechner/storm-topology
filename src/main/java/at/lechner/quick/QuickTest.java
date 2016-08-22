@@ -14,20 +14,31 @@ public class QuickTest {
 		long timestamp = System.currentTimeMillis();
 		JsonParser parser = new JsonParser();
 		
-		for(int i = 0; i < 10; i++) {
-			JsonObject jsonObject = (JsonObject)parser.parse(MSG_FIRST_PART + (timestamp + i) + MSG_SECOND_PART);		
-			System.out.println(jsonObject.toString());	
-		}
+//		for(int i = 0; i < 10; i++) {
+//			JsonObject jsonObject = (JsonObject)parser.parse(MSG_FIRST_PART + (timestamp + i) + MSG_SECOND_PART);		
+//			System.out.println(jsonObject.toString());	
+//		}
 		
 //		String json = "{\"msg\":\"good amazing Kreygasm\",\"user\":\"animayy\",\"channel\":\"biboyqg\",\"game\":\"Minecraft\",\"url\":\""
 //				+ "twitch.tv/biboyqg\",\"timeStamp\":1465527600008,\"sentiment\":{\"score\""
 //				+ ":0,\"comparative\":0,\"tokens\":[\"vroom\",\"vroom\",\"keemcar\",\"lool\"],\"words\":[],\"positive\":[],\""
 //				+ "negative\":[]}}";
 //		
-//		System.out.println(json);
-//		
-//		JsonParser parser = new JsonParser();
+		String json = "{\"msg\":\"good amazing Kreygasm\", \"json\":{\"key\":\"hallo\"}}";
+		JsonObject jo = (JsonObject) parser.parse(json);
+		
+		
+		System.out.println(jo.toString());
+		System.out.println(jo.get("json"));
+		System.out.println(jo.get("json").toString());
+
 //		JsonObject jsonObject = (JsonObject)parser.parse(json);
+//		System.out.println(jsonObject.toString());
+//		JsonElement asd = jsonObject.get("json");
+//		System.out.println(asd.toString());
+//		JsonObject j2 = (JsonObject) asd;
+//		System.out.println(j2.toString());
+		
 //		JsonElement msg = jsonObject.get("msg");
 //		JsonElement user = jsonObject.get("user");
 //		JsonElement timestamp = jsonObject.get("timeStamp");
