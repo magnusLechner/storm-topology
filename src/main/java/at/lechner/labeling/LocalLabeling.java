@@ -43,7 +43,7 @@ public class LocalLabeling {
 				boolean next = false;
 				LabelMessage labeledMessage = new LabelMessage(unlabeled.get(lastUnlabeledIndex).getJson());
 				while (!next) {
-					System.out.println("NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    STOP: capital P");
+					System.out.println("NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    BACK: z    STOP: capital P");
 					String input = scanner.next();
 					switch (input) {
 					case "a":
@@ -60,6 +60,14 @@ public class LocalLabeling {
 						break;
 					case "w":
 						next = true;
+						break;
+					case "z":
+						next = true;
+						if(labeled.size() > 0) {
+							labeled.remove(labeled.size() - 1);	
+						}
+						lastUnlabeledIndex--;
+						lastUnlabeledIndex--;
 						break;
 					case "P":
 						next = true;
