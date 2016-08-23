@@ -52,7 +52,7 @@ public class RedisPublishBolt implements IRichBolt {
 
 		this.gson = new Gson();
 		this.collector = collector;
-		pool = new JedisPool(new JedisPoolConfig(), host + ":" + port);
+		pool = new JedisPool(new JedisPoolConfig(), host, port);
 	}
 
 	public void execute(Tuple tuple) {
@@ -88,7 +88,9 @@ public class RedisPublishBolt implements IRichBolt {
 	public void publish(String toBePublished) {
 		Jedis jedis = pool.getResource();
 		jedis.publish(channel, toBePublished);
-		jedis.close();
+		if(jedis != null) {
+			jedis.close();	
+		}
 	}
 
 	public void cleanup() {

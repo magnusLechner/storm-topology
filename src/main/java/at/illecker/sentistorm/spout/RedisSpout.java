@@ -22,7 +22,7 @@ import redis.clients.jedis.JedisPubSub;
 public class RedisSpout extends BaseRichSpout {
 	static final long serialVersionUID = 737015318988609460L;
 	public static final String ID = "redis-spout";
-	private static final Logger LOG = LoggerFactory.getLogger(StatisticBolt.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RedisSpout.class);
 	private boolean m_logging = false;
 
 	SpoutOutputCollector collector;
@@ -95,7 +95,6 @@ public class RedisSpout extends BaseRichSpout {
 				if(jedis != null) {
 					jedis.close();	
 				}
-//				pool.returnResource(jedis);
 			}
 		}
 	};

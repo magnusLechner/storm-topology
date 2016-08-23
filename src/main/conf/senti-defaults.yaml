@@ -265,7 +265,8 @@ global.resources.postagger.model.path: "models/ark.model.20120919.txt"
 redis.spout.host: "redis.test.svc.cluster.local"        
 redis.spout.port: 6379
 redis.spout.topic: "amb:*chatMessages*"
-redis.publish.host: "redis://redis-integration.test.svc.cluster.local"
+#redis.publish.host: "redis://redis-integration.test.svc.cluster.local"
+redis.publish.host: "redis-integration.test.svc.cluster.local"
 redis.publish.port: 6379
 redis.publish.topic: "stomp"
 

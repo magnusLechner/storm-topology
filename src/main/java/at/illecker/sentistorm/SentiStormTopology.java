@@ -159,7 +159,7 @@ public class SentiStormTopology {
 
 //		LocalCluster cluster = new LocalCluster();
 //		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
-		// cluster.shutdown();
+////		 cluster.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
