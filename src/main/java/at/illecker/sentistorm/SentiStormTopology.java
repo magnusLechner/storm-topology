@@ -29,6 +29,7 @@ import at.illecker.sentistorm.bolt.FeatureGenerationBolt;
 import at.illecker.sentistorm.bolt.JsonBolt;
 import at.illecker.sentistorm.bolt.POSTaggerBolt;
 import at.illecker.sentistorm.bolt.PreprocessorBolt;
+import at.illecker.sentistorm.bolt.RedisPublishBolt;
 import at.illecker.sentistorm.bolt.SVMBolt;
 import at.illecker.sentistorm.bolt.StatisticBolt;
 import at.illecker.sentistorm.bolt.StatisticJsonBolt;
@@ -60,10 +61,16 @@ public class SentiStormTopology {
 		// no more storm log-output
 		conf.put(Config.TOPOLOGY_DEBUG, false);
 
-		// IRichSpout spout = new RedisSpout("127.0.0.1", 6379,
-		// "amb:*chatMessages*");
-		IRichSpout spout = new RedisSpout("redis.test.svc.cluster.local", 6379, "amb:*chatMessages*");
-		String spoutID = "redis-id";
+		String redisSpoutHost = Configuration.get("redis.spout.host");
+		int redisSpoutPort = Configuration.get("redis.spout.port");
+		String redisSpoutPattern = Configuration.get("redis.spout.topic");
+
+		IRichSpout spout = new RedisSpout(redisSpoutHost, redisSpoutPort, redisSpoutPattern);
+		String redisSpoutID = "redis-spout";
+
+		String redisPublishHost = Configuration.get("redis.publish.host");
+		int redisPublishPort = Configuration.get("redis.publish.port");
+		String redisPublishTopic = Configuration.get("redis.publish.topic");
 
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
@@ -72,6 +79,7 @@ public class SentiStormTopology {
 		POSTaggerBolt posTaggerBolt = new POSTaggerBolt();
 		FeatureGenerationBolt featureGenerationBolt = new FeatureGenerationBolt();
 		SVMBolt svmBolt = new SVMBolt();
+		RedisPublishBolt redisPublishBolt = new RedisPublishBolt(redisPublishHost, redisPublishPort, redisPublishTopic);
 		StatisticBolt statisticBolt = new StatisticBolt();
 		StatisticJsonBolt statisticJsonBolt = new StatisticJsonBolt();
 
@@ -79,11 +87,11 @@ public class SentiStormTopology {
 		TopologyBuilder builder = new TopologyBuilder();
 
 		// Set Spout
-		builder.setSpout(spoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
+		builder.setSpout(redisSpoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(spoutID);
+				.shuffleGrouping(redisSpoutID);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
@@ -110,7 +118,11 @@ public class SentiStormTopology {
 		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
 				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
 				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-		//
+
+		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt,
+				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1))
+				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
+
 		// StatisticBolt --> StatisticJsonBolt
 		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
 				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
@@ -145,11 +157,12 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
-//		cluster.shutdown();
+		LocalCluster cluster = new LocalCluster();
+		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+		// cluster.shutdown();
 
-		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+		// StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
+		// builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);

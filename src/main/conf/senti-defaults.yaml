@@ -69,8 +69,8 @@ global.resources.datasets.sentiment140:
 
 global.resources.datasets.twitch:
     "twitch":
-        #path: "src/main/resources/datasets/Twitch"  #for running SVM local
-        path: "datasets/Twitch"  #for running SVM on cluster
+        path: "src/main/resources/datasets/Twitch"  #for running SVM local
+        #path: "datasets/Twitch"  #for running SVM on cluster
         train.file: "twitch-training.tsv"
         dev.file: "twitch-dev.tsv"
         test.file: "twitch-test.tsv"
@@ -262,6 +262,14 @@ global.resources.dict.wordnet.path: "dictionaries/wordnet/wn3.1.dict.tar.gz"
 global.resources.postagger.model.path: "models/ark.model.20120919.txt"
 #global.resources.postagger.model.path: "resources/models/model.txt"
 
+redis.spout.host: "redis.test.svc.cluster.local"        
+redis.spout.port: 6379
+redis.spout.topic: "amb:*chatMessages*"
+redis.publish.host: "redis-integration.test.svc.cluster.local"
+redis.publish.port: 6379
+redis.publish.topic: "stomp"
+
+
 ##############################################################################
 ### commons.* configs are for the commons package
 ##############################################################################
@@ -315,7 +323,8 @@ sentistorm.bolt.featuregeneration.logging: false
 sentistorm.bolt.svm.parallelism: 1
 sentistorm.bolt.svm.logging: false
 
-sentistorm.bolt.return.parallelism: 1
+sentistorm.bolt.redis.publish.parallelism: 1
+sentistorm.bolt.redis.publish.logging: false
 
 sentistorm.bolt.statistic.parallelism: 1  #only 1 here: contains KeyValueState
 sentistorm.bolt.statistic.logging: false
