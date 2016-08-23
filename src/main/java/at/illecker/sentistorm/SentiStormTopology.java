@@ -67,7 +67,7 @@ public class SentiStormTopology {
 
 		IRichSpout spout = new RedisSpout(redisSpoutHost, redisSpoutPort, redisSpoutPattern);
 		String redisSpoutID = "redis-spout";
-
+		
 		String redisPublishHost = Configuration.get("redis.publish.host");
 		int redisPublishPort = Configuration.get("redis.publish.port");
 		String redisPublishTopic = Configuration.get("redis.publish.topic");
@@ -157,12 +157,11 @@ public class SentiStormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		LocalCluster cluster = new LocalCluster();
-		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
+//		LocalCluster cluster = new LocalCluster();
+//		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 		// cluster.shutdown();
 
-		// StormSubmitter.submitTopology(TOPOLOGY_NAME, conf,
-		// builder.createTopology());
+		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 
 		System.out.println("To kill the topology run (if started locally for testing purposes):");
 		System.out.println("storm kill " + TOPOLOGY_NAME);
