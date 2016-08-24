@@ -25,6 +25,7 @@ public class LocalLabeling {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		int save = 0;
 		try {
 			List<LabelMessage> unlabeled = readUnlabeledMessagesFile(UNLABELED_MESSAGES);
 			List<LabelMessage> labeled = readLabeledMessagesFile(LABELED_MESSAGES);
@@ -95,6 +96,10 @@ public class LocalLabeling {
 					labeled.add(labeledMessage);
 				}
 				lastUnlabeledIndex++;
+				save++;
+				if(save%10 == 0) {
+					writeLabeledMessages(LABELED_MESSAGES, labeled);
+				}
 			}
 			writeLabeledMessages(LABELED_MESSAGES, labeled);
 		} catch (FileNotFoundException e) {
