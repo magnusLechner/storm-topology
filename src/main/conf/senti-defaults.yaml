@@ -262,10 +262,12 @@ global.resources.dict.wordnet.path: "dictionaries/wordnet/wn3.1.dict.tar.gz"
 global.resources.postagger.model.path: "models/ark.model.20120919.txt"
 #global.resources.postagger.model.path: "resources/models/model.txt"
 
-redis.spout.host: "redis.test.svc.cluster.local"        
+#redis.spout.host: "localhost"
+redis.spout.host: "redis.test.svc.cluster.local"
 redis.spout.port: 6379
 redis.spout.topic: "amb:*chatMessages*"
-#redis.publish.host: "redis://redis-integration.test.svc.cluster.local"
+
+#redis.publish.host: "localhost"
 redis.publish.host: "redis-integration.test.svc.cluster.local"
 redis.publish.port: 6379
 redis.publish.topic: "stomp"
@@ -302,6 +304,7 @@ sentistorm.spout.startup.sleep.ms: 20000 # 20 sec
 sentistorm.spout.tuple.sleep.ms: null
 sentistorm.spout.tuple.sleep.ns: null # 250000 = 0.25 ms
 sentistorm.spout.filter.language: "en"
+sentistorm.spout.redis.logging: false
 
 sentistorm.bolt.json.parallelism: 1
 sentistorm.bolt.json.logging: false

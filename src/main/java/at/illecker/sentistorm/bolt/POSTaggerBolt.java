@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.POSTaggerBoltData;
 import at.illecker.sentistorm.bolt.values.data.PreprocessorBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
@@ -80,6 +81,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		PreprocessorBoltData preprocessedTokensValue = PreprocessorBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = preprocessedTokensValue.getJsonObject();
+		TupleStatistic tupleStatistic = preprocessedTokensValue.getTupleStatistic();
 		List<String> preprocessedTokens = preprocessedTokensValue.getPreprocessedTokens();
 
 		// POS Tagging
@@ -90,7 +92,7 @@ public class POSTaggerBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new POSTaggerBoltData(jsonObject, taggedTokens));
+		collector.emit(new POSTaggerBoltData(jsonObject, tupleStatistic, taggedTokens));
 	}
 
 	private List<TaggedToken> tag(List<String> tokens) {

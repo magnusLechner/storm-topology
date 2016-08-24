@@ -46,8 +46,6 @@ public class SentiStormTopology {
 	public static final String RETURN_RESULT_BOLT_ID = "return-result-bolt";
 
 	public static void main(String[] args) throws Exception {
-		Config conf = new Config();
-
 		// TODO Things to remember:
 		// - check if LocalCluster or SubmitTopology
 		// - check if redis-spout is localhost or redis.test.svc.cluster.local
@@ -58,20 +56,21 @@ public class SentiStormTopology {
 		// - check senti-defaults.yaml for parallelism
 		// - check senti-defaults.yaml and storm.yaml for RAM usage
 
-		// no more storm log-output
+		Config conf = new Config();
+
+		// No more storm log-output
 		conf.put(Config.TOPOLOGY_DEBUG, false);
 
 		String redisSpoutHost = Configuration.get("redis.spout.host");
 		int redisSpoutPort = Configuration.get("redis.spout.port");
 		String redisSpoutPattern = Configuration.get("redis.spout.topic");
 
-		IRichSpout spout = new RedisSpout(redisSpoutHost, redisSpoutPort, redisSpoutPattern);
-		String redisSpoutID = "redis-spout";
-		
 		String redisPublishHost = Configuration.get("redis.publish.host");
 		int redisPublishPort = Configuration.get("redis.publish.port");
 		String redisPublishTopic = Configuration.get("redis.publish.topic");
 
+		// Create Spout
+		IRichSpout spout = new RedisSpout(redisSpoutHost, redisSpoutPort, redisSpoutPattern);
 		// Create Bolts
 		JsonBolt jsonBolt = new JsonBolt();
 		TokenizerBolt tokenizerBolt = new TokenizerBolt();
@@ -87,15 +86,15 @@ public class SentiStormTopology {
 		TopologyBuilder builder = new TopologyBuilder();
 
 		// Set Spout
-		builder.setSpout(redisSpoutID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
+		builder.setSpout(RedisSpout.ID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
 
 		// Set Spout --> JSONBolt
 		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(redisSpoutID);
+				.shuffleGrouping(RedisSpout.ID);
 
 		// Set JSONBolt --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-				.shuffleGrouping(JsonBolt.ID, JsonBolt.PIPELINE_STREAM);
+				.shuffleGrouping(JsonBolt.ID);
 
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
@@ -114,14 +113,13 @@ public class SentiStormTopology {
 		builder.setBolt(SVMBolt.ID, svmBolt, Configuration.get("sentistorm.bolt.svm.parallelism", 1))
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
-		// JSONBolt & SVMBolt --> StatisticBolt
-		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-				.shuffleGrouping(JsonBolt.ID, JsonBolt.JSON_BOLT_STATISTIC_STREAM)
-				.shuffleGrouping(SVMBolt.ID, SVMBolt.SVM_BOLT_STATISTIC_STREAM);
-
+		// SVMBolt --> RedisPublishBolt
 		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt,
-				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1))
-				.shuffleGrouping(SVMBolt.ID, SVMBolt.PIPELINE_STREAM);
+				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1)).shuffleGrouping(SVMBolt.ID);
+
+		// RedisPublishBolt --> StatisticBolt
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(RedisPublishBolt.ID);
 
 		// StatisticBolt --> StatisticJsonBolt
 		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
@@ -141,6 +139,7 @@ public class SentiStormTopology {
 			conf.put(Config.SUPERVISOR_CHILDOPTS, Configuration.get("sentistorm.supervisor.childopts"));
 		}
 
+		conf.put(RedisSpout.CONF_LOGGING, Configuration.get("sentistorm.spout.redis.logging", false));
 		conf.put(JsonBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.json.logging", false));
 		conf.put(TokenizerBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.tokenizer.logging", false));
 		conf.put(PreprocessorBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.preprocessor.logging", false));
@@ -149,17 +148,20 @@ public class SentiStormTopology {
 		conf.put(FeatureGenerationBolt.CONF_LOGGING,
 				Configuration.get("sentistorm.bolt.featuregeneration.logging", false));
 		conf.put(SVMBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.svm.logging", false));
+		conf.put(RedisPublishBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.redis.publish.logging", false));
 		conf.put(StatisticBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statistic.logging", false));
+		conf.put(StatisticJsonBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statisticJson.logging", false));
 
-		conf.put(StatisticBolt.CONF_INTERVAL, Configuration.get("sentistorm.bolt.statistic.interval", 500));
+		conf.put(StatisticBolt.CONF_INTERVAL, Configuration.get("sentistorm.bolt.statistic.interval", 1000));
 
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-//		LocalCluster cluster = new LocalCluster();
-//		cluster.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
-////		 cluster.shutdown();
+		// LocalCluster cluster = new LocalCluster();
+		// cluster.submitTopology(TOPOLOGY_NAME, conf,
+		// builder.createTopology());
+		//// cluster.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 

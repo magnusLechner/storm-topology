@@ -31,7 +31,6 @@ import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
 import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
 import at.illecker.sentistorm.commons.util.StringUtils;
-import cmu.arktweetnlp.Tagger.TaggedToken;
 
 /**
  * Tweet Term Frequency - Inverse Document Frequency

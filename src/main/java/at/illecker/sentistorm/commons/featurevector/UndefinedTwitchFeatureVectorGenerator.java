@@ -36,9 +36,9 @@ public class UndefinedTwitchFeatureVectorGenerator extends FeatureVectorGenerato
 	private int m_vectorStartId = 1;
 
 	private Map<String, Double> emoticonsWithSentiment;
-	
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public UndefinedTwitchFeatureVectorGenerator() {
-		
 		List<Map> wordLists = Configuration.getSentimentWordlists();
 		for (Map wordListEntry : wordLists) {
 			String name = (String) wordListEntry.get("name");
@@ -57,13 +57,13 @@ public class UndefinedTwitchFeatureVectorGenerator extends FeatureVectorGenerato
 					emoticonsWithSentiment = (Map<String, Double>) SerializationUtils.deserialize(serializationFile);
 				} else {
 					LOG.info("Load WordList from: " + file);
-					emoticonsWithSentiment = FileUtils.readFile(file, separator, containsPOSTags, featureScaling, minValue,
-							maxValue);
+					emoticonsWithSentiment = FileUtils.readFile(file, separator, containsPOSTags, featureScaling,
+							minValue, maxValue);
 					SerializationUtils.serializeMap(emoticonsWithSentiment, serializationFile);
 				}
 			}
 		}
-		
+
 		LOG.info("VectorSize: " + getFeatureVectorSize());
 	}
 
@@ -80,18 +80,18 @@ public class UndefinedTwitchFeatureVectorGenerator extends FeatureVectorGenerato
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<TaggedToken> taggedTokens) {
 		Map<Integer, Double> featureVector = new TreeMap<Integer, Double>();
-	
+
 		Double countUndefinedTwitchEmoticon = 0.0;
-		for(TaggedToken taggedToken : taggedTokens) {
+		for (TaggedToken taggedToken : taggedTokens) {
 			String token = taggedToken.token;
-			if(TwitchEmoticons.getInstance().isTwitchEmoticon(token) && !emoticonsWithSentiment.containsKey(token)) {
+			if (TwitchEmoticons.getInstance().isTwitchEmoticon(token) && !emoticonsWithSentiment.containsKey(token)) {
 				countUndefinedTwitchEmoticon += 1.0;
 			}
 		}
-		if(countUndefinedTwitchEmoticon != 0.0) {
-			featureVector.put(m_vectorStartId + VECTOR_SIZE, countUndefinedTwitchEmoticon);	
+		if (countUndefinedTwitchEmoticon != 0.0) {
+			featureVector.put(m_vectorStartId + VECTOR_SIZE, countUndefinedTwitchEmoticon);
 		}
-		
+
 		return featureVector;
 	}
 

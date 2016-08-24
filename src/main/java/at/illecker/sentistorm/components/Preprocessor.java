@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.dict.FirstNames;
-import at.illecker.sentistorm.commons.dict.SentimentDictionary;
 import at.illecker.sentistorm.commons.dict.SlangCorrection;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.RegexUtils;
@@ -59,10 +58,10 @@ public class Preprocessor {
 	public List<String> preprocess(List<String> tokens) {
 		List<String> preprocessedTokens = new ArrayList<String>();
 		for (String token : tokens) {
-			if(token.trim().equals("")) {
+			if (token.trim().equals("")) {
 				continue;
 			}
-			
+
 			// identify token
 			boolean tokenContainsPunctuation = StringUtils.consitsOfPunctuations(token);
 			boolean tokenConsistsOfUnderscores = StringUtils.consitsOfUnderscores(token);

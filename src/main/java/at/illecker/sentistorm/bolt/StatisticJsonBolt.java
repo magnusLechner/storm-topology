@@ -1,6 +1,7 @@
 package at.illecker.sentistorm.bolt;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.statistic.TopologyRawStatistic;
 import at.illecker.sentistorm.bolt.values.statistic.TopologyStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -30,7 +32,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	private static final String SOCKET_IO_IDENTIFIER = "sendSentimentStormStatistic";
 
 	private static final String TOPOLOGY = "topology";
-	private static final String PROCESSING_TUPLES_COUNT = "processingTuplesCount";
 	private static final String PROCESSED_TUPLES_COUNT = "processedTuplesCount";
 	private static final String CYCLE = "cycle";
 	private static final String MIN = "min";
@@ -43,7 +44,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	private StandardDeviation mathStdDev;
 
 	private boolean firstTupelFlag;
-	
+
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// nothing here - result send in execute per socket.io to back-end
 	}
@@ -79,16 +80,18 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			LOG.info("STATISTIC JSON: " + jsonObject.toString());
 		}
 
-		if(!firstTupelFlag) {
-		
-//			LOG.info("RAW:  " + rawStatistic.getCycleTimes().toString());
-//			LOG.info("STATS::  PROCESSING: " + statistic.getProcessingTuplesCount() + "  PROCESSED: "
-//					+ statistic.getProcessedTuplesCount() + "  MIN: " + statistic.getCycleTimeMin() + "  MAX: "
-//					+ statistic.getCycleTimeMax() + "  AVG: " + statistic.getCycleTimeAvg() + "  STDDEV: "
-//					+ statistic.getCycleTimeStdDev());
-//			LOG.info("EMITTED JSON: " + jsonObject.toString());
-			
-			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());	
+		if (!firstTupelFlag) {
+			// LOG.info("RAW: " + rawStatistic.getCycleTimes().toString());
+			// LOG.info("STATS:: PROCESSING: " +
+			// statistic.getProcessingTuplesCount() + " PROCESSED: "
+			// + statistic.getProcessedTuplesCount() + " MIN: " +
+			// statistic.getCycleTimeMin() + " MAX: "
+			// + statistic.getCycleTimeMax() + " AVG: " +
+			// statistic.getCycleTimeAvg() + " STDDEV: "
+			// + statistic.getCycleTimeStdDev());
+			// LOG.info("EMITTED JSON: " + jsonObject.toString());
+
+			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 		} else {
 			firstTupelFlag = false;
 		}
@@ -96,16 +99,20 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		collector.ack(tuple);
 	}
 
-//	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
-//		double[] basicCycleAgg = {0,0,0,0};
-//		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), rawStatistic.getCount(),
-//				basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2], basicCycleAgg[3]);
-//	}
-	
+	// public TopologyStatistic rawToAggregated(TopologyRawStatistic
+	// rawStatistic) {
+	// double[] basicCycleAgg = {0,0,0,0};
+	// return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(),
+	// rawStatistic.getCount(),
+	// basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2], basicCycleAgg[3]);
+	// }
+
 	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
-		double[] basicCycleAgg = calcBasicAggregations(rawStatistic.getCycleTimes());
-		return new TopologyStatistic(rawStatistic.getProcessingTuplesCount(), rawStatistic.getProcessedTuplesCount(),
-				basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2], basicCycleAgg[3]);
+		List<TupleStatistic> tupleStatistics = rawStatistic.getTupleStatistics();
+		List<Long> cycleTimes = calcCylceTime(tupleStatistics);
+		double[] basicCycleAgg = calcBasicAggregations(cycleTimes);
+		return new TopologyStatistic(tupleStatistics.size(), basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2],
+				basicCycleAgg[3]);
 	}
 
 	public JsonObject statisticToJson(TopologyStatistic statistic) {
@@ -116,7 +123,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		cycle.addProperty(STDDEV, statistic.getCycleTimeStdDev());
 
 		JsonObject topology = new JsonObject();
-		topology.addProperty(PROCESSING_TUPLES_COUNT, statistic.getProcessingTuplesCount());
 		topology.addProperty(PROCESSED_TUPLES_COUNT, statistic.getProcessedTuplesCount());
 		topology.add(CYCLE, cycle);
 
@@ -146,5 +152,15 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		double stdDev = mathStdDev.evaluate(tmp);
 		double[] res = { min, max, avg, stdDev };
 		return res;
+	}
+
+	private List<Long> calcCylceTime(List<TupleStatistic> tupleStatistics) {
+		List<Long> values = new ArrayList<Long>();
+		for (int i = 0; i < tupleStatistics.size(); i++) {
+			long start = tupleStatistics.get(i).getPipelineStart();
+			long end = tupleStatistics.get(i).getPipelineEnd();
+			values.add(end - start);
+		}
+		return values;
 	}
 }

@@ -73,6 +73,7 @@ public class SerializationUtils {
 		return deserialize(IOUtils.getInputStream(fileName));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Serializable> T deserialize(InputStream is) {
 		T object = null;
 		try {

@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.FeatureGenerationBoltData;
 import at.illecker.sentistorm.bolt.values.data.POSTaggerBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
@@ -70,7 +71,6 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 			m_logging = false;
 		}
 
-		// TODO serialize CombinedFeatureVectorGenerator
 		List<FeaturedTweet> featuredTrainTweets = SerializationUtils
 				.deserialize(m_dataset.getTrainDataSerializationFile());
 		if (featuredTrainTweets != null) {
@@ -89,6 +89,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		POSTaggerBoltData posTaggerValue = POSTaggerBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = posTaggerValue.getJsonObject();
+		TupleStatistic tupleStatistic = posTaggerValue.getTupleStatistic();
 		List<TaggedToken> taggedTokens = posTaggerValue.getTaggedTokens();  
 		
 		// Generate Feature Vector
@@ -99,7 +100,7 @@ public class FeatureGenerationBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new FeatureGenerationBoltData(jsonObject, featureVector));
+		collector.emit(new FeatureGenerationBoltData(jsonObject, tupleStatistic, featureVector));
 	}
 
 }

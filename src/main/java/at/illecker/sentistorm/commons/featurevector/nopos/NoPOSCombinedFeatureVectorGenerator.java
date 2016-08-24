@@ -25,7 +25,8 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 
 	private NoPOSSentimentFeatureVectorGenerator m_sentimentFeatureVectorGenerator = null;
 	private NoPOSTfIdfFeatureVectorGenerator m_tfidfNoPOSFVG = null;
-	private NoPOSUndefinedTwitchFeatureVectorGenerator m_undefinedTwitchFVG = null;
+	// private NoPOSUndefinedTwitchFeatureVectorGenerator m_undefinedTwitchFVG =
+	// null;
 
 	public NoPOSCombinedFeatureVectorGenerator(boolean normalizePOSCounts, NoPOSTweetTfIdf tweetTfIdfNoPOS) {
 		m_sentimentFeatureVectorGenerator = new NoPOSSentimentFeatureVectorGenerator(1);
@@ -33,26 +34,26 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 		m_tfidfNoPOSFVG = new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS,
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-//		m_undefinedTwitchFVG = new NoPOSUndefinedTwitchFeatureVectorGenerator(
-//				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize() + 1);
+		// m_undefinedTwitchFVG = new
+		// NoPOSUndefinedTwitchFeatureVectorGenerator(
+		// m_sentimentFeatureVectorGenerator.getFeatureVectorSize() +
+		// m_tfidfNoPOSFVG.getFeatureVectorSize() + 1);
 	}
 
 	@Override
 	public int getFeatureVectorSize() {
-		return 
-				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() 
-				+ m_tfidfNoPOSFVG.getFeatureVectorSize()
-//				+ m_undefinedTwitchFVG.getFeatureVectorSize()
-				;
+		return m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize()
+		// + m_undefinedTwitchFVG.getFeatureVectorSize()
+		;
 	}
 
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<String> tweet) {
 		Map<Integer, Double> featureVector = m_sentimentFeatureVectorGenerator.generateFeatureVector(tweet);
-//
+		//
 		featureVector.putAll(m_tfidfNoPOSFVG.generateFeatureVector(tweet));
-//
-//		featureVector.putAll(m_undefinedTwitchFVG.generateFeatureVector(tweet));
+		//
+		// featureVector.putAll(m_undefinedTwitchFVG.generateFeatureVector(tweet));
 
 		return featureVector;
 	}

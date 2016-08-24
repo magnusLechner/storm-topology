@@ -33,6 +33,7 @@ public abstract class Predictor {
 	// TODO throw this out when finished with testing
 	private Map<String, Double> emoticonList = new HashMap<String, Double>();
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Predictor(svm_model svmModel, Dataset dataset) {
 		super();
 		this.svmModel = svmModel;

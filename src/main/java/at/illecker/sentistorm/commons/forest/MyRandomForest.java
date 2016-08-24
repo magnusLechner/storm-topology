@@ -7,7 +7,6 @@ import java.io.FileReader;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.RandomForest;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
@@ -43,9 +42,9 @@ public class MyRandomForest {
 		 * -depth <num> The maximum depth of the trees, 0 for unlimited.
 		 * (default 0)
 		 */
-//		String[] options = new String[1];
-//		options[0] = "-I 20";
-//		randomForest.setOptions(options);
+		// String[] options = new String[1];
+		// options[0] = "-I 20";
+		// randomForest.setOptions(options);
 
 		randomForest.buildClassifier(trainInstances);
 		return randomForest;

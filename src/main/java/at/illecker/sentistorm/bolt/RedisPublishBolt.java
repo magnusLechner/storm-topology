@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +13,14 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import at.illecker.sentistorm.bolt.values.data.RedisPublishBoltData;
 import at.illecker.sentistorm.bolt.values.data.SVMBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-public class RedisPublishBolt implements IRichBolt {
+public class RedisPublishBolt extends BaseRichBolt {
 	public static final String ID = "redis-publish-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -3645873488892922627L;
@@ -39,7 +41,7 @@ public class RedisPublishBolt implements IRichBolt {
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		// empty
+		declarer.declare(RedisPublishBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -56,7 +58,10 @@ public class RedisPublishBolt implements IRichBolt {
 	}
 
 	public void execute(Tuple tuple) {
-		String current = generatePublishString(SVMBoltData.getFromTuple(tuple).getJsonObject());
+		SVMBoltData svmBoltData = SVMBoltData.getFromTuple(tuple);
+		JsonObject jsonObject = svmBoltData.getJsonObject();
+		TupleStatistic tupleStatistic = svmBoltData.getTupleStatistic();
+		String current = generatePublishString(jsonObject);
 		if (current != null) {
 
 			if (m_logging) {
@@ -64,7 +69,9 @@ public class RedisPublishBolt implements IRichBolt {
 			}
 
 			publish(current);
-			// collector.emit ... no emitting here
+
+			tupleStatistic.setPipelineEnd(System.currentTimeMillis());
+			collector.emit(new RedisPublishBoltData(jsonObject, tupleStatistic));
 			collector.ack(tuple);
 		}
 	}
@@ -88,8 +95,8 @@ public class RedisPublishBolt implements IRichBolt {
 	public void publish(String toBePublished) {
 		Jedis jedis = pool.getResource();
 		jedis.publish(channel, toBePublished);
-		if(jedis != null) {
-			jedis.close();	
+		if (jedis != null) {
+			jedis.close();
 		}
 	}
 
@@ -97,11 +104,6 @@ public class RedisPublishBolt implements IRichBolt {
 		if (pool != null) {
 			pool.destroy();
 		}
-	}
-
-	@Override
-	public Map<String, Object> getComponentConfiguration() {
-		return null;
 	}
 
 }
