@@ -23,6 +23,11 @@ public class LocalLabeling {
 	public static final String UNLABELED_MESSAGES = "src/main/resources/preparation/self-labeling/first_20k_entries_from_amb_chatlog_2016082216.txt";
 	public static final String LABELED_MESSAGES = "src/main/resources/preparation/self-labeling/labeled.txt";
 
+	public static int sumNeg = 0;
+	public static int sumNeu = 0;
+	public static int sumPos = 0;
+	public static int sumUnd = 0;
+	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		int save = 0;
@@ -44,20 +49,24 @@ public class LocalLabeling {
 				boolean next = false;
 				LabelMessage labeledMessage = new LabelMessage(unlabeled.get(lastUnlabeledIndex).getJson());
 				while (!next) {
-					System.out.println("NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    BACK: z    STOP: capital P");
+					System.out.println("NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    BACK: z    STOP: capital P    COUNT: c");
 					String input = scanner.next();
 					switch (input) {
 					case "a":
 						labeledMessage.setSentiment(Sentiment.NEGATIVE);
+						sumNeg++;
 						break;
 					case "s":
 						labeledMessage.setSentiment(Sentiment.NEUTRAL);
+						sumNeu++;
 						break;
 					case "d":
 						labeledMessage.setSentiment(Sentiment.POSITIVE);
+						sumPos++;
 						break;
 					case "f":
 						labeledMessage.setSentiment(Sentiment.UNDEFINED);
+						sumUnd++;
 						break;
 					case "w":
 						next = true;
@@ -65,6 +74,16 @@ public class LocalLabeling {
 					case "z":
 						next = true;
 						if(labeled.size() > 0) {
+							Sentiment sent = labeled.get(labeled.size() - 1).getSentiment();
+							if(sent.equals(Sentiment.NEGATIVE)) {
+								sumNeg--;
+							} else if(sent.equals(Sentiment.NEUTRAL)) {
+								sumNeu--;
+							} else if(sent.equals(Sentiment.POSITIVE)) {
+								sumPos--;
+							} else if(sent.equals(Sentiment.UNDEFINED)) {
+								sumUnd--;
+							}
 							labeled.remove(labeled.size() - 1);	
 						}
 						lastUnlabeledIndex--;
@@ -76,19 +95,26 @@ public class LocalLabeling {
 						break;
 					case "aw":
 						labeledMessage.setSentiment(Sentiment.NEGATIVE);
+						sumNeg++;
 						next = true;
 						break;
 					case "sw":
 						labeledMessage.setSentiment(Sentiment.NEUTRAL);
+						sumNeu++;
 						next = true;
 						break;
 					case "dw":
 						labeledMessage.setSentiment(Sentiment.POSITIVE);
+						sumPos++;
 						next = true;
 						break;
 					case "fw":
 						labeledMessage.setSentiment(Sentiment.UNDEFINED);
+						sumUnd++;
 						next = true;
+						break;
+					case "c":
+						System.out.println("NEG: " + sumNeg + "  NEU: " + sumNeu + "  POS: " + sumPos + "  UND: " + sumUnd);
 						break;
 					}
 				}
@@ -142,6 +168,17 @@ public class LocalLabeling {
 				String sentimentString = json.get("sentiment").getAsString();
 				JsonElement element = json.get("json");
 				JsonObject originalJson = (JsonObject) element;
+				
+				if(getSentimentFromString(sentimentString).equals(Sentiment.NEGATIVE)) {
+					sumNeg++;
+				} else if(getSentimentFromString(sentimentString).equals(Sentiment.NEUTRAL)) {
+					sumNeu++;
+				} else if(getSentimentFromString(sentimentString).equals(Sentiment.POSITIVE)) {
+					sumPos++;
+				} else if(getSentimentFromString(sentimentString).equals(Sentiment.UNDEFINED)) {
+					sumUnd++;
+				}
+				
 				labeledMessages.add(new LabelMessage(originalJson, getSentimentFromString(sentimentString)));
 			}
 		}

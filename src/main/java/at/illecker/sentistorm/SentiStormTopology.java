@@ -117,13 +117,13 @@ public class SentiStormTopology {
 		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt,
 				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1)).shuffleGrouping(SVMBolt.ID);
 
-		// RedisPublishBolt --> StatisticBolt
-		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-				.shuffleGrouping(RedisPublishBolt.ID);
-
-		// StatisticBolt --> StatisticJsonBolt
-		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
+//		// RedisPublishBolt --> StatisticBolt
+//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+//				.shuffleGrouping(RedisPublishBolt.ID);
+//
+//		// StatisticBolt --> StatisticJsonBolt
+//		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+//				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
