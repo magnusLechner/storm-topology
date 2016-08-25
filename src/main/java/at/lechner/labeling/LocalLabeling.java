@@ -20,7 +20,7 @@ import at.lechner.commons.Sentiment;
 
 public class LocalLabeling {
 
-	public static final String UNLABELED_MESSAGES = "src/main/resources/preparation/self-labeling/first_20k_entries_from_amb_chatlog_2016082216.txt";
+	public static final String UNLABELED_MESSAGES = "src/main/resources/preparation/self-labeling/toBeLabeled.txt";
 	public static final String LABELED_MESSAGES = "src/main/resources/preparation/self-labeling/labeled.txt";
 
 	public static int sumNeg = 0;
@@ -67,9 +67,6 @@ public class LocalLabeling {
 					case "f":
 						labeledMessage.setSentiment(Sentiment.UNDEFINED);
 						sumUnd++;
-						break;
-					case "w":
-						next = true;
 						break;
 					case "z":
 						next = true;

@@ -300,7 +300,7 @@ sentistorm.supervisor.childopts: "-Xmx1024m"
 
 sentistorm.spout.parallelism: 1
 sentistorm.spout.max.pending: 150
-sentistorm.spout.startup.sleep.ms: 10000 # 20 sec
+sentistorm.spout.startup.sleep.ms: 10000 # 10 sec
 sentistorm.spout.tuple.sleep.ms: null
 sentistorm.spout.tuple.sleep.ns: null # 250000 = 0.25 ms
 sentistorm.spout.filter.language: "en"
