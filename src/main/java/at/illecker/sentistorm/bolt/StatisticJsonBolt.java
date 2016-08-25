@@ -18,6 +18,8 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.statistic.TopologyRawStatistic;
 import at.illecker.sentistorm.bolt.values.statistic.TopologyStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.PipelineCycleTime;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.RealCycleTime;
 import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -33,6 +35,8 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 	private static final String TOPOLOGY = "topology";
 	private static final String PROCESSED_TUPLES_COUNT = "processedTuplesCount";
+	private static final String PIPELINE = "pipeline";
+	private static final String REAL = "real";
 	private static final String CYCLE = "cycle";
 	private static final String MIN = "min";
 	private static final String MAX = "max";
@@ -81,15 +85,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		}
 
 		if (!firstTupelFlag) {
-			// LOG.info("RAW: " + rawStatistic.getCycleTimes().toString());
-			// LOG.info("STATS:: PROCESSING: " +
-			// statistic.getProcessingTuplesCount() + " PROCESSED: "
-			// + statistic.getProcessedTuplesCount() + " MIN: " +
-			// statistic.getCycleTimeMin() + " MAX: "
-			// + statistic.getCycleTimeMax() + " AVG: " +
-			// statistic.getCycleTimeAvg() + " STDDEV: "
-			// + statistic.getCycleTimeStdDev());
-			// LOG.info("EMITTED JSON: " + jsonObject.toString());
+//			 LOG.info("EMITTED JSON: " + jsonObject.toString());
 
 			socket.emit(SOCKET_IO_IDENTIFIER, jsonObject.toString());
 		} else {
@@ -109,29 +105,62 @@ public class StatisticJsonBolt extends BaseRichBolt {
 
 	public TopologyStatistic rawToAggregated(TopologyRawStatistic rawStatistic) {
 		List<TupleStatistic> tupleStatistics = rawStatistic.getTupleStatistics();
-		List<Long> cycleTimes = calcCylceTime(tupleStatistics);
-		double[] basicCycleAgg = calcBasicAggregations(cycleTimes);
-		return new TopologyStatistic(tupleStatistics.size(), basicCycleAgg[0], basicCycleAgg[1], basicCycleAgg[2],
-				basicCycleAgg[3]);
+		return new TopologyStatistic(tupleStatistics.size(), getPipelineCycleTime(tupleStatistics),
+				getRealCylceTime(tupleStatistics));
 	}
 
 	public JsonObject statisticToJson(TopologyStatistic statistic) {
-		JsonObject cycle = new JsonObject();
-		cycle.addProperty(MIN, statistic.getCycleTimeMin());
-		cycle.addProperty(MAX, statistic.getCycleTimeMax());
-		cycle.addProperty(AVG, statistic.getCycleTimeAvg());
-		cycle.addProperty(STDDEV, statistic.getCycleTimeStdDev());
-
+		JsonObject pipeline = new JsonObject();
+		JsonObject pipelineCycle = new JsonObject();
+		pipelineCycle.addProperty(MIN, statistic.getPipelineCycleTime().getMin());
+		pipelineCycle.addProperty(MAX, statistic.getPipelineCycleTime().getMax());
+		pipelineCycle.addProperty(AVG, statistic.getPipelineCycleTime().getAvg());
+		pipelineCycle.addProperty(STDDEV, statistic.getPipelineCycleTime().getStdDev());
+		pipeline.add(CYCLE, pipelineCycle);
+		
+		JsonObject real = new JsonObject();
+		JsonObject realCycle = new JsonObject();
+		realCycle.addProperty(MIN, statistic.getRealCycleTime().getMin());
+		realCycle.addProperty(MAX, statistic.getRealCycleTime().getMax());
+		realCycle.addProperty(AVG, statistic.getRealCycleTime().getAvg());
+		realCycle.addProperty(STDDEV, statistic.getRealCycleTime().getStdDev());
+		real.add(CYCLE, realCycle);
+		
 		JsonObject topology = new JsonObject();
 		topology.addProperty(PROCESSED_TUPLES_COUNT, statistic.getProcessedTuplesCount());
-		topology.add(CYCLE, cycle);
+		topology.add(PIPELINE, pipeline);
+		topology.add(REAL, real);
 
 		JsonObject json = new JsonObject();
 		json.add(TOPOLOGY, topology);
 		return json;
 	}
 
-	private double[] calcBasicAggregations(List<Long> values) {
+	// TODO unify this and the method below
+	private PipelineCycleTime getPipelineCycleTime(List<TupleStatistic> tupleStatistics) {
+		List<Long> cycleTimes = new ArrayList<Long>();
+		for (int i = 0; i < tupleStatistics.size(); i++) {
+			long start = tupleStatistics.get(i).getPipelineStart();
+			long end = tupleStatistics.get(i).getPipelineEnd();
+			cycleTimes.add(end - start);
+		}
+		double[] cycleAgg = calcCycleTimeAggregations(cycleTimes);
+		return new PipelineCycleTime(cycleAgg[0], cycleAgg[1], cycleAgg[2], cycleAgg[3]);
+	}
+
+	// TODO unify this and the upper method
+	private RealCycleTime getRealCylceTime(List<TupleStatistic> tupleStatistics) {
+		List<Long> cycleTimes = new ArrayList<Long>();
+		for (int i = 0; i < tupleStatistics.size(); i++) {
+			long start = tupleStatistics.get(i).getRealStart();
+			long end = tupleStatistics.get(i).getRealEnd();
+			cycleTimes.add(end - start);
+		}
+		double[] cycleAgg = calcCycleTimeAggregations(cycleTimes);
+		return new RealCycleTime(cycleAgg[0], cycleAgg[1], cycleAgg[2], cycleAgg[3]);
+	}
+
+	private double[] calcCycleTimeAggregations(List<Long> values) {
 		if (values.size() == 0) {
 			double[] res = { 0.0, 0.0, 0.0, 0.0 };
 			return res;
@@ -154,13 +183,4 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		return res;
 	}
 
-	private List<Long> calcCylceTime(List<TupleStatistic> tupleStatistics) {
-		List<Long> values = new ArrayList<Long>();
-		for (int i = 0; i < tupleStatistics.size(); i++) {
-			long start = tupleStatistics.get(i).getPipelineStart();
-			long end = tupleStatistics.get(i).getPipelineEnd();
-			values.add(end - start);
-		}
-		return values;
-	}
 }

@@ -55,7 +55,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, List<T
 		} else {
 			m_logging = false;
 		}
-		
+
 		this.last = System.currentTimeMillis();
 	}
 
@@ -86,7 +86,11 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, List<T
 
 	private void addTupleStatistic(TupleStatistic tupleStatistic) {
 		List<TupleStatistic> tupleStatistics = state.get(TUPLE_STATISTICS);
-		tupleStatistics.add(tupleStatistic);
+		if (tupleStatistics != null) {
+			tupleStatistics.add(tupleStatistic);
+		} else {
+			throw new NullPointerException("Statistic Bolt: List is null");
+		}
 		state.put(TUPLE_STATISTICS, tupleStatistics);
 	}
 

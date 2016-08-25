@@ -23,10 +23,10 @@ import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
 
+import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseBasicBolt;
+import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +38,10 @@ import at.illecker.sentistorm.bolt.values.data.SVMBoltData;
 import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
-import at.illecker.sentistorm.commons.SentimentClass;
 import at.illecker.sentistorm.commons.svm.SVM;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 
-public class SVMBolt extends BaseBasicBolt {
+public class SVMBolt extends BaseRichBolt {
 	public static final String ID = "support-vector-maschine-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -6790858930924043126L;
@@ -51,19 +50,22 @@ public class SVMBolt extends BaseBasicBolt {
 	private boolean m_logging = false;
 	private Dataset m_dataset;
 	private svm_model m_model;
+	private OutputCollector collector;
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(SVMBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void prepare(Map config, TopologyContext context) {
+	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
 		} else {
 			m_logging = false;
 		}
+
+		this.collector = collector;
 
 		LOG.info("Loading SVM model...");
 		m_dataset = Configuration.getDataSetTwitch();
@@ -76,7 +78,7 @@ public class SVMBolt extends BaseBasicBolt {
 		}
 	}
 
-	public void execute(Tuple tuple, BasicOutputCollector collector) {
+	public void execute(Tuple tuple) {
 		FeatureGenerationBoltData featureGenerationValue = FeatureGenerationBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = featureGenerationValue.getJsonObject();
 		TupleStatistic tupleStatistic = featureGenerationValue.getTupleStatistic();
@@ -95,15 +97,29 @@ public class SVMBolt extends BaseBasicBolt {
 
 		double predictedClass = svm.svm_predict(m_model, testNodes);
 
-		jsonObject.addProperty("predictedSentiment",
-				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());
+		JsonObject score = new JsonObject();
+		score.addProperty("score", convertRating(predictedClass));
+
+		jsonObject.add("sentiment", score);
 
 		if (m_logging) {
-			LOG.info("Tweet: " + jsonObject.get("msg").getAsString() + " predictedSentiment: "
-					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
+			LOG.info("SVM all done log: " + jsonObject.toString());
 		}
 
-		collector.emit(new SVMBoltData(jsonObject, tupleStatistic));
+		collector.emit(tuple, new SVMBoltData(jsonObject, tupleStatistic));
+		collector.ack(tuple);
+	}
+
+	private static int convertRating(double predicted) {
+		if (predicted == 0.0) {
+			return -1;
+		} else if (predicted == 1.0) {
+			return 0;
+		} else if (predicted == 2.0) {
+			return 1;
+		} else {
+			throw new IllegalArgumentException("SVM prediction couldnt be converted to a rating between -1 and 1");
+		}
 	}
 
 }

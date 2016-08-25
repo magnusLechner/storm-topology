@@ -66,7 +66,9 @@ public class JsonBolt extends BaseBasicBolt {
 		if (m_logging) {
 			LOG.info("JSON: " + jsonObject.toString());
 		}
-
+		
+		tupleStatistic.setRealStart(jsonObject.get("timestamp").getAsLong());
+		
 		// Emit new tuples
 		collector.emit(new JsonBoltData(jsonObject, tupleStatistic));
 	}

@@ -49,7 +49,8 @@ public class SentiStormTopology {
 		// TODO Things to remember:
 		// - check if LocalCluster or SubmitTopology
 		// - check if redis-spout is localhost or redis.test.svc.cluster.local
-		// (pattern: amb:*chatMessages*)
+		// - check if redis-publish is localhost or
+		// redis-integration.test.svc.cluster.local
 		// - check Configuration class if local path or jar path
 		// - check senti-defaults.yaml if local path or jar path in Twitch
 		// - check if model.ser is there
@@ -117,13 +118,13 @@ public class SentiStormTopology {
 		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt,
 				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1)).shuffleGrouping(SVMBolt.ID);
 
-//		// RedisPublishBolt --> StatisticBolt
-//		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-//				.shuffleGrouping(RedisPublishBolt.ID);
-//
-//		// StatisticBolt --> StatisticJsonBolt
-//		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-//				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
+		// RedisPublishBolt --> StatisticBolt
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(RedisPublishBolt.ID);
+
+		// StatisticBolt --> StatisticJsonBolt
+		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
@@ -152,6 +153,7 @@ public class SentiStormTopology {
 		conf.put(StatisticBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statistic.logging", false));
 		conf.put(StatisticJsonBolt.CONF_LOGGING, Configuration.get("sentistorm.bolt.statisticJson.logging", false));
 
+		conf.put(RedisSpout.CONF_STARTUP_SLEEP_MS, Configuration.get("sentistorm.spout.startup.sleep.ms"));
 		conf.put(StatisticBolt.CONF_INTERVAL, Configuration.get("sentistorm.bolt.statistic.interval", 1000));
 
 		conf.put(Config.TOPOLOGY_FALL_BACK_ON_JAVA_SERIALIZATION, false);
@@ -161,7 +163,7 @@ public class SentiStormTopology {
 		// LocalCluster cluster = new LocalCluster();
 		// cluster.submitTopology(TOPOLOGY_NAME, conf,
 		// builder.createTopology());
-		//// cluster.shutdown();
+		// cluster.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 

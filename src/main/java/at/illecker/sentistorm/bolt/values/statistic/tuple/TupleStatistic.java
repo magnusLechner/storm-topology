@@ -27,6 +27,9 @@ public class TupleStatistic {
 	private long pipelineStart;
 	private long pipelineEnd;
 	
+	private long realStart;
+	private long realEnd;
+	
 	public long getPipelineStart() {
 		return pipelineStart;
 	}
@@ -41,6 +44,22 @@ public class TupleStatistic {
 	
 	public void setPipelineEnd(long pipelineEnd) {
 		this.pipelineEnd = pipelineEnd;
+	}
+
+	public long getRealStart() {
+		return realStart;
+	}
+
+	public void setRealStart(long realStart) {
+		this.realStart = realStart;
+	}
+
+	public long getRealEnd() {
+		return realEnd;
+	}
+
+	public void setRealEnd(long realEnd) {
+		this.realEnd = realEnd;
 	}
 
 }

@@ -68,9 +68,11 @@ public class RedisPublishBolt extends BaseRichBolt {
 				LOG.info("PUBLISHED:  " + current);
 			}
 
-			publish(current);
+//			publish(current);
 
-			tupleStatistic.setPipelineEnd(System.currentTimeMillis());
+			long currentTime = System.currentTimeMillis();
+			tupleStatistic.setPipelineEnd(currentTime);
+			tupleStatistic.setRealEnd(currentTime);
 			collector.emit(tuple, new RedisPublishBoltData(jsonObject, tupleStatistic));
 			collector.ack(tuple);
 		}

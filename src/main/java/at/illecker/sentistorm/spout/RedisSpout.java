@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
+import at.illecker.sentistorm.commons.util.TimeUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -23,6 +24,7 @@ public class RedisSpout extends BaseRichSpout {
 	static final long serialVersionUID = 737015318988609460L;
 	public static final String ID = "redis-spout";
 	public static final String CONF_LOGGING = ID + ".logging";
+	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
 	private static final Logger LOG = LoggerFactory.getLogger(RedisSpout.class);
 	private boolean m_logging = false;
 
@@ -112,6 +114,11 @@ public class RedisSpout extends BaseRichSpout {
 		} else {
 			m_logging = false;
 		}
+		
+		if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
+			long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
+			TimeUtils.sleepMillis(startupSleepMillis);
+		}
 
 		ListenerThread listener = new ListenerThread(queue, pool, pattern);
 		listener.start();
@@ -131,6 +138,7 @@ public class RedisSpout extends BaseRichSpout {
 			}
 
 			TupleStatistic tupleStatistic = new TupleStatistic();
+			//set realStart must happen in JsonBolt
 			tupleStatistic.setPipelineStart(System.currentTimeMillis());
 			collector.emit(new Values(jsonAsString, tupleStatistic));
 		}
