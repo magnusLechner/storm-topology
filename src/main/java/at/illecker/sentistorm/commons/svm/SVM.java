@@ -54,14 +54,15 @@ import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
 import at.illecker.sentistorm.commons.SentimentClass;
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.CombinedFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.SentimentFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSCombinedFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSentimentFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSTfIdfFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.BooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SentimentFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.selector.FVGSelector;
 import at.illecker.sentistorm.commons.featurevector.selector.NoPOSFVGSelector;
 import at.illecker.sentistorm.commons.svm.box.NoPOSSVMBox;
@@ -693,7 +694,7 @@ public class SVM {
 
 		Map<String, Double[]> statistics = new LinkedHashMap<String, Double[]>();
 
-//		NoPOSSVMBox pipelineBox = null;
+		// NoPOSSVMBox pipelineBox = null;
 		POSSVMBox pipelineBox = null;
 
 		try {
@@ -702,11 +703,14 @@ public class SVM {
 				// random split in test and training data
 				SVMPreparation.prepareForCrossValidation();
 
-//				NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//						NoPOSCombinedFeatureVectorGenerator.class);
-//				pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, true);
+				// NoPOSFeatureVectorGenerator noPOSFVG =
+				// NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false,
+				// true),
+				// NoPOSCombinedFeatureVectorGenerator.class);
+				// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
+				// true);
 				FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-						SentimentFeatureVectorGenerator.class);
+						CombinedFeatureVectorGenerator.class);
 				pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 				pipelineBox.setName("PipeLine-Box");
@@ -962,6 +966,7 @@ public class SVM {
 
 	public static void main(String[] args) throws IOException {
 		Dataset dataset = Configuration.getDataSetTwitch();
+		// Dataset dataset = Configuration.getDataSetMyTest();
 
 		boolean parameterSearch = false;
 		boolean useSerialization = true;
@@ -969,50 +974,54 @@ public class SVM {
 		int featureVectorLevel = 2;
 		int iterations = 1;
 
-//		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
-//		List<Integer> stepList = new ArrayList<Integer>();
-//		List<Integer> testSizeList = new ArrayList<Integer>();
-//
-//		startTrainingSizeList.add(50);
-//		startTrainingSizeList.add(100);
-//		startTrainingSizeList.add(100);
-//		startTrainingSizeList.add(100);
-//
-//		stepList.add(50);
-//		stepList.add(50);
-//		stepList.add(50);
-//		stepList.add(50);
-//
-//		testSizeList.add(209);
-//		testSizeList.add(109);
-//		testSizeList.add(209);
-//		testSizeList.add(309);
+		// List<Integer> startTrainingSizeList = new ArrayList<Integer>();
+		// List<Integer> stepList = new ArrayList<Integer>();
+		// List<Integer> testSizeList = new ArrayList<Integer>();
+		//
+		// startTrainingSizeList.add(50);
+		// startTrainingSizeList.add(100);
+		// startTrainingSizeList.add(100);
+		// startTrainingSizeList.add(100);
+		//
+		// stepList.add(50);
+		// stepList.add(50);
+		// stepList.add(50);
+		// stepList.add(50);
+		//
+		// testSizeList.add(209);
+		// testSizeList.add(109);
+		// testSizeList.add(209);
+		// testSizeList.add(309);
 
-		
-//		 evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-		
-		//for creating SVM-model with 709 examples
-//		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, 1, 709,
-//				0, 0);
-		
-//		for (int i = 0; i < 6; i++) {
-//			for (int j = 0; j < startTrainingSizeList.size(); j++) {
-//				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
-//						stepList.get(j), testSizeList.get(j));
-//			}
-//		}
-//		svm.EXEC_SERV.shutdown();
+		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
-//		if (featureVectorLevel == 0) {
-//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else if (featureVectorLevel == 1) {
-//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else {
-//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		}
+		// for creating SVM-model with 709 examples
+		// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+		// false, 1, 709,
+		// 0, 0);
+
+		// for (int i = 0; i < 6; i++) {
+		// for (int j = 0; j < startTrainingSizeList.size(); j++) {
+		// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+		// false, i, startTrainingSizeList.get(j),
+		// stepList.get(j), testSizeList.get(j));
+		// }
+		// }
+		// svm.EXEC_SERV.shutdown();
+
+		// if (featureVectorLevel == 0) {
+		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else if (featureVectorLevel == 1) {
+		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else {
+		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// }
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.illecker.sentistorm.commons.featurevector;
+package at.illecker.sentistorm.commons.featurevector.pos;
 
 import java.util.List;
 import java.util.Map;
@@ -38,8 +38,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 	private SentimentFeatureVectorGenerator m_sentimentFeatureVectorGenerator = null;
 	private TfIdfFeatureVectorGenerator m_tfidfFeatureVectorGenerator = null;
 	private POSFeatureVectorGenerator m_posFeatureVectorGenerator = null;
-	// private UndefinedTwitchFeatureVectorGenerator
-	// m_undefinedTwitchFeatureVectorGenerator = null;
+	private BooleanFeatureVectorGenerator m_booleanFeatureVectorGenerator = null;
 
 	public CombinedFeatureVectorGenerator(boolean normalizePOSCounts, TweetTfIdf tweetTfIdf) {
 		m_sentimentFeatureVectorGenerator = new SentimentFeatureVectorGenerator(1);
@@ -51,11 +50,10 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
 						+ m_posFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
-		// m_undefinedTwitchFeatureVectorGenerator = new
-		// UndefinedTwitchFeatureVectorGenerator(
-		// m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
-		// + m_posFeatureVectorGenerator.getFeatureVectorSize()
-		// + m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
+		m_booleanFeatureVectorGenerator = new BooleanFeatureVectorGenerator(
+				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
+						+ m_posFeatureVectorGenerator.getFeatureVectorSize()
+						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
 
 		LOG.info("VectorSize: " + getFeatureVectorSize());
 	}
@@ -65,8 +63,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		return m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
 				+ m_posFeatureVectorGenerator.getFeatureVectorSize()
 				+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize()
-		// + m_undefinedTwitchFeatureVectorGenerator.getFeatureVectorSize()
-		;
+				+ m_booleanFeatureVectorGenerator.getFeatureVectorSize();
 	}
 
 	@Override
@@ -77,7 +74,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 
 		featureVector.putAll(m_tfidfFeatureVectorGenerator.generateFeatureVector(tweet));
 
-		// featureVector.putAll(m_undefinedTwitchFeatureVectorGenerator.generateFeatureVector(tweet));
+		featureVector.putAll(m_booleanFeatureVectorGenerator.generateFeatureVector(tweet));
 
 		return featureVector;
 	}
@@ -88,10 +85,9 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		POSTagger posTagger = POSTagger.getInstance();
 
 		// Load tweets
-		// List<Tweet> tweets =
-		// Configuration.getDataSetSemEval2013().getTrainTweets(true);
-		List<Tweet> tweets = Configuration.getDataSetTwitch().getTrainTweets(true);
-
+//		List<Tweet> tweets = Configuration.getDataSetTwitch().getTrainTweets(true);
+		List<Tweet> tweets = Configuration.getDataSetMyTest().getTrainTweets(true);
+		
 		// Tokenize
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);
 

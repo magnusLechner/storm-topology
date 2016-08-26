@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import at.illecker.sentistorm.commons.featurevector.CombinedFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
 import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;

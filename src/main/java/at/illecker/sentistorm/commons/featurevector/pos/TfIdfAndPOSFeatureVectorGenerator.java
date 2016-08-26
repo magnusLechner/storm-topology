@@ -1,4 +1,4 @@
-package at.illecker.sentistorm.commons.featurevector;
+package at.illecker.sentistorm.commons.featurevector.pos;
 
 import java.util.List;
 import java.util.Map;
