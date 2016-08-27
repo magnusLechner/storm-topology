@@ -155,6 +155,8 @@ global.resources.dict:
         - "dictionaries/Stopwords.txt"
     TwitchEmoticons:
         - "dictionaries/TwitchEmoticons.txt"
+    PlayerNames:
+        - "dictionaries/PlayerNames.txt"
 
 global.resources.dict.sentiment:
     # AFINN http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010

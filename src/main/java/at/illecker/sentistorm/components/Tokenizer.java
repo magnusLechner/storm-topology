@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.TwitchRegex;
 import at.illecker.sentistorm.commons.util.HtmlUtils;
+import at.illecker.sentistorm.commons.util.RegexUtils;
 import at.illecker.sentistorm.commons.util.UnicodeUtils;
 
 public class Tokenizer {
@@ -51,22 +51,25 @@ public class Tokenizer {
 
 		// Step 4) Tokenize
 		List<String> tokens = new ArrayList<String>();
-//		Matcher m = RegexUtils.TOKENIZER_PATTERN.matcher(str);	//original
-		Matcher m = TwitchRegex.getInstance().getTokenizerPattern().matcher(str);
+		Matcher m = RegexUtils.TOKENIZER_PATTERN.matcher(str);
+		// adds every emoticon to the regex. the above is more general
+		// Matcher m =
+		// TwitchRegex.getInstance().getTokenizerPattern().matcher(str);
 		while (m.find()) {
 			tokens.add(m.group());
 		}
 
 		return tokens;
 	}
-	
+
 	public static void main(String[] args) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		tweets.add(new Tweet(0L, "TWEET: wutface WutFace kappa Kappa 4head 4Head 4HEAD"));
+		tweets.add(new Tweet(1L, "TWEET: dodo8 21Ignite2 Friberg Xist N0tail Troll2 moon12 Moon21"));
 		for (Tweet tweet : tweets) {
 			List<String> tokenizedTweet = tokenize(tweet.getText());
 			System.out.println(tokenizedTweet);
 		}
 	}
-	
+
 }

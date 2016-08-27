@@ -56,10 +56,10 @@ public class Configuration {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map readConfig() {
 		// for running SVM local
-//		 String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
-//		 Map conf = readConfigFile(file + "senti-defaults.yaml", true);
+		 String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
+		 Map conf = readConfigFile(file + "senti-defaults.yaml", true);
 
-		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
+//		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
 		// read custom config
 		LOG.info("Try to load user-specific config...");
 		Map customConfig = readConfigFile(WORKING_DIR_PATH + "configuration.yaml", false);
@@ -165,6 +165,11 @@ public class Configuration {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<String> getTwitchEmoticons() {
 		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("TwitchEmoticons");
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static List<String> getPlayerNames() {
+		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("PlayerNames");
 	}
 
 }
