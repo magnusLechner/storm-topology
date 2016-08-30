@@ -81,7 +81,12 @@
     		<artifactId>jedis</artifactId>
     		<version>2.9.0</version>
 		</dependency>
-  		
+		<!-- language detection -->
+  		<dependency>
+    		<groupId>com.optimaize.languagedetector</groupId>
+    		<artifactId>language-detector</artifactId>
+    		<version>0.5</version>
+		</dependency>
 		
 		
 		<!-- the jar from maven repository differs from the one used by illecker -->

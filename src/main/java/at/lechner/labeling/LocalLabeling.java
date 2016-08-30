@@ -12,9 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.google.common.base.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.optimaize.langdetect.LanguageDetector;
+import com.optimaize.langdetect.LanguageDetectorBuilder;
+import com.optimaize.langdetect.i18n.LdLocale;
+import com.optimaize.langdetect.ngram.NgramExtractors;
+import com.optimaize.langdetect.profiles.LanguageProfile;
+import com.optimaize.langdetect.profiles.LanguageProfileReader;
+import com.optimaize.langdetect.text.CommonTextObjectFactories;
+import com.optimaize.langdetect.text.TextObject;
+import com.optimaize.langdetect.text.TextObjectFactory;
 
 import at.lechner.commons.Sentiment;
 
@@ -22,13 +32,31 @@ public class LocalLabeling {
 
 	public static final String UNLABELED_MESSAGES = "src/main/resources/preparation/self-labeling/toBeLabeled.txt";
 	public static final String LABELED_MESSAGES = "src/main/resources/preparation/self-labeling/labeled.txt";
+	public static final String PROFILE_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/language-detection/profiles/shorttext";
 
 	public static int sumNeg = 0;
 	public static int sumNeu = 0;
 	public static int sumPos = 0;
 	public static int sumUnd = 0;
-	
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws IOException {
+
+		// this are sadly not the short-text profiles
+		// List<String> names = new ArrayList<String>();
+		// names.add("en");
+		// names.add("ru");
+		// names.add("fr");
+		// names.add("de");
+		// names.add("tr");
+		// List<LanguageProfile> languageProfiles = new
+		// LanguageProfileReader().read(names);
+
+		List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+		LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+				.withProfiles(languageProfiles).build();
+		TextObjectFactory textShortClean = CommonTextObjectFactories.forDetectingShortCleanText();
+		TextObjectFactory textLong = CommonTextObjectFactories.forDetectingOnLargeText();
+
 		Scanner scanner = new Scanner(System.in);
 		int save = 0;
 		try {
@@ -42,14 +70,21 @@ public class LocalLabeling {
 					exit = true;
 					continue;
 				}
-				System.out.println(unlabeled.get(lastUnlabeledIndex).getMessage());
+				String msg = unlabeled.get(lastUnlabeledIndex).getMessage();
+				System.out.println(msg);
 
-				// input
-				// add to labeled with sentiment
+				// Language detection
+				TextObject textObject = textShortClean.forText(msg);
+				Optional<LdLocale> lang = languageDetector.detect(textObject);
+				TextObject textObject2 = textLong.forText(msg);
+				Optional<LdLocale> lang2 = languageDetector.detect(textObject2);
+				System.out.println("SHORT: " + lang + " | LONG: " + lang2);
+
 				boolean next = false;
 				LabelMessage labeledMessage = new LabelMessage(unlabeled.get(lastUnlabeledIndex).getJson());
 				while (!next) {
-					System.out.println("NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    BACK: z    STOP: capital P    COUNT: c");
+					System.out.println(
+							"NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    BACK: z    STOP: capital P    COUNT: c");
 					String input = scanner.next();
 					switch (input) {
 					case "a":
@@ -70,18 +105,18 @@ public class LocalLabeling {
 						break;
 					case "z":
 						next = true;
-						if(labeled.size() > 0) {
+						if (labeled.size() > 0) {
 							Sentiment sent = labeled.get(labeled.size() - 1).getSentiment();
-							if(sent.equals(Sentiment.NEGATIVE)) {
+							if (sent.equals(Sentiment.NEGATIVE)) {
 								sumNeg--;
-							} else if(sent.equals(Sentiment.NEUTRAL)) {
+							} else if (sent.equals(Sentiment.NEUTRAL)) {
 								sumNeu--;
-							} else if(sent.equals(Sentiment.POSITIVE)) {
+							} else if (sent.equals(Sentiment.POSITIVE)) {
 								sumPos--;
-							} else if(sent.equals(Sentiment.UNDEFINED)) {
+							} else if (sent.equals(Sentiment.UNDEFINED)) {
 								sumUnd--;
 							}
-							labeled.remove(labeled.size() - 1);	
+							labeled.remove(labeled.size() - 1);
 						}
 						lastUnlabeledIndex--;
 						lastUnlabeledIndex--;
@@ -111,7 +146,8 @@ public class LocalLabeling {
 						next = true;
 						break;
 					case "c":
-						System.out.println("NEG: " + sumNeg + "  NEU: " + sumNeu + "  POS: " + sumPos + "  UND: " + sumUnd);
+						System.out.println(
+								"NEG: " + sumNeg + "  NEU: " + sumNeu + "  POS: " + sumPos + "  UND: " + sumUnd);
 						break;
 					}
 				}
@@ -120,7 +156,7 @@ public class LocalLabeling {
 				}
 				lastUnlabeledIndex++;
 				save++;
-				if(save%10 == 0) {
+				if (save % 10 == 0) {
 					writeLabeledMessages(LABELED_MESSAGES, labeled);
 				}
 			}
@@ -165,17 +201,17 @@ public class LocalLabeling {
 				String sentimentString = json.get("sentiment").getAsString();
 				JsonElement element = json.get("json");
 				JsonObject originalJson = (JsonObject) element;
-				
-				if(getSentimentFromString(sentimentString).equals(Sentiment.NEGATIVE)) {
+
+				if (getSentimentFromString(sentimentString).equals(Sentiment.NEGATIVE)) {
 					sumNeg++;
-				} else if(getSentimentFromString(sentimentString).equals(Sentiment.NEUTRAL)) {
+				} else if (getSentimentFromString(sentimentString).equals(Sentiment.NEUTRAL)) {
 					sumNeu++;
-				} else if(getSentimentFromString(sentimentString).equals(Sentiment.POSITIVE)) {
+				} else if (getSentimentFromString(sentimentString).equals(Sentiment.POSITIVE)) {
 					sumPos++;
-				} else if(getSentimentFromString(sentimentString).equals(Sentiment.UNDEFINED)) {
+				} else if (getSentimentFromString(sentimentString).equals(Sentiment.UNDEFINED)) {
 					sumUnd++;
 				}
-				
+
 				labeledMessages.add(new LabelMessage(originalJson, getSentimentFromString(sentimentString)));
 			}
 		}

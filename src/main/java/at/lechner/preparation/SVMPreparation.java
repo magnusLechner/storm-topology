@@ -26,7 +26,7 @@ public class SVMPreparation implements PreparationTool {
 	private static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
 	private static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
 
-	private static final int FIX_TEST_SIZE = 150;
+	private static final int FIX_TRAIN_SIZE = 0;
 
 	private static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
 	private static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
@@ -41,14 +41,14 @@ public class SVMPreparation implements PreparationTool {
 		HashMap<String, Sentiment> trainingMsgs = new HashMap<String, Sentiment>();
 
 		// set number for test data
-		// addToLists(testMsgs, trainingMsgs, posLines);
-		// addToLists(testMsgs, trainingMsgs, neuLines);
-		// addToLists(testMsgs, trainingMsgs, negLines);
+		 addToLists(testMsgs, trainingMsgs, posLines);
+		 addToLists(testMsgs, trainingMsgs, neuLines);
+		 addToLists(testMsgs, trainingMsgs, negLines);
 
 		// set number for training data
-		addToLists(trainingMsgs, testMsgs, posLines);
-		addToLists(trainingMsgs, testMsgs, neuLines);
-		addToLists(trainingMsgs, testMsgs, negLines);
+//		addToLists(trainingMsgs, testMsgs, posLines);
+//		addToLists(trainingMsgs, testMsgs, neuLines);
+//		addToLists(trainingMsgs, testMsgs, negLines);
 
 		createTSV(testMsgs, TEST_TSV);
 		createTSV(trainingMsgs, TRAINING_TSV);
@@ -56,7 +56,7 @@ public class SVMPreparation implements PreparationTool {
 
 	private static void addToLists(HashMap<String, Sentiment> containsMsgs, HashMap<String, Sentiment> containsMsgsNot,
 			String[] lines) {
-		int number = FIX_TEST_SIZE;
+		int number = FIX_TRAIN_SIZE;
 		int[] randoms = getRandoms(number, lines.length);
 
 		for (int i = 0; i < lines.length; i++) {
@@ -556,19 +556,24 @@ public class SVMPreparation implements PreparationTool {
 		// for (int i = 0; i < 10; i++) {
 		// prepareForCrossValidation();
 		// }
-
-		List<List<List<MyTupel>>> slices = prepareRandomVsRestRun(100, 50);
-		for (int i = 0; i < slices.size(); i++) {
-			List<List<MyTupel>> slice = slices.get(i);
-
-			SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
-
-			System.out.println("New slice: ");
-			System.out.println(slice.get(0).size());
-			System.out.println(slice.get(1).size());
-
-			System.out.println();
-		}
+//
+//		List<List<List<MyTupel>>> slices = prepareRandomVsRestRun(100, 50);
+//		for (int i = 0; i < slices.size(); i++) {
+//			List<List<MyTupel>> slice = slices.get(i);
+//
+//			SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
+//
+//			System.out.println("New slice: ");
+//			System.out.println(slice.get(0).size());
+//			System.out.println(slice.get(1).size());
+//
+//			System.out.println();
+//		}
+		
+		System.out.println("PREPARATION SVMTRAINING START");
+		createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE, SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
+				TEST_TSV, TRAINING_TSV);
+		System.out.println("PREPARATION SVMTRAINING STOP");
 	}
 
 	@Override

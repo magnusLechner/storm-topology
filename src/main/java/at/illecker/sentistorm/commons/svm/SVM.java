@@ -1009,19 +1009,16 @@ public class SVM {
 		// }
 		// svm.EXEC_SERV.shutdown();
 
-		// if (featureVectorLevel == 0) {
-		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else if (featureVectorLevel == 1) {
-		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else {
-		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// }
+//		if (featureVectorLevel == 0) {
+//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else if (featureVectorLevel == 1) {
+//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else {
+//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		}
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,
