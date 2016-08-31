@@ -55,4 +55,5 @@ public class LennMessages {
 	public static void main(String[] args) throws IOException {
 		getLennTestMessages(INPUT_PATH, OUTPUT_PATH);
 	}
+	
 }

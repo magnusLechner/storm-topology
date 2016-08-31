@@ -69,8 +69,8 @@ global.resources.datasets.sentiment140:
 
 global.resources.datasets.twitch:
     "twitch":
-        #path: "src/main/resources/datasets/Twitch"  #for running SVM local
-        path: "datasets/Twitch"  #for running SVM on cluster
+        path: "src/main/resources/datasets/Twitch"  #for running SVM local
+        #path: "datasets/Twitch"  #for running SVM on cluster
         train.file: "twitch-training.tsv"
         dev.file: "twitch-dev.tsv"
         test.file: "twitch-test.tsv"

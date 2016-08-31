@@ -708,7 +708,7 @@ public class SVM {
 				// true),
 				// NoPOSCombinedFeatureVectorGenerator.class);
 				// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
-				// true);
+				// false);
 				FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
 						CombinedFeatureVectorGenerator.class);
 				pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
@@ -750,10 +750,9 @@ public class SVM {
 					System.out.println("Amount of messages with Sentiment-Twitch-Emote: "
 							+ pipelineBox.getPredictor().getPredictionStatistic().getMsgsWithSentimentTwitchEmote());
 
-					// System.out.println("Lenn Evaluation result: "
-					// +
-					// (pipelineBox.getPredictor().getPredictionStatistic().getLennSum()
-					// / dataset.getTestTweets(true).size()));
+					System.out.println("Lenn Evaluation result (REMEMBER: -1 is NEGATIVE and 1 is POSITIVE): "
+							+ (pipelineBox.getPredictor().getPredictionStatistic().getLennSum()
+									/ dataset.getTestTweets(true).size()));
 
 					if (k == iterations - 1) {
 						// writeWrongPredictedMessages(pipelineBox.getPredictor().getPredictionStatistic());
@@ -1009,16 +1008,19 @@ public class SVM {
 		// }
 		// svm.EXEC_SERV.shutdown();
 
-//		if (featureVectorLevel == 0) {
-//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else if (featureVectorLevel == 1) {
-//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else {
-//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		}
+		// if (featureVectorLevel == 0) {
+		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else if (featureVectorLevel == 1) {
+		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else {
+		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// }
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,

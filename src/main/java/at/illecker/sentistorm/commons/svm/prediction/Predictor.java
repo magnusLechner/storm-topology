@@ -86,6 +86,7 @@ public abstract class Predictor {
 		countTwitchEmoticons(featuredTweet);
 
 		// for lenns evaluation
+//		System.out.println("SENTIMENT:  " + predictedClass + "   TEXT: " + featuredTweet.getText());
 		updateLennSum(predictedClass);
 
 		// if FV.size == 0 -> always neutral => only count the message if FV is
