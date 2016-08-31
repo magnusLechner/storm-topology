@@ -25,17 +25,23 @@ public class PrepareLocalLabel {
 	private static final String UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/uncertain.txt";
 	private static final String MERGE_CERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_certain.txt";
 	private static final String MERGE_UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_uncertain.txt";
-	
+
 	private static final String RESULT_PATH = "src/main/resources/preparation/self-labeling/complete_result.tsv";
-	private static final String ORIGINAL_709_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/datasets/Twitch/complete_709_model/twitch-training.tsv";
-	
+	private static final String ORIGINAL_709_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/datasets/"
+			+ "Twitch/complete_709_model/twitch-training.tsv";
+
 	public static void getLocalMessages() {
+		// TODO Step 1
 		String[] lines = BasicUtil.readLines(LABELED_PATH);
 		separateMessages(lines);
-		
-		
-//		addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH);
+
+		// TODO Step 2:
+		// add labeling to all_labeled_...
+
+		// TODO Step 3
 		addCertainToCertain(RESULT_PATH, CERTAIN_PATH);
+		// addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH); //shouldnt be
+		// needed any more
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
@@ -46,10 +52,10 @@ public class PrepareLocalLabel {
 		MyTupel[] t1 = getMyTuples(lines1);
 		MyTupel[] t2 = getMyTuples(lines2);
 		HashMap<String, String> messages = new HashMap<String, String>();
-		for(MyTupel t : t1) {
+		for (MyTupel t : t1) {
 			messages.put(t.getText(), t.getSentiment().toString());
 		}
-		for(MyTupel t : t2) {
+		for (MyTupel t : t2) {
 			if (messages.get(t.getText()) == null) {
 				if (!uncertain.contains(t.getText())) {
 					messages.put(t.getText(), t.getSentiment().toString());
@@ -59,7 +65,7 @@ public class PrepareLocalLabel {
 					uncertain.add(t.getText());
 					messages.remove(t.getText());
 				}
-			}	
+			}
 		}
 		int i = 1;
 		for (Entry<String, String> entry : messages.entrySet()) {
@@ -71,9 +77,9 @@ public class PrepareLocalLabel {
 		print(MERGE_UNCERTAIN_PATH, uncertain);
 	}
 
-	// resolves duplicates
-	// resolves certain from uncertain
-	// resolves Undefined
+	// removes duplicates
+	// separates certain from uncertain
+	// removes Undefined
 	public static void separateMessages(String[] lines) {
 		HashMap<String, String> messages = new HashMap<String, String>();
 		List<MyTupel> certain = new ArrayList<MyTupel>();
@@ -110,19 +116,19 @@ public class PrepareLocalLabel {
 		print(CERTAIN_PATH, certain);
 		print(UNCERTAIN_PATH, uncertain);
 	}
-	
+
 	private static MyTupel[] getMyTuples(String[] lines) {
 		List<MyTupel> tupels = new ArrayList<MyTupel>();
-		for(int i = 0; i < lines.length; i++) {
+		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
-			if(line.trim().length() == 0) {
+			if (line.trim().length() == 0) {
 				continue;
 			}
-			String[] parts = line.split("\t");			
+			String[] parts = line.split("\t");
 			String msg = "";
-			for(int j = 2; j < parts.length; j++) {
+			for (int j = 2; j < parts.length; j++) {
 				msg += parts[j];
-				if(j < parts.length -1) {
+				if (j < parts.length - 1) {
 					msg += "\t";
 				}
 			}
