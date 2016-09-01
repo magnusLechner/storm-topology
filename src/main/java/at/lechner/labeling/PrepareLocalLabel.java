@@ -26,22 +26,22 @@ public class PrepareLocalLabel {
 	private static final String MERGE_CERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_certain.txt";
 	private static final String MERGE_UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_uncertain.txt";
 
-	private static final String RESULT_PATH = "src/main/resources/preparation/self-labeling/complete_result.tsv";
-	private static final String ORIGINAL_709_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/datasets/"
-			+ "Twitch/complete_709_model/twitch-training.tsv";
+	private static final String RESULT_PATH = "src/main/resources/preparation/complete_result.tsv";
+	private static final String ORIGINAL_709_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/preparation"
+			+ "/original-labeling/unique-messages.txt";
 
 	public static void getLocalMessages() {
 		// TODO Step 1
-		String[] lines = BasicUtil.readLines(LABELED_PATH);
-		separateMessages(lines);
+//		String[] lines = BasicUtil.readLines(LABELED_PATH);
+//		separateMessages(lines);
 
 		// TODO Step 2:
 		// add labeling to all_labeled_...
 
 		// TODO Step 3
 //		addCertainToCertain(RESULT_PATH, CERTAIN_PATH);
-		//shouldnt be needed any more
-		// addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH); 
+		// shouldnt be needed any more
+		 addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH);
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
@@ -67,6 +67,7 @@ public class PrepareLocalLabel {
 				}
 			}
 		}
+		
 		int i = 1;
 		for (Entry<String, String> entry : messages.entrySet()) {
 			MyTupel tupel = new MyTupel(i, entry.getKey(), entry.getValue());

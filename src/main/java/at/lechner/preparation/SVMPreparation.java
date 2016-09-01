@@ -20,13 +20,14 @@ import at.lechner.util.BasicUtil;
 
 public class SVMPreparation implements PreparationTool {
 
-	private static final String UNIQUE_MESSAGES = "src/main/resources/preparation/unique-messages.txt";
+	private static final String UNIQUE_MESSAGES_ALL = "src/main/resources/preparation/complete_result.tsv";
+	private static final String UNIQUE_MESSAGES_ORIGINAL = "src/main/resources/preparation/original-labeling/unique-messages.txt";
+	private static final String UNIQUE_MESSAGES_SELF_LABELING = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
 
 	private static final String SEPARATE_MESSAGES_POSITIVE = "src/main/resources/preparation/svm/unique-messages-positive.txt";
 	private static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
 	private static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
 
-	private static final String UNIQUE_MESSAGES_SELF_LABELING = "src/main/resources/preparation/self-labeling/complete_result.tsv";
 	private static final String SEPARATE_MESSAGES_SELF_LABELING_POSITIVE = "src/main/resources/preparation/self-labeling/separated-classes/positives.txt";
 	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL = "src/main/resources/preparation/self-labeling/separated-classes/neutrals.txt";
 	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE = "src/main/resources/preparation/self-labeling/separated-classes/negatives.txt";
@@ -51,8 +52,34 @@ public class SVMPreparation implements PreparationTool {
 		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
 		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE);
 
-		createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE, SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
-				SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV, TEST_TRAINING_TSV);
+		// createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV,
+		// TEST_TRAINING_TSV);
+
+		separateMergedLabelSessions(UNIQUE_MESSAGES_ALL, UNIQUE_MESSAGES_ORIGINAL, UNIQUE_MESSAGES_SELF_LABELING);
+	}
+
+	public static void separateMergedLabelSessions(String allPath, String toRemovePath, String resultPath) {
+		Set<String> originalMessages = new HashSet<String>();
+		List<MyTupel> result = new ArrayList<MyTupel>();
+		List<MyTupel> tmp = new ArrayList<MyTupel>();
+		MyTupel[] original = getMyTuples(toRemovePath);
+		MyTupel[] all = getMyTuples(allPath);
+
+		for (MyTupel tuple : original) {
+			originalMessages.add(tuple.getText());
+		}
+		for (MyTupel tuple : all) {
+			if (!originalMessages.contains(tuple.getText())) {
+				tmp.add(tuple);
+			}
+		}
+		for(int i = 0; i < tmp.size(); i++) {
+			MyTupel current = tmp.get(i);
+			result.add(new MyTupel(i+1, current.getText(), current.getSentiment().toString()));
+		}
+		print(resultPath, result);
 	}
 
 	private static void createTestAndTrainingTSV(String positivePath, String neutralPath, String negativePath,
@@ -76,6 +103,49 @@ public class SVMPreparation implements PreparationTool {
 
 		createTSV(testMsgs, testPath);
 		createTSV(trainingMsgs, trainingPath);
+	}
+	
+	public static void print(String toPath, List<MyTupel> certain) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < certain.size(); i++) {
+			sb.append(certain.get(i).getId());
+			sb.append("\t");
+			sb.append(certain.get(i).getSentiment());
+			sb.append("\t");
+			sb.append(certain.get(i).getText());
+			sb.append("\n");
+		}
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(toPath), "utf-8"))) {
+			writer.write(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static MyTupel[] getMyTuples(String filePath) {
+		String[] lines = BasicUtil.readLines(filePath);
+		return getMyTuples(lines);
+	}
+
+	private static MyTupel[] getMyTuples(String[] lines) {
+		List<MyTupel> tupels = new ArrayList<MyTupel>();
+		for (int i = 0; i < lines.length; i++) {
+			String line = lines[i];
+			if (line.trim().length() == 0) {
+				continue;
+			}
+			String[] parts = line.split("\t");
+			String msg = "";
+			for (int j = 2; j < parts.length; j++) {
+				msg += parts[j];
+				if (j < parts.length - 1) {
+					msg += "\t";
+				}
+			}
+			MyTupel tuple = new MyTupel(Integer.valueOf(parts[0]), msg, parts[1]);
+			tupels.add(tuple);
+		}
+		return tupels.toArray(new MyTupel[tupels.size()]);
 	}
 
 	private static void addToLists(HashMap<String, Sentiment> containsMsgs, HashMap<String, Sentiment> containsMsgsNot,
@@ -268,7 +338,7 @@ public class SVMPreparation implements PreparationTool {
 	public static List<List<List<MyTupel>>> prepareAdditionVsRestSubsetRun(int startTrainingSetSize,
 			int testSizeAndTrainingStepSize) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + testSizeAndTrainingStepSize > tupels.length) {
 			return null;
@@ -311,7 +381,7 @@ public class SVMPreparation implements PreparationTool {
 
 	public static List<List<List<MyTupel>>> prepareAdditionVsRestRun(int startTrainingSetSize, int trainingSteps) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + trainingSteps > tupels.length || trainingSteps <= 0 || startTrainingSetSize <= 0) {
 			return null;
@@ -360,7 +430,7 @@ public class SVMPreparation implements PreparationTool {
 	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
 				|| startTrainingSetSize <= 0) {
@@ -409,7 +479,7 @@ public class SVMPreparation implements PreparationTool {
 	public static List<List<List<MyTupel>>> prepareRandomVsRestSubsetRun(int startTrainingSetSize,
 			int testSizeAndTrainingStepSize) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + testSizeAndTrainingStepSize > tupels.length) {
 			return null;
@@ -458,7 +528,7 @@ public class SVMPreparation implements PreparationTool {
 
 	public static List<List<List<MyTupel>>> prepareRandomVsRestRun(int startTrainingSetSize, int trainingSteps) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + trainingSteps > tupels.length) {
 			return null;
@@ -496,7 +566,7 @@ public class SVMPreparation implements PreparationTool {
 	public static List<List<List<MyTupel>>> prepareRandomVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES);
+		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
 				|| startTrainingSetSize <= 0) {
