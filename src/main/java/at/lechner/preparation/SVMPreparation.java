@@ -26,10 +26,34 @@ public class SVMPreparation implements PreparationTool {
 	private static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
 	private static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
 
-	private static final int FIX_TRAIN_SIZE = 0;
+	private static final String UNIQUE_MESSAGES_SELF_LABELING = "src/main/resources/preparation/self-labeling/complete_result.tsv";
+	private static final String SEPARATE_MESSAGES_SELF_LABELING_POSITIVE = "src/main/resources/preparation/self-labeling/separated-classes/positives.txt";
+	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL = "src/main/resources/preparation/self-labeling/separated-classes/neutrals.txt";
+	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE = "src/main/resources/preparation/self-labeling/separated-classes/negatives.txt";
+
+	private static final int FIX_TRAIN_SIZE = 100;
 
 	private static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
 	private static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
+
+	private static final String TEST_TEST_TSV = "src/main/resources/preparation/self-labeling/separated-classes/test.tsv";
+	private static final String TEST_TRAINING_TSV = "src/main/resources/preparation/self-labeling/separated-classes/training.tsv";
+
+	public static void main(String[] args) throws IOException {
+		// System.out.println("PREPARATION SVMTRAINING START");
+		// createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE,
+		// SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
+		// TEST_TSV, TRAINING_TSV);
+		// System.out.println("PREPARATION SVMTRAINING STOP");
+
+		// separateDataBySentiment(UNIQUE_MESSAGES_SELF_LABELING,
+		// SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE);
+
+		createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE, SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
+				SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV, TEST_TRAINING_TSV);
+	}
 
 	private static void createTestAndTrainingTSV(String positivePath, String neutralPath, String negativePath,
 			String testPath, String trainingPath) throws IOException {
@@ -50,8 +74,8 @@ public class SVMPreparation implements PreparationTool {
 		// addToLists(trainingMsgs, testMsgs, neuLines);
 		// addToLists(trainingMsgs, testMsgs, negLines);
 
-		createTSV(testMsgs, TEST_TSV);
-		createTSV(trainingMsgs, TRAINING_TSV);
+		createTSV(testMsgs, testPath);
+		createTSV(trainingMsgs, trainingPath);
 	}
 
 	private static void addToLists(HashMap<String, Sentiment> containsMsgs, HashMap<String, Sentiment> containsMsgsNot,
@@ -548,30 +572,6 @@ public class SVMPreparation implements PreparationTool {
 			sb.append("\n");
 		}
 		return sb.toString();
-	}
-
-	public static void main(String[] args) throws IOException {
-		// for (int i = 0; i < 10; i++) {
-		// prepareForCrossValidation();
-		// }
-		//
-		// List<List<List<MyTupel>>> slices = prepareRandomVsRestRun(100, 50);
-		// for (int i = 0; i < slices.size(); i++) {
-		// List<List<MyTupel>> slice = slices.get(i);
-		//
-		// SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
-		//
-		// System.out.println("New slice: ");
-		// System.out.println(slice.get(0).size());
-		// System.out.println(slice.get(1).size());
-		//
-		// System.out.println();
-		// }
-
-		System.out.println("PREPARATION SVMTRAINING START");
-		createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE, SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
-				TEST_TSV, TRAINING_TSV);
-		System.out.println("PREPARATION SVMTRAINING STOP");
 	}
 
 	@Override

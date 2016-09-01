@@ -47,3 +47,4 @@ vaultboy	1.0
 vohiyo	1.0
 wutface	-1.0
 youwhy	-1.0
+smorc	-1.0

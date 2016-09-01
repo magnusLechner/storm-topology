@@ -39,9 +39,9 @@ public class PrepareLocalLabel {
 		// add labeling to all_labeled_...
 
 		// TODO Step 3
-		addCertainToCertain(RESULT_PATH, CERTAIN_PATH);
-		// addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH); //shouldnt be
-		// needed any more
+//		addCertainToCertain(RESULT_PATH, CERTAIN_PATH);
+		//shouldnt be needed any more
+		// addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH); 
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
