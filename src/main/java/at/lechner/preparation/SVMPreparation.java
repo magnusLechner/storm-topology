@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,41 +23,66 @@ import at.lechner.util.BasicUtil;
 
 public class SVMPreparation implements PreparationTool {
 
-	private static final String UNIQUE_MESSAGES_ALL = "src/main/resources/preparation/complete_result.tsv";
-	private static final String UNIQUE_MESSAGES_ORIGINAL = "src/main/resources/preparation/original-labeling/unique-messages.txt";
-	private static final String UNIQUE_MESSAGES_SELF_LABELING = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
+	public static final String UNIQUE_MESSAGES_ALL = "src/main/resources/preparation/complete_result.tsv";
+	public static final String UNIQUE_MESSAGES_ORIGINAL = "src/main/resources/preparation/original-labeling/unique-messages.txt";
+	public static final String UNIQUE_MESSAGES_SELF_LABELING_AND_LENN = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
 
-	private static final String SEPARATE_MESSAGES_POSITIVE = "src/main/resources/preparation/svm/unique-messages-positive.txt";
-	private static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
-	private static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
+	public static final String SEPARATE_MESSAGES_POSITIVE = "src/main/resources/preparation/svm/unique-messages-positive.txt";
+	public static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
+	public static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
 
-	private static final String SEPARATE_MESSAGES_SELF_LABELING_POSITIVE = "src/main/resources/preparation/self-labeling/separated-classes/positives.txt";
-	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL = "src/main/resources/preparation/self-labeling/separated-classes/neutrals.txt";
-	private static final String SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE = "src/main/resources/preparation/self-labeling/separated-classes/negatives.txt";
+	public static final String SEPARATE_MESSAGES_SELF_LABELING_POSITIVE = "src/main/resources/preparation/self-labeling/separated-classes/positives.txt";
+	public static final String SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL = "src/main/resources/preparation/self-labeling/separated-classes/neutrals.txt";
+	public static final String SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE = "src/main/resources/preparation/self-labeling/separated-classes/negatives.txt";
 
 	private static final int FIX_TRAIN_SIZE = 100;
 
-	private static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
-	private static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
+	public static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
+	public static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
 
-	private static final String TEST_TEST_TSV = "src/main/resources/preparation/self-labeling/separated-classes/test.tsv";
-	private static final String TEST_TRAINING_TSV = "src/main/resources/preparation/self-labeling/separated-classes/training.tsv";
+	public static final String TEST_TEST_TSV = "src/main/resources/preparation/self-labeling/separated-classes/test.tsv";
+	public static final String TEST_TRAINING_TSV = "src/main/resources/preparation/self-labeling/separated-classes/training.tsv";
+
+	public static final String COPY_TEST_PATH = "src/main/evaluation/successive_addition_evaluation/addition_vs_rest__709_vs_self/tmp_test_data";
 
 	public static void main(String[] args) throws IOException {
+		List<List<List<MyTupel>>> slices = prepareAdditionVsTestRun(250, 200, 300,
+				UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
+
+		// complete 709 as training and 300 from self+lenn for testing
+		// List<List<List<MyTupel>>> slices = prepareAdditionVsTestRun(100, 50,
+		// 300, UNIQUE_MESSAGES_ORIGINAL,
+		// UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
+
+		// test: slices size (test slice and training slice)
+		for (int i = 0; i < slices.size(); i++) {
+			System.out.println("TRAINING: " + slices.get(i).get(0).size());
+			System.out.println("TEST: " + slices.get(i).get(1).size());
+			System.out.println();
+		}
+		// // test: test data differs per run
+		// for (int i = 0; i < slices.get(0).get(1).size(); i++) {
+		// System.out.println(slices.get(0).get(1).get(i));
+		// }
+
 		// System.out.println("PREPARATION SVMTRAINING START");
 		// createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE,
 		// SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
 		// TEST_TSV, TRAINING_TSV);
 		// System.out.println("PREPARATION SVMTRAINING STOP");
 
-		// separateDataBySentiment(UNIQUE_MESSAGES_SELF_LABELING,
+		// separateDataBySentiment(UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
 		// SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
-		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE);
+		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE);
 
-		createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE, SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
-				SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV, TEST_TRAINING_TSV);
+		// createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
+		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV,
+		// TEST_TRAINING_TSV);
 
-//		separateMergedLabelSessions(UNIQUE_MESSAGES_ALL, UNIQUE_MESSAGES_ORIGINAL, UNIQUE_MESSAGES_SELF_LABELING);
+		// separateMergedLabelSessions(UNIQUE_MESSAGES_ALL,
+		// UNIQUE_MESSAGES_ORIGINAL, UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
 	}
 
 	public static void separateMergedLabelSessions(String allPath, String toRemovePath, String resultPath) {
@@ -72,9 +100,9 @@ public class SVMPreparation implements PreparationTool {
 				tmp.add(tuple);
 			}
 		}
-		for(int i = 0; i < tmp.size(); i++) {
+		for (int i = 0; i < tmp.size(); i++) {
 			MyTupel current = tmp.get(i);
-			result.add(new MyTupel(i+1, current.getText(), current.getSentiment().toString()));
+			result.add(new MyTupel(i + 1, current.getText(), current.getSentiment().toString()));
 		}
 		print(resultPath, result);
 	}
@@ -101,7 +129,7 @@ public class SVMPreparation implements PreparationTool {
 		createTSV(testMsgs, testPath);
 		createTSV(trainingMsgs, trainingPath);
 	}
-	
+
 	public static void print(String toPath, List<MyTupel> certain) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < certain.size(); i++) {
@@ -426,8 +454,14 @@ public class SVMPreparation implements PreparationTool {
 
 	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize) {
+		return prepareAdditionVsTestRun(startTrainingSetSize, trainingSteps, testSize, UNIQUE_MESSAGES_ORIGINAL);
+	}
+
+	// TODO
+	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
+			int testSize, String filePath) {
 		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+		MyTupel[] tupels = createMyTupelsFromFile(filePath);
 
 		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
 				|| startTrainingSetSize <= 0) {
@@ -618,6 +652,143 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
+	// TODO
+	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
+			int testSize, String trainingFilePath, String testFilePath) {
+		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
+		MyTupel[] trainingTuples = createMyTupelsFromFile(trainingFilePath);
+		MyTupel[] allPossibleTestTuples = createMyTupelsFromFile(testFilePath);
+
+		if (testSize > allPossibleTestTuples.length || startTrainingSetSize > trainingTuples.length
+				|| trainingSteps <= 0 || startTrainingSetSize <= 0) {
+			return null;
+		}
+
+		List<List<MyTupel>> slice = null;
+		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
+		List<MyTupel> testSet = new ArrayList<MyTupel>();
+
+		int[] testRandoms = getRandoms(testSize, allPossibleTestTuples.length);
+		for (int i = 0; i < testSize; i++) {
+			testSet.add(allPossibleTestTuples[testRandoms[i]]);
+		}
+
+		int randomIndex = 0;
+		int[] trainingRandoms = getRandoms(trainingTuples.length, trainingTuples.length);
+		while (randomIndex < trainingTuples.length - 1) {
+			slice = new ArrayList<List<MyTupel>>();
+			if (trainingSet.size() == 0) {
+				for (int i = 0; i < startTrainingSetSize; i++) {
+					trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+					randomIndex++;
+					if (randomIndex == trainingRandoms.length) {
+						return slices;
+					}
+				}
+			} else {
+				for (int i = 0; i < trainingSteps; i++) {
+					trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+					randomIndex++;
+					if (randomIndex == trainingRandoms.length) {
+						break;
+					}
+				}
+				if (trainingRandoms.length - randomIndex < trainingSteps / 2) {
+					while (randomIndex < trainingRandoms.length) {
+						trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+						randomIndex++;
+					}
+				}
+			}
+			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
+			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			slice.add(newTrainingSet);
+			slice.add(newTestSet);
+			slices.add(slice);
+		}
+		return slices;
+	}
+
+	// tmp save test files from evaluation with 709 to have same testfile for
+	// evaluation with self + lenn - testdata
+	// public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int
+	// startTrainingSetSize, int trainingSteps,
+	// String trainingfilePath, String tmpSavedTestFilePath, int
+	// currentIteration) {
+	// List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
+	// MyTupel[] allPossibleTrainingTuples =
+	// createMyTupelsFromFile(trainingfilePath);
+	// MyTupel[] testTuples = createMyTupelsFromFile(
+	// tmpSavedTestFilePath + File.separator + "twitch-test_" + currentIteration
+	// + ".tsv");
+	//
+	// // must be done this way because the index of the same message might
+	// // differ
+	// List<MyTupel> trainingTuplesAsList = new ArrayList<MyTupel>();
+	// for (int i = 0; i < allPossibleTrainingTuples.length; i++) {
+	// boolean contains = false;
+	// for (int j = 0; j < testTuples.length; j++) {
+	// if (allPossibleTrainingTuples[i].getText().equals(testTuples[j])) {
+	// contains = true;
+	// }
+	// }
+	// if (!contains) {
+	// trainingTuplesAsList.add(allPossibleTrainingTuples[i]);
+	// }
+	// }
+	// MyTupel[] trainingTuples = trainingTuplesAsList.toArray(new
+	// MyTupel[trainingTuplesAsList.size()]);
+	//
+	// System.out.println("SIZE: " + trainingTuples.length);
+	//
+	// if (startTrainingSetSize > trainingTuples.length || trainingSteps <= 0 ||
+	// startTrainingSetSize <= 0) {
+	// return null;
+	// }
+	//
+	// List<List<MyTupel>> slice = null;
+	// List<MyTupel> trainingSet = new ArrayList<MyTupel>();
+	// List<MyTupel> testSet = new ArrayList<MyTupel>();
+	//
+	// testSet = Arrays.asList(testTuples);
+	//
+	// int randomIndex = 0;
+	// int[] trainingRandoms = getRandoms(trainingTuples.length,
+	// trainingTuples.length);
+	// while (randomIndex < trainingTuples.length - 1) {
+	// slice = new ArrayList<List<MyTupel>>();
+	// if (trainingSet.size() == 0) {
+	// for (int i = 0; i < startTrainingSetSize; i++) {
+	// trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+	// randomIndex++;
+	// if (randomIndex == trainingRandoms.length) {
+	// return slices;
+	// }
+	// }
+	// } else {
+	// for (int i = 0; i < trainingSteps; i++) {
+	// trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+	// randomIndex++;
+	// if (randomIndex == trainingRandoms.length) {
+	// break;
+	// }
+	// }
+	// if (trainingRandoms.length - randomIndex < trainingSteps / 2) {
+	// while (randomIndex < trainingRandoms.length) {
+	// trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
+	// randomIndex++;
+	// }
+	// }
+	// }
+	// List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
+	// List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+	// slice.add(newTrainingSet);
+	// slice.add(newTestSet);
+	// slices.add(slice);
+	// }
+	// return slices;
+	// }
+
 	public static void prepareSlice(List<MyTupel> trainingSet, List<MyTupel> testSet) {
 		deleteTwitchDataset();
 		try {
@@ -627,6 +798,31 @@ public class SVMPreparation implements PreparationTool {
 			e.printStackTrace();
 		}
 	}
+
+	// public static void prepareSlice(List<MyTupel> trainingSet, List<MyTupel>
+	// testSet, int currentIteration,
+	// String testdataPath, String saveToPath) {
+	// deleteTwitchDataset();
+	// try {
+	// createTSV(buildTSVString(trainingSet), TRAINING_TSV);
+	// createTSV(buildTSVString(testSet), TEST_TSV);
+	// safeTestData(currentIteration, testdataPath, saveToPath);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
+
+	// private static void safeTestData(int currentIteration, String
+	// testdataPath, String saveToPath) {
+	// try {
+	// Files.copy(new File(testdataPath).toPath(),
+	// new File(saveToPath + File.separator + "twitch-test_" + currentIteration
+	// + ".tsv").toPath(),
+	// StandardCopyOption.REPLACE_EXISTING);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	private static String buildTSVString(List<MyTupel> tupel) {
 		StringBuilder sb = new StringBuilder();
