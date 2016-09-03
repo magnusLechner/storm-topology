@@ -43,18 +43,17 @@ public class SVMPreparation implements PreparationTool {
 	public static final String COPY_TEST_PATH = "src/main/evaluation/successive_addition_evaluation/addition_vs_rest__709_vs_self/tmp_test_data";
 
 	public static void main(String[] args) throws IOException {
-//		 List<List<List<MyTupel>>> slices =
-//		 prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
-//		 UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
-//		 SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-//		 SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-//		 SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE,
-//		 true);
+		List<List<List<MyTupel>>> slices = prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
+				UNIQUE_MESSAGES_SELF_LABELING_AND_LENN, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-		// complete 709 as training and 300 from self+lenn for testing
-		List<List<List<MyTupel>>> slices = prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
-				UNIQUE_MESSAGES_ORIGINAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
+		// // complete 709 as training and 300 from self+lenn for testing
+		// List<List<List<MyTupel>>> slices =
+		// prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
+		// UNIQUE_MESSAGES_ORIGINAL,
+		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
 
 		// // test: slices size (test slice and training slice)
 		for (int i = 0; i < slices.size(); i++) {

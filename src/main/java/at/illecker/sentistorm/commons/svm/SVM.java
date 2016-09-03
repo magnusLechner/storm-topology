@@ -865,14 +865,19 @@ public class SVM {
 				}
 				// TEST AND TRAINING FROM DIFFERENT FILES
 				else if (sliceGenerator == 6) {
-					slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize,
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
 							SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
-							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
 				}
 				// EASY EXCHANGE TESTING
 				else if (sliceGenerator == 7) {
-					slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize,
-							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
+							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 				}
 
 				Iterator<List<List<MyTupel>>> iter = slices.iterator();
@@ -901,7 +906,7 @@ public class SVM {
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
 						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
-						
+
 						macroAvgRecallSingleRun
 								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
 										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals()
