@@ -154,6 +154,10 @@ public class PredictionStatistic {
 		if(countPositive == 0) {
 			return 0.0;
 		}
+		
+		System.out.println("COUNT-TEST-POSITVE: " + countTestPositive);
+		System.out.println("COUNT-POSITIVE: " + countPositive);
+		
 		return (double) countPositive / countTestPositive;
 	}
 
@@ -174,6 +178,10 @@ public class PredictionStatistic {
 		if(countNeutral == 0) {
 			return 0.0;
 		}
+		
+		System.out.println("COUNT-TEST-NEUTRAL: " + countTestNeutral);
+		System.out.println("COUNT-NEUTRAL: " + countNeutral);
+		
 		return (double) countNeutral / countTestNeutral;
 	}
 
@@ -194,6 +202,10 @@ public class PredictionStatistic {
 		if(countNegative == 0) {
 			return 0.0;
 		}
+		
+		System.out.println("COUNT-TEST-NEGATIVE: " + countTestNegative);
+		System.out.println("COUNT-NEGATIVE: " + countNegative);
+		
 		return (double) countNegative / countTestNegative;
 	}
 

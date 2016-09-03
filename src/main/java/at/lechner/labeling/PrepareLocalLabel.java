@@ -21,6 +21,10 @@ import at.lechner.util.BasicUtil;
 public class PrepareLocalLabel {
 
 	private static final String LABELED_PATH = "src/main/resources/preparation/self-labeling/labeled.txt";
+	private static final String ORIGINAL_LENN_PATH = "src/main/resources/preparation/lenn-labeling-data/lenn_merged_result.txt";
+	private static final String ORIGINAL_SELF_PATH = "src/main/resources/preparation/self-labeling/original_all_labeled_messages_in_json_except_709_and_lenn.txt";
+	private static final String SELF_AND_LENN_PATH = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
+
 	private static final String CERTAIN_PATH = "src/main/resources/preparation/self-labeling/certain.txt";
 	private static final String UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/uncertain.txt";
 	private static final String MERGE_CERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_certain.txt";
@@ -32,16 +36,15 @@ public class PrepareLocalLabel {
 
 	public static void getLocalMessages() {
 		// TODO Step 1
-//		String[] lines = BasicUtil.readLines(LABELED_PATH);
-//		separateMessages(lines);
+		// String[] lines = BasicUtil.readLines(LABELED_PATH);
+		//// String[] lines = BasicUtil.readLines(ORIGINAL_SELF_AND_LENN_PATH);
+		// separateMessages(lines);
 
 		// TODO Step 2:
 		// add labeling to all_labeled_...
 
 		// TODO Step 3
-//		addCertainToCertain(RESULT_PATH, CERTAIN_PATH);
-		// shouldnt be needed any more
-		 addCertainToCertain(ORIGINAL_709_PATH, RESULT_PATH);
+		// addCertainToCertain(SELF_AND_LENN_PATH, ORIGINAL_709_PATH);
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
@@ -67,7 +70,7 @@ public class PrepareLocalLabel {
 				}
 			}
 		}
-		
+
 		int i = 1;
 		for (Entry<String, String> entry : messages.entrySet()) {
 			MyTupel tupel = new MyTupel(i, entry.getKey(), entry.getValue());

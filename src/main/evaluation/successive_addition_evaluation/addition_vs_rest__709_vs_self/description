@@ -1,4 +1,4 @@
-nehme aus den selbst gelabelten + lenn 300 daten raus
+nehme aus den selbst gelabelten + lenn 300 daten raus (je 100 neu, pos, neg)
 diese 300 sind die testdaten, die restlichen von gelabelten + lenn als trainingsdaten Nr2
 -> nimm 709 als trainingsdaten und die 300 als testedaten
 -> nimm die trainingsdaten Nr2 und die GLEICHEN 300 wie bei 709 als testdaten
