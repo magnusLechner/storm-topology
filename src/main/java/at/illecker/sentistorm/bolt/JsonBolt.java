@@ -16,7 +16,10 @@
  */
 package at.illecker.sentistorm.bolt;
 
+import java.lang.Character.UnicodeBlock;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
@@ -38,11 +41,18 @@ public class JsonBolt extends BaseBasicBolt {
 	private static final long serialVersionUID = -8847712312925641497L;
 	private static final Logger LOG = LoggerFactory.getLogger(JsonBolt.class);
 
+	public static final String PIPELINE_STREAM = "pipeline-stream";
+	public static final String TO_REDIS_PUBLISH_STREAM = "not-english-stream";
+	
+	private static final double IS_ENGLISH_THRESHOLD = 0.3;
+	
 	private boolean m_logging = false;
 	private JsonParser jsonParser;
+	private Set<UnicodeBlock> unwantedLanguageUnicodeBlocks;
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(JsonBoltData.getSchema());
+		declarer.declareStream(PIPELINE_STREAM, JsonBoltData.getSchema());
+		declarer.declareStream(TO_REDIS_PUBLISH_STREAM, JsonBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -55,6 +65,24 @@ public class JsonBolt extends BaseBasicBolt {
 		}
 
 		jsonParser = new JsonParser();
+		
+		unwantedLanguageUnicodeBlocks = new HashSet<UnicodeBlock>() {
+			private static final long serialVersionUID = -1831266386669962336L;
+		{
+		    add(UnicodeBlock.CJK_COMPATIBILITY);
+		    add(UnicodeBlock.CJK_COMPATIBILITY_FORMS);
+		    add(UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS);
+		    add(UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT);
+		    add(UnicodeBlock.CJK_RADICALS_SUPPLEMENT);
+		    add(UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION);
+		    add(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS);
+		    add(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A);
+		    add(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B);
+		    add(UnicodeBlock.KANGXI_RADICALS);
+		    add(UnicodeBlock.IDEOGRAPHIC_DESCRIPTION_CHARACTERS);
+		    add(UnicodeBlock.CYRILLIC);
+		}};
+		
 	}
 
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
@@ -69,8 +97,30 @@ public class JsonBolt extends BaseBasicBolt {
 		
 		tupleStatistic.setRealStart(jsonObject.get("timestamp").getAsLong());
 		
-		// Emit new tuples
-		collector.emit(new JsonBoltData(jsonObject, tupleStatistic));
+		String message = jsonObject.get("msg").getAsString();
+		
+		double countOccurences = 0.0;
+		boolean containsUnwantedLanguage = false;
+		for (int i = 0; i < message.length(); i++) {
+			if(unwantedLanguageUnicodeBlocks.contains(UnicodeBlock.of(message.charAt(i)))) {
+				countOccurences += 1.0;
+			}
+		}
+		if(countOccurences / message.length() > IS_ENGLISH_THRESHOLD) {
+			containsUnwantedLanguage = true;	
+		}
+		
+		if(containsUnwantedLanguage) {
+			JsonObject score = new JsonObject();
+			score.addProperty("score", 0);
+			
+			jsonObject.add("sentiment", score);
+			
+			collector.emit(TO_REDIS_PUBLISH_STREAM, new JsonBoltData(jsonObject, tupleStatistic));
+		} else {
+			collector.emit(PIPELINE_STREAM, new JsonBoltData(jsonObject, tupleStatistic));	
+		}
+		
 	}
 
 }

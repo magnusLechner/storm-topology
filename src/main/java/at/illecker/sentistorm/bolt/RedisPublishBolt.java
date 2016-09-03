@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import at.illecker.sentistorm.bolt.values.data.JsonBoltData;
 import at.illecker.sentistorm.bolt.values.data.RedisPublishBoltData;
 import at.illecker.sentistorm.bolt.values.data.SVMBoltData;
 import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
@@ -58,9 +59,17 @@ public class RedisPublishBolt extends BaseRichBolt {
 	}
 
 	public void execute(Tuple tuple) {
-		SVMBoltData svmBoltData = SVMBoltData.getFromTuple(tuple);
-		JsonObject jsonObject = svmBoltData.getJsonObject();
-		TupleStatistic tupleStatistic = svmBoltData.getTupleStatistic();
+		JsonObject jsonObject = null;
+		TupleStatistic tupleStatistic;
+		if(JsonBolt.TO_REDIS_PUBLISH_STREAM.equals(tuple.getSourceStreamId())) {
+			JsonBoltData jsonBoltData = JsonBoltData.getFromTuple(tuple);
+			jsonObject = jsonBoltData.getJsonObject();
+			tupleStatistic = jsonBoltData.getTupleStatistic();
+		} else {
+			SVMBoltData svmBoltData = SVMBoltData.getFromTuple(tuple);
+			jsonObject = svmBoltData.getJsonObject();
+			tupleStatistic = svmBoltData.getTupleStatistic();	
+		}
 		String current = generatePublishString(jsonObject);
 		if (current != null) {
 

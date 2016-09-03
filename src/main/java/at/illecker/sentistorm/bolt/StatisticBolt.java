@@ -59,6 +59,7 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, List<T
 		this.last = System.currentTimeMillis();
 	}
 
+	//TODO differ between pipeline and direct json-bolt stream for evaluation
 	@Override
 	public void execute(Tuple tuple) {
 		RedisPublishBoltData redisPublishBoltData = RedisPublishBoltData.getFromTuple(tuple);
