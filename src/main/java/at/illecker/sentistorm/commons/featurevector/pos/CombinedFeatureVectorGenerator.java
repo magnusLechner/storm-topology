@@ -16,13 +16,13 @@
  */
 package at.illecker.sentistorm.commons.featurevector.pos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
@@ -85,9 +85,9 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		POSTagger posTagger = POSTagger.getInstance();
 
 		// Load tweets
-//		List<Tweet> tweets = Configuration.getDataSetTwitch().getTrainTweets(true);
-		List<Tweet> tweets = Configuration.getDataSetMyTest().getTrainTweets(true);
-		
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		tweets.add(new Tweet(0L, "<3 <3 <3 <3"));
+
 		// Tokenize
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);
 

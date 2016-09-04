@@ -78,7 +78,7 @@ public class TwitchLexicon {
 				if (twitchEmoticons.isTwitchEmoticon(word)) {
 					unlabeled.add(word);
 				} else if (!containsUnwantedLanguage && word.length() >= MIN_WORD_LENGTH && !stopwords.isStopWord(word)
-						&& sentimentDictionary.getWordSentiments(word) == null) {
+						&& sentimentDictionary.getWordSentimentsFromLists(word) == null) {
 					unlabeled.add(word);
 				}
 			}

@@ -43,17 +43,18 @@ public class SVMPreparation implements PreparationTool {
 	public static final String COPY_TEST_PATH = "src/main/evaluation/successive_addition_evaluation/addition_vs_rest__709_vs_self/tmp_test_data";
 
 	public static void main(String[] args) throws IOException {
-		List<List<List<MyTupel>>> slices = prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
-				UNIQUE_MESSAGES_SELF_LABELING_AND_LENN, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-		// // complete 709 as training and 300 from self+lenn for testing
 		// List<List<List<MyTupel>>> slices =
-		// prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
-		// UNIQUE_MESSAGES_ORIGINAL,
+		// prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
+		// UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
 		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
+		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
+		// complete 709 as training and 300 from self+lenn for testing
+		List<List<List<MyTupel>>> slices = prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
+				UNIQUE_MESSAGES_ORIGINAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE,
+				false);
 
 		// // test: slices size (test slice and training slice)
 		for (int i = 0; i < slices.size(); i++) {
@@ -78,16 +79,13 @@ public class SVMPreparation implements PreparationTool {
 			System.out.println();
 		}
 
-		// // test: test data differs per run
-		// for (int i = 0; i < slices.get(0).get(1).size(); i++) {
-		// System.out.println(slices.get(0).get(1).get(i));
-		// }
+		for (int j = 0; j < slices.get(slices.size() - 1).get(1).size(); j++) {
+			System.out.println(slices.get(slices.size() - 1).get(1).get(j));
+		}
 
-		// System.out.println("PREPARATION SVMTRAINING START");
 		// createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE,
 		// SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
 		// TEST_TSV, TRAINING_TSV);
-		// System.out.println("PREPARATION SVMTRAINING STOP");
 
 		// separateDataBySentiment(UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
 		// SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
@@ -591,7 +589,6 @@ public class SVMPreparation implements PreparationTool {
 				trainingAndTestFilePath, positivePath, neutralPath, negativePath, true);
 	}
 
-	// TODO
 	public static List<List<List<MyTupel>>> prepareAdditionVsEquallyDistibutedTestRun(int startTrainingSetSize,
 			int trainingSteps, int testSize, String trainingFilePath, String positivePath, String neutralPath,
 			String negativePath, boolean sameFile) {
@@ -663,6 +660,121 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
+			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
+			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			slice.add(newTrainingSet);
+			slice.add(newTestSet);
+			slices.add(slice);
+		}
+		return slices;
+	}
+
+	// TODO
+	// this method is only for self-labeling evaluation. 709 must not run here.
+	// 709 should run with prepareAdditionVsEquallyDistibutedTestRun
+	public static List<List<List<MyTupel>>> prepareAdditionVsEquallyDistibutedTestAndTrainingRun(
+			int startTrainingSetSize, int trainingSteps, int testSize, String positivePath, String neutralPath,
+			String negativePath) {
+		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
+		MyTupel[] positiveTuples = createMyTupelsFromFile(positivePath);
+		MyTupel[] neutralTuples = createMyTupelsFromFile(neutralPath);
+		MyTupel[] negativeTuples = createMyTupelsFromFile(negativePath);
+
+		int min = 0;
+		if (positiveTuples.length <= neutralTuples.length && positiveTuples.length <= negativeTuples.length) {
+			min = positiveTuples.length;
+		} else if (neutralTuples.length <= positiveTuples.length && neutralTuples.length <= negativeTuples.length) {
+			min = neutralTuples.length;
+		} else if (negativeTuples.length <= positiveTuples.length && negativeTuples.length <= neutralTuples.length) {
+			min = negativeTuples.length;
+		}
+
+		int individualTestSize = testSize / 3;
+		if (positiveTuples.length < individualTestSize || neutralTuples.length < individualTestSize
+				|| negativeTuples.length < individualTestSize || trainingSteps <= 0 || startTrainingSetSize <= 0) {
+			return null;
+		}
+
+		List<List<MyTupel>> slice = null;
+		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
+		List<MyTupel> testSet = new ArrayList<MyTupel>();
+
+		int[] positiveRandoms = getRandoms(min, positiveTuples.length);
+		for (int i = 0; i < individualTestSize; i++) {
+			testSet.add(positiveTuples[positiveRandoms[i]]);
+		}
+		int[] neutralRandoms = getRandoms(min, neutralTuples.length);
+		for (int i = 0; i < individualTestSize; i++) {
+			testSet.add(neutralTuples[neutralRandoms[i]]);
+		}
+		int[] negativeRandoms = getRandoms(min, negativeTuples.length);
+		for (int i = 0; i < individualTestSize; i++) {
+			testSet.add(negativeTuples[negativeRandoms[i]]);
+		}
+
+		int positiveCounter = individualTestSize;
+		int neutralCounter = individualTestSize;
+		int negativeCounter = individualTestSize;
+
+		int sumCounter = 0;
+		while (sumCounter < min * 3) {
+			slice = new ArrayList<List<MyTupel>>();
+			if (trainingSet.size() == 0) {
+				for (int i = 0; i < startTrainingSetSize; i++) {
+					if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+						trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
+						positiveCounter++;
+					} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+						trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
+						negativeCounter++;
+					} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+						trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
+						neutralCounter++;
+					}
+				}
+			} else {
+				for (int i = 0; i < trainingSteps && sumCounter < min * 3; i++) {
+					if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+						trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
+						positiveCounter++;
+					} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+						trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
+						negativeCounter++;
+					} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+						trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
+						neutralCounter++;
+					}
+					sumCounter = positiveCounter + neutralCounter + negativeCounter;
+					if (sumCounter >= min * 3) {
+						break;
+					}
+				}
+				
+				//TEST IF CORREKT: 1800 --> 2000 --> 2059 wird zu 1800 --> 2059
+				sumCounter = positiveCounter + neutralCounter + negativeCounter;
+				if(sumCounter + (trainingSteps / 2) >= min * 3) {
+					for (int i = 0; i < trainingSteps && sumCounter < min * 3; i++) {
+						if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+							trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
+							positiveCounter++;
+						} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+							trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
+							negativeCounter++;
+						} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+							trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
+							neutralCounter++;
+						}
+						sumCounter = positiveCounter + neutralCounter + negativeCounter;
+						if (sumCounter >= min * 3) {
+							break;
+						}
+					}
+				}
+				// Test end
+				
+			}
+			sumCounter = positiveCounter + neutralCounter + negativeCounter;
+			
 			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
 			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
 			slice.add(newTrainingSet);

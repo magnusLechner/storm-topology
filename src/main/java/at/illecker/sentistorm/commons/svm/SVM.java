@@ -806,9 +806,9 @@ public class SVM {
 //		POSSVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -3; currentIteration < iterations; currentIteration++) {
 
-				System.err.println("ITERTAION: " + currentIteration);
+				System.err.println("ITERATION: " + currentIteration);
 
 				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
 				List<Double> testSizeSingleRun = new ArrayList<Double>();
@@ -875,8 +875,14 @@ public class SVM {
 				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
 				// SAME FILE
 				else if (sliceGenerator == 7) {
-					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
-							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+					// slices =
+					// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
+					// 200, 300,
+					// SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
@@ -948,7 +954,8 @@ public class SVM {
 						if (!iter.hasNext()) {
 //							writeWrongPredictedMessages(currentIteration,
 //									pipelineBox.getPredictor().getPredictionStatistic());
-//							writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
+							// writeNoFeatureVectorMessages(2,
+							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 					}
 				}
@@ -1023,9 +1030,9 @@ public class SVM {
 		// svm.EXEC_SERV.shutdown();
 
 		// 709 with 300 test equally distributed from my+lenn
-		 int addVsTest = 6;
+//		int addVsTest = 6;
 		// my+lenn - 300 for test equally distributed
-//		int addVsTest = 7;
+		 int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);

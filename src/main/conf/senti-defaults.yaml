@@ -159,8 +159,11 @@ global.resources.dict:
         - "dictionaries/PlayerNames.txt"
 
 global.resources.dict.sentiment:
+    #
+    # word-sentiments
+    #
     # AFINN http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010
-    - path: "dictionaries/sentiment/AFINN-111.txt"
+    - path: "dictionaries/sentiment/word-sentiment/AFINN-111.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -170,7 +173,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "afinn"
     # SentiStrengthEmotion http://sentistrength.wlv.ac.uk/#Download
-    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmotionLookupTable.txt"
+    - path: "dictionaries/sentiment/word-sentiment/SentiStrength_Data_Sept2011_EmotionLookupTable.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: true
@@ -179,18 +182,8 @@ global.resources.dict.sentiment:
       maxValue: 5.0
       enabled: true
       name: "sentistrength_emotion"
-    # SentiStrengthEmoticon http://sentistrength.wlv.ac.uk/#Download
-    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmoticonLookupTable.txt"
-      delimiter: "\\t"
-      containsPOSTags: false
-      containsRegex: false
-      featureScaling: true
-      minValue: -1.0
-      maxValue: 1.0
-      enabled: true
-      name: "sentistrength_emoticon"
     # SentiWords https://hlt.fbk.eu/technologies/sentiwords # words might contain an underscore (bi-gram)
-    - path: "dictionaries/sentiment/SentiWords_1.0.txt"
+    - path: "dictionaries/sentiment/word-sentiment/SentiWords_1.0.txt"
       delimiter: "\\t"
       containsPOSTags: true
       containsRegex: false
@@ -200,7 +193,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "sentiwords"
     # Sentiment140 http://www.saifmohammad.com/WebPages/lexicons.html
-    - path: "dictionaries/sentiment/Sentiment140_unigrams_pmilexicon.txt"
+    - path: "dictionaries/sentiment/word-sentiment/Sentiment140_unigrams_pmilexicon.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -210,7 +203,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "sentiment140"
     # BingLiu http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon
-    - path: "dictionaries/sentiment/Bing_Liu.txt"
+    - path: "dictionaries/sentiment/word-sentiment/Bing_Liu.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -220,7 +213,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "bing_liu"
     # MPQASubjectivity http://mpqa.cs.pitt.edu/lexicons/subj_lexicon/
-    - path: "dictionaries/sentiment/MPQA_subjclueslen1-HLTEMNLP05.txt"
+    - path: "dictionaries/sentiment/word-sentiment/MPQA_subjclueslen1-HLTEMNLP05.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -229,7 +222,29 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "mpqa"
-    - path: "dictionaries/sentiment/twitch-emoticons.txt"
+#    - path: "dictionaries/sentiment/word-sentiment/twitch-dict-sentiment.txt"
+#      delimiter: "\\t"
+#      containsPOSTags: false
+#      containsRegex: false
+#      featureScaling: true
+#      minValue: -1.0
+#      maxValue: 1.0
+#      enabled: true
+#      name: "twitch_dict_sentiment"
+      #
+      # Emoticons
+      #
+      # SentiStrengthEmoticon http://sentistrength.wlv.ac.uk/#Download
+    - path: "dictionaries/sentiment/emoticon-sentiment/SentiStrength_Data_Sept2011_EmoticonLookupTable.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "sentistrength_emoticon"
+    - path: "dictionaries/sentiment/emoticon-sentiment/twitch-emoticons.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -238,28 +253,34 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "twitch_emoticons"
-    - path: "dictionaries/sentiment/twitch-dict-sentiment.txt"
-      delimiter: "\\t"
-      containsPOSTags: false
-      containsRegex: false
-      featureScaling: true
-      minValue: -1.0
-      maxValue: 1.0
-      enabled: true
-      name: "twitch_dict_sentiment"
-
-global.resources.dict.sentiment.word:
-
-global.resources.dict.sentiment.emoticon:
-    - path: "dictionaries/sentiment/twitch-emoticons.txt"
-      delimiter: "\\t"
-      containsPOSTags: false
-      containsRegex: false
-      featureScaling: true
-      minValue: -1.0
-      maxValue: 1.0
-      enabled: true
-      name: "twitch_emoticons"
+#    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-lines.txt"
+#      delimiter: "\\t"
+#      containsPOSTags: false
+#      containsRegex: false
+#      featureScaling: true
+#      minValue: -1.0
+#      maxValue: 1.0
+#      enabled: true
+#      name: "toni_emoticons_lines"
+#    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-twitch.txt"
+#      delimiter: "\\t"
+#      containsPOSTags: false
+#      containsRegex: false
+#      featureScaling: true
+#      minValue: -1.0
+#      maxValue: 1.0
+#      enabled: true
+#      name: "toni_emoticons_twitch"
+#      # http://people.few.eur.nl/hogenboom/files/EmoticonSentimentLexicon.zip
+#    - path: "dictionaries/sentiment/emoticon-sentiment/EmoticonSentimentLexicon.txt"
+#      delimiter: "\\t"
+#      containsPOSTags: false
+#      containsRegex: false
+#      featureScaling: true
+#      minValue: -1.0
+#      maxValue: 1.0
+#      enabled: true
+#      name: "emoticon_sentiment_lexicon.txt"
 
 global.resources.dict.slang:
     # InternetSlang http://www.internetslang.com/
@@ -304,12 +325,11 @@ redis.publish.topic: "stomp"
 commons.preprocessor.logging: false
 commons.postagger.logging: false
 commons.sentimentdictionary.logging: false
-commons.emoticondictionary.logging: false
 commons.tfidf.logging: false
 commons.featurevectorgenerator.pos.logging: false
 commons.featurevectorgenerator.sentiment.logging: false
-commons.featurevectorgenerator.emoticon.logging: false
 commons.featurevectorgenerator.tfidf.logging: false
+commons.featurevectorgenerator.boolean.logging: false
 
 ##############################################################################
 ### sentistorm.* configs are for the SentiStorm application
