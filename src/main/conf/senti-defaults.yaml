@@ -248,6 +248,19 @@ global.resources.dict.sentiment:
       enabled: true
       name: "twitch_dict_sentiment"
 
+global.resources.dict.sentiment.word:
+
+global.resources.dict.sentiment.emoticon:
+    - path: "dictionaries/sentiment/twitch-emoticons.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "twitch_emoticons"
+
 global.resources.dict.slang:
     # InternetSlang http://www.internetslang.com/
     - path: "dictionaries/slang/InternetSlang.txt"
@@ -291,9 +304,11 @@ redis.publish.topic: "stomp"
 commons.preprocessor.logging: false
 commons.postagger.logging: false
 commons.sentimentdictionary.logging: false
+commons.emoticondictionary.logging: false
 commons.tfidf.logging: false
 commons.featurevectorgenerator.pos.logging: false
 commons.featurevectorgenerator.sentiment.logging: false
+commons.featurevectorgenerator.emoticon.logging: false
 commons.featurevectorgenerator.tfidf.logging: false
 
 ##############################################################################

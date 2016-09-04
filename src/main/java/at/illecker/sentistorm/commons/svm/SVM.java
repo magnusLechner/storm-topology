@@ -802,13 +802,13 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		NoPOSSVMBox pipelineBox = null;
-		// POSSVMBox pipelineBox = null;
+		 NoPOSSVMBox pipelineBox = null;
+//		POSSVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
 
-				LOG.error("ITERTAION: " + currentIteration);
+				System.err.println("ITERTAION: " + currentIteration);
 
 				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
 				List<Double> testSizeSingleRun = new ArrayList<Double>();
@@ -863,7 +863,8 @@ public class SVM {
 				} else if (sliceGenerator == 5) {
 					slices = SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize, stepSize, startTestSize);
 				}
-				// TEST AND TRAINING FROM DIFFERENT FILES
+				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+				// DIFFERENT FILES
 				else if (sliceGenerator == 6) {
 					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
 							SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
@@ -871,7 +872,8 @@ public class SVM {
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
 				}
-				// EASY EXCHANGE TESTING
+				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+				// SAME FILE
 				else if (sliceGenerator == 7) {
 					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
 							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
@@ -888,12 +890,9 @@ public class SVM {
 					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
 							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
 					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
-					// FeatureVectorGenerator posFVG =
-					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
-					// true),
-					// CombinedFeatureVectorGenerator.class);
-					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
-					// false);
+//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+//							CombinedFeatureVectorGenerator.class);
+//					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -947,9 +946,9 @@ public class SVM {
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 						if (!iter.hasNext()) {
-							writeWrongPredictedMessages(currentIteration,
-									pipelineBox.getPredictor().getPredictionStatistic());
-							writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
+//							writeWrongPredictedMessages(currentIteration,
+//									pipelineBox.getPredictor().getPredictionStatistic());
+//							writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
 						}
 					}
 				}
@@ -991,7 +990,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 100;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1023,8 +1022,10 @@ public class SVM {
 		// }
 		// svm.EXEC_SERV.shutdown();
 
-		// int addVsTest = 6;
-		int addVsTest = 7;
+		// 709 with 300 test equally distributed from my+lenn
+		 int addVsTest = 6;
+		// my+lenn - 300 for test equally distributed
+//		int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);

@@ -47,6 +47,7 @@ public class Configuration {
 	public static final String GLOBAL_RESOURCES_DATASETS_MY_TEST = "global.resources.datasets.mytest";
 	public static final String GLOBAL_RESOURCES_DICT = "global.resources.dict";
 	public static final String GLOBAL_RESOURCES_DICT_SENTIMENT = "global.resources.dict.sentiment";
+	public static final String GLOBAL_RESOURCES_DICT_EMOTICON = "global.resources.dict.emoticon";
 	public static final String GLOBAL_RESOURCES_DICT_SLANG = "global.resources.dict.slang";
 	public static final String GLOBAL_RESOURCES_DICT_WORDNET_PATH = "global.resources.dict.wordnet.path";
 
@@ -153,6 +154,11 @@ public class Configuration {
 		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_SENTIMENT);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List<Map> getEmoticonLists() {
+		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_EMOTICON);
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Map> getSlangWordlists() {
 		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_SLANG);
