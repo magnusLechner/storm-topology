@@ -31,15 +31,13 @@ import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.FeatureGenerationBoltData;
 import at.illecker.sentistorm.bolt.values.data.SVMBoltData;
-import at.illecker.sentistorm.bolt.values.statistic.SVMBoltStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
-import at.illecker.sentistorm.commons.SentimentClass;
 import at.illecker.sentistorm.commons.svm.SVM;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 
@@ -49,17 +47,13 @@ public class SVMBolt extends BaseRichBolt {
 	private static final long serialVersionUID = -6790858930924043126L;
 	private static final Logger LOG = LoggerFactory.getLogger(SVMBolt.class);
 
-	public static final String PIPELINE_STREAM = "pipeline-stream";
-	public static final String SVM_BOLT_STATISTIC_STREAM = "svm-bolt-statistic-stream";
-
-	private OutputCollector collector;
 	private boolean m_logging = false;
 	private Dataset m_dataset;
 	private svm_model m_model;
+	private OutputCollector collector;
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declareStream(PIPELINE_STREAM, SVMBoltData.getSchema());
-		declarer.declareStream(SVM_BOLT_STATISTIC_STREAM, SVMBoltStatistic.getSchema());
+		declarer.declare(SVMBoltData.getSchema());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -70,7 +64,7 @@ public class SVMBolt extends BaseRichBolt {
 		} else {
 			m_logging = false;
 		}
-		
+
 		this.collector = collector;
 
 		LOG.info("Loading SVM model...");
@@ -87,6 +81,7 @@ public class SVMBolt extends BaseRichBolt {
 	public void execute(Tuple tuple) {
 		FeatureGenerationBoltData featureGenerationValue = FeatureGenerationBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = featureGenerationValue.getJsonObject();
+		TupleStatistic tupleStatistic = featureGenerationValue.getTupleStatistic();
 		Map<Integer, Double> featureVector = featureGenerationValue.getFeatureVector();
 
 		// Create feature nodes
@@ -102,27 +97,29 @@ public class SVMBolt extends BaseRichBolt {
 
 		double predictedClass = svm.svm_predict(m_model, testNodes);
 
-		JsonElement user = jsonObject.get("user");
-		JsonElement channel = jsonObject.get("channel");
-		JsonElement timestamp = jsonObject.get("timestamp");
+		JsonObject score = new JsonObject();
+		score.addProperty("score", convertRating(predictedClass));
 
-		jsonObject.addProperty("predictedSentiment",
-				(SentimentClass.fromScore(m_dataset, (int) predictedClass)).toString());
+		jsonObject.add("sentiment", score);
 
 		if (m_logging) {
-			LOG.info("Tweet: " + jsonObject.get("msg").getAsString() + " predictedSentiment: "
-					+ SentimentClass.fromScore(m_dataset, (int) predictedClass) + " JSON: " + jsonObject.toString());
+			LOG.info("SVM all done log: " + jsonObject.toString());
 		}
-		
-//		LOG.info("RESULT SVM JSON: " + jsonObject.toString());
 
-		long topologyTimestamp = System.currentTimeMillis();
-		
-		collector.emit(PIPELINE_STREAM, tuple, new SVMBoltData(jsonObject));
-		// Statistic
-		collector.emit(SVM_BOLT_STATISTIC_STREAM, tuple, new SVMBoltStatistic(
-				user.getAsString() + "_" + timestamp.getAsString() + "_" + channel.getAsString(), topologyTimestamp));
+		collector.emit(tuple, new SVMBoltData(jsonObject, tupleStatistic));
 		collector.ack(tuple);
+	}
+
+	private static int convertRating(double predicted) {
+		if (predicted == 0.0) {
+			return -1;
+		} else if (predicted == 1.0) {
+			return 0;
+		} else if (predicted == 2.0) {
+			return 1;
+		} else {
+			throw new IllegalArgumentException("SVM prediction couldnt be converted to a rating between -1 and 1");
+		}
 	}
 
 }

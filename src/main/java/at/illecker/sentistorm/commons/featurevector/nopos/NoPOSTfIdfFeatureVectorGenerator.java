@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.SentimentDictionary;
-import at.illecker.sentistorm.commons.featurevector.TfIdfFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.nopos.NoPOSTweetTfIdf;
 
 public class NoPOSTfIdfFeatureVectorGenerator extends NoPOSFeatureVectorGenerator {

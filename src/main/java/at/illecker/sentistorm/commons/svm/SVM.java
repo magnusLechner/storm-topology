@@ -54,14 +54,15 @@ import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
 import at.illecker.sentistorm.commons.SentimentClass;
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.CombinedFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.SentimentFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSCombinedFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSentimentFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSTfIdfFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.BooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SentimentFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.selector.FVGSelector;
 import at.illecker.sentistorm.commons.featurevector.selector.NoPOSFVGSelector;
 import at.illecker.sentistorm.commons.svm.box.NoPOSSVMBox;
@@ -693,7 +694,7 @@ public class SVM {
 
 		Map<String, Double[]> statistics = new LinkedHashMap<String, Double[]>();
 
-//		NoPOSSVMBox pipelineBox = null;
+		// NoPOSSVMBox pipelineBox = null;
 		POSSVMBox pipelineBox = null;
 
 		try {
@@ -702,11 +703,14 @@ public class SVM {
 				// random split in test and training data
 				SVMPreparation.prepareForCrossValidation();
 
-//				NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//						NoPOSCombinedFeatureVectorGenerator.class);
-//				pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, true);
+				// NoPOSFeatureVectorGenerator noPOSFVG =
+				// NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false,
+				// true),
+				// NoPOSCombinedFeatureVectorGenerator.class);
+				// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
+				// false);
 				FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-						SentimentFeatureVectorGenerator.class);
+						CombinedFeatureVectorGenerator.class);
 				pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 				pipelineBox.setName("PipeLine-Box");
@@ -746,10 +750,9 @@ public class SVM {
 					System.out.println("Amount of messages with Sentiment-Twitch-Emote: "
 							+ pipelineBox.getPredictor().getPredictionStatistic().getMsgsWithSentimentTwitchEmote());
 
-					// System.out.println("Lenn Evaluation result: "
-					// +
-					// (pipelineBox.getPredictor().getPredictionStatistic().getLennSum()
-					// / dataset.getTestTweets(true).size()));
+					System.out.println("Lenn Evaluation result (REMEMBER: -1 is NEGATIVE and 1 is POSITIVE): "
+							+ (pipelineBox.getPredictor().getPredictionStatistic().getLennSum()
+									/ dataset.getTestTweets(true).size()));
 
 					if (k == iterations - 1) {
 						// writeWrongPredictedMessages(pipelineBox.getPredictor().getPredictionStatistic());
@@ -799,11 +802,14 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		// NoPOSSVMBox pipelineBox = null;
-		POSSVMBox pipelineBox = null;
+		 NoPOSSVMBox pipelineBox = null;
+//		POSSVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -3; currentIteration < iterations; currentIteration++) {
+
+				System.err.println("ITERATION: " + currentIteration);
+
 				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
 				List<Double> testSizeSingleRun = new ArrayList<Double>();
 				List<Double> cpuTimeSingleRun = new ArrayList<Double>();
@@ -841,7 +847,7 @@ public class SVM {
 				}
 
 				List<List<List<MyTupel>>> slices = null;
-				// ADDITION
+				// ADDITION - 709 only
 				if (sliceGenerator == 0) {
 					slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize, stepSize);
 				} else if (sliceGenerator == 1) {
@@ -849,7 +855,7 @@ public class SVM {
 				} else if (sliceGenerator == 2) {
 					slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize);
 				}
-				// RANDOM
+				// RANDOM - 709 only
 				else if (sliceGenerator == 3) {
 					slices = SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize, stepSize);
 				} else if (sliceGenerator == 4) {
@@ -857,20 +863,42 @@ public class SVM {
 				} else if (sliceGenerator == 5) {
 					slices = SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize, stepSize, startTestSize);
 				}
+				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+				// DIFFERENT FILES
+				else if (sliceGenerator == 6) {
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
+							SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
+				}
+				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+				// SAME FILE
+				else if (sliceGenerator == 7) {
+					// slices =
+					// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
+					// 200, 300,
+					// SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+				}
 
 				Iterator<List<List<MyTupel>>> iter = slices.iterator();
 				while (iter.hasNext()) {
 					List<List<MyTupel>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
-					// NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
-					// .selectFVG(dataset.getTrainTweets(false, true),
-					// NoPOSCombinedFeatureVectorGenerator.class);
-					// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
-					// false);
-					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-							CombinedFeatureVectorGenerator.class);
-					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
+					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
+							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
+//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+//							CombinedFeatureVectorGenerator.class);
+//					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -883,6 +911,7 @@ public class SVM {
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
 						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
+
 						macroAvgRecallSingleRun
 								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
 										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals()
@@ -923,8 +952,8 @@ public class SVM {
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 						if (!iter.hasNext()) {
-							// writeWrongPredictedMessages(currentIteration,
-							// pipelineBox.getPredictor().getPredictionStatistic());
+//							writeWrongPredictedMessages(currentIteration,
+//									pipelineBox.getPredictor().getPredictionStatistic());
 							// writeNoFeatureVectorMessages(2,
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
@@ -962,57 +991,71 @@ public class SVM {
 
 	public static void main(String[] args) throws IOException {
 		Dataset dataset = Configuration.getDataSetTwitch();
+		// Dataset dataset = Configuration.getDataSetMyTest();
 
 		boolean parameterSearch = false;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 100;
 
-//		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
-//		List<Integer> stepList = new ArrayList<Integer>();
-//		List<Integer> testSizeList = new ArrayList<Integer>();
-//
-//		startTrainingSizeList.add(50);
-//		startTrainingSizeList.add(100);
-//		startTrainingSizeList.add(100);
-//		startTrainingSizeList.add(100);
-//
-//		stepList.add(50);
-//		stepList.add(50);
-//		stepList.add(50);
-//		stepList.add(50);
-//
-//		testSizeList.add(209);
-//		testSizeList.add(109);
-//		testSizeList.add(209);
-//		testSizeList.add(309);
+		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
-		
-//		 evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
-		
-		//for creating SVM-model with 709 examples
-//		evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, 1, 709,
-//				0, 0);
-		
-//		for (int i = 0; i < 6; i++) {
-//			for (int j = 0; j < startTrainingSizeList.size(); j++) {
-//				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
-//						stepList.get(j), testSizeList.get(j));
-//			}
-//		}
-//		svm.EXEC_SERV.shutdown();
+		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
+		List<Integer> stepList = new ArrayList<Integer>();
+		List<Integer> testSizeList = new ArrayList<Integer>();
+		//
+		// startTrainingSizeList.add(50);
+		// startTrainingSizeList.add(100);
+		// startTrainingSizeList.add(100);
+		// startTrainingSizeList.add(100);
+		//
+		// stepList.add(50);
+		// stepList.add(50);
+		// stepList.add(50);
+		// stepList.add(50);
+		//
+		// testSizeList.add(209);
+		// testSizeList.add(109);
+		// testSizeList.add(209);
+		// testSizeList.add(309);
 
-//		if (featureVectorLevel == 0) {
-//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else if (featureVectorLevel == 1) {
-//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else {
-//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		}
+		// for (int i = 0; i < 6; i++) {
+		// for (int j = 0; j < startTrainingSizeList.size(); j++) {
+		// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+		// false, i, startTrainingSizeList.get(j),
+		// stepList.get(j), testSizeList.get(j));
+		// }
+		// }
+		// svm.EXEC_SERV.shutdown();
+
+		// 709 with 300 test equally distributed from my+lenn
+//		int addVsTest = 6;
+		// my+lenn - 300 for test equally distributed
+		 int addVsTest = 7;
+
+		startTrainingSizeList.add(200);
+		stepList.add(200);
+		testSizeList.add(300);
+		for (int j = 0; j < startTrainingSizeList.size(); j++) {
+			evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, addVsTest,
+					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+		}
+		svm.EXEC_SERV.shutdown();
+
+		// if (featureVectorLevel == 0) {
+		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else if (featureVectorLevel == 1) {
+		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// } else {
+		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
+		// nFoldCrossValidation, parameterSearch,
+		// useSerialization);
+		// }
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,
@@ -1022,11 +1065,6 @@ public class SVM {
 			sb.append("RUN: " + (i + 1));
 			sb.append("\n");
 			for (Entry<String, List<List<Double>>> entry : statistics.entrySet()) {
-
-				// System.out.println("RUN: " + i);
-				// System.out.println("LIST: " + entry.getKey());
-				// System.out.println("SIZE: " + entry.getValue().size());
-
 				List<Double> singleRun = entry.getValue().get(i);
 				sb.append(entry.getKey());
 				sb.append("\t");
@@ -1113,9 +1151,15 @@ public class SVM {
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath), "utf-8"))) {
 			List<List<String>> wrongPredictedMessages = predictionStatistic.getWrongPredictedMessages();
 
-			writer.write("TEXT" + "\t" + "ACTUAL-CLASS" + "\t" + "PREDICTED-CLASS" + "\t" + "FEATURE-VECTOR" + "\n");
+			writer.write("ACTUAL-CLASS" + "\t" + "PREDICTED-CLASS" + "\t" + "TEXT" + "\t" + "FEATURE-VECTOR" + "\n");
+			// writer.write("TEXT" + "\t" +"ACTUAL-CLASS" + "\t" +
+			// "PREDICTED-CLASS" + "\t" + "FEATURE-VECTOR" + "\n");
 
 			for (int i = 0; i < wrongPredictedMessages.size(); i++) {
+				String actual = "";
+				String predic = "";
+				String message = "";
+				String fv = "";
 				for (int j = 0; j < wrongPredictedMessages.get(i).size(); j++) {
 
 					SentimentClass sentiment = null;
@@ -1140,11 +1184,23 @@ public class SVM {
 					}
 
 					if (j == 0 || j == 3) {
-						writer.write(wrongPredictedMessages.get(i).get(j) + "\t");
+						if (j == 0) {
+							message = wrongPredictedMessages.get(i).get(j) + "\t";
+						} else if (j == 3) {
+							fv = wrongPredictedMessages.get(i).get(j) + "\t";
+						}
+						// writer.write(wrongPredictedMessages.get(i).get(j) +
+						// "\t");
 					} else {
-						writer.write(sentiment + "\t");
+						if (j == 1) {
+							actual = sentiment + "\t";
+						} else if (j == 2) {
+							predic = sentiment + "\t";
+						}
+						// writer.write(sentiment + "\t");
 					}
 				}
+				writer.write(actual + predic + message + fv);
 				writer.write("\n");
 			}
 		} catch (IOException e) {

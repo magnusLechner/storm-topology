@@ -68,6 +68,7 @@ public class TwitterStreamSpout extends BaseRichSpout {
 		declarer.declare(new Fields("id", "text", "score"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
 		m_collector = collector;

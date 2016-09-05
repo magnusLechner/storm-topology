@@ -13,7 +13,8 @@ import org.apache.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.illecker.sentistorm.bolt.StatisticBolt;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
+import at.illecker.sentistorm.commons.util.TimeUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -22,6 +23,8 @@ import redis.clients.jedis.JedisPubSub;
 public class RedisSpout extends BaseRichSpout {
 	static final long serialVersionUID = 737015318988609460L;
 	public static final String ID = "redis-spout";
+	public static final String CONF_LOGGING = ID + ".logging";
+	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
 	private static final Logger LOG = LoggerFactory.getLogger(RedisSpout.class);
 	private boolean m_logging = false;
 
@@ -78,13 +81,13 @@ public class RedisSpout extends BaseRichSpout {
 				@Override
 				public void onSubscribe(String channel, int subscribedChannels) {
 					// TODO Auto-generated method stub
-					
+
 				}
 
 				@Override
 				public void onUnsubscribe(String channel, int subscribedChannels) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			};
 
@@ -92,22 +95,33 @@ public class RedisSpout extends BaseRichSpout {
 			try {
 				jedis.psubscribe(listener, pattern);
 			} finally {
-				if(jedis != null) {
-					jedis.close();	
+				if (jedis != null) {
+					jedis.close();
 				}
 			}
 		}
 	};
 
 	@SuppressWarnings("rawtypes")
-	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
+	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
 		this.collector = collector;
 		queue = new LinkedBlockingQueue<String>(5000);
 		pool = new JedisPool(new JedisPoolConfig(), host, port);
 
+		// Optional set logging
+		if (config.get(CONF_LOGGING) != null) {
+			m_logging = (Boolean) config.get(CONF_LOGGING);
+		} else {
+			m_logging = false;
+		}
+		
+		if (config.get(CONF_STARTUP_SLEEP_MS) != null) {
+			long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
+			TimeUtils.sleepMillis(startupSleepMillis);
+		}
+
 		ListenerThread listener = new ListenerThread(queue, pool, pattern);
 		listener.start();
-
 	}
 
 	public void close() {
@@ -122,8 +136,11 @@ public class RedisSpout extends BaseRichSpout {
 			if (m_logging) {
 				LOG.info("REDIS-SPOUT: " + jsonAsString);
 			}
-			
-			collector.emit(new Values(jsonAsString));
+
+			TupleStatistic tupleStatistic = new TupleStatistic();
+			//set realStart must happen in JsonBolt
+			tupleStatistic.setPipelineStart(System.currentTimeMillis());
+			collector.emit(new Values(jsonAsString, tupleStatistic));
 		}
 	}
 
@@ -136,7 +153,7 @@ public class RedisSpout extends BaseRichSpout {
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("message"));
+		declarer.declare(new Fields("jsonString", "tupleStatistic"));
 	}
 
 	public boolean isDistributed() {

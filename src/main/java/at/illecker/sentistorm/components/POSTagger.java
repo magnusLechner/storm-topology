@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Tweet;
+import at.illecker.sentistorm.commons.dict.PlayerNames;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.IOUtils;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
@@ -92,20 +93,15 @@ public class POSTagger {
 		m_model.greedyDecode(ms, false);
 
 		for (int t = 0; t < sentence.T(); t++) {
-			
-			//work-around 
-			//TODO add transition probabilities to model.txt
-			//TODO change this also in POSTaggerBolt class 
 			TaggedToken tt = null;
-			if(TwitchEmoticons.getInstance().isTwitchEmoticon(tokens.get(t))) {
-				tt = new TaggedToken(tokens.get(t), "E");
+			String token = tokens.get(t);
+			if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
+				tt = new TaggedToken(token, "E");
+			} else if(PlayerNames.getInstance().isPlayerName(token)) {
+				tt = new TaggedToken(token, "^");
 			} else {
-				tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
+				tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[t]));
 			}
-			
-//			System.out.println(tokens.get(t) + "\t\t" + ms.labels[t] + "\t\t" + m_model.labelVocab.name(ms.labels[t]));
-//			TaggedToken tt = new TaggedToken(tokens.get(t), m_model.labelVocab.name(ms.labels[t]));
-			
 			taggedTokens.add(tt);
 		}
 		return taggedTokens;
@@ -132,16 +128,16 @@ public class POSTagger {
 		// load tweets
 //		List<Tweet> tweets = Tweet.getTestTweets();
 //		List<Tweet> tweets = Tweet.getSigleTestTweet();
-		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
-		Tweet testTweet2 = new Tweet(0L, "  asd ");
-		Tweet testTweet3 = new Tweet(0L, " ");
-		Tweet testTweet4 = new Tweet(0L, "");
+//		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
+		Tweet testTweet2 = new Tweet(0L, "f0rest dodo8 Edward get_right");
+//		Tweet testTweet3 = new Tweet(0L, " ");
+//		Tweet testTweet4 = new Tweet(0L, "");
 		
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		tweets.add(testTweet1);
+//		tweets.add(testTweet1);
 		tweets.add(testTweet2);
-		tweets.add(testTweet3);
-		tweets.add(testTweet4);
+//		tweets.add(testTweet3);
+//		tweets.add(testTweet4);
 
 		// process tweets
 		long startTime = System.currentTimeMillis();
@@ -149,11 +145,15 @@ public class POSTagger {
 			// Tokenize
 			List<String> tokens = Tokenizer.tokenize(tweet.getText());
 
+			for(int i = 0; i < tokens.size(); i++) {
+				System.out.println("TOKENS: " + tokens.get(i));
+			}
+			
 			// Preprocess
 			List<String> preprocessedTokens = preprocessor.preprocess(tokens);
 
 			for(int i = 0; i < preprocessedTokens.size(); i++) {
-				System.out.println("TOKEN: " + preprocessedTokens.get(i));
+				System.out.println("PREPROCESSED: " + preprocessedTokens.get(i));
 			}
 			
 			// POS Tagging

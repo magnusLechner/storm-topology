@@ -1,7 +1,6 @@
 package at.illecker.sentistorm.bolt;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +13,11 @@ import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.illecker.sentistorm.bolt.values.statistic.JsonBoltStatistic;
-import at.illecker.sentistorm.bolt.values.statistic.SVMBoltStatistic;
+import at.illecker.sentistorm.bolt.values.data.RedisPublishBoltData;
 import at.illecker.sentistorm.bolt.values.statistic.TopologyRawStatistic;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 
-public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object>> {
+public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, List<TupleStatistic>>> {
 	public static final String ID = "statistic";
 	public static final String CONF_LOGGING = ID + ".logging";
 	public static final String CONF_INTERVAL = ID + ".interval";
@@ -26,19 +25,17 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticBolt.class);
 	private boolean m_logging = false;
 
-	private static final String PROCESSING_TUPELS = "processing-tupels";
-	private static final String CYCLE_TIMES = "cycle-time";
+	private static final String TUPLE_STATISTICS = "tuple-statistics";
 
 	private long last;
 	private long interval;
 	private OutputCollector collector;
-	private KeyValueState<String, Object> state;
+	private KeyValueState<String, List<TupleStatistic>> state;
 
 	@Override
-	public void initState(KeyValueState<String, Object> state) {
+	public void initState(KeyValueState<String, List<TupleStatistic>> state) {
 		this.state = state;
-		this.state.put(CYCLE_TIMES, new ArrayList<Long>());
-		this.state.put(PROCESSING_TUPELS, new HashMap<String, Long>());
+		this.state.put(TUPLE_STATISTICS, new ArrayList<TupleStatistic>());
 	}
 
 	@Override
@@ -62,31 +59,19 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 		this.last = System.currentTimeMillis();
 	}
 
-	// TODO if cycle time is not so important: set a long at index 2: every time
-	// i get a json-bolt tuple i can increase the long
-	// ,every time i get a svm tuple decrease the long -> count of tupels in
-	// topology
+	//TODO differ between pipeline and direct json-bolt stream for evaluation
 	@Override
 	public void execute(Tuple tuple) {
-		String sourceID = tuple.getSourceComponent();
+		RedisPublishBoltData redisPublishBoltData = RedisPublishBoltData.getFromTuple(tuple);
+		TupleStatistic tupleStatistic = redisPublishBoltData.getTupleStatistic();
 
-		if (sourceID.startsWith(JsonBolt.ID)) {
-			JsonBoltStatistic jsonStatistic = JsonBoltStatistic.getFromTuple(tuple);
-			addProcessingTuple(jsonStatistic.getID(), jsonStatistic.getTimestamp());
-		} else if (sourceID.startsWith(SVMBolt.ID)) {
-			SVMBoltStatistic svmStatistic = SVMBoltStatistic.getFromTuple(tuple);
-//			Long startTimestamp = getStartTime(svmStatistic.getID());
-//			removeProcessingTuple(svmStatistic.getID());
-			Long startTimestamp = getStartTimeAndRemove(svmStatistic.getID());
-			if(startTimestamp != null) {
-				addCycleTime(svmStatistic.getTimestamp() - startTimestamp);	
-			}
-			final long current = System.currentTimeMillis();
-			if (current - last >= interval) {
-				collector.emit(tuple, new TopologyRawStatistic(getProcessingTuplesCount(), getCycleTimes()));
-				clear();
-				last = current;
-			}
+		addTupleStatistic(tupleStatistic);
+
+		final long current = System.currentTimeMillis();
+		if (current - last >= interval) {
+			collector.emit(tuple, new TopologyRawStatistic(getTupleStatistics()));
+			clear();
+			last = current;
 		}
 
 		if (m_logging) {
@@ -97,59 +82,25 @@ public class StatisticBolt extends BaseStatefulBolt<KeyValueState<String, Object
 	}
 
 	private void clear() {
-		clearCycleTimes();
+		clearTupleStatistics();
 	}
 
-	@SuppressWarnings("unchecked")
-	private void addProcessingTuple(String id, Long timestamp) {
-		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-		processingTupels.put(id, timestamp);
-		state.put(PROCESSING_TUPELS, processingTupels);
+	private void addTupleStatistic(TupleStatistic tupleStatistic) {
+		List<TupleStatistic> tupleStatistics = state.get(TUPLE_STATISTICS);
+		if (tupleStatistics != null) {
+			tupleStatistics.add(tupleStatistic);
+		} else {
+			throw new NullPointerException("Statistic Bolt: List is null");
+		}
+		state.put(TUPLE_STATISTICS, tupleStatistics);
 	}
 
-	@SuppressWarnings("unchecked")
-	private int getProcessingTuplesCount() {
-		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-		return processingTupels.size();
-	}
-	
-//	@SuppressWarnings("unchecked")
-//	private Long getStartTime(String id) {
-//		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-//		return processingTupels.get(id);
-//	}
-
-//	@SuppressWarnings("unchecked")
-//	private void removeProcessingTuple(String id) {
-//		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-//		processingTupels.remove(id);
-//		state.put(PROCESSING_TUPELS, processingTupels);
-//	}
-	
-	//get StartTime and remove in one stop to evade casting twice
-	@SuppressWarnings("unchecked")
-	private Long getStartTimeAndRemove(String id) {
-		Map<String, Long> processingTupels = (Map<String, Long>) state.get(PROCESSING_TUPELS);
-		Long startTime = processingTupels.get(id);
-		processingTupels.remove(id);
-		state.put(PROCESSING_TUPELS, processingTupels);
-		return startTime;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void addCycleTime(Long cycleTime) {
-		List<Long> cycleTimes = (List<Long>) state.get(CYCLE_TIMES);
-		cycleTimes.add(cycleTime);
-		state.put(CYCLE_TIMES, cycleTimes);
+	private List<TupleStatistic> getTupleStatistics() {
+		return state.get(TUPLE_STATISTICS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<Long> getCycleTimes() {
-		return (List<Long>) state.get(CYCLE_TIMES);
-	}
-
-	private void clearCycleTimes() {
-		state.put(CYCLE_TIMES, new ArrayList<Long>());
+	private void clearTupleStatistics() {
+		state.put(TUPLE_STATISTICS, new ArrayList<TupleStatistic>());
 	}
 
 }

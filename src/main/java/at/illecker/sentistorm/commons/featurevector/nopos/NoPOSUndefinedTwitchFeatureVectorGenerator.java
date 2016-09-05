@@ -36,8 +36,8 @@ public class NoPOSUndefinedTwitchFeatureVectorGenerator extends NoPOSFeatureVect
 
 	private Map<String, Double> emoticonsWithSentiment;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public NoPOSUndefinedTwitchFeatureVectorGenerator() {
-
 		List<Map> wordLists = Configuration.getSentimentWordlists();
 		for (Map wordListEntry : wordLists) {
 			String name = (String) wordListEntry.get("name");
@@ -86,9 +86,9 @@ public class NoPOSUndefinedTwitchFeatureVectorGenerator extends NoPOSFeatureVect
 				countUndefinedTwitchEmoticon += 1.0;
 			}
 		}
-		
-		if(countUndefinedTwitchEmoticon != 0.0) {
-			featureVector.put(m_vectorStartId + VECTOR_SIZE, countUndefinedTwitchEmoticon);	
+
+		if (countUndefinedTwitchEmoticon != 0.0) {
+			featureVector.put(m_vectorStartId + VECTOR_SIZE, countUndefinedTwitchEmoticon);
 		}
 
 		return featureVector;

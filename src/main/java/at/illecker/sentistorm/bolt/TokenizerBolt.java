@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.JsonBoltData;
 import at.illecker.sentistorm.bolt.values.data.TokenizerBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.components.Tokenizer;
 
 public class TokenizerBolt extends BaseBasicBolt {
@@ -61,6 +62,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		JsonBoltData jsonBoltValue = JsonBoltData.getFromTuple(tuple);
 		JsonObject jsonObject = jsonBoltValue.getJsonObject();
+		TupleStatistic tupleStatistic = jsonBoltValue.getTupleStatistic();
 		String msg = jsonObject.get("msg").getAsString();
 
 		List<String> tokens = Tokenizer.tokenize(msg);
@@ -70,7 +72,7 @@ public class TokenizerBolt extends BaseBasicBolt {
 		}
 		
 		// Emit new tuples
-		collector.emit(new TokenizerBoltData(jsonObject, tokens));
+		collector.emit(new TokenizerBoltData(jsonObject, tupleStatistic, tokens));
 	}
 
 }

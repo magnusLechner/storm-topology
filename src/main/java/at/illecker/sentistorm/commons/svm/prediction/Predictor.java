@@ -33,6 +33,7 @@ public abstract class Predictor {
 	// TODO throw this out when finished with testing
 	private Map<String, Double> emoticonList = new HashMap<String, Double>();
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Predictor(svm_model svmModel, Dataset dataset) {
 		super();
 		this.svmModel = svmModel;
@@ -85,6 +86,7 @@ public abstract class Predictor {
 		countTwitchEmoticons(featuredTweet);
 
 		// for lenns evaluation
+//		System.out.println("SENTIMENT:  " + predictedClass + "   TEXT: " + featuredTweet.getText());
 		updateLennSum(predictedClass);
 
 		// if FV.size == 0 -> always neutral => only count the message if FV is

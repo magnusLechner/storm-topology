@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 
 import at.illecker.sentistorm.bolt.values.data.PreprocessorBoltData;
 import at.illecker.sentistorm.bolt.values.data.TokenizerBoltData;
+import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import at.illecker.sentistorm.components.Preprocessor;
 
 public class PreprocessorBolt extends BaseBasicBolt {
@@ -56,6 +57,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		} else {
 			m_logging = false;
 		}
+		
 		// Load Preprocessor
 		m_preprocessor = Preprocessor.getInstance();
 	}
@@ -65,6 +67,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		TokenizerBoltData tokenizerBoltValue = TokenizerBoltData.getFromTuple(tuple);
 		
 		JsonObject jsonObject = tokenizerBoltValue.getJsonObject();
+		TupleStatistic tupleStatistic = tokenizerBoltValue.getTupleStatistic();
 		List<String> tokens = (List<String>) tokenizerBoltValue.getTokens();
 
 		// Preprocess
@@ -75,7 +78,7 @@ public class PreprocessorBolt extends BaseBasicBolt {
 		}
 
 		// Emit new tuples
-		collector.emit(new PreprocessorBoltData(jsonObject, preprocessedTokens));
+		collector.emit(new PreprocessorBoltData(jsonObject, tupleStatistic, preprocessedTokens));
 	}
 
 }

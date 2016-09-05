@@ -25,8 +25,6 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Dataset;
@@ -34,8 +32,7 @@ import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.util.TimeUtils;
 
 public class DatasetSpout extends BaseRichSpout {
-	private static final Logger LOG = LoggerFactory.getLogger(DatasetSpout.class);
-	
+
 	public static final String ID = "dataset-spout";
 	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
 	public static final String CONF_TUPLE_SLEEP_MS = ID + ".tuple.sleep.ms";
@@ -54,10 +51,11 @@ public class DatasetSpout extends BaseRichSpout {
 		declarer.declare(new Fields("id", "score", "text"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
 		this.m_collector = collector;
-//		this.m_dataset = Configuration.getDataSetSemEval2013();
-//		this.m_dataset = Configuration.getDataSetSentiment140();
+		// this.m_dataset = Configuration.getDataSetSemEval2013();
+		// this.m_dataset = Configuration.getDataSetSentiment140();
 		this.m_dataset = Configuration.getDataSetTwitch();
 		this.m_tweets = m_dataset.getTestTweets();
 
@@ -79,13 +77,14 @@ public class DatasetSpout extends BaseRichSpout {
 			long startupSleepMillis = (Long) config.get(CONF_STARTUP_SLEEP_MS);
 			TimeUtils.sleepMillis(startupSleepMillis);
 		}
-		
-//		LOG.info("SIZE: " + m_dataset.getTestTweets().size());
-//		for(int i = 0; i < m_dataset.getTestTweets().size(); i++) {
-//			Tweet tweet = m_dataset.getTestTweets().get(i);
-//			LOG.info("TEST: " + tweet.getId() + "   " + tweet.getScore() + "   " + tweet.getText());
-//		}
-		
+
+		// LOG.info("SIZE: " + m_dataset.getTestTweets().size());
+		// for(int i = 0; i < m_dataset.getTestTweets().size(); i++) {
+		// Tweet tweet = m_dataset.getTestTweets().get(i);
+		// LOG.info("TEST: " + tweet.getId() + " " + tweet.getScore() + " " +
+		// tweet.getText());
+		// }
+
 	}
 
 	public void nextTuple() {

@@ -47,18 +47,20 @@ public class Configuration {
 	public static final String GLOBAL_RESOURCES_DATASETS_MY_TEST = "global.resources.datasets.mytest";
 	public static final String GLOBAL_RESOURCES_DICT = "global.resources.dict";
 	public static final String GLOBAL_RESOURCES_DICT_SENTIMENT = "global.resources.dict.sentiment";
+	public static final String GLOBAL_RESOURCES_DICT_EMOTICON = "global.resources.dict.emoticon";
 	public static final String GLOBAL_RESOURCES_DICT_SLANG = "global.resources.dict.slang";
 	public static final String GLOBAL_RESOURCES_DICT_WORDNET_PATH = "global.resources.dict.wordnet.path";
 
+	@SuppressWarnings("rawtypes")
 	public static final Map CONFIG = readConfig();
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map readConfig() {
 		// for running SVM local
-//		 String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
-//		 Map conf = readConfigFile(file + "senti-defaults.yaml", true);
+		String file = "/home/magnus/workspace/storm-topology/src/main/conf/";
+		Map conf = readConfigFile(file + "senti-defaults.yaml", true);
 
-		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
+//		Map conf = readConfigFile(WORKING_DIR_PATH + "senti-defaults.yaml", true);
 		// read custom config
 		LOG.info("Try to load user-specific config...");
 		Map customConfig = readConfigFile(WORKING_DIR_PATH + "configuration.yaml", false);
@@ -99,6 +101,7 @@ public class Configuration {
 		return get(key, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <K, V> V get(K key, V defaultValue) {
 		return get((Map<K, V>) CONFIG, key, defaultValue);
 	}
@@ -111,38 +114,52 @@ public class Configuration {
 		return value;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Dataset getDataSetSemEval2013() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_SEMEVAL)).get("2013"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Dataset getDataSetSentiment140() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_SENTIMENT140)).get("140"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Dataset getDataSetTwitch() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("twitch"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static JSONDataset getJSONDataSetTwitch() {
 		return JSONDataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_TWITCH)).get("JSONtwitch"));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Dataset getDataSetMyTest() {
 		return Dataset.readFromYaml((Map) ((Map) CONFIG.get(GLOBAL_RESOURCES_DATASETS_MY_TEST)).get("mytest"));
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<String> getFirstNames() {
 		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("FirstNames");
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<String> getStopWords() {
 		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("StopWords");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Map> getSentimentWordlists() {
 		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_SENTIMENT);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List<Map> getEmoticonLists() {
+		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_EMOTICON);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Map> getSlangWordlists() {
 		return (List<Map>) CONFIG.get(GLOBAL_RESOURCES_DICT_SLANG);
 	}
@@ -151,8 +168,14 @@ public class Configuration {
 		return (String) CONFIG.get(GLOBAL_RESOURCES_DICT_WORDNET_PATH);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<String> getTwitchEmoticons() {
 		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("TwitchEmoticons");
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static List<String> getPlayerNames() {
+		return (List<String>) ((Map) CONFIG.get(GLOBAL_RESOURCES_DICT)).get("PlayerNames");
 	}
 
 }

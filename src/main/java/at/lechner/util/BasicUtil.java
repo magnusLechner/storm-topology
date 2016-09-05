@@ -36,7 +36,7 @@ public class BasicUtil {
 		return result;
 	}
 	
-	public static String[] readLines(String inputPath) throws IOException {
+	public static String[] readLines(String inputPath) {
 		List<String> lines = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath))) {
 		    String line;
@@ -47,6 +47,8 @@ public class BasicUtil {
 				}
 				lines.add(line);
 		    }
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return lines.toArray(new String[lines.size()]);
 	}

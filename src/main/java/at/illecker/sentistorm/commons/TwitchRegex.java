@@ -11,15 +11,16 @@ public class TwitchRegex {
 
 	private Pattern m_tokenizerPattern;
 	private TwitchEmoticons m_twitchEmoticons;
-	
+
 	private TwitchRegex() {
 		// Load Twitch emoticons
 		m_twitchEmoticons = TwitchEmoticons.getInstance();
 		String twitchEmoticonsRegex = "";
-		for(String emoticon : m_twitchEmoticons.getEmoticons()) {
+		for (String emoticon : m_twitchEmoticons.getEmoticons()) {
 			twitchEmoticonsRegex += "(?i:" + emoticon + ")|";
 		}
 		m_tokenizerPattern = Pattern.compile(twitchEmoticonsRegex + RegexUtils.TOKENIZER_COMPLETE);
+		m_tokenizerPattern = Pattern.compile(RegexUtils.TOKENIZER_COMPLETE);
 	}
 
 	public static TwitchRegex getInstance() {
@@ -29,5 +30,5 @@ public class TwitchRegex {
 	public Pattern getTokenizerPattern() {
 		return m_tokenizerPattern;
 	}
-	
+
 }

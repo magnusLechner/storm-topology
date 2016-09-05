@@ -145,13 +145,35 @@ public class RegexUtils {
 			.compile("(?<=^|" + EMOTICON_DELIMITER + ")" + SLANG + "(?=$|" + EMOTICON_DELIMITER + ")");
 
 	// Attention: the order does matter
-	public static final Pattern TOKENIZER_PATTERN = Pattern.compile(EMOTICON_PATTERN.pattern() + "|" + URL + "|" + PHONE
-			+ "|" + EMAIL_ADDRESS + "|" + USER_NAME + "|" + HASH_TAG + "|" + SLANG_PATTERN.pattern() + "|"
-			+ ALTERNATING_LETTER_DOT + "|" + WORDS_WITH_APOSTROPHES_DASHES + "|" + SEPARATED_NUMBER + "|"
-			+ SPECIAL_NUMBER + "|" + WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + ELLIPSIS_DOTS + "|" + NOT_A_WHITESPACE);
+	public static final Pattern TOKENIZER_PATTERN = Pattern.compile(
+			EMOTICON_PATTERN.pattern() + "|" + 
+			URL + "|" + 
+			PHONE + "|" + 
+			EMAIL_ADDRESS + "|" + 
+			USER_NAME + "|" + 
+			HASH_TAG + "|" + 
+			SLANG_PATTERN.pattern() + "|" +
+			ALTERNATING_LETTER_DOT + "|" + 
+//			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
+			SEPARATED_NUMBER + "|" +
+//			SPECIAL_NUMBER + "|" + 
+			WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + 
+			ELLIPSIS_DOTS + "|" + 
+			NOT_A_WHITESPACE);
 
-	public static final String TOKENIZER_COMPLETE = EMOTICON_PATTERN.pattern() + "|" + URL + "|" + PHONE
-			+ "|" + EMAIL_ADDRESS + "|" + USER_NAME + "|" + HASH_TAG + "|" + SLANG_PATTERN.pattern() + "|"
-			+ ALTERNATING_LETTER_DOT + "|" + WORDS_WITH_APOSTROPHES_DASHES + "|" + SEPARATED_NUMBER + "|"
-			+ SPECIAL_NUMBER + "|" + WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + ELLIPSIS_DOTS + "|" + NOT_A_WHITESPACE;
+	public static final String TOKENIZER_COMPLETE = 
+			EMOTICON_PATTERN.pattern() + "|" + 
+			URL + "|" + 
+			PHONE + "|" + 
+			EMAIL_ADDRESS + "|" + 
+			USER_NAME + "|" + 
+			HASH_TAG + "|" + 
+			SLANG_PATTERN.pattern() + "|" +
+			ALTERNATING_LETTER_DOT + "|" + 
+//			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
+			SEPARATED_NUMBER + "|" +
+//			SPECIAL_NUMBER + "|" + 
+			WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + 
+			ELLIPSIS_DOTS + "|" + 
+			NOT_A_WHITESPACE;
 }

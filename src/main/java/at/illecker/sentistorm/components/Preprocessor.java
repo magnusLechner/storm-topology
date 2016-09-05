@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.dict.FirstNames;
-import at.illecker.sentistorm.commons.dict.SentimentDictionary;
+import at.illecker.sentistorm.commons.dict.PlayerNames;
 import at.illecker.sentistorm.commons.dict.SlangCorrection;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.RegexUtils;
@@ -40,6 +40,7 @@ public class Preprocessor {
 	private SlangCorrection m_slangCorrection;
 	private FirstNames m_firstNames;
 	private TwitchEmoticons m_twitchEmoticons;
+	private PlayerNames m_playerNames;
 
 	private Preprocessor() {
 		// Load WordNet
@@ -48,8 +49,10 @@ public class Preprocessor {
 		m_slangCorrection = SlangCorrection.getInstance();
 		// Load FirstNames
 		m_firstNames = FirstNames.getInstance();
-		// Load Twitch emotes
+		// Load TwitchEmoticons
 		m_twitchEmoticons = TwitchEmoticons.getInstance();
+		// Load PlayerNames
+		m_playerNames = PlayerNames.getInstance();
 	}
 
 	public static Preprocessor getInstance() {
@@ -59,25 +62,32 @@ public class Preprocessor {
 	public List<String> preprocess(List<String> tokens) {
 		List<String> preprocessedTokens = new ArrayList<String>();
 		for (String token : tokens) {
-			if(token.trim().equals("")) {
+			if (token.trim().equals("")) {
 				continue;
 			}
-			
+
+			// Step 1) Check for Twitch emoticons
+			boolean tokenIsTwitchEmote = m_twitchEmoticons.isTwitchEmoticon(token);
+			if (tokenIsTwitchEmote) {
+				preprocessedTokens.add(token);
+				continue;
+			}
+
+			// Step 2) Check for player names
+			boolean tokenIsPlayerName = m_playerNames.isPlayerName(token);
+			if (tokenIsPlayerName) {
+				preprocessedTokens.add(token);
+				continue;
+			}
+
 			// identify token
 			boolean tokenContainsPunctuation = StringUtils.consitsOfPunctuations(token);
 			boolean tokenConsistsOfUnderscores = StringUtils.consitsOfUnderscores(token);
 			boolean tokenIsEmoticon = StringUtils.isEmoticon(token);
 			boolean tokenIsURL = StringUtils.isURL(token);
 			boolean tokenIsNumeric = StringUtils.isNumeric(token);
-			boolean tokenIsTwitchEmote = m_twitchEmoticons.isTwitchEmoticon(token);
 
-			// Step 0) Check for Twitch emoticons
-			if (tokenIsTwitchEmote) {
-				preprocessedTokens.add(token);
-				continue;
-			}
-
-			// Step 1) Unify Emoticons remove repeating chars
+			// Step 3) Unify Emoticons remove repeating chars
 			if ((tokenIsEmoticon) && (!tokenIsURL) && (!tokenIsNumeric)) {
 				Matcher m = RegexUtils.TWO_OR_MORE_REPEATING_CHARS_PATTERN.matcher(token);
 				if (m.find()) {
@@ -105,7 +115,7 @@ public class Preprocessor {
 			boolean tokenIsSpecialNumeric = StringUtils.isSpecialNumeric(token);
 			boolean tokenIsSeparatedNumeric = StringUtils.isSeparatedNumeric(token);
 
-			// Step 2) Slang Correction
+			// Step 4) Slang Correction
 			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
 					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
 				String[] slangCorrection = m_slangCorrection.getCorrection(token.toLowerCase());
@@ -123,7 +133,7 @@ public class Preprocessor {
 				}
 			}
 
-			// Step 3) Check if there are punctuations between words
+			// Step 5) Check if there are punctuations between words
 			// e.g., L.O.V.E
 			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
 					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
@@ -138,7 +148,7 @@ public class Preprocessor {
 				}
 			}
 
-			// Step 4) Add missing g in gerund forms e.g., goin
+			// Step 6) Add missing g in gerund forms e.g., goin
 			if ((!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (token.endsWith("in"))
 					&& (!m_firstNames.isFirstName(token)) && (!m_wordnet.contains(token.toLowerCase()))) {
 				// append "g" if a word ends with "in" and is not in the
@@ -148,7 +158,7 @@ public class Preprocessor {
 				continue;
 			}
 
-			// Step 5) Remove elongations of characters (suuuper)
+			// Step 7) Remove elongations of characters (suuuper)
 			// 'lollll' to 'loll' because 'loll' is found in dict
 			// TODO 'AHHHHH' to 'AH'
 			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
@@ -278,9 +288,8 @@ public class Preprocessor {
 		// 10.45,9 8/11/12"));
 		// tweets.add(new Tweet(0L, "(6ft.10) 2),Chap 85.3%(6513 (att@m80.com)
 		// awayDAWN.com www.asdf.org"));
-		// tweets.add(new Tweet(0L, "LOL LUL WutFace Dafuk 4Head Kreygasm FunRun
-		// FuzzyOtterOO GingerPower HeyGuys"));
-		tweets.add(new Tweet(0L, "wutface WutFace"));
+		tweets.add(new Tweet(0L, "LOL LUL WutFace Dafuk 4Head Kreygasm FunRun FuzzyOtterOO GingerPower HeyGuys"));
+		tweets.add(new Tweet(0L, "wutface WutFace CoreJJ 1379"));
 
 		// Tokenize
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);

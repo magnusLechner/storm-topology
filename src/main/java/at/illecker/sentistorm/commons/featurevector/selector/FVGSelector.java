@@ -3,13 +3,14 @@ package at.illecker.sentistorm.commons.featurevector.selector;
 import java.util.List;
 
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.CombinedFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.POSFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.SentimentAndPOSFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.SentimentFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.TfIdfAndPOSFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.TfIdfFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.BooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.POSFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SentimentAndPOSFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SentimentFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.TfIdfAndPOSFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
 import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
@@ -45,6 +46,8 @@ public class FVGSelector {
 			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
 					true);
 			return new TfIdfAndPOSFeatureVectorGenerator(true, tweetTfIdf);
+		} else if (featureVectorGenerator.equals(BooleanFeatureVectorGenerator.class)) {
+			return new BooleanFeatureVectorGenerator();
 		} else if (featureVectorGenerator.equals(CombinedFeatureVectorGenerator.class)) {
 			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
 					true);

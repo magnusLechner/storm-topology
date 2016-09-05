@@ -7,7 +7,7 @@ import java.util.Map;
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.selector.FVGSelector;
 import at.illecker.sentistorm.components.POSTagger;
 import at.illecker.sentistorm.components.Preprocessor;

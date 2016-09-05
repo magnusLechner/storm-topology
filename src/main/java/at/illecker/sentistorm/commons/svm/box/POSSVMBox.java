@@ -1,7 +1,7 @@
 package at.illecker.sentistorm.commons.svm.box;
 
 import at.illecker.sentistorm.commons.Dataset;
-import at.illecker.sentistorm.commons.featurevector.FeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.svm.model.POSModelTrainer;
 import at.illecker.sentistorm.commons.svm.prediction.POSPredictor;
 
