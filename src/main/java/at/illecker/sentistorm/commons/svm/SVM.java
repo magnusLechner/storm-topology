@@ -58,7 +58,7 @@ import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSCombinedFeatureVe
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSentimentFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSTfIdfFeatureVectorGenerator;
-import at.illecker.sentistorm.commons.featurevector.pos.BooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SpecialFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.SentimentFeatureVectorGenerator;
@@ -75,7 +75,7 @@ import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import at.illecker.sentistorm.components.POSTagger;
 import at.illecker.sentistorm.components.Preprocessor;
 import at.illecker.sentistorm.components.Tokenizer;
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.evaluation.PipelineEvaluation;
 import at.lechner.preparation.SVMPreparation;
 import at.lechner.util.EvaluationUtil;
@@ -305,12 +305,19 @@ public class SVM {
 					+ " sec");
 
 			// output CSV file
-			LOG.info("CSV file of paramterSearch with C=" + Arrays.toString(c) + " gamma=" + Arrays.toString(gamma));
-			LOG.info("i;j;C;gamma;accuracy;time_ms");
+			// LOG.info("CSV file of paramterSearch with C=" +
+			// Arrays.toString(c) + " gamma=" + Arrays.toString(gamma));
+			// LOG.info("i;j;C;gamma;accuracy;time_ms");
+			System.out.println(
+					"CSV file of paramterSearch with C=" + Arrays.toString(c) + " gamma=" + Arrays.toString(gamma));
+			System.out.println("i;j;C;gamma;accuracy;time_ms");
 			for (Future<double[]> future : futures) {
 				double[] result = future.get();
-				LOG.info(result[0] + ";" + result[1] + ";" + result[3] + ";" + result[4] + ";" + result[2] + ";"
-						+ result[5]);
+				// LOG.info(result[0] + ";" + result[1] + ";" + result[3] + ";"
+				// + result[4] + ";" + result[2] + ";"
+				// + result[5]);
+				System.out.println(result[0] + ";" + result[1] + ";" + result[3] + ";" + result[4] + ";" + result[2]
+						+ ";" + result[5]);
 			}
 
 		} catch (InterruptedException e) {
@@ -802,11 +809,11 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		 NoPOSSVMBox pipelineBox = null;
-//		POSSVMBox pipelineBox = null;
+		NoPOSSVMBox pipelineBox = null;
+		// POSSVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -3; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
@@ -846,7 +853,7 @@ public class SVM {
 					fMeasure.add(fMeasureSingleRun);
 				}
 
-				List<List<List<MyTupel>>> slices = null;
+				List<List<List<MyTuple>>> slices = null;
 				// ADDITION - 709 only
 				if (sliceGenerator == 0) {
 					slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize, stepSize);
@@ -875,6 +882,7 @@ public class SVM {
 				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
 				// SAME FILE
 				else if (sliceGenerator == 7) {
+					// ALL SELF LABELED DATA USED
 					// slices =
 					// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
 					// 200, 300,
@@ -882,23 +890,42 @@ public class SVM {
 					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
 					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
+					// slices =
+					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
+					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
+					// slices =
+					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE,
+					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
+
 				}
 
-				Iterator<List<List<MyTupel>>> iter = slices.iterator();
+				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
-					List<List<MyTupel>> slice = iter.next();
+					System.err.println("ITERATION: " + currentIteration);
+					List<List<MyTuple>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
+					// NO POS
 					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
 							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+					// NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
+					// .selectFVG(dataset.getTrainTweets(false, true),
+					// NoPOSSentimentFeatureVectorGenerator.class);
 					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
-//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//							CombinedFeatureVectorGenerator.class);
-//					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
+
+					// POS
+					// FeatureVectorGenerator posFVG =
+					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
+					// true),
+					// CombinedFeatureVectorGenerator.class);
+					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
+					// false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -952,8 +979,8 @@ public class SVM {
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 						if (!iter.hasNext()) {
-//							writeWrongPredictedMessages(currentIteration,
-//									pipelineBox.getPredictor().getPredictionStatistic());
+							writeWrongPredictedMessages(currentIteration,
+									pipelineBox.getPredictor().getPredictionStatistic());
 							// writeNoFeatureVectorMessages(2,
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
@@ -989,11 +1016,12 @@ public class SVM {
 				startTestSize);
 	}
 
+	// TODO
 	public static void main(String[] args) throws IOException {
 		Dataset dataset = Configuration.getDataSetTwitch();
 		// Dataset dataset = Configuration.getDataSetMyTest();
 
-		boolean parameterSearch = false;
+		boolean parameterSearch = true;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
@@ -1030,9 +1058,9 @@ public class SVM {
 		// svm.EXEC_SERV.shutdown();
 
 		// 709 with 300 test equally distributed from my+lenn
-//		int addVsTest = 6;
+		// int addVsTest = 6;
 		// my+lenn - 300 for test equally distributed
-		 int addVsTest = 7;
+		int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);

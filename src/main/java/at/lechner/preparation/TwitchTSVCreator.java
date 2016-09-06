@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.util.BasicUtil;
 
 public class TwitchTSVCreator implements PreparationTool {
@@ -17,11 +17,11 @@ public class TwitchTSVCreator implements PreparationTool {
 	public static void parseTwitchLabelToTSV(String inputPath, String outputPath, boolean withMixed)
 			throws IOException {
 		String[] linesArray = BasicUtil.readLines(inputPath);
-		MyTupel[] tupels = BasicUtil.extractTwitchLabeling(linesArray, withMixed);
+		MyTuple[] tupels = BasicUtil.extractTwitchLabeling(linesArray, withMixed);
 		createTwitchLabelTSV(tupels, outputPath);
 	}
 	
-	private static void createTwitchLabelTSV(MyTupel[] tupels, String outputPath) throws IOException {
+	private static void createTwitchLabelTSV(MyTuple[] tupels, String outputPath) throws IOException {
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath), "utf-8"))) {
 			for (int i = 0; i < tupels.length; i++) {
 				writer.write(tupels[i].getId() + "\t" + tupels[i].getSentiment() + "\t" + tupels[i].getText() + "\n");

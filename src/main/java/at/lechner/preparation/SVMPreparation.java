@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
 import at.lechner.util.BasicUtil;
 
@@ -37,10 +38,9 @@ public class SVMPreparation implements PreparationTool {
 	public static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
 	public static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
 
-	public static final String TEST_TEST_TSV = "src/main/resources/preparation/self-labeling/separated-classes/test.tsv";
-	public static final String TEST_TRAINING_TSV = "src/main/resources/preparation/self-labeling/separated-classes/training.tsv";
-
-	public static final String COPY_TEST_PATH = "src/main/evaluation/successive_addition_evaluation/addition_vs_rest__709_vs_self/tmp_test_data";
+	public static final String FIX_TESTING_SET_TRAINDATA = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-training.tsv";
+	public static final String FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-training-no-controverse-fv.tsv";
+	public static final String FIX_TESTING_SET_TESTDATA = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-test.tsv";
 
 	public static void main(String[] args) throws IOException {
 		// List<List<List<MyTupel>>> slices =
@@ -51,7 +51,7 @@ public class SVMPreparation implements PreparationTool {
 		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
 		// complete 709 as training and 300 from self+lenn for testing
-		List<List<List<MyTupel>>> slices = prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
+		List<List<List<MyTuple>>> slices = prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
 				UNIQUE_MESSAGES_ORIGINAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE,
 				false);
@@ -103,22 +103,22 @@ public class SVMPreparation implements PreparationTool {
 
 	public static void separateMergedLabelSessions(String allPath, String toRemovePath, String resultPath) {
 		Set<String> originalMessages = new HashSet<String>();
-		List<MyTupel> result = new ArrayList<MyTupel>();
-		List<MyTupel> tmp = new ArrayList<MyTupel>();
-		MyTupel[] original = getMyTuples(toRemovePath);
-		MyTupel[] all = getMyTuples(allPath);
+		List<MyTuple> result = new ArrayList<MyTuple>();
+		List<MyTuple> tmp = new ArrayList<MyTuple>();
+		MyTuple[] original = getMyTuples(toRemovePath);
+		MyTuple[] all = getMyTuples(allPath);
 
-		for (MyTupel tuple : original) {
+		for (MyTuple tuple : original) {
 			originalMessages.add(tuple.getText());
 		}
-		for (MyTupel tuple : all) {
+		for (MyTuple tuple : all) {
 			if (!originalMessages.contains(tuple.getText())) {
 				tmp.add(tuple);
 			}
 		}
 		for (int i = 0; i < tmp.size(); i++) {
-			MyTupel current = tmp.get(i);
-			result.add(new MyTupel(i + 1, current.getText(), current.getSentiment().toString()));
+			MyTuple current = tmp.get(i);
+			result.add(new MyTuple(i + 1, current.getText(), current.getSentiment().toString()));
 		}
 		print(resultPath, result);
 	}
@@ -146,7 +146,7 @@ public class SVMPreparation implements PreparationTool {
 		createTSV(trainingMsgs, trainingPath);
 	}
 
-	public static void print(String toPath, List<MyTupel> certain) {
+	public static void print(String toPath, List<MyTuple> certain) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < certain.size(); i++) {
 			sb.append(certain.get(i).getId());
@@ -163,13 +163,13 @@ public class SVMPreparation implements PreparationTool {
 		}
 	}
 
-	private static MyTupel[] getMyTuples(String filePath) {
+	private static MyTuple[] getMyTuples(String filePath) {
 		String[] lines = BasicUtil.readLines(filePath);
 		return getMyTuples(lines);
 	}
 
-	private static MyTupel[] getMyTuples(String[] lines) {
-		List<MyTupel> tupels = new ArrayList<MyTupel>();
+	private static MyTuple[] getMyTuples(String[] lines) {
+		List<MyTuple> tupels = new ArrayList<MyTuple>();
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.trim().length() == 0) {
@@ -183,10 +183,10 @@ public class SVMPreparation implements PreparationTool {
 					msg += "\t";
 				}
 			}
-			MyTupel tuple = new MyTupel(Integer.valueOf(parts[0]), msg, parts[1]);
+			MyTuple tuple = new MyTuple(Integer.valueOf(parts[0]), msg, parts[1]);
 			tupels.add(tuple);
 		}
-		return tupels.toArray(new MyTupel[tupels.size()]);
+		return tupels.toArray(new MyTuple[tupels.size()]);
 	}
 
 	private static void addToLists(HashMap<String, Sentiment> containsMsgs, HashMap<String, Sentiment> containsMsgsNot,
@@ -229,10 +229,10 @@ public class SVMPreparation implements PreparationTool {
 
 	public static void extractMessagesOnce(String inputPath, String outputPath, boolean withMixed) throws IOException {
 		String[] lines = BasicUtil.readLines(inputPath);
-		MyTupel[] twitchTupels = BasicUtil.extractTwitchLabeling(lines, withMixed);
+		MyTuple[] twitchTupels = BasicUtil.extractTwitchLabeling(lines, withMixed);
 		HashMap<String, Sentiment> messages = new HashMap<String, Sentiment>();
 		for (int i = 0; i < twitchTupels.length; i++) {
-			MyTupel curTwitchTupel = twitchTupels[i];
+			MyTuple curTwitchTupel = twitchTupels[i];
 			if (messages.get(curTwitchTupel.getText()) == null) {
 				messages.put(curTwitchTupel.getText(), curTwitchTupel.getSentiment());
 			}
@@ -365,21 +365,21 @@ public class SVMPreparation implements PreparationTool {
 		System.out.println("COUNT CONTAIN NOT: " + countContainsNot);
 	}
 
-	public static MyTupel[] createMyTupelsFromFile(String pathToFile) {
-		MyTupel[] tupels = null;
+	public static MyTuple[] createMyTupelsFromFile(String pathToFile) {
+		MyTuple[] tupels = null;
 		String[] allMessagesLines = BasicUtil.readLines(pathToFile);
-		tupels = new MyTupel[allMessagesLines.length];
+		tupels = new MyTuple[allMessagesLines.length];
 		for (int i = 0; i < allMessagesLines.length; i++) {
 			String[] splittedLine = allMessagesLines[i].split("\t");
-			tupels[i] = new MyTupel(Integer.valueOf(splittedLine[0]), splittedLine[2], splittedLine[1]);
+			tupels[i] = new MyTuple(Integer.valueOf(splittedLine[0]), splittedLine[2], splittedLine[1]);
 		}
 		return tupels;
 	}
 
-	public static List<List<List<MyTupel>>> prepareAdditionVsRestSubsetRun(int startTrainingSetSize,
+	public static List<List<List<MyTuple>>> prepareAdditionVsRestSubsetRun(int startTrainingSetSize,
 			int testSizeAndTrainingStepSize) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + testSizeAndTrainingStepSize > tupels.length) {
 			return null;
@@ -387,12 +387,12 @@ public class SVMPreparation implements PreparationTool {
 		int randomIndex = 0;
 		int[] randoms = getRandoms(tupels.length, tupels.length);
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = null;
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = null;
 
 		while (randomIndex < randoms.length) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
 					trainingSet.add(tupels[randoms[randomIndex]]);
@@ -402,7 +402,7 @@ public class SVMPreparation implements PreparationTool {
 				trainingSet = new ArrayList<>(trainingSet);
 				trainingSet.addAll(testSet);
 			}
-			testSet = new ArrayList<MyTupel>();
+			testSet = new ArrayList<MyTuple>();
 			for (int i = 0; i < testSizeAndTrainingStepSize && randomIndex < randoms.length; i++) {
 				testSet.add(tupels[randoms[randomIndex]]);
 				randomIndex++;
@@ -420,9 +420,22 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareAdditionVsRestRun(int startTrainingSetSize, int trainingSteps) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+	public static List<List<List<MyTuple>>> getFixTestingSet(String fixTrainingSet, String fixTestSet) {
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupelsTraining = createMyTupelsFromFile(fixTrainingSet);
+		MyTuple[] tupelsTest = createMyTupelsFromFile(fixTestSet);
+		List<List<MyTuple>> slice = new ArrayList<List<MyTuple>>();
+
+		slice.add(Arrays.asList(tupelsTraining));
+		slice.add(Arrays.asList(tupelsTest));
+
+		slices.add(slice);
+		return slices;
+	}
+
+	public static List<List<List<MyTuple>>> prepareAdditionVsRestRun(int startTrainingSetSize, int trainingSteps) {
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + trainingSteps > tupels.length || trainingSteps <= 0 || startTrainingSetSize <= 0) {
 			return null;
@@ -430,12 +443,12 @@ public class SVMPreparation implements PreparationTool {
 		int randomIndex = 0;
 		int[] randoms = getRandoms(tupels.length, tupels.length);
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = null;
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = null;
 
 		while (randomIndex < randoms.length - 1) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
 					trainingSet.add(tupels[randoms[randomIndex]]);
@@ -453,14 +466,14 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
-			testSet = new ArrayList<MyTupel>();
+			testSet = new ArrayList<MyTuple>();
 			for (int i = randomIndex; i < tupels.length; i++) {
 				testSet.add(tupels[randoms[i]]);
 			}
 			if (randomIndex + 2 * trainingSteps > randoms.length) {
 				randomIndex = randoms.length;
 			}
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
 			slice.add(newTrainingSet);
 			slice.add(testSet);
 			slices.add(slice);
@@ -468,17 +481,17 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
+	public static List<List<List<MyTuple>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize) {
 		return prepareAdditionVsTestRun(startTrainingSetSize, trainingSteps, testSize, UNIQUE_MESSAGES_ORIGINAL);
 	}
 
 	// takes testSize many test-labels from filePath and rest is training. these
 	// test-labels are NOT equally distributed
-	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
+	public static List<List<List<MyTuple>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize, String filePath) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(filePath);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(filePath);
 
 		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
 				|| startTrainingSetSize <= 0) {
@@ -487,9 +500,9 @@ public class SVMPreparation implements PreparationTool {
 		int randomIndex = 0;
 		int[] randoms = getRandoms(tupels.length, tupels.length);
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = new ArrayList<MyTupel>();
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = new ArrayList<MyTuple>();
 
 		for (int i = 0; i < testSize; i++) {
 			testSet.add(tupels[randoms[randomIndex]]);
@@ -497,7 +510,7 @@ public class SVMPreparation implements PreparationTool {
 		}
 
 		while (randomIndex < randoms.length - 1) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
 					trainingSet.add(tupels[randoms[randomIndex]]);
@@ -515,8 +528,8 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
-			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);
 			slice.add(newTestSet);
 			slices.add(slice);
@@ -526,20 +539,20 @@ public class SVMPreparation implements PreparationTool {
 
 	// takes testSize many test-labels from the testPathFile which are NOT
 	// equially distributed
-	public static List<List<List<MyTupel>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
+	public static List<List<List<MyTuple>>> prepareAdditionVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize, String trainingFilePath, String testFilePath) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] trainingTuples = createMyTupelsFromFile(trainingFilePath);
-		MyTupel[] allPossibleTestTuples = createMyTupelsFromFile(testFilePath);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] trainingTuples = createMyTupelsFromFile(trainingFilePath);
+		MyTuple[] allPossibleTestTuples = createMyTupelsFromFile(testFilePath);
 
 		if (testSize > allPossibleTestTuples.length || startTrainingSetSize > trainingTuples.length
 				|| trainingSteps <= 0 || startTrainingSetSize <= 0) {
 			return null;
 		}
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = new ArrayList<MyTupel>();
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = new ArrayList<MyTuple>();
 
 		int[] testRandoms = getRandoms(testSize, allPossibleTestTuples.length);
 		for (int i = 0; i < testSize; i++) {
@@ -549,7 +562,7 @@ public class SVMPreparation implements PreparationTool {
 		int randomIndex = 0;
 		int[] trainingRandoms = getRandoms(trainingTuples.length, trainingTuples.length);
 		while (randomIndex < trainingTuples.length - 1) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
 					trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
@@ -573,8 +586,8 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
-			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);
 			slice.add(newTestSet);
 			slices.add(slice);
@@ -582,21 +595,21 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareAdditionVsEquallyDistibutedTestRun(int startTrainingSetSize,
+	public static List<List<List<MyTuple>>> prepareAdditionVsEquallyDistibutedTestRun(int startTrainingSetSize,
 			int trainingSteps, int testSize, String trainingAndTestFilePath, String positivePath, String neutralPath,
 			String negativePath) {
 		return prepareAdditionVsEquallyDistibutedTestRun(startTrainingSetSize, trainingSteps, testSize,
 				trainingAndTestFilePath, positivePath, neutralPath, negativePath, true);
 	}
 
-	public static List<List<List<MyTupel>>> prepareAdditionVsEquallyDistibutedTestRun(int startTrainingSetSize,
+	public static List<List<List<MyTuple>>> prepareAdditionVsEquallyDistibutedTestRun(int startTrainingSetSize,
 			int trainingSteps, int testSize, String trainingFilePath, String positivePath, String neutralPath,
 			String negativePath, boolean sameFile) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] trainingTuples = createMyTupelsFromFile(trainingFilePath);
-		MyTupel[] positiveTuples = createMyTupelsFromFile(positivePath);
-		MyTupel[] neutralTuples = createMyTupelsFromFile(neutralPath);
-		MyTupel[] negativeTuples = createMyTupelsFromFile(negativePath);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] trainingTuples = createMyTupelsFromFile(trainingFilePath);
+		MyTuple[] positiveTuples = createMyTupelsFromFile(positivePath);
+		MyTuple[] neutralTuples = createMyTupelsFromFile(neutralPath);
+		MyTuple[] negativeTuples = createMyTupelsFromFile(negativePath);
 
 		int individualTestSize = testSize / 3;
 		if (positiveTuples.length < individualTestSize || neutralTuples.length < individualTestSize
@@ -605,9 +618,9 @@ public class SVMPreparation implements PreparationTool {
 			return null;
 		}
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = new ArrayList<MyTupel>();
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = new ArrayList<MyTuple>();
 
 		int[] testRandoms = null;
 		testRandoms = getRandoms(individualTestSize, positiveTuples.length);
@@ -624,19 +637,19 @@ public class SVMPreparation implements PreparationTool {
 		}
 
 		if (sameFile) {
-			List<MyTupel> tmp = new ArrayList<MyTupel>();
-			for (MyTupel t : trainingTuples) {
+			List<MyTuple> tmp = new ArrayList<MyTuple>();
+			for (MyTuple t : trainingTuples) {
 				if (!testSet.contains(t)) {
 					tmp.add(t);
 				}
 			}
-			trainingTuples = tmp.toArray(new MyTupel[tmp.size()]);
+			trainingTuples = tmp.toArray(new MyTuple[tmp.size()]);
 		}
 
 		int randomIndex = 0;
 		int[] trainingRandoms = getRandoms(trainingTuples.length, trainingTuples.length);
 		while (randomIndex < trainingTuples.length - 1) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
 					trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
@@ -660,8 +673,8 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
-			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);
 			slice.add(newTestSet);
 			slices.add(slice);
@@ -672,13 +685,13 @@ public class SVMPreparation implements PreparationTool {
 	// TODO
 	// this method is only for self-labeling evaluation. 709 must not run here.
 	// 709 should run with prepareAdditionVsEquallyDistibutedTestRun
-	public static List<List<List<MyTupel>>> prepareAdditionVsEquallyDistibutedTestAndTrainingRun(
+	public static List<List<List<MyTuple>>> prepareAdditionVsEquallyDistibutedTestAndTrainingRun(
 			int startTrainingSetSize, int trainingSteps, int testSize, String positivePath, String neutralPath,
 			String negativePath) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] positiveTuples = createMyTupelsFromFile(positivePath);
-		MyTupel[] neutralTuples = createMyTupelsFromFile(neutralPath);
-		MyTupel[] negativeTuples = createMyTupelsFromFile(negativePath);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] positiveTuples = createMyTupelsFromFile(positivePath);
+		MyTuple[] neutralTuples = createMyTupelsFromFile(neutralPath);
+		MyTuple[] negativeTuples = createMyTupelsFromFile(negativePath);
 
 		int min = 0;
 		if (positiveTuples.length <= neutralTuples.length && positiveTuples.length <= negativeTuples.length) {
@@ -694,10 +707,13 @@ public class SVMPreparation implements PreparationTool {
 				|| negativeTuples.length < individualTestSize || trainingSteps <= 0 || startTrainingSetSize <= 0) {
 			return null;
 		}
+		if (startTrainingSetSize > min * 3 - testSize) {
+			startTrainingSetSize = min * 3 - testSize;
+		}
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = new ArrayList<MyTupel>();
-		List<MyTupel> testSet = new ArrayList<MyTupel>();
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = new ArrayList<MyTuple>();
+		List<MyTuple> testSet = new ArrayList<MyTuple>();
 
 		int[] positiveRandoms = getRandoms(min, positiveTuples.length);
 		for (int i = 0; i < individualTestSize; i++) {
@@ -718,29 +734,29 @@ public class SVMPreparation implements PreparationTool {
 
 		int sumCounter = 0;
 		while (sumCounter < min * 3) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 			if (trainingSet.size() == 0) {
 				for (int i = 0; i < startTrainingSetSize; i++) {
-					if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+					if (positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
 						trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
 						positiveCounter++;
-					} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+					} else if (negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
 						trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
 						negativeCounter++;
-					} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+					} else if (neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
 						trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
 						neutralCounter++;
 					}
 				}
 			} else {
 				for (int i = 0; i < trainingSteps && sumCounter < min * 3; i++) {
-					if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+					if (positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
 						trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
 						positiveCounter++;
-					} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+					} else if (negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
 						trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
 						negativeCounter++;
-					} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+					} else if (neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
 						trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
 						neutralCounter++;
 					}
@@ -749,18 +765,18 @@ public class SVMPreparation implements PreparationTool {
 						break;
 					}
 				}
-				
-				//TEST IF CORREKT: 1800 --> 2000 --> 2059 wird zu 1800 --> 2059
+
+				// TEST IF CORREKT: 1800 --> 2000 --> 2059 wird zu 1800 --> 2059
 				sumCounter = positiveCounter + neutralCounter + negativeCounter;
-				if(sumCounter + (trainingSteps / 2) >= min * 3) {
+				if (sumCounter + (trainingSteps / 2) >= min * 3) {
 					for (int i = 0; i < trainingSteps && sumCounter < min * 3; i++) {
-						if(positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
+						if (positiveCounter <= neutralCounter && positiveCounter <= negativeCounter) {
 							trainingSet.add(positiveTuples[positiveRandoms[positiveCounter]]);
 							positiveCounter++;
-						} else if(negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
+						} else if (negativeCounter <= positiveCounter && negativeCounter <= neutralCounter) {
 							trainingSet.add(negativeTuples[negativeRandoms[negativeCounter]]);
 							negativeCounter++;
-						} else if(neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
+						} else if (neutralCounter <= positiveCounter && neutralCounter <= negativeCounter) {
 							trainingSet.add(neutralTuples[neutralRandoms[neutralCounter]]);
 							neutralCounter++;
 						}
@@ -771,12 +787,12 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 				// Test end
-				
+
 			}
 			sumCounter = positiveCounter + neutralCounter + negativeCounter;
-			
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
-			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);
 			slice.add(newTestSet);
 			slices.add(slice);
@@ -784,25 +800,25 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareRandomVsRestSubsetRun(int startTrainingSetSize,
+	public static List<List<List<MyTuple>>> prepareRandomVsRestSubsetRun(int startTrainingSetSize,
 			int testSizeAndTrainingStepSize) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + testSizeAndTrainingStepSize > tupels.length) {
 			return null;
 		}
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = null;
-		List<MyTupel> testSet = null;
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = null;
+		List<MyTuple> testSet = null;
 
 		int trainingSetSize = startTrainingSetSize;
 		boolean lastRun = false;
 		while (!lastRun) {
-			slice = new ArrayList<List<MyTupel>>();
-			trainingSet = new ArrayList<MyTupel>();
-			testSet = new ArrayList<MyTupel>();
+			slice = new ArrayList<List<MyTuple>>();
+			trainingSet = new ArrayList<MyTuple>();
+			testSet = new ArrayList<MyTuple>();
 
 			int randomIndex = 0;
 			int[] randoms = getRandoms(tupels.length, tupels.length);
@@ -834,29 +850,29 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareRandomVsRestRun(int startTrainingSetSize, int trainingSteps) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+	public static List<List<List<MyTuple>>> prepareRandomVsRestRun(int startTrainingSetSize, int trainingSteps) {
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (startTrainingSetSize + trainingSteps > tupels.length) {
 			return null;
 		}
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = null;
-		List<MyTupel> testSet = null;
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = null;
+		List<MyTuple> testSet = null;
 
 		boolean lastRun = false;
 		while (!lastRun) {
-			slice = new ArrayList<List<MyTupel>>();
+			slice = new ArrayList<List<MyTuple>>();
 
 			int[] randoms = getRandoms(tupels.length, tupels.length);
 
-			trainingSet = new ArrayList<MyTupel>();
+			trainingSet = new ArrayList<MyTuple>();
 			for (int i = 0; i < startTrainingSetSize; i++) {
 				trainingSet.add(tupels[randoms[i]]);
 			}
-			testSet = new ArrayList<MyTupel>();
+			testSet = new ArrayList<MyTuple>();
 			for (int i = startTrainingSetSize; i < tupels.length; i++) {
 				testSet.add(tupels[randoms[i]]);
 			}
@@ -871,10 +887,10 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static List<List<List<MyTupel>>> prepareRandomVsTestRun(int startTrainingSetSize, int trainingSteps,
+	public static List<List<List<MyTuple>>> prepareRandomVsTestRun(int startTrainingSetSize, int trainingSteps,
 			int testSize) {
-		List<List<List<MyTupel>>> slices = new ArrayList<List<List<MyTupel>>>();
-		MyTupel[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		MyTuple[] tupels = createMyTupelsFromFile(UNIQUE_MESSAGES_ORIGINAL);
 
 		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
 				|| startTrainingSetSize <= 0) {
@@ -883,16 +899,16 @@ public class SVMPreparation implements PreparationTool {
 		int randomIndex = 0;
 		int[] randoms = getRandoms(tupels.length, tupels.length);
 
-		List<List<MyTupel>> slice = null;
-		List<MyTupel> trainingSet = null;
-		List<MyTupel> testSet = new ArrayList<MyTupel>();
+		List<List<MyTuple>> slice = null;
+		List<MyTuple> trainingSet = null;
+		List<MyTuple> testSet = new ArrayList<MyTuple>();
 
 		for (int i = 0; i < testSize; i++) {
 			testSet.add(tupels[randoms[randomIndex]]);
 			randomIndex++;
 		}
 
-		MyTupel[] possibleTrainingTupel = new MyTupel[tupels.length - randomIndex];
+		MyTuple[] possibleTrainingTupel = new MyTuple[tupels.length - randomIndex];
 		int index = 0;
 		for (int i = randomIndex; i < tupels.length; i++) {
 			possibleTrainingTupel[index] = tupels[randoms[i]];
@@ -902,16 +918,16 @@ public class SVMPreparation implements PreparationTool {
 		int trainingSize = startTrainingSetSize;
 		boolean lastRun = false;
 		while (trainingSize <= possibleTrainingTupel.length) {
-			trainingSet = new ArrayList<MyTupel>();
-			slice = new ArrayList<List<MyTupel>>();
+			trainingSet = new ArrayList<MyTuple>();
+			slice = new ArrayList<List<MyTuple>>();
 
 			int[] trainingRandoms = getRandoms(possibleTrainingTupel.length, possibleTrainingTupel.length);
 			for (int i = 0; i < trainingSize; i++) {
 				trainingSet.add(possibleTrainingTupel[trainingRandoms[i]]);
 			}
 
-			List<MyTupel> newTrainingSet = new ArrayList<MyTupel>(trainingSet);
-			List<MyTupel> newTestSet = new ArrayList<MyTupel>(testSet);
+			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);
 			slice.add(newTestSet);
 			slices.add(slice);
@@ -929,7 +945,7 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	public static void prepareSlice(List<MyTupel> trainingSet, List<MyTupel> testSet) {
+	public static void prepareSlice(List<MyTuple> trainingSet, List<MyTuple> testSet) {
 		deleteTwitchDataset();
 		try {
 			createTSV(buildTSVString(trainingSet), TRAINING_TSV);
@@ -939,7 +955,7 @@ public class SVMPreparation implements PreparationTool {
 		}
 	}
 
-	private static String buildTSVString(List<MyTupel> tupel) {
+	private static String buildTSVString(List<MyTuple> tupel) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < tupel.size(); i++) {
 			sb.append(tupel.get(i).getId());

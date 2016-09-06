@@ -3,7 +3,7 @@ package at.illecker.sentistorm.commons.featurevector.selector;
 import java.util.List;
 
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSBooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSpecialFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSCombinedFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSentimentFeatureVectorGenerator;
@@ -31,12 +31,12 @@ public class NoPOSFVGSelector {
 			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromTaggedTokens(preprocessedTweets, TfType.RAW,
 					TfIdfNormalization.COS, true);
 			return new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS);
-		} else if (noPOSFeatureVectorGenerator.equals(NoPOSBooleanFeatureVectorGenerator.class)) {
-			return new NoPOSBooleanFeatureVectorGenerator();
+		} else if (noPOSFeatureVectorGenerator.equals(NoPOSSpecialFeatureVectorGenerator.class)) {
+			return new NoPOSSpecialFeatureVectorGenerator();
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSCombinedFeatureVectorGenerator.class)) {
 			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromTaggedTokens(preprocessedTweets, TfType.RAW,
 					TfIdfNormalization.COS, true);
-			return new NoPOSCombinedFeatureVectorGenerator(true, tweetTfIdfNoPOS);
+			return new NoPOSCombinedFeatureVectorGenerator(tweetTfIdfNoPOS);
 		} else {
 			throw new UnsupportedOperationException(
 					"NoPOSFeatureVectorGenerator '" + noPOSFeatureVectorGenerator.getName() + "' is not supported!");

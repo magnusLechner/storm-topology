@@ -15,7 +15,7 @@ import java.util.Set;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.util.BasicUtil;
 
 public class PrepareLocalLabel {
@@ -48,17 +48,17 @@ public class PrepareLocalLabel {
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
-		List<MyTupel> certain = new ArrayList<MyTupel>();
+		List<MyTuple> certain = new ArrayList<MyTuple>();
 		HashSet<String> uncertain = new HashSet<String>();
 		String[] lines1 = BasicUtil.readLines(certain1Path);
 		String[] lines2 = BasicUtil.readLines(certain2Path);
-		MyTupel[] t1 = getMyTuples(lines1);
-		MyTupel[] t2 = getMyTuples(lines2);
+		MyTuple[] t1 = getMyTuples(lines1);
+		MyTuple[] t2 = getMyTuples(lines2);
 		HashMap<String, String> messages = new HashMap<String, String>();
-		for (MyTupel t : t1) {
+		for (MyTuple t : t1) {
 			messages.put(t.getText(), t.getSentiment().toString());
 		}
-		for (MyTupel t : t2) {
+		for (MyTuple t : t2) {
 			if (messages.get(t.getText()) == null) {
 				if (!uncertain.contains(t.getText())) {
 					messages.put(t.getText(), t.getSentiment().toString());
@@ -73,7 +73,7 @@ public class PrepareLocalLabel {
 
 		int i = 1;
 		for (Entry<String, String> entry : messages.entrySet()) {
-			MyTupel tupel = new MyTupel(i, entry.getKey(), entry.getValue());
+			MyTuple tupel = new MyTuple(i, entry.getKey(), entry.getValue());
 			i++;
 			certain.add(tupel);
 		}
@@ -86,7 +86,7 @@ public class PrepareLocalLabel {
 	// removes Undefined
 	public static void separateMessages(String[] lines) {
 		HashMap<String, String> messages = new HashMap<String, String>();
-		List<MyTupel> certain = new ArrayList<MyTupel>();
+		List<MyTuple> certain = new ArrayList<MyTuple>();
 		HashSet<String> uncertain = new HashSet<String>();
 		JsonParser parser = new JsonParser();
 		for (int i = 0; i < lines.length; i++) {
@@ -113,7 +113,7 @@ public class PrepareLocalLabel {
 		}
 		int i = 1;
 		for (Entry<String, String> entry : messages.entrySet()) {
-			MyTupel tupel = new MyTupel(i, entry.getKey(), entry.getValue());
+			MyTuple tupel = new MyTuple(i, entry.getKey(), entry.getValue());
 			i++;
 			certain.add(tupel);
 		}
@@ -121,8 +121,8 @@ public class PrepareLocalLabel {
 		print(UNCERTAIN_PATH, uncertain);
 	}
 
-	private static MyTupel[] getMyTuples(String[] lines) {
-		List<MyTupel> tupels = new ArrayList<MyTupel>();
+	private static MyTuple[] getMyTuples(String[] lines) {
+		List<MyTuple> tupels = new ArrayList<MyTuple>();
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.trim().length() == 0) {
@@ -136,13 +136,13 @@ public class PrepareLocalLabel {
 					msg += "\t";
 				}
 			}
-			MyTupel tuple = new MyTupel(Integer.valueOf(parts[0]), msg, parts[1]);
+			MyTuple tuple = new MyTuple(Integer.valueOf(parts[0]), msg, parts[1]);
 			tupels.add(tuple);
 		}
-		return tupels.toArray(new MyTupel[tupels.size()]);
+		return tupels.toArray(new MyTuple[tupels.size()]);
 	}
 
-	public static void print(String toPath, List<MyTupel> certain) {
+	public static void print(String toPath, List<MyTuple> certain) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < certain.size(); i++) {
 			sb.append(certain.get(i).getId());

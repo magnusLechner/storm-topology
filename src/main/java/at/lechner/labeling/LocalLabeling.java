@@ -26,7 +26,7 @@ import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 import com.optimaize.langdetect.text.TextObjectFactory;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
 import at.lechner.util.BasicUtil;
 
@@ -440,13 +440,13 @@ public class LocalLabeling {
 	}
 
 	public static void labelUncertain(String path) throws IOException {
-		List<MyTupel> tuples = new ArrayList<MyTupel>();
+		List<MyTuple> tuples = new ArrayList<MyTuple>();
 		Scanner scanner = new Scanner(System.in);
 		try {
 			String[] lines = BasicUtil.readLines(path);
 			for (int i = 0; i < lines.length; i++) {
 				boolean next = false;
-				MyTupel tuple = new MyTupel();
+				MyTuple tuple = new MyTuple();
 				while (!next) {
 					System.out.println(
 							"NEG: a    NEU: s    POS: d    UNDEF: f    NEXT: w    STOP: capital P    COUNT: c");
@@ -515,7 +515,7 @@ public class LocalLabeling {
 		}
 	}
 
-	public static void print(String toPath, List<MyTupel> certain) {
+	public static void print(String toPath, List<MyTuple> certain) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < certain.size(); i++) {
 			sb.append(certain.get(i).getId());

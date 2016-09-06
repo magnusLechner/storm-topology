@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import at.illecker.sentistorm.commons.dict.StopWords;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.components.Tokenizer;
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.util.BasicUtil;
 import at.lechner.util.EvaluationUtil;
 
@@ -28,14 +28,14 @@ public class DatasetAnalyser implements EvaluationTool {
 
 	public static void analyseDataset(boolean withMixed) throws IOException {
 		String[] lines = BasicUtil.readLines(TWITCH_ORIGINAL_RESULTS_PATH);
-		MyTupel[] tupels = BasicUtil.extractTwitchLabeling(lines, withMixed);
+		MyTuple[] tupels = BasicUtil.extractTwitchLabeling(lines, withMixed);
 		List<String> linesToPrint = new ArrayList<String>();
 		getAvgMessageSentenceLength(linesToPrint, tupels);
 		countTokens(linesToPrint, tupels);
 		createTSV(linesToPrint);
 	}
 
-	public static void getAvgMessageSentenceLength(List<String> linesToPrint, MyTupel[] tupels) {
+	public static void getAvgMessageSentenceLength(List<String> linesToPrint, MyTuple[] tupels) {
 		double allTokensSize = 0.0;
 		for (int i = 0; i < tupels.length; i++) {
 			List<String> tokens = Tokenizer.tokenize(tupels[i].getText());
@@ -51,7 +51,7 @@ public class DatasetAnalyser implements EvaluationTool {
 		addSpace(linesToPrint);
 	}
 
-	public static void countTokens(List<String> linesToPrint, MyTupel[] tupels) throws IOException {
+	public static void countTokens(List<String> linesToPrint, MyTuple[] tupels) throws IOException {
 		HashMap<String, Integer> tokenMap = new HashMap<String, Integer>();
 		for (int i = 0; i < tupels.length; i++) {
 			List<String> tokens = Tokenizer.tokenize(tupels[i].getText());

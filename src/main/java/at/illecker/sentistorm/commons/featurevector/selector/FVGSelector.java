@@ -3,7 +3,7 @@ package at.illecker.sentistorm.commons.featurevector.selector;
 import java.util.List;
 
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.featurevector.pos.BooleanFeatureVectorGenerator;
+import at.illecker.sentistorm.commons.featurevector.pos.SpecialFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.featurevector.pos.POSFeatureVectorGenerator;
@@ -46,8 +46,8 @@ public class FVGSelector {
 			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
 					true);
 			return new TfIdfAndPOSFeatureVectorGenerator(true, tweetTfIdf);
-		} else if (featureVectorGenerator.equals(BooleanFeatureVectorGenerator.class)) {
-			return new BooleanFeatureVectorGenerator();
+		} else if (featureVectorGenerator.equals(SpecialFeatureVectorGenerator.class)) {
+			return new SpecialFeatureVectorGenerator();
 		} else if (featureVectorGenerator.equals(CombinedFeatureVectorGenerator.class)) {
 			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
 					true);

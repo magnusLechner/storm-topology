@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 
 public abstract class NoPOSFeatureVectorGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(NoPOSFeatureVectorGenerator.class);
-
+	
+	//TODO
+//	private int vectorStartId = 1;
+	
 	public abstract int getFeatureVectorSize();
 
 	public abstract Map<Integer, Double> generateFeatureVector(List<String> preprocessedTweets);
@@ -30,4 +33,14 @@ public abstract class NoPOSFeatureVectorGenerator {
 		}
 		return featuredVectors;
 	}
+
+	//TODO
+//	public int getVectorStartId() {
+//		return vectorStartId;
+//	}
+//	
+//	public void setVectorStartId(int vectorStartId) {
+//		this.vectorStartId = vectorStartId;
+//	}
+	
 }

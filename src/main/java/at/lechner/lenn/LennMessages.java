@@ -12,7 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.util.BasicUtil;
 
 public class LennMessages {
@@ -23,7 +23,7 @@ public class LennMessages {
 	public static void getLennTestMessages(String inputPath, String outputPath) {
 		try {
 			String[] lines = BasicUtil.readLines(inputPath);
-			MyTupel[] tupels = extractMessagesWithAlwaysNeutral(lines);
+			MyTuple[] tupels = extractMessagesWithAlwaysNeutral(lines);
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < tupels.length; i++) {
 				sb.append(tupels[i].getId());
@@ -42,14 +42,14 @@ public class LennMessages {
 		}
 	}
 
-	public static MyTupel[] extractMessagesWithAlwaysNeutral(String[] lines) {
-		List<MyTupel> tupels = new ArrayList<MyTupel>();
+	public static MyTuple[] extractMessagesWithAlwaysNeutral(String[] lines) {
+		List<MyTuple> tupels = new ArrayList<MyTuple>();
 		for (int i = 0; i < lines.length; i++) {
 			JsonObject jsonObject = new JsonParser().parse(lines[i]).getAsJsonObject();
 			JsonElement content = jsonObject.get("content");
-			tupels.add(new MyTupel(i+1, content.getAsString(), "NEUTRAL"));
+			tupels.add(new MyTuple(i+1, content.getAsString(), "NEUTRAL"));
 		}
-		return tupels.toArray(new MyTupel[tupels.size()]);
+		return tupels.toArray(new MyTuple[tupels.size()]);
 	}
 
 	public static void main(String[] args) throws IOException {

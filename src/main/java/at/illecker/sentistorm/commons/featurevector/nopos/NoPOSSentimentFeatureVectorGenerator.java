@@ -32,12 +32,19 @@ public class NoPOSSentimentFeatureVectorGenerator extends NoPOSFeatureVectorGene
 	private static final boolean LOGGING = Configuration.get("commons.featurevectorgenerator.sentiment.logging", false);
 	private static final int VECTOR_SIZE = 7;
 	private SentimentDictionary m_sentimentDict;
-	private int m_vectorStartId = 1;
+	private int m_vectorStartId;
 
 	public NoPOSSentimentFeatureVectorGenerator() {
 		this.m_sentimentDict = SentimentDictionary.getInstance();
+		m_vectorStartId = 1;
 		LOG.info("VectorSize: " + getFeatureVectorSize());
 	}
+
+	// TODO
+	// public NoPOSSentimentFeatureVectorGenerator(int vectorStartId) {
+	// this();
+	// this.setVectorStartId(vectorStartId);
+	// }
 
 	public NoPOSSentimentFeatureVectorGenerator(int vectorStartId) {
 		this();
@@ -57,7 +64,8 @@ public class NoPOSSentimentFeatureVectorGenerator extends NoPOSFeatureVectorGene
 
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<String> preprocessedTokens) {
-		Map<Integer, SentimentResult> tweetSentiments = m_sentimentDict.getSentenceSentimentNotTagged(preprocessedTokens);
+		Map<Integer, SentimentResult> tweetSentiments = m_sentimentDict
+				.getSentenceSentimentNotTagged(preprocessedTokens);
 		return generateFeatureVector(tweetSentiments);
 	}
 

@@ -8,17 +8,17 @@ import java.io.Writer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 
 public class EvaluationUtil {
 
-	public static MyTupel[] extractStormResult(String[] lines) {
-		MyTupel[] tupels = new MyTupel[lines.length];
+	public static MyTuple[] extractStormResult(String[] lines) {
+		MyTuple[] tupels = new MyTuple[lines.length];
 		Pattern patternText = Pattern.compile("Tweet: (.*?) predictedSentiment");
 		Matcher matcher;
 		for (int i = 0; i < lines.length; i++) {
 			matcher = patternText.matcher(lines[i]);
-			MyTupel tupel = new MyTupel();
+			MyTuple tupel = new MyTuple();
 			tupel.setId(i);
 			if (matcher.find()) {
 				tupel.setText(matcher.group(1));

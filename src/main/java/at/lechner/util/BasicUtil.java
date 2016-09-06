@@ -15,7 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
 
 public class BasicUtil {
@@ -53,8 +53,8 @@ public class BasicUtil {
 		return lines.toArray(new String[lines.size()]);
 	}
 	
-	public static MyTupel[] extractTwitchLabeling(String[] lines, boolean withMixed) {
-		List<MyTupel> tupels = new ArrayList<MyTupel>();
+	public static MyTuple[] extractTwitchLabeling(String[] lines, boolean withMixed) {
+		List<MyTuple> tupels = new ArrayList<MyTuple>();
 		for (int i = 0; i < lines.length; i++) {
 			JsonObject jsonObject = new JsonParser().parse(lines[i]).getAsJsonObject();
 			JsonArray labels = jsonObject.get("label").getAsJsonArray();
@@ -62,13 +62,13 @@ public class BasicUtil {
 			if (!withMixed && Sentiment.getSentiment(label.get("rating").getAsString()).equals(Sentiment.MIXED)) {
 				continue;
 			} else {
-				tupels.add(new MyTupel(i, jsonObject.get("text").getAsString(), label.get("rating").getAsString()));
+				tupels.add(new MyTuple(i, jsonObject.get("text").getAsString(), label.get("rating").getAsString()));
 			}
 		}
-		return tupels.toArray(new MyTupel[tupels.size()]);
+		return tupels.toArray(new MyTuple[tupels.size()]);
 	}
 	
-	public static String[] splitTupel(MyTupel tupel, String regex) {
+	public static String[] splitTupel(MyTuple tupel, String regex) {
 		return tupel.getText().split(regex);
 	}
 	

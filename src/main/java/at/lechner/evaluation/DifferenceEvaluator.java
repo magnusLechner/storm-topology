@@ -8,7 +8,7 @@ import java.io.Writer;
 import java.util.HashSet;
 
 import at.lechner.commons.EvaluationResult;
-import at.lechner.commons.MyTupel;
+import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
 import at.lechner.util.BasicUtil;
 import at.lechner.util.EvaluationUtil;
@@ -22,21 +22,21 @@ public class DifferenceEvaluator implements EvaluationTool {
 	public static void evaluateResult(String evaTwitchPath, String evaStormPath, String evaOutputPath,
 			boolean withMixed) throws IOException {
 		String[] twitchLines = BasicUtil.readLines(evaTwitchPath);
-		MyTupel[] twitchTupels = BasicUtil.extractTwitchLabeling(twitchLines, withMixed);
+		MyTuple[] twitchTupels = BasicUtil.extractTwitchLabeling(twitchLines, withMixed);
 
 		String[] stormLines = BasicUtil.readLines(evaStormPath);
-		MyTupel[] stormTupels = EvaluationUtil.extractStormResult(stormLines);
+		MyTuple[] stormTupels = EvaluationUtil.extractStormResult(stormLines);
 
 		EvaluationResult evaResult = calcDifferences(twitchTupels, stormTupels);
 		createEvaluationResult(evaResult, evaOutputPath);
 	}
 
-	private static EvaluationResult calcDifferences(MyTupel[] twitchTupels, MyTupel[] stormTupels) {
+	private static EvaluationResult calcDifferences(MyTuple[] twitchTupels, MyTuple[] stormTupels) {
 		EvaluationResult evaResult = new EvaluationResult();
 		HashSet<String> messages = new HashSet<String>();
 		for (int i = 0; i < twitchTupels.length; i++) {
-			MyTupel curTwitchTupel = twitchTupels[i];
-			MyTupel curStormTupel = stormTupels[i];
+			MyTuple curTwitchTupel = twitchTupels[i];
+			MyTuple curStormTupel = stormTupels[i];
 			if (!messages.contains(curTwitchTupel.getText())) {
 				if (curTwitchTupel.getText().equals(curStormTupel.getText())) {
 					if (curTwitchTupel.getSentiment().equals(curStormTupel.getSentiment())) {
@@ -54,7 +54,7 @@ public class DifferenceEvaluator implements EvaluationTool {
 		return evaResult;
 	}
 
-	private static void updateEquality(MyTupel curTwitchTupel, MyTupel curStormTupel, EvaluationResult evaResult) {
+	private static void updateEquality(MyTuple curTwitchTupel, MyTuple curStormTupel, EvaluationResult evaResult) {
 		switch (curTwitchTupel.getSentiment()) {
 		case POSITIVE:
 			evaResult.updateCorrectPositive();
@@ -73,7 +73,7 @@ public class DifferenceEvaluator implements EvaluationTool {
 		}
 	}
 
-	private static void updateDifferences(MyTupel curTwitchTupel, MyTupel curStormTupel, EvaluationResult evaResult) {
+	private static void updateDifferences(MyTuple curTwitchTupel, MyTuple curStormTupel, EvaluationResult evaResult) {
 		switch (curTwitchTupel.getSentiment()) {
 		case POSITIVE:
 			if (curStormTupel.getSentiment().equals(Sentiment.NEGATIVE)) {
