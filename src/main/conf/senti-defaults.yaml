@@ -224,15 +224,15 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "mpqa"
-#    - path: "dictionaries/sentiment/word-sentiment/twitch-dict-sentiment.txt"
-#      delimiter: "\\t"
-#      containsPOSTags: false
-#      containsRegex: false
-#      featureScaling: true
-#      minValue: -1.0
-#      maxValue: 1.0
-#      enabled: true
-#      name: "twitch_dict_sentiment"
+    - path: "dictionaries/sentiment/word-sentiment/twitch-dict-sentiment.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "twitch_dict_sentiment"
       #
       # Emoticons
       #
@@ -255,34 +255,34 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "twitch_emoticons"
-#    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-lines.txt"
-#      delimiter: "\\t"
-#      containsPOSTags: false
-#      containsRegex: false
-#      featureScaling: true
-#      minValue: -1.0
-#      maxValue: 1.0
-#      enabled: true
-#      name: "toni_emoticons_lines"
-#    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-twitch.txt"
-#      delimiter: "\\t"
-#      containsPOSTags: false
-#      containsRegex: false
-#      featureScaling: true
-#      minValue: -1.0
-#      maxValue: 1.0
-#      enabled: true
-#      name: "toni_emoticons_twitch"
-#      # http://people.few.eur.nl/hogenboom/files/EmoticonSentimentLexicon.zip
-#    - path: "dictionaries/sentiment/emoticon-sentiment/EmoticonSentimentLexicon.txt"
-#      delimiter: "\\t"
-#      containsPOSTags: false
-#      containsRegex: false
-#      featureScaling: true
-#      minValue: -1.0
-#      maxValue: 1.0
-#      enabled: true
-#      name: "emoticon_sentiment_lexicon.txt"
+    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-lines.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "toni_emoticons_lines"
+    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-twitch.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "toni_emoticons_twitch"
+      # http://people.few.eur.nl/hogenboom/files/EmoticonSentimentLexicon.zip
+    - path: "dictionaries/sentiment/emoticon-sentiment/EmoticonSentimentLexicon.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "emoticon_sentiment_lexicon.txt"
 
 global.resources.dict.slang:
     # InternetSlang http://www.internetslang.com/

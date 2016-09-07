@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.cybozu.labs.langdetect.Detector;
+import com.cybozu.labs.langdetect.DetectorFactory;
+import com.cybozu.labs.langdetect.LangDetectException;
 import com.google.common.base.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,9 +49,9 @@ public class LocalLabeling {
 	public static int sumPos = 0;
 	public static int sumUnd = 0;
 
-	public static void main(String[] args) throws IOException {
-//		 labelOriginals();
-		labelOnlyEnOriginals();
+	public static void main(String[] args) throws IOException, LangDetectException {
+		 labelOriginals();
+//		labelOnlyEnOriginals();
 
 		// labelUncertain(MERGE_UNCERTAIN_PATH);
 		// labelUncertain(UNCERTAIN_PATH);
@@ -129,23 +132,11 @@ public class LocalLabeling {
 		return null;
 	}
 
-	public static void labelOriginals() throws IOException {
-		// this are sadly not the short-text profiles
-		// List<String> names = new ArrayList<String>();
-		// names.add("en");
-		// names.add("ru");
-		// names.add("fr");
-		// names.add("de");
-		// names.add("tr");
-		// List<LanguageProfile> languageProfiles = new
-		// LanguageProfileReader().read(names);
-
-		List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-		LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
-				.withProfiles(languageProfiles).build();
-		TextObjectFactory textShortClean = CommonTextObjectFactories.forDetectingShortCleanText();
-		TextObjectFactory textLong = CommonTextObjectFactories.forDetectingOnLargeText();
-
+	// Label everything
+	public static void labelOriginals() throws IOException, LangDetectException {
+		// https://github.com/shuyo/language-detection
+		DetectorFactory.loadProfile("src/main/resources/language-detection/shuyo_lang-detect/profiles.sm");
+		
 		Scanner scanner = new Scanner(System.in);
 		int save = 0;
 		try {
@@ -162,12 +153,9 @@ public class LocalLabeling {
 				String msg = unlabeled.get(lastUnlabeledIndex).getMessage();
 				System.out.println(msg);
 
-				// Language detection
-				TextObject textObject = textShortClean.forText(msg);
-				Optional<LdLocale> lang = languageDetector.detect(textObject);
-				TextObject textObject2 = textLong.forText(msg);
-				Optional<LdLocale> lang2 = languageDetector.detect(textObject2);
-				System.out.println("SHORT: " + lang + " | LONG: " + lang2);
+				Detector detector = DetectorFactory.create();
+		        detector.append(msg);
+		        System.out.println("NEUE DETECTION:  " + detector.detect());
 
 				boolean next = false;
 				LabelMessage labeledMessage = new LabelMessage(unlabeled.get(lastUnlabeledIndex).getJson());
@@ -259,20 +247,9 @@ public class LocalLabeling {
 		}
 	}
 
-	public static void labelOnlyEnOriginals() throws IOException {
-		// this are sadly not the short-text profiles
-		List<String> names = new ArrayList<String>();
-		names.add("en");
-		names.add("ru");
-		names.add("fr");
-		names.add("de");
-		names.add("tr");
-		List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(names);
-//		List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-		LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
-				.withProfiles(languageProfiles).build();
-		TextObjectFactory textShortClean = CommonTextObjectFactories.forDetectingShortCleanText();
-		TextObjectFactory textLong = CommonTextObjectFactories.forDetectingOnLargeText();
+	public static void labelOnlyEnOriginals() throws IOException, LangDetectException {
+		// https://github.com/shuyo/language-detection
+		DetectorFactory.loadProfile("src/main/resources/language-detection/shuyo_lang-detect/profiles.sm");
 
 		Scanner scanner = new Scanner(System.in);
 		int save = 0;
@@ -285,20 +262,14 @@ public class LocalLabeling {
 
 			while (i < labeled.size()) {
 				String msg = unlabeled.get(msgCounter).getMessage();
-				// Language detection
-				TextObject textObject = textShortClean.forText(msg);
-				Optional<LdLocale> lang = languageDetector.detect(textObject);
-				TextObject textObject2 = textLong.forText(msg);
-				Optional<LdLocale> lang2 = languageDetector.detect(textObject2);
 
+				Detector detector = DetectorFactory.create();
+		        detector.append(msg);
+		        String lang = detector.detect();
+				
 				boolean isEnglish = false;
-				if (lang.isPresent()) {
-					if (lang.get().getLanguage().toString().equals("en")) {
-						isEnglish = true;
-					}
-				}
-				if (lang2.isPresent()) {
-					if (lang2.get().getLanguage().toString().equals("en")) {
+				if (lang != null) {
+					if (lang.equals("en")) {
 						isEnglish = true;
 					}
 				}
@@ -322,21 +293,13 @@ public class LocalLabeling {
 				String msg = unlabeled.get(lastUnlabeledIndex).getMessage();
 
 				// Language detection
-				TextObject textObject = textShortClean.forText(msg);
-				Optional<LdLocale> lang = languageDetector.detect(textObject);
-				TextObject textObject2 = textLong.forText(msg);
-				Optional<LdLocale> lang2 = languageDetector.detect(textObject2);
-				// System.out.println(msg);
-				// System.out.println("SHORT: " + lang + " | LONG: " + lang2);
+				Detector detector = DetectorFactory.create();
+		        detector.append(msg);
+		        String lang = detector.detect();
 
 				boolean isEnglish = false;
-				if (lang.isPresent()) {
-					if (lang.get().getLanguage().toString().equals("en")) {
-						isEnglish = true;
-					}
-				}
-				if (lang2.isPresent()) {
-					if (lang2.get().getLanguage().toString().equals("en")) {
+				if (lang != null) {
+					if (lang.equals("en")) {
 						isEnglish = true;
 					}
 				}
@@ -433,6 +396,8 @@ public class LocalLabeling {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LangDetectException e) {
 			e.printStackTrace();
 		} finally {
 			scanner.close();

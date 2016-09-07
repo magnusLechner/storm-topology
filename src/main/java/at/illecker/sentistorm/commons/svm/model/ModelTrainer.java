@@ -50,11 +50,11 @@ public abstract class ModelTrainer {
 			crossValidationStatistic = accuracy;
 		}
 
-//		// SupportVektor testing
-//		int[] svIndices = svmModel.sv_indices;
-//		System.out.println("  ");
-//		System.err.println("COUNT SupportVectors: " + svIndices.length);
-//		System.out.println("  ");
+		// SupportVektor testing
+		int[] svIndices = svmModel.sv_indices;
+		System.out.println("  ");
+		System.err.println("COUNT SupportVectors: " + svIndices.length);
+		System.out.println("  ");
 //
 //		Map<Map<Integer, Double>, List<MyTuple>> sameFVAndItsSentiments = new HashMap<Map<Integer, Double>, List<MyTuple>>();
 //		Map<Map<Integer, Double>, List<MyTuple>> sameFVDifferentSentiments = new HashMap<Map<Integer, Double>, List<MyTuple>>();

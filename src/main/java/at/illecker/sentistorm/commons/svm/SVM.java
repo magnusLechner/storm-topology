@@ -809,11 +809,11 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		NoPOSSVMBox pipelineBox = null;
-		// POSSVMBox pipelineBox = null;
+		// NoPOSSVMBox pipelineBox = null;
+		POSSVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -10; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -2; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
@@ -883,19 +883,21 @@ public class SVM {
 				// SAME FILE
 				else if (sliceGenerator == 7) {
 					// ALL SELF LABELED DATA USED
-					// slices =
-					// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
-					// 200, 300,
-					// SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
-					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
+					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
+							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
+					// EQUALLY DISTRIBUTED TRAININGSDATA
+					// slices =
+					// SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200,
+					// 200, 300,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+					// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
+					// ONE SINGLE TEST-CASE
 					// slices =
 					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
 					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
@@ -912,20 +914,16 @@ public class SVM {
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
 					// NO POS
-					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
-							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
 					// NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
 					// .selectFVG(dataset.getTrainTweets(false, true),
-					// NoPOSSentimentFeatureVectorGenerator.class);
-					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
+					// NoPOSCombinedFeatureVectorGenerator.class);
+					// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
+					// false);
 
 					// POS
-					// FeatureVectorGenerator posFVG =
-					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
-					// true),
-					// CombinedFeatureVectorGenerator.class);
-					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
-					// false);
+					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+							CombinedFeatureVectorGenerator.class);
+					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -979,8 +977,8 @@ public class SVM {
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
 						if (!iter.hasNext()) {
-							writeWrongPredictedMessages(currentIteration,
-									pipelineBox.getPredictor().getPredictionStatistic());
+							// writeWrongPredictedMessages(currentIteration,
+							// pipelineBox.getPredictor().getPredictionStatistic());
 							// writeNoFeatureVectorMessages(2,
 							// pipelineBox.getPredictor().getPredictionStatistic());
 						}
@@ -1058,9 +1056,9 @@ public class SVM {
 		// svm.EXEC_SERV.shutdown();
 
 		// 709 with 300 test equally distributed from my+lenn
-		// int addVsTest = 6;
+		int addVsTest = 6;
 		// my+lenn - 300 for test equally distributed
-		int addVsTest = 7;
+		// int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);
