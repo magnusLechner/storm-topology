@@ -136,6 +136,8 @@ public class LocalLabeling {
 	public static void labelOriginals() throws IOException, LangDetectException {
 		// https://github.com/shuyo/language-detection
 		DetectorFactory.loadProfile("src/main/resources/language-detection/shuyo_lang-detect/profiles.sm");
+		// https://github.com/mzsanford/cld
+//		CompactLanguageDetector compactLanguageDetector = new CompactLanguageDetector();
 		
 		Scanner scanner = new Scanner(System.in);
 		int save = 0;
@@ -155,7 +157,11 @@ public class LocalLabeling {
 
 				Detector detector = DetectorFactory.create();
 		        detector.append(msg);
-		        System.out.println("NEUE DETECTION:  " + detector.detect());
+		        System.out.println("NEUE DETECTION1:  " + detector.detect());
+//		        LanguageDetectionResult result = compactLanguageDetector.detect(msg);
+//		        if (result.isReliable()) {
+//		          System.out.println("Pretty sure that's " + result.getProbableLocale().getDisplayName());
+//		        }
 
 				boolean next = false;
 				LabelMessage labeledMessage = new LabelMessage(unlabeled.get(lastUnlabeledIndex).getJson());
