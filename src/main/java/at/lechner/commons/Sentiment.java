@@ -31,4 +31,16 @@ public enum Sentiment {
 		return null;
 	}
 
+	public static Double getSentimentScore(String sentiment) {
+		switch (sentiment) {
+		case "POSITIVE":
+			return 2.0;
+		case "NEUTRAL":
+			return 1.0;
+		case "NEGATIVE":
+			return 0.0;
+		}
+		return null;
+	}
+
 }

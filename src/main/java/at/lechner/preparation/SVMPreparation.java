@@ -163,7 +163,7 @@ public class SVMPreparation implements PreparationTool {
 		}
 	}
 
-	private static MyTuple[] getMyTuples(String filePath) {
+	public static MyTuple[] getMyTuples(String filePath) {
 		String[] lines = BasicUtil.readLines(filePath);
 		return getMyTuples(lines);
 	}

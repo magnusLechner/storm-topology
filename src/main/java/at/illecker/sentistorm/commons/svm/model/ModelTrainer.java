@@ -4,19 +4,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
-import at.lechner.commons.MyTuple;
-import at.lechner.commons.Sentiment;
 import at.lechner.preparation.ARFFParser;
 import libsvm.svm;
 import libsvm.svm_model;
@@ -51,59 +46,70 @@ public abstract class ModelTrainer {
 		}
 
 		// SupportVektor testing
-		int[] svIndices = svmModel.sv_indices;
-		System.out.println("  ");
-		System.err.println("COUNT SupportVectors: " + svIndices.length);
-		System.out.println("  ");
-//
-//		Map<Map<Integer, Double>, List<MyTuple>> sameFVAndItsSentiments = new HashMap<Map<Integer, Double>, List<MyTuple>>();
-//		Map<Map<Integer, Double>, List<MyTuple>> sameFVDifferentSentiments = new HashMap<Map<Integer, Double>, List<MyTuple>>();
-//		for (int i = 0; i < featuredTweets.size(); i++) {
-//			Map<Integer, Double> featureVector = featuredTweets.get(i).getFeatureVector();
-//			Sentiment sentiment = Sentiment.getSentiment(featuredTweets.get(i).getScore());
-//
-//			if (sameFVAndItsSentiments.get(featureVector) == null) {
-//				List<MyTuple> tuplesList = new ArrayList<MyTuple>();
-//				tuplesList.add(new MyTuple(featuredTweets.get(i).getText(), sentiment.toString()));
-//				sameFVAndItsSentiments.put(featureVector, tuplesList);
-//			} else {
-//				List<MyTuple> tuplesList = sameFVAndItsSentiments.get(featureVector);
-//				tuplesList.add(new MyTuple(featuredTweets.get(i).getText(), sentiment.toString()));
-//				sameFVAndItsSentiments.put(featureVector, tuplesList);
-//			}
-//		}
-//
-//		System.err.println("COUNT DIFFERENT FV: " + sameFVAndItsSentiments.size());
-//		System.out.println("  ");
-//		for (Entry<Map<Integer, Double>, List<MyTuple>> entry : sameFVAndItsSentiments.entrySet()) {
-//			List<MyTuple> tuples = entry.getValue();
-//			boolean containsDiffSentiment = false;
-//			Sentiment first = null;
-//			for (int i = 0; i < tuples.size(); i++) {
-//				if (i == 0) {
-//					first = tuples.get(i).getSentiment();
-//				} else {
-//					if (!tuples.get(i).getSentiment().equals(first)) {
-//						containsDiffSentiment = true;
-//					}
-//				}
-//			}
-//			if (containsDiffSentiment) {
-//				sameFVDifferentSentiments.put(entry.getKey(), entry.getValue());
-//			}
-//		}
-//		System.err.println("COUNT SAME FV BUT DIFFERENT SENTIMENT: " + sameFVDifferentSentiments.size());
-//		System.out.println("  ");
-//		for (Entry<Map<Integer, Double>, List<MyTuple>> entry : sameFVDifferentSentiments.entrySet()) {
-//			List<MyTuple> tuples = entry.getValue();
-//			for (int i = 0; i < tuples.size(); i++) {
-//				System.out.println(tuples.get(i).getSentiment() + "\t\t" + tuples.get(i).getText());
-//			}
-//			System.out.println("  ");
-//		}
-//		System.out.println(" FINISHED ");
-//		System.out.println("  ");
-		
+		// int[] svIndices = svmModel.sv_indices;
+		// System.out.println(" ");
+		// System.err.println("COUNT SupportVectors: " + svIndices.length);
+		// System.out.println(" ");
+		//
+		// Map<Map<Integer, Double>, List<MyTuple>> sameFVAndItsSentiments = new
+		// HashMap<Map<Integer, Double>, List<MyTuple>>();
+		// Map<Map<Integer, Double>, List<MyTuple>> sameFVDifferentSentiments =
+		// new HashMap<Map<Integer, Double>, List<MyTuple>>();
+		// for (int i = 0; i < featuredTweets.size(); i++) {
+		// Map<Integer, Double> featureVector =
+		// featuredTweets.get(i).getFeatureVector();
+		// Sentiment sentiment =
+		// Sentiment.getSentiment(featuredTweets.get(i).getScore());
+		//
+		// if (sameFVAndItsSentiments.get(featureVector) == null) {
+		// List<MyTuple> tuplesList = new ArrayList<MyTuple>();
+		// tuplesList.add(new MyTuple(featuredTweets.get(i).getText(),
+		// sentiment.toString()));
+		// sameFVAndItsSentiments.put(featureVector, tuplesList);
+		// } else {
+		// List<MyTuple> tuplesList = sameFVAndItsSentiments.get(featureVector);
+		// tuplesList.add(new MyTuple(featuredTweets.get(i).getText(),
+		// sentiment.toString()));
+		// sameFVAndItsSentiments.put(featureVector, tuplesList);
+		// }
+		// }
+		//
+		// System.err.println("COUNT DIFFERENT FV: " +
+		// sameFVAndItsSentiments.size());
+		// System.out.println(" ");
+		// for (Entry<Map<Integer, Double>, List<MyTuple>> entry :
+		// sameFVAndItsSentiments.entrySet()) {
+		// List<MyTuple> tuples = entry.getValue();
+		// boolean containsDiffSentiment = false;
+		// Sentiment first = null;
+		// for (int i = 0; i < tuples.size(); i++) {
+		// if (i == 0) {
+		// first = tuples.get(i).getSentiment();
+		// } else {
+		// if (!tuples.get(i).getSentiment().equals(first)) {
+		// containsDiffSentiment = true;
+		// }
+		// }
+		// }
+		// if (containsDiffSentiment) {
+		// sameFVDifferentSentiments.put(entry.getKey(), entry.getValue());
+		// }
+		// }
+		// System.err.println("COUNT SAME FV BUT DIFFERENT SENTIMENT: " +
+		// sameFVDifferentSentiments.size());
+		// System.out.println(" ");
+		// for (Entry<Map<Integer, Double>, List<MyTuple>> entry :
+		// sameFVDifferentSentiments.entrySet()) {
+		// List<MyTuple> tuples = entry.getValue();
+		// for (int i = 0; i < tuples.size(); i++) {
+		// System.out.println(tuples.get(i).getSentiment() + "\t\t" +
+		// tuples.get(i).getText());
+		// }
+		// System.out.println(" ");
+		// }
+		// System.out.println(" FINISHED ");
+		// System.out.println(" ");
+
 		return svmModel;
 	}
 
