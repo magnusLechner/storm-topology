@@ -16,6 +16,8 @@ public class WekaEvaluator {
 	public static final String TEST = "src/main/resources/arff/Twitch/Test.arff";
 	public static final String TRAINING = "src/main/resources/arff/Twitch/Training.arff";
 
+	public static final String WEKA_EVA_OUT = "src/main/evaluation/weka/successive_addition/weka_complete_overview.tsv";
+
 	private String trainingARFF;
 	private String testARFF;
 
@@ -56,8 +58,10 @@ public class WekaEvaluator {
 			System.out.println("#####  " + classifiers.get(i).getName() + "  #####" + "\n");
 			for (int j = 0; j < allEvaluations.get(i).size(); j++) {
 				System.out.println("Used Options: " + classifiers.get(i).getCompleteOption(j));
-				System.out.println("overall percentage unclassified: " + allEvaluations.get(i).get(j).pctUnclassified());
-				System.out.println("overall percentage correct classified: " + allEvaluations.get(i).get(j).pctCorrect());
+				System.out
+						.println("overall percentage unclassified: " + allEvaluations.get(i).get(j).pctUnclassified());
+				System.out
+						.println("overall percentage correct classified: " + allEvaluations.get(i).get(j).pctCorrect());
 				System.out.println(" ");
 				System.out.println("precision NEGATIVE: " + allEvaluations.get(i).get(j).precision(0));
 				System.out.println("recall NEGATIVE: " + allEvaluations.get(i).get(j).recall(0));
@@ -86,7 +90,7 @@ public class WekaEvaluator {
 		return inputReader;
 	}
 
-	private List<Evaluation> classify(MyClassifier myClassifier, Instances trainingSet, Instances testingSet)
+	private static List<Evaluation> classify(MyClassifier myClassifier, Instances trainingSet, Instances testingSet)
 			throws Exception {
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		if (myClassifier.getOptionsList().size() == 0) {
@@ -110,18 +114,41 @@ public class WekaEvaluator {
 		return evaluations;
 	}
 
-	public static void printWekaCompleteResults(List<List<List<List<Evaluation>>>> complete) {
-		
-	}
-	
-	public static void main(String[] args) throws Exception {
-		// TEST
+	public static List<MyClassifier> createTestClassifiers() {
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
+		try {
+			MyClassifier j48 = new MyJ48();
+			j48.addTestOptions();
+			classifiers.add(j48);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return classifiers;
+	}
+
+	public static void printWekaCompleteResults(List<List<List<List<Evaluation>>>> complete) {
+		printWekaCompleteResults(WEKA_EVA_OUT, complete);
+	}
+
+	public static void printWekaCompleteResults(String output, List<List<List<List<Evaluation>>>> complete) {
+//		List<MyClassifier> classifiers = 
+		// List<List<List<Evaluation>>>
+		for (List<List<List<Evaluation>>> run : complete) {
+			for (List<List<Evaluation>> split : run) {
+				for (List<Evaluation> classifier : split) {
+					for (Evaluation option : classifier) {
+						System.out.println(option.toSummaryString());
+					}
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
 		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/Training.arff",
 				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
 
-		MyClassifier j48 = new MyJ48();
-		classifiers.add(j48);
+		List<MyClassifier> classifiers = WekaEvaluator.createTestClassifiers();
 
 		weka.evaluateAll(classifiers);
 	}

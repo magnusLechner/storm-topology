@@ -959,24 +959,20 @@ public class SVM {
 				startTestSize);
 	}
 
-	public static void evaluateDynamicSlicesWeka(Dataset dataset, int iterations, int nFold, boolean shutdown,
-			int sliceGenerator, int startTrainingSetSize, int stepSize, int startTestSize) throws IOException {
+	public static void evaluateDynamicSlicesWeka(Dataset dataset, boolean withPOS, int iterations, int sliceGenerator,
+			int startTrainingSetSize, int stepSize, int testSize) throws IOException {
 
 		List<List<List<List<Evaluation>>>> complete = new ArrayList<List<List<List<Evaluation>>>>();
-
 		try {
 			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
-
 				System.err.println("ITERATION: " + currentIteration);
 
 				List<List<List<Evaluation>>> singleRun = new ArrayList<List<List<Evaluation>>>();
-
 				if (currentIteration >= 0) {
 					complete.add(singleRun);
 				}
 
-				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
-						startTestSize);
+				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize, testSize);
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -984,24 +980,23 @@ public class SVM {
 					List<List<MyTuple>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
-					// NO POS
-					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
-							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
-					ARFFTrainer.generateNoPOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, noPOSFVG);
-					ARFFTrainer.generateNoPOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, noPOSFVG);
-
-					// POS
-//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//							CombinedFeatureVectorGenerator.class);
-//					ARFFTrainer.generatePOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, posFVG);
-//					ARFFTrainer.generatePOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, posFVG);
+					if (!withPOS) {
+						NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(
+								dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+						ARFFTrainer.generateNoPOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, noPOSFVG);
+						ARFFTrainer.generateNoPOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, noPOSFVG);
+					} else {
+						FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+								CombinedFeatureVectorGenerator.class);
+						ARFFTrainer.generatePOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, posFVG);
+						ARFFTrainer.generatePOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, posFVG);
+					}
 
 					WekaEvaluator weka = new WekaEvaluator(ARFFTrainer.TRAINING_PATH, ARFFTrainer.TEST_PATH);
-					List<MyClassifier> classifiers = addClassifiers(weka);
+					List<MyClassifier> classifiers = createTestClassifiers();
 					List<List<Evaluation>> evaluations = weka.evaluateAll(classifiers);
 
 					if (currentIteration >= 0) {
-
 						singleRun.add(evaluations);
 					}
 				}
@@ -1067,8 +1062,8 @@ public class SVM {
 			// false, addVsTest,
 			// startTrainingSizeList.get(j), stepList.get(j),
 			// testSizeList.get(j));
-			evaluateDynamicSlicesWeka(dataset, iterations, nFoldCrossValidation, false, addVsTest,
-					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+					stepList.get(j), testSizeList.get(j));
 		}
 		svm.EXEC_SERV.shutdown();
 
@@ -1144,16 +1139,8 @@ public class SVM {
 		return slices;
 	}
 
-	private static List<MyClassifier> addClassifiers(WekaEvaluator weka) {
-		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
-		try {
-			MyClassifier j48 = new MyJ48();
-			j48.addTestOptions();
-			classifiers.add(j48);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return classifiers;
+	private static List<MyClassifier> createTestClassifiers() {
+		return WekaEvaluator.createTestClassifiers();
 	}
 
 	private static void printWekaCompleteResults(List<List<List<List<Evaluation>>>> complete) {
