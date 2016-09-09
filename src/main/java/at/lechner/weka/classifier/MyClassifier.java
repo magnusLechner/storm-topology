@@ -29,7 +29,7 @@ public abstract class MyClassifier {
 
 	public abstract void setOption(String[] options) throws Exception;
 
-	public abstract void addAllOptions() throws Exception;
+	public abstract void addTestOptions() throws Exception;
 
 	public void addOption(String[] options) {
 		optionsList.add(options);

@@ -44,6 +44,7 @@ import libsvm.svm_model;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
+import weka.classifiers.Evaluation;
 
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.slf4j.Logger;
@@ -67,6 +68,7 @@ import at.illecker.sentistorm.commons.featurevector.selector.FVGSelector;
 import at.illecker.sentistorm.commons.featurevector.selector.NoPOSFVGSelector;
 import at.illecker.sentistorm.commons.svm.box.NoPOSSVMBox;
 import at.illecker.sentistorm.commons.svm.box.POSSVMBox;
+import at.illecker.sentistorm.commons.svm.box.SVMBox;
 import at.illecker.sentistorm.commons.svm.prediction.statistic.PredictionStatistic;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
@@ -82,6 +84,8 @@ import at.lechner.preparation.SVMPreparation;
 import at.lechner.util.EvaluationUtil;
 import at.lechner.weka.ARFFTrainer;
 import at.lechner.weka.WekaEvaluator;
+import at.lechner.weka.classifier.MyClassifier;
+import at.lechner.weka.classifier.MyJ48;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class SVM {
@@ -765,8 +769,7 @@ public class SVM {
 									/ dataset.getTestTweets(true).size()));
 
 					if (k == iterations - 1) {
-						// writeWrongPredictedMessages(pipelineBox.getPredictor().getPredictionStatistic());
-						// writeNoFeatureVectorMessages(pipelineBox.getPredictor().getPredictionStatistic());
+						activateDebugOutput(false, false, k, pipelineBox);
 					}
 
 				}
@@ -812,8 +815,8 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		 NoPOSSVMBox pipelineBox = null;
-//		POSSVMBox pipelineBox = null;
+		NoPOSSVMBox pipelineBox = null;
+		// POSSVMBox pipelineBox = null;
 
 		try {
 			for (int currentIteration = -2; currentIteration < iterations; currentIteration++) {
@@ -856,59 +859,8 @@ public class SVM {
 					fMeasure.add(fMeasureSingleRun);
 				}
 
-				List<List<List<MyTuple>>> slices = null;
-				// ADDITION - 709 only
-				if (sliceGenerator == 0) {
-					slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 1) {
-					slices = SVMPreparation.prepareAdditionVsRestSubsetRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 2) {
-					slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize);
-				}
-				// RANDOM - 709 only
-				else if (sliceGenerator == 3) {
-					slices = SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 4) {
-					slices = SVMPreparation.prepareRandomVsRestSubsetRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 5) {
-					slices = SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize, stepSize, startTestSize);
-				}
-				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
-				// DIFFERENT FILES
-				else if (sliceGenerator == 6) {
-					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
-							SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
-				}
-				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
-				// SAME FILE
-				else if (sliceGenerator == 7) {
-					// ALL SELF LABELED DATA USED
-//					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
-//							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-					// EQUALLY DISTRIBUTED TRAININGSDATA
-					 slices =
-					 SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200,
-					 200, 300,
-					 SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-					 SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-					 SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-					// ONE SINGLE TEST-CASE
-					// slices =
-					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
-					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
-					// slices =
-					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE,
-					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
-
-				}
+				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
+						startTestSize);
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -922,9 +874,12 @@ public class SVM {
 					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
 
 					// POS
-//					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-//							CombinedFeatureVectorGenerator.class);
-//					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, true);
+					// FeatureVectorGenerator posFVG =
+					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
+					// true),
+					// CombinedFeatureVectorGenerator.class);
+					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
+					// true);
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -971,18 +926,7 @@ public class SVM {
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
 						fMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getFMeasure());
 
-						if (iter.hasNext()) {
-							// writeWrongPredictedMessages(currentIteration,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-							// writeNoFeatureVectorMessages(1,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-						}
-						if (!iter.hasNext()) {
-							// writeWrongPredictedMessages(currentIteration,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-							// writeNoFeatureVectorMessages(2,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-						}
+						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
 				}
 			}
@@ -1014,222 +958,59 @@ public class SVM {
 		printDynamicSlicesResults(iterations, sliceGenerator, statistics, startTrainingSetSize, stepSize,
 				startTestSize);
 	}
-	
+
 	public static void evaluateDynamicSlicesWeka(Dataset dataset, int iterations, int nFold, boolean shutdown,
 			int sliceGenerator, int startTrainingSetSize, int stepSize, int startTestSize) throws IOException {
-		List<List<Double>> trainingSize = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> testSize = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> cpuTime = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> precision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> macroAvgPrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> macroAvgPosNegPrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> recall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> macroAvgRecall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> macroAvgPosNegRecall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> positiveRecall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> positivePrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> neutralRecall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> neutralPrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> negativeRecall = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> negativePrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> fMeasure = new ArrayList<List<Double>>(iterations);
 
-		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
+		List<List<List<List<Evaluation>>>> complete = new ArrayList<List<List<List<Evaluation>>>>();
 
 		try {
 			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
-				List<Double> trainingSizeSingleRun = new ArrayList<Double>();
-				List<Double> testSizeSingleRun = new ArrayList<Double>();
-				List<Double> cpuTimeSingleRun = new ArrayList<Double>();
-				List<Double> recallSingleRun = new ArrayList<Double>();
-				List<Double> macroAvgRecallSingleRun = new ArrayList<Double>();
-				List<Double> macroAvgPosNegRecallSingleRun = new ArrayList<Double>();
-				List<Double> precisionSingleRun = new ArrayList<Double>();
-				List<Double> macroAvgPrecisionSingleRun = new ArrayList<Double>();
-				List<Double> macroAvgPosNegPrecisionSingleRun = new ArrayList<Double>();
-				List<Double> positiveRecallSingleRun = new ArrayList<Double>();
-				List<Double> positivePrecisionSingleRun = new ArrayList<Double>();
-				List<Double> neutralRecallSingleRun = new ArrayList<Double>();
-				List<Double> neutralPrecisionSingleRun = new ArrayList<Double>();
-				List<Double> negativeRecallSingleRun = new ArrayList<Double>();
-				List<Double> negativePrecisionSingleRun = new ArrayList<Double>();
-				List<Double> fMeasureSingleRun = new ArrayList<Double>();
+				List<List<List<Evaluation>>> singleRun = new ArrayList<List<List<Evaluation>>>();
 
 				if (currentIteration >= 0) {
-					trainingSize.add(trainingSizeSingleRun);
-					testSize.add(testSizeSingleRun);
-					cpuTime.add(cpuTimeSingleRun);
-					recall.add(recallSingleRun);
-					macroAvgRecall.add(macroAvgRecallSingleRun);
-					macroAvgPosNegRecall.add(macroAvgPosNegRecallSingleRun);
-					precision.add(precisionSingleRun);
-					macroAvgPrecision.add(macroAvgPrecisionSingleRun);
-					macroAvgPosNegPrecision.add(macroAvgPosNegPrecisionSingleRun);
-					positiveRecall.add(positiveRecallSingleRun);
-					positivePrecision.add(positivePrecisionSingleRun);
-					neutralRecall.add(neutralRecallSingleRun);
-					neutralPrecision.add(neutralPrecisionSingleRun);
-					negativeRecall.add(negativeRecallSingleRun);
-					negativePrecision.add(negativePrecisionSingleRun);
-					fMeasure.add(fMeasureSingleRun);
+					complete.add(singleRun);
 				}
 
-				List<List<List<MyTuple>>> slices = null;
-				// ADDITION - 709 only
-				if (sliceGenerator == 0) {
-					slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 1) {
-					slices = SVMPreparation.prepareAdditionVsRestSubsetRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 2) {
-					slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize);
-				}
-				// RANDOM - 709 only
-				else if (sliceGenerator == 3) {
-					slices = SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 4) {
-					slices = SVMPreparation.prepareRandomVsRestSubsetRun(startTrainingSetSize, stepSize);
-				} else if (sliceGenerator == 5) {
-					slices = SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize, stepSize, startTestSize);
-				}
-				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
-				// DIFFERENT FILES
-				else if (sliceGenerator == 6) {
-					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
-							SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
-				}
-				// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
-				// SAME FILE
-				else if (sliceGenerator == 7) {
-					// ALL SELF LABELED DATA USED
-//					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
-//							SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-//							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-					// EQUALLY DISTRIBUTED TRAININGSDATA
-					slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(1000, 200, 300,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-							SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
-
-					// ONE SINGLE TEST-CASE
-					// slices =
-					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
-					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
-					// slices =
-					// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE,
-					// SVMPreparation.FIX_TESTING_SET_TESTDATA);
-
-				}
+				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
+						startTestSize);
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
 					System.err.println("ITERATION: " + currentIteration);
 					List<List<MyTuple>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
-					
+
 					// NO POS
 					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
 							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
 					ARFFTrainer.generateNoPOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, noPOSFVG);
 					ARFFTrainer.generateNoPOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, noPOSFVG);
-					
+
 					// POS
 //					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
 //							CombinedFeatureVectorGenerator.class);
-//					ARFFTrainer.generatePOSARFF(input, output, posFVG);
-					
-					WekaEvaluator weka = new WekaEvaluator(ARFFTrainer.TRAINING_PATH, ARFFTrainer.TEST_PATH);
-					//TODO get here a list of evaluations
-					
-					if (currentIteration >= 0) {
-//						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
-//						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
-//						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
-//						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
-//
-//						//TODO make them here accept a list as long as different weka classifier used
-//						macroAvgRecallSingleRun
-//								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives())
-//										/ 3);
-//						macroAvgPosNegRecallSingleRun
-//								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives())
-//										/ 2);
-//						precisionSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecision());
-//						macroAvgPrecisionSingleRun
-//								.add((pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives())
-//										/ 3);
-//						macroAvgPosNegPrecisionSingleRun
-//								.add((pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives()
-//										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives())
-//										/ 2);
-//						positiveRecallSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives());
-//						positivePrecisionSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives());
-//						neutralRecallSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals());
-//						neutralPrecisionSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals());
-//						negativeRecallSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives());
-//						negativePrecisionSingleRun
-//								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
-//						fMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getFMeasure());
+//					ARFFTrainer.generatePOSARFF(SVMPreparation.TRAINING_TSV, ARFFTrainer.TRAINING_PATH, posFVG);
+//					ARFFTrainer.generatePOSARFF(SVMPreparation.TEST_TSV, ARFFTrainer.TEST_PATH, posFVG);
 
-						if (iter.hasNext()) {
-							// writeWrongPredictedMessages(currentIteration,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-							// writeNoFeatureVectorMessages(1,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-						}
-						if (!iter.hasNext()) {
-							// writeWrongPredictedMessages(currentIteration,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-							// writeNoFeatureVectorMessages(2,
-							// pipelineBox.getPredictor().getPredictionStatistic());
-						}
+					WekaEvaluator weka = new WekaEvaluator(ARFFTrainer.TRAINING_PATH, ARFFTrainer.TEST_PATH);
+					List<MyClassifier> classifiers = addClassifiers(weka);
+					List<List<Evaluation>> evaluations = weka.evaluateAll(classifiers);
+
+					if (currentIteration >= 0) {
+
+						singleRun.add(evaluations);
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// nothing to do here
 		}
 
-		statistics.put("recall", recall);
-		statistics.put("macro-avg. recall", macroAvgRecall);
-		statistics.put("macro-avg. Pos/Neg recall", macroAvgPosNegRecall);
-		statistics.put("precision", precision);
-		statistics.put("macro-avg. precision", macroAvgPrecision);
-		statistics.put("macro-avg. Pos/Neg precision", macroAvgPosNegPrecision);
-		statistics.put("positiveRecall", positiveRecall);
-		statistics.put("positivePrecision", positivePrecision);
-		statistics.put("neutralRecall", neutralRecall);
-		statistics.put("neutralPrecision", neutralPrecision);
-		statistics.put("negativeRecall", negativeRecall);
-		statistics.put("negativePrecision", negativePrecision);
-		statistics.put("f-Measure", fMeasure);
-		statistics.put("cpu-time (for complete test-set)", cpuTime);
-		statistics.put("training-size", trainingSize);
-		statistics.put("test-size", testSize);
-
-		//TODO print weka dynamic results 
-//		printDynamicSlicesResults(iterations, sliceGenerator, statistics, startTrainingSetSize, stepSize,
-//				startTestSize);
+		printWekaCompleteResults(complete);
 	}
 
 	// TODO
@@ -1274,16 +1055,18 @@ public class SVM {
 		// svm.EXEC_SERV.shutdown();
 
 		// 709 with 300 test equally distributed from my+lenn
-//		int addVsTest = 6;
+		// int addVsTest = 6;
 		// my+lenn - 300 for test equally distributed
-		 int addVsTest = 7;
+		int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
-//			evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, addVsTest,
-//					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+			// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+			// false, addVsTest,
+			// startTrainingSizeList.get(j), stepList.get(j),
+			// testSizeList.get(j));
 			evaluateDynamicSlicesWeka(dataset, iterations, nFoldCrossValidation, false, addVsTest,
 					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 		}
@@ -1302,6 +1085,79 @@ public class SVM {
 		// nFoldCrossValidation, parameterSearch,
 		// useSerialization);
 		// }
+	}
+
+	private static List<List<List<MyTuple>>> getSlices(int sliceGenerator, int startTrainingSetSize, int stepSize,
+			int startTestSize) {
+		List<List<List<MyTuple>>> slices = null;
+		// ADDITION - 709 only
+		if (sliceGenerator == 0) {
+			slices = SVMPreparation.prepareAdditionVsRestRun(startTrainingSetSize, stepSize);
+		} else if (sliceGenerator == 1) {
+			slices = SVMPreparation.prepareAdditionVsRestSubsetRun(startTrainingSetSize, stepSize);
+		} else if (sliceGenerator == 2) {
+			slices = SVMPreparation.prepareAdditionVsTestRun(startTrainingSetSize, stepSize, startTestSize);
+		}
+		// RANDOM - 709 only
+		else if (sliceGenerator == 3) {
+			slices = SVMPreparation.prepareRandomVsRestRun(startTrainingSetSize, stepSize);
+		} else if (sliceGenerator == 4) {
+			slices = SVMPreparation.prepareRandomVsRestSubsetRun(startTrainingSetSize, stepSize);
+		} else if (sliceGenerator == 5) {
+			slices = SVMPreparation.prepareRandomVsTestRun(startTrainingSetSize, stepSize, startTestSize);
+		}
+		// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+		// DIFFERENT FILES
+		else if (sliceGenerator == 6) {
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
+					SVMPreparation.UNIQUE_MESSAGES_ORIGINAL,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, false);
+		}
+		// EQUALLY DISTRIBUTED TEST-SENTIMENTS: TEST AND TRAINING FROM
+		// SAME FILE
+		else if (sliceGenerator == 7) {
+			// ALL SELF LABELED DATA USED
+			// slices =
+			// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
+			// 200, 300,
+			// SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
+			// EQUALLY DISTRIBUTED TRAININGSDATA
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(1000, 200, 300,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+
+			// ONE SINGLE TEST-CASE
+			// slices =
+			// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
+			// SVMPreparation.FIX_TESTING_SET_TESTDATA);
+			// slices =
+			// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE,
+			// SVMPreparation.FIX_TESTING_SET_TESTDATA);
+		}
+		return slices;
+	}
+
+	private static List<MyClassifier> addClassifiers(WekaEvaluator weka) {
+		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
+		try {
+			MyClassifier j48 = new MyJ48();
+			j48.addTestOptions();
+			classifiers.add(j48);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return classifiers;
+	}
+
+	private static void printWekaCompleteResults(List<List<List<List<Evaluation>>>> complete) {
+		WekaEvaluator.printWekaCompleteResults(complete);
 	}
 
 	private static void printDynamicSlicesResults(int iterations, int sliceGenerator,
@@ -1390,6 +1246,15 @@ public class SVM {
 
 		String pipelineAnalysis = PipelineEvaluation.createPipelineAnalysis(iterations, statisticList);
 		EvaluationUtil.generateTSV("src/main/evaluation/pipeline_analyse.tsv", pipelineAnalysis);
+	}
+
+	private static void activateDebugOutput(boolean active, boolean hasNext, int currentIteration, SVMBox pipelineBox) {
+		if (active) {
+			if (!hasNext) {
+				writeWrongPredictedMessages(currentIteration, pipelineBox.getPredictor().getPredictionStatistic());
+				writeNoFeatureVectorMessages(2, pipelineBox.getPredictor().getPredictionStatistic());
+			}
+		}
 	}
 
 	private static void writeWrongPredictedMessages(int iteration, PredictionStatistic predictionStatistic) {

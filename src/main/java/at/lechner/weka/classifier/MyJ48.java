@@ -14,10 +14,10 @@ public class MyJ48 extends MyClassifier {
 	public MyJ48(String name) {
 		super(j48, name);
 
-		addAllOptions();
+		addTestOptions();
 	}
 
-	public void addAllOptions() {
+	public void addTestOptions() {
 		try {
 			String[] options1 = Utils.splitOptions("-U -B");
 			addOption(options1);
