@@ -33,6 +33,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/langdetect.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/CLD"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

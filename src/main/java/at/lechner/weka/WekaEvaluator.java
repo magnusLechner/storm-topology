@@ -9,7 +9,6 @@ import java.util.List;
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
 import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
 import weka.core.Instances;
 
 public class WekaEvaluator {
@@ -117,7 +116,7 @@ public class WekaEvaluator {
 		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/Training.arff",
 				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
 
-		MyClassifier j48 = new MyJ48(new J48());
+		MyClassifier j48 = new MyJ48();
 		classifiers.add(j48);
 
 		weka.evaluateAll(classifiers);

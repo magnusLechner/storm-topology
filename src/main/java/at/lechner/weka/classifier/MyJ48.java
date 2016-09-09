@@ -5,15 +5,14 @@ import weka.core.Utils;
 
 public class MyJ48 extends MyClassifier {
 
-	private J48 j48;
+	private static final J48 j48 = new J48();
 
-	public MyJ48(J48 j48) {
-		this(j48, "J48");
+	public MyJ48() {
+		this("J48");
 	}
 
-	public MyJ48(J48 j48, String name) {
+	public MyJ48(String name) {
 		super(j48, name);
-		this.j48 = j48;
 
 		addAllOptions();
 	}
