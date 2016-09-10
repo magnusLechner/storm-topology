@@ -694,7 +694,8 @@ public class SVM {
 		}
 	}
 
-	public static void evaluateBoxesPipeline(Dataset dataset, int iterations, int nFold) throws IOException {
+	public static void evaluateBoxesPipeline(Dataset dataset, boolean withPOS, int iterations, int nFold)
+			throws IOException {
 		Double[] cpuTime = new Double[iterations];
 		Double[] precision = new Double[iterations];
 		Double[] recall = new Double[iterations];
@@ -708,8 +709,7 @@ public class SVM {
 
 		Map<String, Double[]> statistics = new LinkedHashMap<String, Double[]>();
 
-		// NoPOSSVMBox pipelineBox = null;
-		POSSVMBox pipelineBox = null;
+		SVMBox pipelineBox = null;
 
 		try {
 			for (int k = -10; k < iterations; k++) {
@@ -717,15 +717,15 @@ public class SVM {
 				// random split in test and training data
 				SVMPreparation.prepareForCrossValidation();
 
-				// NoPOSFeatureVectorGenerator noPOSFVG =
-				// NoPOSFVGSelector.selectFVG(dataset.getTrainTweets(false,
-				// true),
-				// NoPOSCombinedFeatureVectorGenerator.class);
-				// pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold,
-				// false);
-				FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
-						CombinedFeatureVectorGenerator.class);
-				pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
+				if (!withPOS) {
+					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
+							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
+				} else {
+					FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+							CombinedFeatureVectorGenerator.class);
+					pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
+				}
 
 				pipelineBox.setName("PipeLine-Box");
 
@@ -771,7 +771,6 @@ public class SVM {
 					if (k == iterations - 1) {
 						activateDebugOutput(false, false, k, pipelineBox);
 					}
-
 				}
 			}
 		} finally {
@@ -794,8 +793,9 @@ public class SVM {
 		printPipelineResults(iterations, statistics);
 	}
 
-	public static void evaluateDynamicSlices(Dataset dataset, int iterations, int nFold, boolean shutdown,
-			int sliceGenerator, int startTrainingSetSize, int stepSize, int startTestSize) throws IOException {
+	public static void evaluateDynamicSlices(Dataset dataset, boolean withPOS, int iterations, int nFold,
+			boolean shutdown, int sliceGenerator, int startTrainingSetSize, int stepSize, int startTestSize)
+			throws IOException {
 		List<List<Double>> trainingSize = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> testSize = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> cpuTime = new ArrayList<List<Double>>(iterations);
@@ -815,8 +815,7 @@ public class SVM {
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
-		NoPOSSVMBox pipelineBox = null;
-		// POSSVMBox pipelineBox = null;
+		SVMBox pipelineBox = null;
 
 		try {
 			for (int currentIteration = -2; currentIteration < iterations; currentIteration++) {
@@ -868,18 +867,15 @@ public class SVM {
 					List<List<MyTuple>> slice = iter.next();
 					SVMPreparation.prepareSlice(slice.get(0), slice.get(1));
 
-					// NO POS
-					NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector
-							.selectFVG(dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
-					pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
-
-					// POS
-					// FeatureVectorGenerator posFVG =
-					// FVGSelector.selectFVG(dataset.getTrainTweets(false,
-					// true),
-					// CombinedFeatureVectorGenerator.class);
-					// pipelineBox = new POSSVMBox(dataset, posFVG, nFold,
-					// true);
+					if (!withPOS) {
+						NoPOSFeatureVectorGenerator noPOSFVG = NoPOSFVGSelector.selectFVG(
+								dataset.getTrainTweets(false, true), NoPOSCombinedFeatureVectorGenerator.class);
+						pipelineBox = new NoPOSSVMBox(dataset, noPOSFVG, nFold, false);
+					} else {
+						FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
+								CombinedFeatureVectorGenerator.class);
+						pipelineBox = new POSSVMBox(dataset, posFVG, nFold, true);
+					}
 
 					pipelineBox.setName("PipeLine-Box");
 
@@ -1058,7 +1054,7 @@ public class SVM {
 		stepList.add(200);
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
-			// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
+			// evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation,
 			// false, addVsTest,
 			// startTrainingSizeList.get(j), stepList.get(j),
 			// testSizeList.get(j));

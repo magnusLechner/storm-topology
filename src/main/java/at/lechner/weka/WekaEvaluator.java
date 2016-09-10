@@ -8,6 +8,7 @@ import java.util.List;
 
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
+import at.lechner.weka.statistic.WekaStatistic;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 
@@ -114,11 +115,13 @@ public class WekaEvaluator {
 		return evaluations;
 	}
 
+	//TODO add more
 	public static List<MyClassifier> createTestClassifiers() {
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
 		try {
 			MyClassifier j48 = new MyJ48();
 			j48.addTestOptions();
+			
 			classifiers.add(j48);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,9 +133,13 @@ public class WekaEvaluator {
 		printWekaCompleteResults(WEKA_EVA_OUT, complete);
 	}
 
+	//TODO
 	public static void printWekaCompleteResults(String output, List<List<List<List<Evaluation>>>> complete) {
-//		List<MyClassifier> classifiers = 
-		// List<List<List<Evaluation>>>
+		List<MyClassifier> classifiers = createTestClassifiers(); 
+		List<List<List<WekaStatistic>>> completeRunStatistic = new ArrayList<List<List<WekaStatistic>>>();
+		List<List<WekaStatistic>> completeSplitStatistic = new ArrayList<List<WekaStatistic>>();
+		List<WekaStatistic> completeClassifierStatistic = new ArrayList<WekaStatistic>();
+		
 		for (List<List<List<Evaluation>>> run : complete) {
 			for (List<List<Evaluation>> split : run) {
 				for (List<Evaluation> classifier : split) {
