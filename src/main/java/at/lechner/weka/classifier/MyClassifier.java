@@ -27,15 +27,17 @@ public abstract class MyClassifier {
 		classifier.buildClassifier(trainingSet);
 	}
 
-	public abstract void setOption(String[] options) throws Exception;
+	public abstract void setCurrentOption(String[] options) throws Exception;
 
 	public abstract void addTestOptions() throws Exception;
 
+	public abstract String getCompleteCurrentOption();
+	
 	public void addOption(String[] options) {
 		optionsList.add(options);
 	}
 
-	public String[] getOption(int index) {
+	public String[] getMyOption(int index) {
 		String[] tmp = optionsList.get(index);
 		String[] res = new String[tmp.length];
 		for(int i = 0; i < tmp.length; i++) {
@@ -60,22 +62,13 @@ public abstract class MyClassifier {
 		return classifier;
 	}
 
-	public void printOption(int index) {
-		String[] option = getOption(index);
-		String res = "";
-		for (String s : option) {
-			res += s + " ";
-		}
-		System.out.println(res);
-	}
-
-	public String getCompleteOption(int index) {
-		String[] option = getOption(index);
+	public String getMyCompleteOption(int index) {
+		String[] option = getMyOption(index);
 		String res = "";
 		for (String s : option) {
 			res += s + " ";
 		}
 		return res;
 	}
-
+	
 }

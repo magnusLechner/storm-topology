@@ -9,6 +9,8 @@ public class WekaStatistic {
 
 	StandardDeviation mathStdDev = new StandardDeviation();
 
+	private int testSize;
+	private int trainSize;
 	private String option;
 
 	private List<Double> overallRecalls = new ArrayList<Double>();
@@ -23,12 +25,34 @@ public class WekaStatistic {
 	private List<Double> positiveRecalls = new ArrayList<Double>();
 	private List<Double> positivePrecisions = new ArrayList<Double>();
 
-	public String getOption() {
-		return option;
+	private List<Double> macroOverallRecalls = new ArrayList<Double>();
+	private List<Double> macroOverallPrecisions = new ArrayList<Double>();
+
+	private List<Double> macroPosNegRecalls = new ArrayList<Double>();
+	private List<Double> macroPosNegPrecisions = new ArrayList<Double>();
+
+	public void setTestSize(int testSize) {
+		this.testSize = testSize;
+	}
+
+	public int getTestSize() {
+		return testSize;
+	}
+
+	public void setTrainSize(int trainSize) {
+		this.trainSize = trainSize;
+	}
+
+	public int getTrainSize() {
+		return trainSize;
 	}
 
 	public void setOption(String option) {
 		this.option = option;
+	}
+
+	public String getOption() {
+		return option;
 	}
 
 	public void addOverallRecall(Double overallRecall) {
@@ -63,6 +87,22 @@ public class WekaStatistic {
 		positivePrecisions.add(positivePrecision);
 	}
 
+	public void addMacroOverallRecall(Double macroOverallRecall) {
+		macroOverallRecalls.add(macroOverallRecall);
+	}
+
+	public void addMacroOverallPrecision(Double macroOverallPrecision) {
+		macroOverallPrecisions.add(macroOverallPrecision);
+	}
+
+	public void addMacroPosNegRecall(Double macroPosNegRecall) {
+		macroPosNegRecalls.add(macroPosNegRecall);
+	}
+
+	public void addMacroPosNegPrecision(Double macroPosNegPrecision) {
+		macroPosNegPrecisions.add(macroPosNegPrecision);
+	}
+
 	public Double getStdDevOverallRecall() {
 		return getStdDev(overallRecalls);
 	}
@@ -93,6 +133,30 @@ public class WekaStatistic {
 
 	public Double getStdDevPositivePrecision() {
 		return getStdDev(positivePrecisions);
+	}
+
+	public Double getStdDevMacroOverallRecall() {
+		return getStdDev(positivePrecisions);
+	}
+
+	public Double getStdDevMacroOverallPrecision() {
+		return getStdDev(positivePrecisions);
+	}
+
+	public Double getStdDevMacroPosNegRecall() {
+		return getStdDev(positivePrecisions);
+	}
+
+	public Double getStdDevMacroPosNegPrecision() {
+		return getStdDev(positivePrecisions);
+	}
+
+	public Double calcAvg(List<Double> values) {
+		Double avg = 0.0;
+		for (Double value : values) {
+			avg += value;
+		}
+		return avg / values.size();
 	}
 
 	private Double getStdDev(List<Double> values) {

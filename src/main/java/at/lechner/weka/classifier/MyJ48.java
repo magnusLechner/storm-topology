@@ -13,7 +13,6 @@ public class MyJ48 extends MyClassifier {
 
 	public MyJ48(String name) {
 		super(j48, name);
-
 		addTestOptions();
 	}
 
@@ -23,14 +22,26 @@ public class MyJ48 extends MyClassifier {
 			addOption(options1);
 			String[] options2 = Utils.splitOptions("-A");
 			addOption(options2);
+			String[] options3 = Utils.splitOptions("-U -A");
+			addOption(options3);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void setOption(String[] options) throws Exception {
+	public void setCurrentOption(String[] options) throws Exception {
 		j48.setOptions(options);
+	}
+
+	@Override
+	public String getCompleteCurrentOption() {
+		String[] option = j48.getOptions();
+		String res = "";
+		for (String s : option) {
+			res += s + " ";
+		}
+		return res;
 	}
 
 }

@@ -86,6 +86,7 @@ import at.lechner.weka.ARFFTrainer;
 import at.lechner.weka.WekaEvaluator;
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
+import at.lechner.weka.statistic.MyEvaluation;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class SVM {
@@ -958,12 +959,12 @@ public class SVM {
 	public static void evaluateDynamicSlicesWeka(Dataset dataset, boolean withPOS, int iterations, int sliceGenerator,
 			int startTrainingSetSize, int stepSize, int testSize) throws IOException {
 
-		List<List<List<List<Evaluation>>>> complete = new ArrayList<List<List<List<Evaluation>>>>();
+		List<List<List<List<MyEvaluation>>>> complete = new ArrayList<List<List<List<MyEvaluation>>>>();
 		try {
 			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
 				System.err.println("ITERATION: " + currentIteration);
 
-				List<List<List<Evaluation>>> singleRun = new ArrayList<List<List<Evaluation>>>();
+				List<List<List<MyEvaluation>>> singleRun = new ArrayList<List<List<MyEvaluation>>>();
 				if (currentIteration >= 0) {
 					complete.add(singleRun);
 				}
@@ -990,7 +991,7 @@ public class SVM {
 
 					WekaEvaluator weka = new WekaEvaluator(ARFFTrainer.TRAINING_PATH, ARFFTrainer.TEST_PATH);
 					List<MyClassifier> classifiers = createTestClassifiers();
-					List<List<Evaluation>> evaluations = weka.evaluateAll(classifiers);
+					List<List<MyEvaluation>> evaluations = weka.evaluateAll(classifiers);
 
 					if (currentIteration >= 0) {
 						singleRun.add(evaluations);
@@ -1054,7 +1055,8 @@ public class SVM {
 		stepList.add(200);
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
-			// evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation,
+			// evaluateDynamicSlices(dataset, false, iterations,
+			// nFoldCrossValidation,
 			// false, addVsTest,
 			// startTrainingSizeList.get(j), stepList.get(j),
 			// testSizeList.get(j));
@@ -1139,7 +1141,7 @@ public class SVM {
 		return WekaEvaluator.createTestClassifiers();
 	}
 
-	private static void printWekaCompleteResults(List<List<List<List<Evaluation>>>> complete) {
+	private static void printWekaCompleteResults(List<List<List<List<MyEvaluation>>>> complete) {
 		WekaEvaluator.printWekaCompleteResults(complete);
 	}
 
