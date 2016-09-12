@@ -1014,7 +1014,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 2;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1055,11 +1055,14 @@ public class SVM {
 		stepList.add(200);
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
+			// SVM
 			// evaluateDynamicSlices(dataset, false, iterations,
 			// nFoldCrossValidation,
 			// false, addVsTest,
 			// startTrainingSizeList.get(j), stepList.get(j),
 			// testSizeList.get(j));
+
+			// Weka
 			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
 					stepList.get(j), testSizeList.get(j));
 		}
@@ -1121,7 +1124,7 @@ public class SVM {
 			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(1000, 200, 300,
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
 					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);

@@ -9,7 +9,9 @@ import java.util.List;
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
 import at.lechner.weka.classifier.MyRandomForest;
+import at.lechner.weka.statistic.ClassifierWrapper;
 import at.lechner.weka.statistic.MyEvaluation;
+import at.lechner.weka.statistic.OptionWrapper;
 import at.lechner.weka.statistic.WekaStatistic;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
@@ -50,7 +52,7 @@ public class WekaEvaluator {
 			List<MyEvaluation> classifierEvaluations = classify(classifiers.get(i), trainingInstance, testInstance);
 			allEvaluations.add(classifierEvaluations);
 		}
-		
+
 		return allEvaluations;
 	}
 
@@ -100,7 +102,7 @@ public class WekaEvaluator {
 		try {
 			MyClassifier j48 = new MyJ48();
 			MyClassifier randomForest = new MyRandomForest();
-			
+
 			classifiers.add(j48);
 			classifiers.add(randomForest);
 		} catch (Exception e) {
@@ -113,32 +115,94 @@ public class WekaEvaluator {
 		printWekaCompleteResults(WEKA_EVA_OUT, complete);
 	}
 
-	// TODO
 	public static void printWekaCompleteResults(String output, List<List<List<List<MyEvaluation>>>> complete) {
-		List<List<WekaStatistic>> statistics = new ArrayList<List<WekaStatistic>>();
-		
-		for (int i = 0; i < complete.get(0).get(0).size(); i++) {
-			List<WekaStatistic> singleClassifierStatistics = new ArrayList<WekaStatistic>();
-			for (int j = 0; j < complete.get(0).get(0).get(i).size(); j++) {
-				singleClassifierStatistics.add(new WekaStatistic());
+		List<List<List<WekaStatistic>>> allSplits = aggregateResults(complete);
+
+		List<ClassifierWrapper> classifierWrapperList = new ArrayList<ClassifierWrapper>();
+
+		for (int j = 0; j < allSplits.get(0).size(); j++) {
+			classifierWrapperList.add(new ClassifierWrapper());
+			List<WekaStatistic> singleClassifier = allSplits.get(0).get(j);
+			for (int k = 0; k < singleClassifier.size(); k++) {
+				classifierWrapperList.get(j).addOption(new OptionWrapper());
 			}
-			statistics.add(singleClassifierStatistics);
 		}
 
-		System.out.println("ANZAHL an RUNS: " + complete.size());
+		for (int i = 0; i < allSplits.size(); i++) {
+			List<List<WekaStatistic>> allClassifier = allSplits.get(i);
+			for (int j = 0; j < allClassifier.size(); j++) {
+				List<WekaStatistic> singleClassifier = allClassifier.get(j);
+				for (int k = 0; k < singleClassifier.size(); k++) {
+					WekaStatistic option = singleClassifier.get(k);
+					classifierWrapperList.get(j).getOption(k).addSplit(option);
+					classifierWrapperList.get(j).setName(option.getClassifierName());
+					classifierWrapperList.get(j).getOption(k).setOption(option.getClassifierOption());
+				}
+			}
+		}
+
+		// Test
+		System.out.println();
+		System.out.println("TEST");
+		for (ClassifierWrapper classifierWrapper : classifierWrapperList) {
+			System.out.println(classifierWrapper.getName());
+			for (OptionWrapper optionWrapper : classifierWrapper.getOptions()) {
+				System.out.println(optionWrapper.getOptionName());
+				for (int i = 0; i < optionWrapper.getSplits().size(); i++) {
+					System.out.println("SPLIT: " + i + "  Trainingsize: " + optionWrapper.getSplit(i).getTrainSize()
+							+ "   Precision: " + optionWrapper.getSplit(i).getAvgOverallPrecision() + "  Mkr: "
+							+ optionWrapper.getSplit(i).getAvgMacroOverallPrecision() + "  std: "
+							+ optionWrapper.getSplit(i).getStdDevOverallPrecision() + "  2: "
+							+ optionWrapper.getSplit(i).getStdDevMacroOverallPrecision());
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
+
+	}
+
+	private static List<List<List<WekaStatistic>>> aggregateResults(List<List<List<List<MyEvaluation>>>> complete) {
+		List<List<List<WekaStatistic>>> allSplits = new ArrayList<List<List<WekaStatistic>>>();
+
+		for (int k = 0; k < complete.get(0).size(); k++) {
+			List<List<WekaStatistic>> allClassifiers = new ArrayList<List<WekaStatistic>>();
+			for (int i = 0; i < complete.get(0).get(0).size(); i++) {
+				List<WekaStatistic> singleClassifierStatistics = new ArrayList<WekaStatistic>();
+				for (int j = 0; j < complete.get(0).get(0).get(i).size(); j++) {
+					MyEvaluation myEva = complete.get(0).get(k).get(i).get(j);
+					singleClassifierStatistics.add(new WekaStatistic(myEva.getTrainingSize(), myEva.getTestSize(),
+							myEva.getClassifierOption(), myEva.getClassifierName()));
+				}
+				allClassifiers.add(singleClassifierStatistics);
+			}
+			allSplits.add(allClassifiers);
+		}
+
 		for (List<List<List<MyEvaluation>>> run : complete) {
-			System.out.println("Anzahl an SPLITS: " + run.size());
-			for (List<List<MyEvaluation>> split : run) {
-				System.out.println("Anzahl an Classifier: " + split.size());
-				for (List<MyEvaluation> classifier : split) {
-					System.out.println("Anzahl an Options: " + classifier.size());
-					for (MyEvaluation option : classifier) {
-						WekaStatistic weka = new WekaStatistic();
-						// TODO evaluation to weka
+			for (int k = 0; k < run.size(); k++) {
+				List<List<MyEvaluation>> split = run.get(k);
+				for (int i = 0; i < split.size(); i++) {
+					List<MyEvaluation> classifier = split.get(i);
+					for (int j = 0; j < classifier.size(); j++) {
+						MyEvaluation option = classifier.get(j);
+						Evaluation eva = option.getEvaluation();
+						WekaStatistic currentStat = allSplits.get(k).get(i).get(j);
+
+						currentStat.addOverallRecall((100 - eva.pctUnclassified()) / 100);
+						currentStat.addOverallPrecision(eva.pctCorrect() / 100);
+						currentStat.addNegativeRecall(eva.recall(0));
+						currentStat.addNegativePrecision(eva.precision(0));
+						currentStat.addNeutralRecall(eva.recall(1));
+						currentStat.addNeutralPrecision(eva.precision(1));
+						currentStat.addPositiveRecall(eva.recall(2));
+						currentStat.addPositivePrecision(eva.precision(2));
 					}
 				}
 			}
 		}
+
+		return allSplits;
 	}
 
 	public static void main(String[] args) throws Exception {
