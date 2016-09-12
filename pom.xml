@@ -87,12 +87,13 @@
     		<artifactId>language-detector</artifactId>
     		<version>0.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
-    		<groupId>org.apache.commons</groupId>
-    		<artifactId>commons-csv</artifactId>
-    		<version>1.1</version>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi</artifactId>
+    		<version>3.14</version>
 		</dependency>
+		
 		
 		
 		

@@ -2,17 +2,29 @@ package at.lechner.weka;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import at.lechner.util.EvaluationUtil;
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
 import at.lechner.weka.classifier.MyRandomForest;
 import at.lechner.weka.statistic.ClassifierWrapper;
 import at.lechner.weka.statistic.MyEvaluation;
 import at.lechner.weka.statistic.OptionWrapper;
+import at.lechner.weka.statistic.StatisticPrinter;
 import at.lechner.weka.statistic.WekaStatistic;
+import edu.stanford.nlp.pipeline.CleanXmlAnnotator;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 
@@ -141,25 +153,29 @@ public class WekaEvaluator {
 			}
 		}
 
-		// Test
-		System.out.println();
-		System.out.println("TEST");
+		StringBuilder sb = new StringBuilder();
+		StatisticPrinter statPrint = new StatisticPrinter();
+
 		for (ClassifierWrapper classifierWrapper : classifierWrapperList) {
-			System.out.println(classifierWrapper.getName());
 			for (OptionWrapper optionWrapper : classifierWrapper.getOptions()) {
-				System.out.println(optionWrapper.getOptionName());
+
+				statPrint.getClassifierName().append(classifierWrapper.getName()).append("\t");
+				statPrint.getOptionName().append(optionWrapper.getOptionName()).append("\t");
+				statPrint.appendStandardNames();
+
 				for (int i = 0; i < optionWrapper.getSplits().size(); i++) {
-					System.out.println("SPLIT: " + i + "  Trainingsize: " + optionWrapper.getSplit(i).getTrainSize()
-							+ "   Precision: " + optionWrapper.getSplit(i).getAvgOverallPrecision() + "  Mkr: "
-							+ optionWrapper.getSplit(i).getAvgMacroOverallPrecision() + "  std: "
-							+ optionWrapper.getSplit(i).getStdDevOverallPrecision() + "  2: "
-							+ optionWrapper.getSplit(i).getStdDevMacroOverallPrecision());
+					statPrint.getClassifierName().append("\t");
+					statPrint.getOptionName().append(String.valueOf(optionWrapper.getSplit(i).getTrainSize()) + "\t");
+					statPrint.getOverallPrecision().append(completeFormat(optionWrapper.getSplit(i).getAvgOverallPrecision()) + "\t");
 				}
-				System.out.println();
+				statPrint.appendAllTab();
 			}
-			System.out.println();
+
+			sb.append(statPrint.getCompleteString());
+			statPrint.clearAll();
 		}
 
+		EvaluationUtil.generateTSV("/home/magnus/Schreibtisch/asd.tsv", sb.toString());
 	}
 
 	private static List<List<List<WekaStatistic>>> aggregateResults(List<List<List<List<MyEvaluation>>>> complete) {
@@ -203,6 +219,15 @@ public class WekaEvaluator {
 		}
 
 		return allSplits;
+	}
+
+	private static String completeFormat(Double d) {
+		DecimalFormat df = new DecimalFormat("##.####");
+		return replaceDot(df.format(d));
+	}
+	
+	private static String replaceDot(String s) {
+		return s.replace(".", ",");
 	}
 
 	public static void main(String[] args) throws Exception {
