@@ -1,23 +1,30 @@
 package at.lechner.weka.classifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import at.lechner.weka.WekaEvaluator;
+import at.lechner.weka.option.MyOption;
+import at.lechner.weka.option.MyRandomForestOption;
 import weka.classifiers.trees.RandomForest;
+import weka.core.Instances;
 
 public class MyRandomForest extends MyClassifier {
 
-	private static final RandomForest randomForest = new RandomForest();
-	
-	public MyRandomForest() {
-		this("RandomForest");
+	private RandomForest randomForest;
+
+	public MyRandomForest(RandomForest randomForest) {
+		this(randomForest, "RandomForest");
 	}
 
-	public MyRandomForest(String name) {
+	public MyRandomForest(RandomForest randomForest, String name) {
 		super(randomForest, name);
 		addTestOptions();
 	}
 
 	public void addTestOptions() {
 		try {
-			//TODO add options
+			// TODO add options
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,5 +44,31 @@ public class MyRandomForest extends MyClassifier {
 		}
 		return res;
 	}
-	
+
+	@Override
+	public List<MyOption> defineOptions(Instances trainingsData) throws Exception {
+		List<MyOption> options = new ArrayList<MyOption>();
+
+		MyRandomForestOption option1 = new MyRandomForestOption(new RandomForest(), trainingsData);
+		option1.setOptions("-U -num-slots 0");
+		option1.addCVParameter("I 50 300 6");
+		option1.addCVParameter("N 0 3 4");
+
+		options.add(option1);
+
+		return options;
+	}
+
+	public static void main(String[] args) throws Exception {
+		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/Training.arff",
+				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
+
+		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
+		MyClassifier randomForest = new MyRandomForest(new RandomForest());
+		classifiers.add(randomForest);
+
+		weka.optimizeParameters(classifiers);
+		// weka.evaluateAll(classifiers);
+	}
+
 }

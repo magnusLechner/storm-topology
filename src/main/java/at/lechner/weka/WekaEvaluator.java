@@ -2,18 +2,10 @@ package at.lechner.weka;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import at.lechner.util.EvaluationUtil;
 import at.lechner.weka.classifier.MyClassifier;
@@ -24,8 +16,9 @@ import at.lechner.weka.statistic.MyEvaluation;
 import at.lechner.weka.statistic.OptionWrapper;
 import at.lechner.weka.statistic.StatisticPrinter;
 import at.lechner.weka.statistic.WekaStatistic;
-import edu.stanford.nlp.pipeline.CleanXmlAnnotator;
 import weka.classifiers.Evaluation;
+import weka.classifiers.trees.J48;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
 public class WekaEvaluator {
@@ -46,6 +39,22 @@ public class WekaEvaluator {
 	public WekaEvaluator(String trainingARFF, String testARFF) {
 		this.trainingARFF = trainingARFF;
 		this.testARFF = testARFF;
+	}
+
+	public void optimizeParameters(List<MyClassifier> classifiers) throws Exception {
+		BufferedReader training = readDataFile(trainingARFF);
+		Instances trainingInstance = new Instances(training);
+		trainingInstance.setClassIndex(trainingInstance.numAttributes() - 1);
+
+		StringBuilder sb = new StringBuilder();
+		
+		System.out.println("##### start optimizing Parameters #####");
+		
+		for (MyClassifier classifier : classifiers) {
+			String parameter = classifier.findOptimalParameters(trainingInstance);
+			sb.append(classifier.getName()).append("\n").append(parameter).append("\n");
+		}
+		EvaluationUtil.generateTSV("src/main/evaluation/weka/weka_evaluation/optimalParameters", sb.toString());
 	}
 
 	public List<List<MyEvaluation>> evaluateAll(List<MyClassifier> classifiers) throws Exception {
@@ -108,12 +117,11 @@ public class WekaEvaluator {
 		return evaluations;
 	}
 
-	// TODO add more
 	public static List<MyClassifier> createTestClassifiers() {
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
 		try {
-			MyClassifier j48 = new MyJ48();
-			MyClassifier randomForest = new MyRandomForest();
+			MyClassifier j48 = new MyJ48(new J48());
+			MyClassifier randomForest = new MyRandomForest(new RandomForest());
 
 			classifiers.add(j48);
 			classifiers.add(randomForest);
@@ -166,7 +174,59 @@ public class WekaEvaluator {
 				for (int i = 0; i < optionWrapper.getSplits().size(); i++) {
 					statPrint.getClassifierName().append("\t");
 					statPrint.getOptionName().append(String.valueOf(optionWrapper.getSplit(i).getTrainSize()) + "\t");
-					statPrint.getOverallPrecision().append(completeFormat(optionWrapper.getSplit(i).getAvgOverallPrecision()) + "\t");
+
+					statPrint.getOverallRecall()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgOverallRecall()) + "\t");
+					statPrint.getStdDevOverallRecall()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevOverallRecall()) + "\t");
+					statPrint.getMacroOverallRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroOverallRecall()) + "\t");
+					statPrint.getStdDevMacroOverallRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroOverallRecall()) + "\t");
+					statPrint.getMacroPosNegRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegRecall()) + "\t");
+					statPrint.getStdDevMacroPosNegRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegRecall()) + "\t");
+
+					statPrint.getOverallPrecision()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgOverallPrecision()) + "\t");
+					statPrint.getStdDevOverallPrecision()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevOverallPrecision()) + "\t");
+					statPrint.getMacroOverallPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroOverallPrecision()) + "\t");
+					statPrint.getStdDevMacroOverallPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroOverallPrecision()) + "\t");
+					statPrint.getMacroPosNegPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegPrecision()) + "\t");
+					statPrint.getStdDevMacroPosNegPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegPrecision()) + "\t");
+
+					statPrint.getNegativeRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativeRecall()) + "\t");
+					statPrint.getStdDevNegativeRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativeRecall()) + "\t");
+					statPrint.getNegativePrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativePrecision()) + "\t");
+					statPrint.getStdDevNegativePrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativePrecision()) + "\t");
+
+					statPrint.getNeutralRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralRecall()) + "\t");
+					statPrint.getStdDevNeutralRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralRecall()) + "\t");
+					statPrint.getNeutralPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralPrecision()) + "\t");
+					statPrint.getStdDevNeutralPrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralPrecision()) + "\t");
+
+					statPrint.getPositiveRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositiveRecall()) + "\t");
+					statPrint.getStdDevPositiveRecalls()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositiveRecall()) + "\t");
+					statPrint.getPositivePrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositivePrecision()) + "\t");
+					statPrint.getStdDevPositivePrecisions()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositivePrecision()) + "\t");
 				}
 				statPrint.appendAllTab();
 			}
@@ -175,7 +235,7 @@ public class WekaEvaluator {
 			statPrint.clearAll();
 		}
 
-		EvaluationUtil.generateTSV("/home/magnus/Schreibtisch/asd.tsv", sb.toString());
+		EvaluationUtil.generateTSV("src/main/evaluation/weka/weka_evaluation/weka_result.tsv", sb.toString());
 	}
 
 	private static List<List<List<WekaStatistic>>> aggregateResults(List<List<List<List<MyEvaluation>>>> complete) {
@@ -225,7 +285,7 @@ public class WekaEvaluator {
 		DecimalFormat df = new DecimalFormat("##.####");
 		return replaceDot(df.format(d));
 	}
-	
+
 	private static String replaceDot(String s) {
 		return s.replace(".", ",");
 	}
@@ -236,7 +296,8 @@ public class WekaEvaluator {
 
 		List<MyClassifier> classifiers = WekaEvaluator.createTestClassifiers();
 
-		weka.evaluateAll(classifiers);
+		weka.optimizeParameters(classifiers);
+		// weka.evaluateAll(classifiers);
 	}
 
 }
