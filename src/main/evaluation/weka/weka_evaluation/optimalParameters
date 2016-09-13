@@ -1,6 +1,0 @@
-J48
-Options: -P "C 0.1 0.5 5.0" -X 10 -S 1 -W weka.classifiers.trees.J48 -- -C 0.1 -M 2
--C 0.1 -M 2
-Options: -P "N 2.0 5.0 1.0" -X 10 -S 1 -W weka.classifiers.trees.J48 -- -R -N 2 -Q 1 -M 2
--N 2 -R -Q 1 -M 2
-

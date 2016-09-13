@@ -34,11 +34,11 @@ public abstract class MyClassifier {
 
 	public abstract String getCompleteCurrentOption();
 	
-	public abstract List<MyOption> defineOptions(Instances trainingsData) throws Exception;
+	public abstract List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception;
 	
 	public String findOptimalParameters(Instances trainingData) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		List<MyOption> options = defineOptions(trainingData);
+		List<MyOption> options = defineOptionsForOptimization(trainingData);
 		
 		for(MyOption option : options) {
 			option.buildClassifier();	
@@ -53,7 +53,7 @@ public abstract class MyClassifier {
 		optionsList.add(options);
 	}
 
-	public String[] getMyOption(int index) {
+	public String[] getOption(int index) {
 		String[] tmp = optionsList.get(index);
 		String[] res = new String[tmp.length];
 		for(int i = 0; i < tmp.length; i++) {
@@ -78,8 +78,8 @@ public abstract class MyClassifier {
 		return classifier;
 	}
 
-	public String getMyCompleteOption(int index) {
-		String[] option = getMyOption(index);
+	public String getCompleteOption(int index) {
+		String[] option = getOption(index);
 		String res = "";
 		for (String s : option) {
 			res += s + " ";

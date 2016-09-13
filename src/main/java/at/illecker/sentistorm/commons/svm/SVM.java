@@ -990,7 +990,7 @@ public class SVM {
 					}
 
 					WekaEvaluator weka = new WekaEvaluator(ARFFTrainer.TRAINING_PATH, ARFFTrainer.TEST_PATH);
-					List<MyClassifier> classifiers = createTestClassifiers();
+					List<MyClassifier> classifiers = createClassifiers();
 					List<List<MyEvaluation>> evaluations = weka.evaluateAll(classifiers);
 
 					if (currentIteration >= 0) {
@@ -1014,7 +1014,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 2;
+		int iterations = 100;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1140,8 +1140,8 @@ public class SVM {
 		return slices;
 	}
 
-	private static List<MyClassifier> createTestClassifiers() {
-		return WekaEvaluator.createTestClassifiers();
+	private static List<MyClassifier> createClassifiers() {
+		return WekaEvaluator.createClassifiers();
 	}
 
 	private static void printWekaCompleteResults(List<List<List<List<MyEvaluation>>>> complete) {

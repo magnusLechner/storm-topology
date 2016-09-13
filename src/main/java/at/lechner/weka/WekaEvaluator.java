@@ -100,11 +100,15 @@ public class WekaEvaluator {
 			MyEvaluation myEval = new MyEvaluation(trainingSet.size(), testSet.size(), myClassifier.getName(),
 					myClassifier.getCompleteCurrentOption(), evaluation);
 			evaluations.add(myEval);
+			
+			System.out.println("Classifier: " + myClassifier.getName());
 		} else {
 			for (int i = 0; i < myClassifier.getOptionsListSize(); i++) {
 				Evaluation evaluation = new Evaluation(trainingSet);
 
-				myClassifier.setCurrentOption(myClassifier.getMyOption(i));
+				System.out.println("current Option: " + myClassifier.getCompleteOption(i));
+				
+				myClassifier.setCurrentOption(myClassifier.getOption(i));
 				myClassifier.buildClassifier(trainingSet);
 				evaluation.evaluateModel(myClassifier.getClassifier(), testSet);
 
@@ -117,7 +121,7 @@ public class WekaEvaluator {
 		return evaluations;
 	}
 
-	public static List<MyClassifier> createTestClassifiers() {
+	public static List<MyClassifier> createClassifiers() {
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
 		try {
 			MyClassifier j48 = new MyJ48(new J48());
@@ -294,7 +298,7 @@ public class WekaEvaluator {
 		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/Training.arff",
 				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
 
-		List<MyClassifier> classifiers = WekaEvaluator.createTestClassifiers();
+		List<MyClassifier> classifiers = WekaEvaluator.createClassifiers();
 
 		weka.optimizeParameters(classifiers);
 		// weka.evaluateAll(classifiers);

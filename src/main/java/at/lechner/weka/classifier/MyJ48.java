@@ -8,7 +8,6 @@ import at.lechner.weka.option.MyJ48Option;
 import at.lechner.weka.option.MyOption;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import weka.core.Utils;
 
 public class MyJ48 extends MyClassifier {
 
@@ -26,12 +25,10 @@ public class MyJ48 extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
-//			String[] options1 = Utils.splitOptions("-A");
-//			addOption(options1);
-//			String[] options2 = Utils.splitOptions("-C 0.5 -A");
-//			addOption(options2);
-//			String[] options3 = Utils.splitOptions("-C 0.5 -B -A");
-//			addOption(options3);
+			// String[] options1 = Utils.splitOptions("-C ");
+			// addOption(options1);
+			// String[] options2 = Utils.splitOptions("-C 0.5 -A");
+			// addOption(options2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,18 +50,28 @@ public class MyJ48 extends MyClassifier {
 	}
 
 	@Override
-	public List<MyOption> defineOptions(Instances trainingsData) throws Exception {
+	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
 		MyJ48Option option1 = new MyJ48Option(new J48(), trainingsData);
+		option1.setOptions("-A");
 		option1.addCVParameter("C 0.05 0.5 10");
 
 		MyJ48Option option2 = new MyJ48Option(new J48(), trainingsData);
-		option2.setOptions("-R");
-		option2.addCVParameter("N 2 5 4");
+		option2.addCVParameter("C 0.05 0.5 10");
+
+		MyJ48Option option3 = new MyJ48Option(new J48(), trainingsData);
+		option3.setOptions("-R -A");
+		option3.addCVParameter("N 2 5 4");
+
+		MyJ48Option option4 = new MyJ48Option(new J48(), trainingsData);
+		option4.setOptions("-R");
+		option4.addCVParameter("N 2 5 4");
 
 		options.add(option1);
 		options.add(option2);
+		options.add(option3);
+		options.add(option4);
 
 		return options;
 	}

@@ -46,13 +46,14 @@ public class MyRandomForest extends MyClassifier {
 	}
 
 	@Override
-	public List<MyOption> defineOptions(Instances trainingsData) throws Exception {
+	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
 		MyRandomForestOption option1 = new MyRandomForestOption(new RandomForest(), trainingsData);
 		option1.setOptions("-U -num-slots 0");
 		option1.addCVParameter("I 50 300 6");
-		option1.addCVParameter("N 0 3 4");
+		option1.addCVParameter("N 2 8 7");
+		option1.addCVParameter("M 1 5 5");
 
 		options.add(option1);
 
