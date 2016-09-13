@@ -22,9 +22,14 @@ public class MyRandomForest extends MyClassifier {
 		addTestOptions();
 	}
 
+	// TODO
 	public void addTestOptions() {
 		try {
-			// TODO add options
+			// String[] options1 = Utils.splitOptions("-C ");
+			// addOption(options1);
+			if (getOptionsList().size() == 0) {
+				System.err.println(getName() + ": No test options!");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,8 +57,7 @@ public class MyRandomForest extends MyClassifier {
 		MyRandomForestOption option1 = new MyRandomForestOption(new RandomForest(), trainingsData);
 		option1.setOptions("-U -num-slots 0");
 		option1.addCVParameter("I 50 300 6");
-		option1.addCVParameter("N 2 8 7");
-		option1.addCVParameter("M 1 5 5");
+		option1.addCVParameter("N 2 6 5");
 
 		options.add(option1);
 

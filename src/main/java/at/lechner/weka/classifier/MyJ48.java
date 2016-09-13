@@ -29,6 +29,9 @@ public class MyJ48 extends MyClassifier {
 			// addOption(options1);
 			// String[] options2 = Utils.splitOptions("-C 0.5 -A");
 			// addOption(options2);
+			if (getOptionsList().size() == 0) {
+				System.err.println(getName() + ": No test options!");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

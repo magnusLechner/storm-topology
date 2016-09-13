@@ -14,7 +14,7 @@ public abstract class MyOption {
 		super();
 		this.cvps = new CVParameterSelection();
 		cvps.setClassifier(classifier);
-		cvps.setNumFolds(10);
+		cvps.setNumFolds(5);
 		this.trainingsData = trainingsData;
 	}
 
@@ -36,7 +36,7 @@ public abstract class MyOption {
 	}
 
 	public MyOption(Classifier classifier, String[] options, Instances trainingsData) throws Exception {
-		this(classifier, options, trainingsData, 10);
+		this(classifier, options, trainingsData, 5);
 	}
 
 	public MyOption(Classifier classifier, String options, Instances trainingsData, int numFolds) throws Exception {
@@ -49,7 +49,7 @@ public abstract class MyOption {
 	}
 
 	public MyOption(Classifier classifier, String options, Instances trainingsData) throws Exception {
-		this(classifier, options, trainingsData, 10);
+		this(classifier, options, trainingsData, 5);
 	}
 
 	public abstract void setOptions(String[] options) throws Exception;
