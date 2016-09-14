@@ -1037,14 +1037,13 @@ public class SVM {
 		// testSizeList.add(209);
 		// testSizeList.add(309);
 
-		// for (int i = 0; i < 6; i++) {
-		// for (int j = 0; j < startTrainingSizeList.size(); j++) {
-		// evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation,
-		// false, i, startTrainingSizeList.get(j),
-		// stepList.get(j), testSizeList.get(j));
-		// }
-		// }
-		// svm.EXEC_SERV.shutdown();
+//		for (int i = 0; i < 6; i++) {
+//			for (int j = 0; j < startTrainingSizeList.size(); j++) {
+//				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
+//						stepList.get(j), testSizeList.get(j));
+//			}
+//		}
+//		svm.EXEC_SERV.shutdown();
 
 		// 709 with 300 test equally distributed from my+lenn
 		// int addVsTest = 6;
@@ -1056,31 +1055,25 @@ public class SVM {
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-			// evaluateDynamicSlices(dataset, false, iterations,
-			// nFoldCrossValidation,
-			// false, addVsTest,
-			// startTrainingSizeList.get(j), stepList.get(j),
-			// testSizeList.get(j));
+			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka
-			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-					stepList.get(j), testSizeList.get(j));
+			// evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+			// stepList.get(j), testSizeList.get(j));
 		}
 		svm.EXEC_SERV.shutdown();
 
-		// if (featureVectorLevel == 0) {
-		// SVM.svm(dataset, SentimentFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else if (featureVectorLevel == 1) {
-		// SVM.svm(dataset, TfIdfFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// } else {
-		// SVM.svm(dataset, CombinedFeatureVectorGenerator.class,
-		// nFoldCrossValidation, parameterSearch,
-		// useSerialization);
-		// }
+//		if (featureVectorLevel == 0) {
+//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else if (featureVectorLevel == 1) {
+//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else {
+//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		 }
 	}
 
 	private static List<List<List<MyTuple>>> getSlices(int sliceGenerator, int startTrainingSetSize, int stepSize,
@@ -1115,27 +1108,28 @@ public class SVM {
 		// SAME FILE
 		else if (sliceGenerator == 7) {
 			// ALL SELF LABELED DATA USED
-			// slices =
-			// SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200,
-			// 200, 300,
-			// SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
-			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-			// SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(200, 200, 300,
+//					SVMPreparation.UNIQUE_MESSAGES_SELF_LABELING_AND_LENN,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
-					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
-					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+//					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-			// ONE SINGLE TEST-CASE
-			// slices =
-			// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA,
-			// SVMPreparation.FIX_TESTING_SET_TESTDATA);
-			// slices =
-			// SVMPreparation.getFixTestingSet(SVMPreparation.FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE,
-			// SVMPreparation.FIX_TESTING_SET_TESTDATA);
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
+//					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+
+			Parameteranpassung asdsd
+			
+			// ALL DATA EVER
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 		}
 		return slices;
 	}

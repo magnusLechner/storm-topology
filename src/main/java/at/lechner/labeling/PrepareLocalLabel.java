@@ -36,15 +36,15 @@ public class PrepareLocalLabel {
 
 	public static void getLocalMessages() {
 		// TODO Step 1
-		// String[] lines = BasicUtil.readLines(LABELED_PATH);
-		//// String[] lines = BasicUtil.readLines(ORIGINAL_SELF_AND_LENN_PATH);
-		// separateMessages(lines);
+//		String[] lines = BasicUtil.readLines(LABELED_PATH);
+//		String[] lines = BasicUtil.readLines(ORIGINAL_SELF_AND_LENN_PATH);
+//		separateMessages(lines);
 
 		// TODO Step 2:
-		// add labeling to all_labeled_...
+//		 add labeling to all_labeled_...
 
 		// TODO Step 3
-		// addCertainToCertain(SELF_AND_LENN_PATH, ORIGINAL_709_PATH);
+//		addCertainToCertain(SELF_AND_LENN_PATH, ORIGINAL_709_PATH);
 	}
 
 	public static void addCertainToCertain(String certain1Path, String certain2Path) {
