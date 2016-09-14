@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.lechner.util.EvaluationUtil;
+import at.lechner.weka.classifier.MyA1DE;
+import at.lechner.weka.classifier.MyBayesNet;
 import at.lechner.weka.classifier.MyClassifier;
 import at.lechner.weka.classifier.MyJ48;
+import at.lechner.weka.classifier.MyNaiveBayesMultinomial;
 import at.lechner.weka.classifier.MyRandomForest;
 import at.lechner.weka.statistic.ClassifierWrapper;
 import at.lechner.weka.statistic.MyEvaluation;
@@ -17,6 +20,9 @@ import at.lechner.weka.statistic.OptionWrapper;
 import at.lechner.weka.statistic.StatisticPrinter;
 import at.lechner.weka.statistic.WekaStatistic;
 import weka.classifiers.Evaluation;
+import weka.classifiers.bayes.BayesNet;
+import weka.classifiers.bayes.NaiveBayesMultinomial;
+import weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
@@ -47,14 +53,19 @@ public class WekaEvaluator {
 		trainingInstance.setClassIndex(trainingInstance.numAttributes() - 1);
 
 		StringBuilder sb = new StringBuilder();
-		
+
 		System.out.println("##### start optimizing Parameters #####");
-		
+
 		for (MyClassifier classifier : classifiers) {
+
+			System.out.println("Current Classifier: " + classifier.getName());
+
 			String parameter = classifier.findOptimalParameters(trainingInstance);
 			sb.append(classifier.getName()).append("\n").append(parameter).append("\n");
 		}
 		EvaluationUtil.generateTSV("src/main/evaluation/weka/weka_evaluation/optimalParameters", sb.toString());
+
+		System.out.println("##### finished optimizing Parameters #####");
 	}
 
 	public List<List<MyEvaluation>> evaluateAll(List<MyClassifier> classifiers) throws Exception {
@@ -70,6 +81,10 @@ public class WekaEvaluator {
 		// Run for each model
 		List<List<MyEvaluation>> allEvaluations = new ArrayList<List<MyEvaluation>>();
 		for (int i = 0; i < classifiers.size(); i++) {
+
+			System.out.println("Current Classifier: " + classifiers.get(i).getName() + "  Different Options: "
+					+ classifiers.get(i).getOptionsListSize());
+
 			List<MyEvaluation> classifierEvaluations = classify(classifiers.get(i), trainingInstance, testInstance);
 			allEvaluations.add(classifierEvaluations);
 		}
@@ -100,14 +115,12 @@ public class WekaEvaluator {
 			MyEvaluation myEval = new MyEvaluation(trainingSet.size(), testSet.size(), myClassifier.getName(),
 					myClassifier.getCompleteCurrentOption(), evaluation);
 			evaluations.add(myEval);
-			
-			System.out.println("Classifier: " + myClassifier.getName());
 		} else {
 			for (int i = 0; i < myClassifier.getOptionsListSize(); i++) {
 				Evaluation evaluation = new Evaluation(trainingSet);
 
-				System.out.println("current Option: " + myClassifier.getCompleteOption(i));
-				
+				System.out.println("Current Option: " + myClassifier.getCompleteOption(i));
+
 				myClassifier.setCurrentOption(myClassifier.getOption(i));
 				myClassifier.buildClassifier(trainingSet);
 				evaluation.evaluateModel(myClassifier.getClassifier(), testSet);
@@ -126,9 +139,16 @@ public class WekaEvaluator {
 		try {
 			MyClassifier j48 = new MyJ48(new J48());
 			MyClassifier randomForest = new MyRandomForest(new RandomForest());
+			MyClassifier a1de = new MyA1DE(new A1DE());
+			MyClassifier naiveBayesMultinomial = new MyNaiveBayesMultinomial(new NaiveBayesMultinomial());
+			MyClassifier bayesNet = new MyBayesNet(new BayesNet());
 
-			classifiers.add(j48);
-			classifiers.add(randomForest);
+			// classifiers.add(j48);
+			// classifiers.add(randomForest);
+			classifiers.add(a1de);
+			classifiers.add(naiveBayesMultinomial);
+			classifiers.add(bayesNet);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

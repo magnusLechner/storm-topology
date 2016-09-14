@@ -8,6 +8,7 @@ import at.lechner.weka.option.MyJ48Option;
 import at.lechner.weka.option.MyOption;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
+import weka.core.Utils;
 
 public class MyJ48 extends MyClassifier {
 
@@ -22,13 +23,69 @@ public class MyJ48 extends MyClassifier {
 		this.j48 = j48;
 		addTestOptions();
 	}
-
+	
+//	 -U
+//	  Use unpruned tree.
+//	 
+//	 -O
+//	  Do not collapse tree.
+//	 
+//	 -C <pruning confidence>
+//	  Set confidence threshold for pruning.
+//	  (default 0.25)
+//	 
+//	 -M <minimum number of instances>
+//	  Set minimum number of instances per leaf.
+//	  (default 2)
+//	 
+//	 -R
+//	  Use reduced error pruning.
+//	 
+//	 -N <number of folds>
+//	  Set number of folds for reduced error
+//	  pruning. One fold is used as pruning set.
+//	  (default 3)
+//	 
+//	 -B
+//	  Use binary splits only.
+//	 
+//	 -S
+//	  Don't perform subtree raising.
+//	 
+//	 -L
+//	  Do not clean up after the tree has been built.
+//	 
+//	 -A
+//	  Laplace smoothing for predicted probabilities.
+//	 
+//	 -J
+//	  Do not use MDL correction for info gain on numeric attributes.
+//	 
+//	 -Q <seed>
+//	  Seed for random data shuffling (default 1).
+//	 
+//	 -doNotMakeSplitPointActualValue
+//	  Do not make split point actual value.
+	  
 	public void addTestOptions() {
 		try {
-			// String[] options1 = Utils.splitOptions("-C ");
-			// addOption(options1);
-			// String[] options2 = Utils.splitOptions("-C 0.5 -A");
-			// addOption(options2);
+			// Options: -P "C 0.05 0.5 10.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -C 0.05 -M 2 -A
+			// -C 0.05 -M 2 -A
+			// Options: -P "C 0.05 0.5 10.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -C 0.05 -M 2
+			// -C 0.05 -M 2
+			// Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -Q 1 -M 2 -A
+			// -N 4 -R -Q 1 -M 2 -A
+			// Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -Q 1 -M 2
+			// -N 4 -R -Q 1 -M 2
+
+			String[] options1 = Utils.splitOptions("-C 0.05 -M 2 -A");
+			addOption(options1);
+			String[] options2 = Utils.splitOptions("-C 0.05 -M 2");
+			addOption(options2);
+			String[] options3 = Utils.splitOptions("-N 4 -R -Q 1 -M 2 -A");
+			addOption(options3);
+			String[] options4 = Utils.splitOptions("-N 4 -R -Q 1 -M 2");
+			addOption(options4);
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
 			}
@@ -87,8 +144,8 @@ public class MyJ48 extends MyClassifier {
 		MyClassifier j48 = new MyJ48(new J48());
 		classifiers.add(j48);
 
-		weka.optimizeParameters(classifiers);
-		// weka.evaluateAll(classifiers);
+		// weka.optimizeParameters(classifiers);
+		weka.evaluateAll(classifiers);
 	}
 
 }

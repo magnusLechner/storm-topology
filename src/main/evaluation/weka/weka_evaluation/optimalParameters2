@@ -1,0 +1,19 @@
+J48
+Options: -P "C 0.05 0.5 10.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -C 0.05 -M 2 -A
+-C 0.05 -M 2 -A
+Options: -P "C 0.05 0.5 10.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -C 0.05 -M 2
+-C 0.05 -M 2
+Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -Q 1 -M 2 -A
+-N 4 -R -Q 1 -M 2 -A
+Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -Q 1 -M 2
+-N 4 -R -Q 1 -M 2
+
+RandomForest
+Options: -P "I 50.0 300.0 6.0" -P "N 2.0 6.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.RandomForest -- -P 100 -I 200 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -N 2 -U
+-I 200 -N 2 -P 100 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -U
+
+A1DE
+Options: -P "F 1.0 3.0 3.0" -P "M 0.5 2.0 4.0" -X 5 -S 1 -W weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -- -F 1 -M 1.5 -W
+-F 1 -M 1.5 -W
+Options: -P "F 1.0 3.0 3.0" -P "M 0.5 2.0 4.0" -X 5 -S 1 -W weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -- -F 1 -M 1.5
+-F 1 -M 1.5
