@@ -21,7 +21,6 @@ import at.lechner.util.BasicUtil;
 
 public class SVMPreparation implements PreparationTool {
 
-
 	public static final String UNIQUE_MESSAGES_ORIGINAL = "src/main/resources/preparation/original-labeling/unique-messages.txt";
 	public static final String UNIQUE_MESSAGES_SELF_LABELING_AND_LENN = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
 	public static final String UNIQUE_MESSAGES_ALL = "src/main/resources/preparation/complete-labeling/complete_all.txt";
@@ -37,7 +36,7 @@ public class SVMPreparation implements PreparationTool {
 	public static final String SEPARATE_MESSAGES_ALL_POSITIVE = "src/main/resources/preparation/complete-labeling/separated-classes/positives.txt";
 	public static final String SEPARATE_MESSAGES_ALL_NEUTRAL = "src/main/resources/preparation/complete-labeling/separated-classes/neutrals.txt";
 	public static final String SEPARATE_MESSAGES_ALL_NEGATIVE = "src/main/resources/preparation/complete-labeling/separated-classes/negatives.txt";
-	
+
 	private static final int FIX_TRAIN_SIZE = 100;
 
 	public static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
@@ -660,6 +659,11 @@ public class SVMPreparation implements PreparationTool {
 					trainingSet.add(trainingTuples[trainingRandoms[randomIndex]]);
 					randomIndex++;
 					if (randomIndex == trainingRandoms.length) {
+						List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+						List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
+						slice.add(newTrainingSet);
+						slice.add(newTestSet);
+						slices.add(slice);
 						return slices;
 					}
 				}
@@ -678,6 +682,7 @@ public class SVMPreparation implements PreparationTool {
 					}
 				}
 			}
+
 			List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
 			List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
 			slice.add(newTrainingSet);

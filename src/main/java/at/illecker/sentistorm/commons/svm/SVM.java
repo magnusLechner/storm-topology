@@ -875,7 +875,7 @@ public class SVM {
 					} else {
 						FeatureVectorGenerator posFVG = FVGSelector.selectFVG(dataset.getTrainTweets(false, true),
 								CombinedFeatureVectorGenerator.class);
-						pipelineBox = new POSSVMBox(dataset, posFVG, nFold, true);
+						pipelineBox = new POSSVMBox(dataset, posFVG, nFold, false);
 					}
 
 					pipelineBox.setName("PipeLine-Box");
@@ -1055,7 +1055,7 @@ public class SVM {
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+			evaluateDynamicSlices(dataset, true, iterations, nFoldCrossValidation, false, addVsTest,
 					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka
@@ -1073,7 +1073,8 @@ public class SVM {
 //		} else {
 //			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
 //					useSerialization);
-//		 }
+//		}
+
 	}
 
 	private static List<List<List<MyTuple>>> getSlices(int sliceGenerator, int startTrainingSetSize, int stepSize,
@@ -1120,16 +1121,15 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
-//					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
-//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
-
-			Parameteranpassung asdsd
-			
 			// ALL DATA EVER
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
+					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+			System.out.println("SLICES: " + slices.size());
+
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 		}
 		return slices;
 	}
