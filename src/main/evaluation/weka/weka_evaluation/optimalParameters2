@@ -40,7 +40,23 @@ Options: -P "N 4.0 6.0 3.0" -X 5 -S 1 -W weka.classifiers.trees.BFTree -- -M 2 -
 Options: -P "N 4.0 6.0 3.0" -X 5 -S 1 -W weka.classifiers.trees.BFTree -- -M 2 -N 4 -G -A -C 1.0 -P POSTPRUNED -S 1
 -N 4 -M 2 -G -A -C 1.0 -P POSTPRUNED -S 1
 
+CHIRP
+Options: -P "V 50.0 300.0 6.0" -X 5 -S 1 -W weka.classifiers.misc.CHIRP -- -V 100 -S 1
+-V 100 -S 1
 
+ExtraTree
+Options: -P "N 2.0 6.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.ExtraTree -- -K -1 -N 6 -S 1
+-N 6 -K -1 -S 1
+
+FunctionalTree
+Options: -X 5 -S 1 -W weka.classifiers.trees.FT -- -I 15 -F 0 -M 15 -W 0.0
+-I 15 -F 0 -M 15 -W 0.0
+Options: -P "M 5.0 25.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.FT -- -I 15 -F 0 -M 25 -W 0.0 -A
+-M 25 -I 15 -F 0 -W 0.0 -A
+Options: -P "F 0.0 2.0 1.0" -P "M 5.0 25.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.FT -- -I 15 -F 0 -M 25 -W 0.0 -A
+-F 0 -M 25 -I 15 -W 0.0 -A
+Options: -P "F 0.0 2.0 1.0" -P "I 20.0 100.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.FT -- -I 20 -F 0 -M 15 -W 0.0 -A
+-F 0 -I 20 -M 15 -W 0.0 -A
 
 J48
 Options: -P "C 0.05 0.5 10.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -C 0.05 -M 2 -A
@@ -51,6 +67,8 @@ Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -
 -N 4 -R -Q 1 -M 2 -A
 Options: -P "N 2.0 5.0 4.0" -X 5 -S 1 -W weka.classifiers.trees.J48 -- -R -N 4 -Q 1 -M 2
 -N 4 -R -Q 1 -M 2
+
+//TODO
 
 RandomForest
 Options: -P "I 50.0 300.0 6.0" -P "N 2.0 6.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.RandomForest -- -P 100 -I 200 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -N 2 -U

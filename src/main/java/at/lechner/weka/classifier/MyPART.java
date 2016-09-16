@@ -5,6 +5,7 @@ import java.util.List;
 
 import at.lechner.weka.WekaEvaluator;
 import at.lechner.weka.option.MyOption;
+import at.lechner.weka.option.MyPARTOption;
 import weka.classifiers.rules.PART;
 import weka.core.Instances;
 import weka.core.Utils;
@@ -59,14 +60,29 @@ public class MyPART extends MyClassifier {
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
-		// TODO
+		MyPARTOption option1 = new MyPARTOption(new PART(), trainingsData);
+		option1.addCVParameter("C 0.1 1.0 10");
+		option1.addCVParameter("N 2 8 4");
 
-//		MyA1DEOption option1 = new MyA1DEOption(new A1DE(), trainingsData);
-//		option1.setOptions("-W");
-//		option1.addCVParameter("F 1 3 3");
-//		option1.addCVParameter("M 0.5 2 4");
-//
-//		options.add(option1);
+		MyPARTOption option2 = new MyPARTOption(new PART(), trainingsData);
+		option2.setOptions("-doNotMakeSplitPointActualValue");
+		option2.addCVParameter("C 0.1 1.0 10");
+		option2.addCVParameter("N 2 8 4");
+
+		MyPARTOption option3 = new MyPARTOption(new PART(), trainingsData);
+		option3.setOptions("-R");
+		option3.addCVParameter("C 0.1 1.0 10");
+		option3.addCVParameter("N 2 8 4");
+
+		MyPARTOption option4 = new MyPARTOption(new PART(), trainingsData);
+		option2.setOptions("-R -doNotMakeSplitPointActualValue");
+		option4.addCVParameter("C 0.1 1.0 10");
+		option4.addCVParameter("N 2 8 4");
+
+		options.add(option1);
+		options.add(option2);
+		options.add(option3);
+		options.add(option4);
 
 		return options;
 	}

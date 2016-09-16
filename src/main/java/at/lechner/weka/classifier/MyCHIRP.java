@@ -26,9 +26,9 @@ public class MyCHIRP extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
-//			String[] options1 = Utils.splitOptions("-V 15 -S 1");
+			String[] options1 = Utils.splitOptions("-V 100 -S 1");
 
-//			addOption(options1);
+			addOption(options1);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -59,7 +59,7 @@ public class MyCHIRP extends MyClassifier {
 
 		MyCHIRPOption option1 = new MyCHIRPOption(new CHIRP(), trainingsData);
 		option1.addCVParameter("V 50 300 6");
-		
+
 		options.add(option1);
 
 		return options;

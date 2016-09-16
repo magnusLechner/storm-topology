@@ -26,11 +26,13 @@ public class MyFunctionalTree extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions("-F 0 -M 15 -I 15 -W 0.0");
+			String[] options2 = Utils.splitOptions("-F 0 -M 25 -I 20 -W 0.0 -A");
+			String[] options3 = Utils.splitOptions("-F 0 -M 15 -I 20 -W 0.0 -A");
 
-			// TODO
-
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
+			addOption(options1);
+			addOption(options2);
+			addOption(options3);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -60,7 +62,7 @@ public class MyFunctionalTree extends MyClassifier {
 		List<MyOption> options = new ArrayList<MyOption>();
 
 		MyFunctionalTreeOption option1 = new MyFunctionalTreeOption(new FT(), trainingsData);
-		
+
 		MyFunctionalTreeOption option2 = new MyFunctionalTreeOption(new FT(), trainingsData);
 		option2.setOptions("-A");
 		option2.addCVParameter("M 5 25 5");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.lechner.weka.WekaEvaluator;
+import at.lechner.weka.option.MyM5RulesOption;
 import at.lechner.weka.option.MyOption;
 import weka.classifiers.rules.M5Rules;
 import weka.core.Instances;
@@ -59,14 +60,15 @@ public class MyM5Rules extends MyClassifier {
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
-		// TODO
+		MyM5RulesOption option1 = new MyM5RulesOption(new M5Rules(), trainingsData);
+		option1.addCVParameter("M 2 10 5");
 
-//		MyA1DEOption option1 = new MyA1DEOption(new A1DE(), trainingsData);
-//		option1.setOptions("-W");
-//		option1.addCVParameter("F 1 3 3");
-//		option1.addCVParameter("M 0.5 2 4");
-//
-//		options.add(option1);
+		MyM5RulesOption option2 = new MyM5RulesOption(new M5Rules(), trainingsData);
+		option2.setOptions("-R");
+		option2.addCVParameter("M 2 10 5");
+
+		options.add(option1);
+		options.add(option2);
 
 		return options;
 	}

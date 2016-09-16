@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.lechner.weka.WekaEvaluator;
+import at.lechner.weka.option.MyLogitBoostOption;
 import at.lechner.weka.option.MyOption;
 import weka.classifiers.meta.LogitBoost;
 import weka.core.Instances;
@@ -60,14 +61,16 @@ public class MyLogitBoost extends MyClassifier {
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
-		// TODO
+		MyLogitBoostOption option1 = new MyLogitBoostOption(new LogitBoost(), trainingsData);
+		option1.setOptions("-O 4 -E 4");
+		option1.addCVParameter("I 20 100 5");
 
-//		MyA1DEOption option1 = new MyA1DEOption(new A1DE(), trainingsData);
-//		option1.setOptions("-W");
-//		option1.addCVParameter("F 1 3 3");
-//		option1.addCVParameter("M 0.5 2 4");
-//
-//		options.add(option1);
+		MyLogitBoostOption option2 = new MyLogitBoostOption(new LogitBoost(), trainingsData);
+		option2.setOptions("-Q -O 4 -E 4");
+		option2.addCVParameter("I 20 100 5");
+
+		options.add(option1);
+		options.add(option2);
 
 		return options;
 	}
