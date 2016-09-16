@@ -33,22 +33,26 @@ public abstract class MyClassifier {
 	public abstract void addTestOptions() throws Exception;
 
 	public abstract String getCompleteCurrentOption();
-	
+
 	public abstract List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception;
-	
+
 	public String findOptimalParameters(Instances trainingData) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		List<MyOption> options = defineOptionsForOptimization(trainingData);
-		
-		for(MyOption option : options) {
-			option.buildClassifier();	
+
+		if (options.size() == 0) {
+			System.err.println(getName() + ": No optimization options!");
+		}
+
+		for (MyOption option : options) {
+			option.buildClassifier();
 			sb.append(option.getOptionsToString()).append("\n");
 			sb.append(option.getBestClassifierOptions()).append("\n");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	public void addOption(String[] options) {
 		optionsList.add(options);
 	}
@@ -56,7 +60,7 @@ public abstract class MyClassifier {
 	public String[] getOption(int index) {
 		String[] tmp = optionsList.get(index);
 		String[] res = new String[tmp.length];
-		for(int i = 0; i < tmp.length; i++) {
+		for (int i = 0; i < tmp.length; i++) {
 			res[i] = tmp[i];
 		}
 		return res;
@@ -86,5 +90,5 @@ public abstract class MyClassifier {
 		}
 		return res;
 	}
-	
+
 }

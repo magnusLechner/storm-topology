@@ -1055,7 +1055,7 @@ public class SVM {
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-			evaluateDynamicSlices(dataset, true, iterations, nFoldCrossValidation, false, addVsTest,
+			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
 					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka

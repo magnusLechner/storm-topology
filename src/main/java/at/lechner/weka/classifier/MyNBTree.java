@@ -4,34 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.lechner.weka.WekaEvaluator;
-import at.lechner.weka.option.MyA1DEOption;
+import at.lechner.weka.option.MyNBTreeOption;
 import at.lechner.weka.option.MyOption;
-import weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE;
+import weka.classifiers.trees.NBTree;
 import weka.core.Instances;
 import weka.core.Utils;
 
-public class MyA1DE extends MyClassifier {
+public class MyNBTree extends MyClassifier {
 
-	private A1DE a1de;
+	private NBTree nbTree;
 
-	public MyA1DE(A1DE a1de) {
-		this(a1de, "A1DE");
+	public MyNBTree(NBTree nbTree) {
+		this(nbTree, "NBTree");
 	}
 
-	public MyA1DE(A1DE a1de, String name) {
-		super(a1de, name);
-		this.a1de = a1de;
+	public MyNBTree(NBTree nbTree, String name) {
+		super(nbTree, name);
+		this.nbTree = nbTree;
 		addTestOptions();
 	}
 
 	public void addTestOptions() {
 		try {
-			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-			String[] options2 = Utils.splitOptions("-F 1 -M 1.5 -W");
-			
-			addOption(options1);
-			addOption(options2);
-			
+
+			// There are no parameters for naive-bayes-multinomial
+
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
 			}
@@ -42,12 +39,12 @@ public class MyA1DE extends MyClassifier {
 
 	@Override
 	public void setCurrentOption(String[] options) throws Exception {
-		a1de.setOptions(options);
+		nbTree.setOptions(options);
 	}
 
 	@Override
 	public String getCompleteCurrentOption() {
-		String[] option = a1de.getOptions();
+		String[] option = nbTree.getOptions();
 		String res = "";
 		for (String s : option) {
 			res += s + " ";
@@ -55,22 +52,13 @@ public class MyA1DE extends MyClassifier {
 		return res;
 	}
 
-	// weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -F 1 -M 1.0 -W
 	@Override
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
 
-		MyA1DEOption option1 = new MyA1DEOption(new A1DE(), trainingsData);
-		option1.setOptions("-W");
-		option1.addCVParameter("F 1 3 3");
-		option1.addCVParameter("M 0.5 2 4");
-
-		MyA1DEOption option2 = new MyA1DEOption(new A1DE(), trainingsData);
-		option2.addCVParameter("F 1 3 3");
-		option2.addCVParameter("M 0.5 2 4");
+		MyNBTreeOption option1 = new MyNBTreeOption(new NBTree(), trainingsData);
 
 		options.add(option1);
-		options.add(option2);
 
 		return options;
 	}
@@ -80,8 +68,8 @@ public class MyA1DE extends MyClassifier {
 				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
 
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
-		MyClassifier a1de = new MyA1DE(new A1DE());
-		classifiers.add(a1de);
+		MyClassifier nbTree = new MyNBTree(new NBTree());
+		classifiers.add(nbTree);
 
 		weka.optimizeParameters(classifiers);
 		// weka.evaluateAll(classifiers);
