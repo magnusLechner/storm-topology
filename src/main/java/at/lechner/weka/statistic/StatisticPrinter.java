@@ -33,6 +33,10 @@ public class StatisticPrinter {
 	private StringBuilder stdDevPositiveRecalls = new StringBuilder();
 	private StringBuilder positivePrecisions = new StringBuilder();
 	private StringBuilder stdDevPositivePrecisions = new StringBuilder();
+	private StringBuilder microFMeasure = new StringBuilder();
+	private StringBuilder stdDevMicroFMeasure = new StringBuilder();
+	private StringBuilder macroFMeasure = new StringBuilder();
+	private StringBuilder stdDevMacroFMeasure = new StringBuilder();
 
 	public StatisticPrinter() {
 		allList.add(classifierName);
@@ -61,6 +65,10 @@ public class StatisticPrinter {
 		allList.add(stdDevPositiveRecalls);
 		allList.add(positivePrecisions);
 		allList.add(stdDevPositivePrecisions);
+		allList.add(microFMeasure);
+		allList.add(stdDevMicroFMeasure);
+		allList.add(macroFMeasure);
+		allList.add(stdDevMacroFMeasure);
 	}
 
 	public void appendAllTab() {
@@ -110,6 +118,10 @@ public class StatisticPrinter {
 		stdDevPositiveRecalls.append("StdDev Positive Recall: ").append("\t");
 		positivePrecisions.append("Positive Precision: ").append("\t");
 		stdDevPositivePrecisions.append("StdDev Positive Precision: ").append("\t");
+		microFMeasure.append("Micro F-Measure: ").append("\t");
+		stdDevMicroFMeasure.append("StdDev Micro F-Measure: ").append("\t");
+		macroFMeasure.append("Macro F-Measure: ").append("\t");
+		stdDevMacroFMeasure.append("StdDev Macro F-Measure: ").append("\t");
 	}
 
 	public List<StringBuilder> getAllList() {
@@ -218,6 +230,22 @@ public class StatisticPrinter {
 
 	public StringBuilder getStdDevPositivePrecisions() {
 		return stdDevPositivePrecisions;
+	}
+
+	public StringBuilder getMicroFMeasure() {
+		return microFMeasure;
+	}
+
+	public StringBuilder getStdDevMicroFMeasure() {
+		return stdDevMicroFMeasure;
+	}
+
+	public StringBuilder getMacroFMeasure() {
+		return macroFMeasure;
+	}
+
+	public StringBuilder getStdDevMacroFMeasure() {
+		return stdDevMacroFMeasure;
 	}
 
 }

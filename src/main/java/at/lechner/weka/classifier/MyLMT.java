@@ -26,11 +26,15 @@ public class MyLMT extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions("-C -I -1 -M 15 -W 0.0");
+			String[] options2 = Utils.splitOptions("-C -I -1 -M 15 -W 0.0 -A");
+			String[] options3 = Utils.splitOptions("-I 20 -M 15 -W 0.0");
+			String[] options4 = Utils.splitOptions("-I 20 -M 15 -W 0.0 -A");
 
-			// TODO
-
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
+			addOption(options1);
+			addOption(options2);
+			addOption(options3);
+			addOption(options4);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -61,20 +65,20 @@ public class MyLMT extends MyClassifier {
 
 		MyLMTOption option1 = new MyLMTOption(new LMT(), trainingsData);
 		option1.setOptions("-C");
-		option1.addCVParameter("M 5 25 5");
+//		option1.addCVParameter("M 10 20 3");	//takes to much time
 
 		MyLMTOption option2 = new MyLMTOption(new LMT(), trainingsData);
 		option2.setOptions("-C -A");
-		option2.addCVParameter("M 5 25 5");
+//		option2.addCVParameter("M 10 20 3");
 
 		MyLMTOption option3 = new MyLMTOption(new LMT(), trainingsData);
 		option3.addCVParameter("I 20 100 5");
-		option3.addCVParameter("M 5 25 5");
+//		option3.addCVParameter("M 10 20 3");
 
 		MyLMTOption option4 = new MyLMTOption(new LMT(), trainingsData);
 		option4.setOptions("-A");
 		option4.addCVParameter("I 20 100 5");
-		option4.addCVParameter("M 5 25 5");
+//		option4.addCVParameter("M 10 20 3");
 
 		options.add(option1);
 		options.add(option2);

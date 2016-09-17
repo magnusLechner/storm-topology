@@ -78,6 +78,8 @@ public class WekaEvaluator {
 		Instances testInstance = new Instances(test);
 		testInstance.setClassIndex(testInstance.numAttributes() - 1);
 
+		System.out.println("##### start evaluation #####");
+
 		// Run for each model
 		List<List<MyEvaluation>> allEvaluations = new ArrayList<List<MyEvaluation>>();
 		for (int i = 0; i < classifiers.size(); i++) {
@@ -88,6 +90,8 @@ public class WekaEvaluator {
 			List<MyEvaluation> classifierEvaluations = classify(classifiers.get(i), trainingInstance, testInstance);
 			allEvaluations.add(classifierEvaluations);
 		}
+
+		System.out.println("##### finished evaluation #####");
 
 		return allEvaluations;
 	}
@@ -143,11 +147,11 @@ public class WekaEvaluator {
 			MyClassifier naiveBayesMultinomial = new MyNaiveBayesMultinomial(new NaiveBayesMultinomial());
 			MyClassifier bayesNet = new MyBayesNet(new BayesNet());
 
-			// classifiers.add(j48);
-			// classifiers.add(randomForest);
-			classifiers.add(a1de);
-			classifiers.add(naiveBayesMultinomial);
-			classifiers.add(bayesNet);
+//			classifiers.add(j48);
+//			classifiers.add(randomForest);
+//			classifiers.add(a1de);
+//			classifiers.add(naiveBayesMultinomial);
+//			classifiers.add(bayesNet);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -251,6 +255,15 @@ public class WekaEvaluator {
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositivePrecision()) + "\t");
 					statPrint.getStdDevPositivePrecisions()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositivePrecision()) + "\t");
+
+					statPrint.getMicroFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMicroFMeasure()) + "\t");
+					statPrint.getStdDevMicroFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMicroFMeasure()) + "\t");
+					statPrint.getMacroFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroFMeasure()) + "\t");
+					statPrint.getStdDevMacroFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroFMeasure()) + "\t");
 				}
 				statPrint.appendAllTab();
 			}
