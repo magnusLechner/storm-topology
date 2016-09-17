@@ -90,7 +90,6 @@ public class MyBayesNet extends MyClassifier {
 		return res;
 	}
 
-	// weka.classifiers.bayes.BayesNet -D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
 	@Override
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();

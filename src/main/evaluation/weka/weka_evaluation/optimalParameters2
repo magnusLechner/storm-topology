@@ -78,6 +78,18 @@ Options: -P "I 20.0 100.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.LMT -- -I 20 
 Options: -P "I 20.0 100.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.LMT -- -I 20 -M 15 -W 0.0 -A
 -I 20 -M 15 -W 0.0 -A
 
+Logistic
+Options: -P "R 1.0E-9 1.0E-7 5.0" -X 5 -S 1 -W weka.classifiers.functions.Logistic -- -R 1.0E-7 -M -1 -num-decimal-places 4
+-R 1.0E-7 -M -1 -num-decimal-places 4
+
+LogitBoost
+Options: -P "I 20.0 100.0 5.0" -X 5 -S 1 -W weka.classifiers.meta.LogitBoost -- -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -I 80 -W weka.classifiers.trees.DecisionStump -batch-size
+-I 80 -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size
+Options: -P "I 20.0 100.0 5.0" -X 5 -S 1 -W weka.classifiers.meta.LogitBoost -- -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -I 100 -W weka.classifiers.trees.DecisionStump -batch-size
+-I 100 -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size
+
+//TODO
+
 RandomForest
 Options: -P "I 50.0 300.0 6.0" -P "N 2.0 6.0 5.0" -X 5 -S 1 -W weka.classifiers.trees.RandomForest -- -P 100 -I 200 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -N 2 -U
 -I 200 -N 2 -P 100 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -U

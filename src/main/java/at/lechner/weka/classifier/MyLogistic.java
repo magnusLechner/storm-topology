@@ -26,10 +26,9 @@ public class MyLogistic extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
-			// TODO
+			String[] options1 = Utils.splitOptions("-R 1.0E-7 -M -1 -num-decimal-places 4");
 
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
+			addOption(options1);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -54,7 +53,6 @@ public class MyLogistic extends MyClassifier {
 		return res;
 	}
 
-	// weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -F 1 -M 1.0 -W
 	@Override
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();

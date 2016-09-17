@@ -55,7 +55,6 @@ public class MyA1DE extends MyClassifier {
 		return res;
 	}
 
-	// weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -F 1 -M 1.0 -W
 	@Override
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();

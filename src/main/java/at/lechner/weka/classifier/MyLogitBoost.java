@@ -26,12 +26,13 @@ public class MyLogitBoost extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions(
+					"-I 80 -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size");
+			String[] options2 = Utils.splitOptions(
+					"-I 100 -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size");
 
-			// TODO
-
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			
-//			addOption(options1);
+			addOption(options1);
+			addOption(options2);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -56,7 +57,6 @@ public class MyLogitBoost extends MyClassifier {
 		return res;
 	}
 
-	// weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE -F 1 -M 1.0 -W
 	@Override
 	public List<MyOption> defineOptionsForOptimization(Instances trainingsData) throws Exception {
 		List<MyOption> options = new ArrayList<MyOption>();
