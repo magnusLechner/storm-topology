@@ -26,11 +26,10 @@ public class MyREPTree extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions("-M 2 -V 1.0E-4 -N 5 -S 1 -L -1 -I 0.0");
 
-			// TODO
+			addOption(options1);
 
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
 			}

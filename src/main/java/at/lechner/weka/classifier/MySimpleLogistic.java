@@ -26,10 +26,13 @@ public class MySimpleLogistic extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
-			// TODO
 
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
+			String[] options1 = Utils.splitOptions("-H 30 -M 150 -I 0 -W 0.0");
+			String[] options2 = Utils.splitOptions("-H 15 -M 150 -I 0 -W 0.0 -A");
+
+			addOption(options1);
+			addOption(options2);
+
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
 			}
@@ -65,10 +68,10 @@ public class MySimpleLogistic extends MyClassifier {
 		option2.setOptions("-A");
 		option2.addCVParameter("H 15 90 6");
 		option2.addCVParameter("M 150 900 6");
-		
+
 		options.add(option1);
 		options.add(option2);
-		
+
 		return options;
 	}
 

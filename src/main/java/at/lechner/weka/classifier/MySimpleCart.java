@@ -26,11 +26,12 @@ public class MySimpleCart extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions("-M 4 -N 15 -C 1.0 -S 1");
+			String[] options2 = Utils.splitOptions("-M 3 -N 15 -A -C 1.0 -S 1");
 
-			// TODO
+			addOption(options1);
+			addOption(options2);
 
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			addOption(options1);
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
 			}

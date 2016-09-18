@@ -26,12 +26,15 @@ public class MyPART extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
+			String[] options1 = Utils.splitOptions("-C 0.25 -M 2 -Q 1");
+			String[] options2 = Utils.splitOptions("-C 0.25 -M 2 -Q 1 -doNotMakeSplitPointActualValue");
+			String[] options3 = Utils.splitOptions("-N 4 -R -M 2 -Q 1");
+			String[] options4 = Utils.splitOptions("-N 4 -R -M 2 -Q 1 -doNotMakeSplitPointActualValue");
 
-			// TODO
-
-//			String[] options1 = Utils.splitOptions("-F 1 -M 1.5");
-//			
-//			addOption(options1);
+			addOption(options1);
+			addOption(options2);
+			addOption(options3);
+			addOption(options4);
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
@@ -61,22 +64,18 @@ public class MyPART extends MyClassifier {
 		List<MyOption> options = new ArrayList<MyOption>();
 
 		MyPARTOption option1 = new MyPARTOption(new PART(), trainingsData);
-		option1.addCVParameter("C 0.1 1.0 10");
-		option1.addCVParameter("N 2 8 4");
+		option1.addCVParameter("C 0.1 0.5 5");
 
 		MyPARTOption option2 = new MyPARTOption(new PART(), trainingsData);
 		option2.setOptions("-doNotMakeSplitPointActualValue");
-		option2.addCVParameter("C 0.1 1.0 10");
-		option2.addCVParameter("N 2 8 4");
+		option2.addCVParameter("C 0.1 0.5 5");
 
 		MyPARTOption option3 = new MyPARTOption(new PART(), trainingsData);
 		option3.setOptions("-R");
-		option3.addCVParameter("C 0.1 1.0 10");
 		option3.addCVParameter("N 2 8 4");
 
 		MyPARTOption option4 = new MyPARTOption(new PART(), trainingsData);
-		option2.setOptions("-R -doNotMakeSplitPointActualValue");
-		option4.addCVParameter("C 0.1 1.0 10");
+		option4.setOptions("-R -doNotMakeSplitPointActualValue");
 		option4.addCVParameter("N 2 8 4");
 
 		options.add(option1);

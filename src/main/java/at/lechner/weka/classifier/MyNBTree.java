@@ -8,7 +8,6 @@ import at.lechner.weka.option.MyNBTreeOption;
 import at.lechner.weka.option.MyOption;
 import weka.classifiers.trees.NBTree;
 import weka.core.Instances;
-import weka.core.Utils;
 
 public class MyNBTree extends MyClassifier {
 
@@ -27,7 +26,7 @@ public class MyNBTree extends MyClassifier {
 	public void addTestOptions() {
 		try {
 
-			// There are no parameters for naive-bayes-multinomial
+			// There are no parameters for NBTree
 
 			if (getOptionsList().size() == 0) {
 				System.err.println(getName() + ": No test options!");
