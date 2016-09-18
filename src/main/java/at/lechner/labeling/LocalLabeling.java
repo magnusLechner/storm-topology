@@ -15,19 +15,9 @@ import java.util.Scanner;
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.cybozu.labs.langdetect.LangDetectException;
-import com.google.common.base.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.optimaize.langdetect.LanguageDetector;
-import com.optimaize.langdetect.LanguageDetectorBuilder;
-import com.optimaize.langdetect.i18n.LdLocale;
-import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.LanguageProfile;
-import com.optimaize.langdetect.profiles.LanguageProfileReader;
-import com.optimaize.langdetect.text.CommonTextObjectFactories;
-import com.optimaize.langdetect.text.TextObject;
-import com.optimaize.langdetect.text.TextObjectFactory;
 
 import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
@@ -40,9 +30,9 @@ public class LocalLabeling {
 	public static final String LABELED_MESSAGES = "src/main/resources/preparation/self-labeling/labeled.txt";
 	public static final String PROFILE_PATH = "/home/magnus/workspace/storm-topology/src/main/resources/language-detection/profiles/shorttext";
 
-	private static final String CERTAIN_PATH = "src/main/resources/preparation/self-labeling/fresh_labeled_certain.txt";
-	private static final String UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/uncertain.txt";
-	private static final String MERGE_UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_uncertain.txt";
+	public static final String CERTAIN_PATH = "src/main/resources/preparation/self-labeling/fresh_labeled_certain.txt";
+	public static final String UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/uncertain.txt";
+	public static final String MERGE_UNCERTAIN_PATH = "src/main/resources/preparation/self-labeling/merge_uncertain.txt";
 
 	public static int sumNeg = 0;
 	public static int sumNeu = 0;

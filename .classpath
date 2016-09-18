@@ -32,7 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/langdetect.jar"/>
 	<classpathentry kind="lib" path="lib/alternatingDecisionTrees.jar"/>
 	<classpathentry kind="lib" path="lib/AnDE.jar"/>
 	<classpathentry kind="lib" path="lib/complementNaiveBayes.jar"/>

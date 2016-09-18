@@ -81,14 +81,31 @@
     		<artifactId>jedis</artifactId>
     		<version>2.9.0</version>
 		</dependency>
+		
 		<!-- language detection -->
+		<!-- https://github.com/optimaize/language-detector  -  shuyo fork-->
+  		<!--
   		<dependency>
     		<groupId>com.optimaize.languagedetector</groupId>
     		<artifactId>language-detector</artifactId>
     		<version>0.5</version>
 		</dependency>
+		-->
 		
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
+		<dependency>
+    		<groupId>org.apache.tika</groupId>
+    		<artifactId>tika-core</artifactId>
+    		<version>1.13</version>
+		</dependency>
 		
+		<!-- 	http://code.google.com/p/language-detection/   AUCH VON SHUYO-->
+		<!-- https://mvnrepository.com/artifact/com.cybozu.labs/langdetect -->
+		<dependency>
+    		<groupId>com.cybozu.labs</groupId>
+    		<artifactId>langdetect</artifactId>
+    		<version>1.1-20120112</version>
+		</dependency>
 		
 		
 		<!-- the jar from maven repository differs from the one used by illecker -->

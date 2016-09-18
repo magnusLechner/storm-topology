@@ -1,8 +1,15 @@
 package at.lechner.dict.preparation;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.cybozu.labs.langdetect.LangDetectException;
+import com.google.common.base.Optional;
 
 import at.lechner.commons.MyTuple;
 import at.lechner.commons.Sentiment;
@@ -11,7 +18,12 @@ import at.lechner.preparation.SVMPreparation;
 public class LanguageDetectionTest {
 
 	public static final String COMPLETE = "src/main/resources/preparation/complete-labeling/complete_all.txt";
-//	public static final String NOT_CORRECT_LANGUAGE_PREDICTED = "src/main/resources/preparation/complete-labeling/complete_all.txt";
+
+	public static final String SHUYO_LONG = "src/main/resources/language-detection/shuyo_lang-detect/profiles";
+	public static final String SHUYO_SHORT = "src/main/resources/language-detection/shuyo_lang-detect/profiles.sm";
+
+	public static final String OPTIMAIZE_LONG = "src/main/resources/language-detection/optimaize/languages";
+	public static final String OPTIMAIZE_SHORT = "src/main/resources/language-detection/optimaize/languages.shorttext";
 
 	private int allSize;
 	private int correctAll;
@@ -22,7 +34,8 @@ public class LanguageDetectionTest {
 	private int neutralCount;
 	private int positivesCount;
 
-	public void test() throws LangDetectException {
+	// optimaize newest shuyo
+	public void optimaize_newest_shuyo(String path) throws LangDetectException {
 		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);
 
 		allSize = tuples.length;
@@ -36,15 +49,23 @@ public class LanguageDetectionTest {
 			}
 		}
 
-		System.out.println("src/main/resources/language-detection/shuyo_lang-detect/profiles");
-		DetectorFactory.loadProfile("src/main/resources/language-detection/shuyo_lang-detect/profiles");
+		System.out.println(path);
+
+		DetectorFactory.loadProfile(path);
 		for (MyTuple tuple : tuples) {
 			String msg = tuple.getText();
 
 			Detector detector = DetectorFactory.create();
 			detector.append(msg);
 
-			if (detector.detect().equals("en")) {
+			Boolean languageCorrect = null;
+			try {
+				languageCorrect = detector.detect().equals("en");
+			} catch (Exception e) {
+				languageCorrect = false;
+			}
+
+			if (languageCorrect) {
 				correctAll++;
 				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
 					correctNegative++;
@@ -56,93 +77,163 @@ public class LanguageDetectionTest {
 			}
 		}
 		printResult();
-		reset();
-
-		System.out.println("src/main/resources/language-detection/shuyo_lang-detect/profiles.sm");
-		DetectorFactory.loadProfile("src/main/resources/language-detection/shuyo_lang-detect/profiles.sm");
-		for (MyTuple tuple : tuples) {
-			String msg = tuple.getText();
-
-			Detector detector = DetectorFactory.create();
-			detector.append(msg);
-
-			if (detector.detect().equals("en")) {
-				correctAll++;
-				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
-					correctNegative++;
-				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
-					correctNeutral++;
-				} else {
-					correctPositives++;
-				}
-			}
-		}
-		printResult();
-		reset();
-
-		System.out.println("src/main/resources/language-detection/optimaize/languages");
-		DetectorFactory.loadProfile("src/main/resources/language-detection/optimaize/languages");
-		for (MyTuple tuple : tuples) {
-			String msg = tuple.getText();
-
-			Detector detector = DetectorFactory.create();
-			detector.append(msg);
-
-			if (detector.detect().equals("en")) {
-				correctAll++;
-				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
-					correctNegative++;
-				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
-					correctNeutral++;
-				} else {
-					correctPositives++;
-				}
-			}
-		}
-		printResult();
-		reset();
-
-		System.out.println("src/main/resources/language-detection/optimaize/languages.shorttext");
-		DetectorFactory.loadProfile("src/main/resources/language-detection/optimaize/languages.shorttext");
-		for (MyTuple tuple : tuples) {
-			String msg = tuple.getText();
-
-			Detector detector = DetectorFactory.create();
-			detector.append(msg);
-
-			if (detector.detect().equals("en")) {
-				correctAll++;
-				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
-					correctNegative++;
-				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
-					correctNeutral++;
-				} else {
-					correctPositives++;
-				}
-			}
-		}
-		printResult();
-		reset();
 	}
+
+	// tika
+//	@SuppressWarnings("deprecation")
+//	public void tika() {
+//		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);
+//
+//		allSize = tuples.length;
+//		for (MyTuple tuple : tuples) {
+//			if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+//				negativesCount++;
+//			} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+//				neutralCount++;
+//			} else {
+//				positivesCount++;
+//			}
+//		}
+//
+//		for (MyTuple tuple : tuples) {
+//			String msg = tuple.getText();
+//
+//			Boolean languageCorrect = null;
+//			try {
+//				LanguageIdentifier identifier = new LanguageIdentifier(msg);
+//				languageCorrect = identifier.getLanguage().equals("en");
+//			} catch (Exception e) {
+//				languageCorrect = false;
+//			}
+//
+//			if (languageCorrect) {
+//				correctAll++;
+//				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+//					correctNegative++;
+//				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+//					correctNeutral++;
+//				} else {
+//					correctPositives++;
+//				}
+//			}
+//		}
+//		printResult();
+//	}
+
+//	public void optimaize_shuyo_fork() throws IOException {
+//		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);
+//
+//		allSize = tuples.length;
+//		for (MyTuple tuple : tuples) {
+//			if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+//				negativesCount++;
+//			} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+//				neutralCount++;
+//			} else {
+//				positivesCount++;
+//			}
+//		}
+//
+//		// load all languages:
+//		List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+//		
+//		
+////		List<String> languages = new ArrayList<String>();
+////		languages.add("en");
+////		languages.add("fr");
+////		languages.add("de");
+////		List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(languages);
+//
+//		// build language detector:
+//		LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+//				.withProfiles(languageProfiles).build();
+//
+//		TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
+//
+//		for (MyTuple tuple : tuples) {
+//			String msg = tuple.getText();
+//
+//			Boolean languageCorrect = null;
+//			try {
+//				// query:
+//				TextObject textObject = textObjectFactory.forText(msg);
+//				Optional<LdLocale> lang = languageDetector.detect(textObject);
+//
+//				if (lang.get().getLanguage().equals("en")) {
+//					languageCorrect = true;
+//				} else {
+//					languageCorrect = false;
+//				}
+//
+//			} catch (Exception e) {
+//				languageCorrect = false;
+//			}
+//
+//			if (languageCorrect) {
+//				correctAll++;
+//				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+//					correctNegative++;
+//				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+//					correctNeutral++;
+//				} else {
+//					correctPositives++;
+//				}
+//			}
+//		}
+//		printResult();
+//	}
 
 	private void printResult() {
-		System.out.println("overall precision: " + correctAll / allSize);
-		System.out.println("negatives precision: " + correctNegative / negativesCount);
-		System.out.println("neutral precision: " + correctNeutral / neutralCount);
-		System.out.println("positives precision: " + correctPositives / positivesCount);
+		DecimalFormat df = new DecimalFormat("0.000");
+		System.out.println("overall precision: " + df.format((double) correctAll / allSize));
+		System.out.println("negatives precision: " + df.format((double) correctNegative / negativesCount));
+		System.out.println("neutral precision: " + df.format((double) correctNeutral / neutralCount));
+		System.out.println("positives precision: " + df.format((double) correctPositives / positivesCount));
 		System.out.println();
-	}
-
-	private void reset() {
-		correctAll = 0;
-		correctNegative = 0;
-		correctNeutral = 0;
-		correctPositives = 0;
 	}
 
 	public static void main(String[] args) throws Exception {
 		LanguageDetectionTest langTest = new LanguageDetectionTest();
-		langTest.test();
+
+		// OPTIMAIZE NO SHUYO
+//		langTest.optimaize_newest_shuyo(SHUYO_LONG);
+
+//		overall precision: 0,623
+//		negatives precision: 0,625
+//		neutral precision: 0,696
+//		positives precision: 0,442
+
+//		langTest.optimaize_newest_shuyo(SHUYO_SHORT);
+
+//		overall precision: 0,660
+//		negatives precision: 0,630
+//		neutral precision: 0,729
+//		positives precision: 0,515
+
+//		langTest.optimaize_newest_shuyo(OPTIMAIZE_LONG);
+
+//		overall precision: 0,564
+//		negatives precision: 0,558
+//		neutral precision: 0,641
+//		positives precision: 0,379
+
+		langTest.optimaize_newest_shuyo(OPTIMAIZE_SHORT);
+
+//		overall precision: 0,705
+//		negatives precision: 0,696
+//		neutral precision: 0,768
+//		positives precision: 0,561
+
+		// TIKA
+//		langTest.tika();
+
+//		overall precision: 0,321
+//		negatives precision: 0,285
+//		neutral precision: 0,387
+//		positives precision: 0,193
+
+		// OPTIMAIZE WITH SHUYO
+//		langTest.optimaize_shuyo_fork();
 	}
 
 }

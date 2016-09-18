@@ -9,11 +9,24 @@ import java.util.List;
 
 import at.lechner.util.EvaluationUtil;
 import at.lechner.weka.classifier.MyA1DE;
+import at.lechner.weka.classifier.MyBFTree;
 import at.lechner.weka.classifier.MyBayesNet;
+import at.lechner.weka.classifier.MyCHIRP;
 import at.lechner.weka.classifier.MyClassifier;
+import at.lechner.weka.classifier.MyExtraTree;
+import at.lechner.weka.classifier.MyFunctionalTree;
 import at.lechner.weka.classifier.MyJ48;
+import at.lechner.weka.classifier.MyLMT;
+import at.lechner.weka.classifier.MyLogistic;
+import at.lechner.weka.classifier.MyLogitBoost;
+import at.lechner.weka.classifier.MyNBTree;
 import at.lechner.weka.classifier.MyNaiveBayesMultinomial;
+import at.lechner.weka.classifier.MyPART;
+import at.lechner.weka.classifier.MyREPTree;
 import at.lechner.weka.classifier.MyRandomForest;
+import at.lechner.weka.classifier.MySimpleCart;
+import at.lechner.weka.classifier.MySimpleLogistic;
+import at.lechner.weka.classifier.MyZeroR;
 import at.lechner.weka.statistic.ClassifierWrapper;
 import at.lechner.weka.statistic.MyEvaluation;
 import at.lechner.weka.statistic.OptionWrapper;
@@ -23,8 +36,21 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.bayes.AveragedNDependenceEstimators.A1DE;
+import weka.classifiers.functions.Logistic;
+import weka.classifiers.functions.SimpleLogistic;
+import weka.classifiers.meta.LogitBoost;
+import weka.classifiers.misc.CHIRP;
+import weka.classifiers.rules.PART;
+import weka.classifiers.rules.ZeroR;
+import weka.classifiers.trees.BFTree;
+import weka.classifiers.trees.ExtraTree;
+import weka.classifiers.trees.FT;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.LMT;
+import weka.classifiers.trees.NBTree;
+import weka.classifiers.trees.REPTree;
 import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.SimpleCart;
 import weka.core.Instances;
 
 public class WekaEvaluator {
@@ -141,17 +167,43 @@ public class WekaEvaluator {
 	public static List<MyClassifier> createClassifiers() {
 		List<MyClassifier> classifiers = new ArrayList<MyClassifier>();
 		try {
-			MyClassifier j48 = new MyJ48(new J48());
-			MyClassifier randomForest = new MyRandomForest(new RandomForest());
 			MyClassifier a1de = new MyA1DE(new A1DE());
-			MyClassifier naiveBayesMultinomial = new MyNaiveBayesMultinomial(new NaiveBayesMultinomial());
 			MyClassifier bayesNet = new MyBayesNet(new BayesNet());
+			MyClassifier bfTree = new MyBFTree(new BFTree());
+			MyClassifier chirp = new MyCHIRP(new CHIRP());
+			MyClassifier extraTree = new MyExtraTree(new ExtraTree());
+			MyClassifier functionalTree = new MyFunctionalTree(new FT());
+			MyClassifier j48 = new MyJ48(new J48());
+			MyClassifier lmt = new MyLMT(new LMT());
+			MyClassifier logistic = new MyLogistic(new Logistic());
+			MyClassifier logitBoost = new MyLogitBoost(new LogitBoost());
+			MyClassifier naiveBayesMultinomial = new MyNaiveBayesMultinomial(new NaiveBayesMultinomial());
+			MyClassifier nbTree = new MyNBTree(new NBTree());
+			MyClassifier part = new MyPART(new PART());
+			MyClassifier randomForest = new MyRandomForest(new RandomForest());
+			MyClassifier repTree = new MyREPTree(new REPTree());
+			MyClassifier simpleCart = new MySimpleCart(new SimpleCart());
+			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
+			MyClassifier zeroR = new MyZeroR(new ZeroR());
 
-//			classifiers.add(j48);
-//			classifiers.add(randomForest);
-//			classifiers.add(a1de);
-//			classifiers.add(naiveBayesMultinomial);
-//			classifiers.add(bayesNet);
+			classifiers.add(a1de);
+			classifiers.add(bayesNet);
+			classifiers.add(bfTree);
+			classifiers.add(chirp);
+			classifiers.add(extraTree);
+			classifiers.add(functionalTree);
+			classifiers.add(j48);
+			classifiers.add(lmt);
+			classifiers.add(logistic);
+			classifiers.add(logitBoost);
+			classifiers.add(naiveBayesMultinomial);
+			classifiers.add(nbTree);
+			classifiers.add(part);
+			classifiers.add(randomForest);
+			classifiers.add(repTree);
+			classifiers.add(simpleCart);
+			classifiers.add(simpleLogistic);
+			classifiers.add(zeroR);
 
 		} catch (Exception e) {
 			e.printStackTrace();
