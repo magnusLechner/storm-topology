@@ -60,6 +60,9 @@ public class WekaEvaluator {
 
 	public static final String WEKA_EVA_OUT = "src/main/evaluation/weka/successive_addition/weka_complete_overview.tsv";
 
+	public static final String FIX_TRAINING_ARFF = "src/main/resources/arff/Twitch/weka_testing/complete/Training.arff";
+	public static final String FIX_TEST_ARFF = "src/main/resources/arff/Twitch/weka_testing/complete/Test.arff";
+
 	private String trainingARFF;
 	private String testARFF;
 
@@ -186,24 +189,24 @@ public class WekaEvaluator {
 			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
 			MyClassifier zeroR = new MyZeroR(new ZeroR());
 
-			classifiers.add(a1de);
-			classifiers.add(bayesNet);
-			classifiers.add(bfTree);
-			classifiers.add(chirp);
-			classifiers.add(extraTree);
-			classifiers.add(functionalTree);
-			classifiers.add(j48);
-			classifiers.add(lmt);
-			classifiers.add(logistic);
-			classifiers.add(logitBoost);
+//			classifiers.add(a1de);
+//			classifiers.add(bayesNet);
+//			classifiers.add(bfTree);
+//			classifiers.add(chirp);
+//			classifiers.add(extraTree);
+//			classifiers.add(functionalTree);
+//			classifiers.add(j48);
+//			classifiers.add(lmt);
+//			classifiers.add(logistic);
+//			classifiers.add(logitBoost);
 			classifiers.add(naiveBayesMultinomial);
-			classifiers.add(nbTree);
-			classifiers.add(part);
-			classifiers.add(randomForest);
-			classifiers.add(repTree);
-			classifiers.add(simpleCart);
-			classifiers.add(simpleLogistic);
-			classifiers.add(zeroR);
+//			classifiers.add(nbTree);
+//			classifiers.add(part);
+//			classifiers.add(randomForest);
+//			classifiers.add(repTree);
+//			classifiers.add(simpleCart);
+//			classifiers.add(simpleLogistic);
+//			classifiers.add(zeroR);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -362,6 +365,9 @@ public class WekaEvaluator {
 						currentStat.addNeutralPrecision(eva.precision(1));
 						currentStat.addPositiveRecall(eva.recall(2));
 						currentStat.addPositivePrecision(eva.precision(2));
+						currentStat.addMicroFMeasureUnweighted(eva.unweightedMicroFmeasure());
+						currentStat.addMacroFMeasureWeighted(eva.weightedFMeasure());
+
 					}
 				}
 			}

@@ -92,7 +92,13 @@ public class SentimentDictionary {
 						LOG.info("Load WordList from: " + file);
 						Map<String, Double> wordList = FileUtils.readFile(file, separator, containsPOSTags,
 								featureScaling, minValue, maxValue);
+
+						// TODO for local testing
+//						String prefix = "src/main/resources/";
+//						serializationFile = prefix + serializationFile;
+
 						SerializationUtils.serializeMap(wordList, serializationFile);
+
 						m_wordLists.add(wordList);
 						namesWordlists.add(name);
 					}
@@ -290,20 +296,29 @@ public class SentimentDictionary {
 		return (sentenceSentiments.size() > 0) ? sentenceSentiments : null;
 	}
 
-	// public List<Map<Integer, SentimentResult>>
-	// getSentiment(List<List<TaggedToken>> tweets) {
-	// List<Map<Integer, SentimentResult>> tweetSentiments = new
-	// ArrayList<Map<Integer, SentimentResult>>();
-	// for (List<TaggedToken> tweet : tweets) {
-	// tweetSentiments.add(getSentenceSentiment(tweet));
-	// }
-	// return tweetSentiments;
-	// }
+	public void printNames() {
+		for (String name : namesWordlists) {
+			System.out.println(name);
+		}
+		for (String name : namesWordlistsWithRegex) {
+			System.out.println(name);
+		}
+	}
+
+//	public List<Map<Integer, SentimentResult>> getSentiment(List<List<TaggedToken>> tweets) {
+//		List<Map<Integer, SentimentResult>> tweetSentiments = new ArrayList<Map<Integer, SentimentResult>>();
+//		for (List<TaggedToken> tweet : tweets) {
+//			tweetSentiments.add(getSentenceSentiment(tweet));
+//		}
+//		return tweetSentiments;
+//	}
 
 	public static void main(String[] args) {
 		SentimentDictionary sentimentDictionary = SentimentDictionary.getInstance();
 
-		System.out.println(sentimentDictionary.getSentimentWordListCount());
+		System.err.println(
+				"##### NUMBER OF WORDLISTS USED: " + sentimentDictionary.getSentimentWordListCount() + " #####");
+		sentimentDictionary.printNames();
 
 		// with tagging
 		// TaggedToken man = new TaggedToken("man", "!");

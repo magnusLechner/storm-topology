@@ -692,7 +692,6 @@ public class SVMPreparation implements PreparationTool {
 		return slices;
 	}
 
-	// TODO
 	// this method is only for self-labeling evaluation. 709 must not run here.
 	// 709 should run with prepareAdditionVsEquallyDistibutedTestRun
 	public static List<List<List<MyTuple>>> prepareAdditionVsEquallyDistibutedTestAndTrainingRun(

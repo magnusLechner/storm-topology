@@ -45,5 +45,6 @@
 	<classpathentry kind="lib" path="lib/bestFirstTree.jar"/>
 	<classpathentry kind="lib" path="lib/CHIRP.jar"/>
 	<classpathentry kind="lib" path="lib/extraTrees.jar"/>
+	<classpathentry kind="lib" path="lib/LibSVM.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

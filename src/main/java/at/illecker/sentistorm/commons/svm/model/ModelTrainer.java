@@ -335,7 +335,7 @@ public abstract class ModelTrainer {
 	}
 
 	public void generateARFF(List<FeaturedTweet> featuredTweets, int featureVectorSize) {
-		String outputPath = "resources/arff/Twitch/Training.arff";
+		String outputPath = "src/main/resources/arff/Twitch/Training.arff";
 		ARFFParser.generateARFF(featuredTweets, featureVectorSize, outputPath);
 	}
 

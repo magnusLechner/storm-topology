@@ -702,18 +702,24 @@ public class SVM {
 		Double[] recall = new Double[iterations];
 		Double[] positiveRecall = new Double[iterations];
 		Double[] positivePrecision = new Double[iterations];
+		Double[] positiveFMeasure = new Double[iterations];
 		Double[] neutralRecall = new Double[iterations];
 		Double[] neutralPrecision = new Double[iterations];
+		Double[] neutralFMeasure = new Double[iterations];
 		Double[] negativeRecall = new Double[iterations];
 		Double[] negativePrecision = new Double[iterations];
-		Double[] fMeasure = new Double[iterations];
+		Double[] negativeFMeasure = new Double[iterations];
+		Double[] microFMeasure = new Double[iterations];
+		Double[] microPosNegFMeasure = new Double[iterations];
+		Double[] macroFMeasure = new Double[iterations];
+		Double[] macroPosNegFMeasure = new Double[iterations];
 
 		Map<String, Double[]> statistics = new LinkedHashMap<String, Double[]>();
 
 		SVMBox pipelineBox = null;
 
 		try {
-			for (int k = -10; k < iterations; k++) {
+			for (int k = -2; k < iterations; k++) {
 
 				// random split in test and training data
 				SVMPreparation.prepareForCrossValidation();
@@ -740,13 +746,25 @@ public class SVM {
 					cpuTime[k] = pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime();
 					recall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecall();
 					precision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecision();
+
 					positiveRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives();
 					positivePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives();
+					positiveFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getPositiveFMeasure();
+
 					neutralRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals();
 					neutralPrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals();
+					neutralFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getNeutralFMeasure();
+
 					negativeRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives();
 					negativePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives();
-					fMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getFMeasure();
+					negativeFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getNegativeFMeasure();
+
+					microFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getMicroFMeasure();
+					microPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic()
+							.getMicroPosNegFMeasure();
+					macroFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getMacroFMeasure();
+					macroPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic()
+							.getMicroPosNegFMeasure();
 
 					System.out.println("IsNegativeButPredictedAsNeutral : "
 							+ pipelineBox.getPredictor().getPredictionStatistic().getIsNegativeButPredictedAsNeutral());
@@ -783,13 +801,23 @@ public class SVM {
 		statistics.put("recall", recall);
 		statistics.put("precision", precision);
 		statistics.put("cpu-time", cpuTime);
+
 		statistics.put("positiveRecall", positiveRecall);
 		statistics.put("positivePrecision", positivePrecision);
+		statistics.put("positive FMeasure", positiveFMeasure);
+
 		statistics.put("neutralRecall", neutralRecall);
 		statistics.put("neutralPrecision", neutralPrecision);
+		statistics.put("neutral FMeasure", neutralFMeasure);
+
 		statistics.put("negativeRecall", negativeRecall);
 		statistics.put("negativePrecision", negativePrecision);
-		statistics.put("f-Measure", fMeasure);
+		statistics.put("negative FMeasure", negativeFMeasure);
+
+		statistics.put("micro f-Measure", microFMeasure);
+		statistics.put("micro pos/neg f-Measure", microPosNegFMeasure);
+		statistics.put("macro f-Measure", macroFMeasure);
+		statistics.put("macro pos/neg f-Measure", macroPosNegFMeasure);
 
 		printPipelineResults(iterations, statistics);
 	}
@@ -808,18 +836,24 @@ public class SVM {
 		List<List<Double>> macroAvgPosNegRecall = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> positiveRecall = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> positivePrecision = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> positiveFMeasure = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> neutralRecall = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> neutralPrecision = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> neutralFMeasure = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> negativeRecall = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> negativePrecision = new ArrayList<List<Double>>(iterations);
-		List<List<Double>> fMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> negativeFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> microFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> microPosNegFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> macroFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> macroPosNegFMeasure = new ArrayList<List<Double>>(iterations);
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
 		SVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -2; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
@@ -834,33 +868,53 @@ public class SVM {
 				List<Double> macroAvgPosNegPrecisionSingleRun = new ArrayList<Double>();
 				List<Double> positiveRecallSingleRun = new ArrayList<Double>();
 				List<Double> positivePrecisionSingleRun = new ArrayList<Double>();
+				List<Double> positiveFMeasureSingleRun = new ArrayList<Double>();
 				List<Double> neutralRecallSingleRun = new ArrayList<Double>();
 				List<Double> neutralPrecisionSingleRun = new ArrayList<Double>();
+				List<Double> neutralFMeasureSingleRun = new ArrayList<Double>();
 				List<Double> negativeRecallSingleRun = new ArrayList<Double>();
 				List<Double> negativePrecisionSingleRun = new ArrayList<Double>();
-				List<Double> fMeasureSingleRun = new ArrayList<Double>();
+				List<Double> negativeFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> microFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> microPosNegFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> macroFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> macroPosNegFMeasureSingleRun = new ArrayList<Double>();
 
 				if (currentIteration >= 0) {
 					trainingSize.add(trainingSizeSingleRun);
 					testSize.add(testSizeSingleRun);
 					cpuTime.add(cpuTimeSingleRun);
+
 					recall.add(recallSingleRun);
 					macroAvgRecall.add(macroAvgRecallSingleRun);
 					macroAvgPosNegRecall.add(macroAvgPosNegRecallSingleRun);
 					precision.add(precisionSingleRun);
 					macroAvgPrecision.add(macroAvgPrecisionSingleRun);
 					macroAvgPosNegPrecision.add(macroAvgPosNegPrecisionSingleRun);
+
 					positiveRecall.add(positiveRecallSingleRun);
 					positivePrecision.add(positivePrecisionSingleRun);
+					positiveFMeasure.add(positiveFMeasureSingleRun);
+
 					neutralRecall.add(neutralRecallSingleRun);
 					neutralPrecision.add(neutralPrecisionSingleRun);
+					neutralFMeasure.add(neutralFMeasureSingleRun);
+
 					negativeRecall.add(negativeRecallSingleRun);
 					negativePrecision.add(negativePrecisionSingleRun);
-					fMeasure.add(fMeasureSingleRun);
+					negativeFMeasure.add(negativeFMeasureSingleRun);
+
+					microFMeasure.add(microFMeasureSingleRun);
+					microPosNegFMeasure.add(microPosNegFMeasureSingleRun);
+					macroFMeasure.add(macroFMeasureSingleRun);
+					macroPosNegFMeasure.add(macroPosNegFMeasureSingleRun);
 				}
 
-				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
-						startTestSize);
+//				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
+//						startTestSize);
+
+				// fix training and test set TODO
+				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -888,8 +942,8 @@ public class SVM {
 						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
-						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
 
+						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
 						macroAvgRecallSingleRun
 								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
 										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals()
@@ -909,19 +963,36 @@ public class SVM {
 								.add((pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives()
 										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives())
 										/ 2);
+
 						positiveRecallSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives());
 						positivePrecisionSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives());
+						positiveFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getPositiveFMeasure());
+
 						neutralRecallSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals());
 						neutralPrecisionSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals());
+						neutralFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getNeutralFMeasure());
+
 						negativeRecallSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives());
 						negativePrecisionSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
-						fMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getFMeasure());
+						negativeFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getNegativeFMeasure());
+
+						microFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getMicroFMeasure());
+						microPosNegFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getMicroPosNegFMeasure());
+						macroFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getMacroFMeasure());
+						macroPosNegFMeasureSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getMacroPosNegFMeasure());
 
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
@@ -943,11 +1014,17 @@ public class SVM {
 		statistics.put("macro-avg. Pos/Neg precision", macroAvgPosNegPrecision);
 		statistics.put("positiveRecall", positiveRecall);
 		statistics.put("positivePrecision", positivePrecision);
+		statistics.put("positive fmeasure", positiveFMeasure);
 		statistics.put("neutralRecall", neutralRecall);
 		statistics.put("neutralPrecision", neutralPrecision);
+		statistics.put("neutral fmeasure", neutralFMeasure);
 		statistics.put("negativeRecall", negativeRecall);
 		statistics.put("negativePrecision", negativePrecision);
-		statistics.put("f-Measure", fMeasure);
+		statistics.put("negative fmeasure", negativeFMeasure);
+		statistics.put("micro f-Measure", microFMeasure);
+		statistics.put("micro pos/neg f-Measure", microPosNegFMeasure);
+		statistics.put("macro f-Measure", macroFMeasure);
+		statistics.put("macro pos/neg f-Measure", macroPosNegFMeasure);
 		statistics.put("cpu-time (for complete test-set)", cpuTime);
 		statistics.put("training-size", trainingSize);
 		statistics.put("test-size", testSize);
@@ -969,7 +1046,10 @@ public class SVM {
 					complete.add(singleRun);
 				}
 
-				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize, testSize);
+//				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize, testSize);
+
+				// Fix training and test set TODO
+				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -1010,11 +1090,11 @@ public class SVM {
 		Dataset dataset = Configuration.getDataSetTwitch();
 		// Dataset dataset = Configuration.getDataSetMyTest();
 
-		boolean parameterSearch = true;
+		boolean parameterSearch = false;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 100;
+		int iterations = 1;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1059,8 +1139,8 @@ public class SVM {
 					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka
-			// evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-			// stepList.get(j), testSizeList.get(j));
+//			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+//					stepList.get(j), testSizeList.get(j));
 		}
 		svm.EXEC_SERV.shutdown();
 
@@ -1122,14 +1202,14 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
 			// ALL DATA EVER
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
-					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
-			System.out.println("SLICES: " + slices.size());
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
+//					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+//			System.out.println("SLICES: " + slices.size());
 
-//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
-//					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
-//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(5000, 300, 300,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 		}
 		return slices;
 	}
@@ -1324,6 +1404,23 @@ public class SVM {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static List<List<List<MyTuple>>> getFixTrainAndTest() {
+		MyTuple[] training = SVMPreparation.getMyTuples(SVMPreparation.FIX_TESTING_SET_TRAINDATA);
+		MyTuple[] test = SVMPreparation.getMyTuples(SVMPreparation.FIX_TESTING_SET_TESTDATA);
+
+		List<MyTuple> trainingList = new ArrayList<MyTuple>(Arrays.asList(training));
+		List<MyTuple> testList = new ArrayList<MyTuple>(Arrays.asList(test));
+
+		List<List<MyTuple>> completeSlice = new ArrayList<List<MyTuple>>();
+		completeSlice.add(trainingList);
+		completeSlice.add(testList);
+
+		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
+		slices.add(completeSlice);
+
+		return slices;
 	}
 
 }

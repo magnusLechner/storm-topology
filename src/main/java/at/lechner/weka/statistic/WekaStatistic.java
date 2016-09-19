@@ -32,8 +32,8 @@ public class WekaStatistic {
 	private List<Double> macroPosNegRecalls = new ArrayList<Double>();
 	private List<Double> macroPosNegPrecisions = new ArrayList<Double>();
 
-	private List<Double> microFMeasure = new ArrayList<Double>();
-	private List<Double> macroFMeasure = new ArrayList<Double>();
+	private List<Double> microFMeasures = new ArrayList<Double>();
+	private List<Double> macroFMeasures = new ArrayList<Double>();
 
 	public WekaStatistic(int trainSize, int testSize, String classifierOption, String classifierName) {
 		super();
@@ -105,6 +105,14 @@ public class WekaStatistic {
 
 	public void addPositivePrecision(Double positivePrecision) {
 		positivePrecisions.add(positivePrecision);
+	}
+
+	public void addMicroFMeasureUnweighted(Double microFMeasure) {
+		microFMeasures.add(microFMeasure);
+	}
+
+	public void addMacroFMeasureWeighted(Double macroFMeasure) {
+		macroFMeasures.add(macroFMeasure);
 	}
 
 	public Double getAvgOverallRecall() {
@@ -233,37 +241,25 @@ public class WekaStatistic {
 	}
 
 	public Double getAvgMicroFMeasure() {
-		microFMeasure = new ArrayList<Double>();
-		for (int i = 0; i < overallPrecisions.size(); i++) {
-			Double numerator = 2 * overallPrecisions.get(i) * overallRecalls.get(i);
-			Double denominator = overallPrecisions.get(i) + overallRecalls.get(i);
-			microFMeasure.add(numerator / denominator);
-		}
-		return calcAvg(microFMeasure);
+		return calcAvg(microFMeasures);
 	}
 
 	public Double getStdDevMicroFMeasure() {
-		if (microFMeasure.size() == 0) {
+		if (microFMeasures.size() == 0) {
 			getAvgMicroFMeasure();
 		}
-		return calcStdDev(microFMeasure);
+		return calcStdDev(microFMeasures);
 	}
 
 	public Double getAvgMacroFMeasure() {
-		macroFMeasure = new ArrayList<Double>();
-		for (int i = 0; i < macroOverallPrecisions.size(); i++) {
-			Double numerator = 2 * macroOverallPrecisions.get(i) * macroOverallRecalls.get(i);
-			Double denominator = macroOverallPrecisions.get(i) + macroOverallRecalls.get(i);
-			microFMeasure.add(numerator / denominator);
-		}
-		return calcAvg(macroFMeasure);
+		return calcAvg(macroFMeasures);
 	}
 
 	public Double getStdDevMacroFMeasure() {
-		if (macroFMeasure.size() == 0) {
+		if (macroFMeasures.size() == 0) {
 			getAvgMacroFMeasure();
 		}
-		return calcStdDev(macroFMeasure);
+		return calcStdDev(macroFMeasures);
 	}
 
 	public Double calcAvg(List<Double> values) {
