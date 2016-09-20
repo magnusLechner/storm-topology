@@ -744,26 +744,34 @@ public class SVM {
 
 				if (k >= 0) {
 					cpuTime[k] = pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime();
-					recall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecall();
-					precision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecision();
+					recall[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOverallRecall();
+					precision[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOverallPrecision();
 
-					positiveRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives();
-					positivePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives();
-					positiveFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getPositiveFMeasure();
+					positiveRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getRecallPositive();
+					positivePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getPrecisionPositive();
+					positiveFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getPositiveFMeasure();
 
-					neutralRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals();
-					neutralPrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals();
-					neutralFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getNeutralFMeasure();
+					neutralRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallNeutral();
+					neutralPrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getPrecisionNeutral();
+					neutralFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getNeutralFMeasure();
 
-					negativeRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives();
-					negativePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives();
-					negativeFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getNegativeFMeasure();
+					negativeRecall[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getRecallNegative();
+					negativePrecision[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getPrecisionNegative();
+					negativeFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+							.getNegativeFMeasure();
 
-					microFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getMicroFMeasure();
-					microPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic()
+					microFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMicroFMeasure();
+					microPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
 							.getMicroPosNegFMeasure();
-					macroFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getMacroFMeasure();
-					macroPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic()
+					macroFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMacroFMeasure();
+					macroPosNegFMeasure[k] = pipelineBox.getPredictor().getPredictionStatistic().getCMS()
 							.getMicroPosNegFMeasure();
 
 					System.out.println("IsNegativeButPredictedAsNeutral : "
@@ -943,56 +951,62 @@ public class SVM {
 						testSizeSingleRun.add((double) dataset.getTestTweets(true).size());
 						cpuTimeSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getSumElapsedTime());
 
-						recallSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getRecall());
+						recallSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOverallRecall());
 						macroAvgRecallSingleRun
-								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives())
+								.add((pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallNegative()
+										+ pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+												.getRecallNeutral()
+										+ pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+												.getRecallPositive())
 										/ 3);
-						macroAvgPosNegRecallSingleRun
-								.add((pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives())
-										/ 2);
-						precisionSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecision());
-						macroAvgPrecisionSingleRun
-								.add((pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives())
+						macroAvgPosNegRecallSingleRun.add((pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+								.getRecallNegative()
+								+ pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallPositive())
+								/ 2);
+						precisionSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOverallPrecision());
+						macroAvgPrecisionSingleRun.add(
+								(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPrecisionNegative()
+										+ pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+												.getPrecisionNeutral()
+										+ pipelineBox.getPredictor().getPredictionStatistic().getCMS()
+												.getPrecisionPositive())
 										/ 3);
-						macroAvgPosNegPrecisionSingleRun
-								.add((pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives()
-										+ pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives())
-										/ 2);
+						macroAvgPosNegPrecisionSingleRun.add((pipelineBox.getPredictor().getPredictionStatistic()
+								.getCMS().getPrecisionNegative()
+								+ pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPrecisionPositive())
+								/ 2);
 
 						positiveRecallSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallPositives());
-						positivePrecisionSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionPositives());
-						positiveFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getPositiveFMeasure());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallPositive());
+						positivePrecisionSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPrecisionPositive());
+						positiveFMeasureSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPositiveFMeasure());
 
 						neutralRecallSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNeutrals());
-						neutralPrecisionSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNeutrals());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallNeutral());
+						neutralPrecisionSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPrecisionNeutral());
 						neutralFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getNeutralFMeasure());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getNeutralFMeasure());
 
 						negativeRecallSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getRecallNegatives());
-						negativePrecisionSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getPrecisionNegatives());
-						negativeFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getNegativeFMeasure());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getRecallNegative());
+						negativePrecisionSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getPrecisionNegative());
+						negativeFMeasureSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getNegativeFMeasure());
 
 						microFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getMicroFMeasure());
-						microPosNegFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getMicroPosNegFMeasure());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMicroFMeasure());
+						microPosNegFMeasureSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMicroPosNegFMeasure());
 						macroFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getMacroFMeasure());
-						macroPosNegFMeasureSingleRun
-								.add(pipelineBox.getPredictor().getPredictionStatistic().getMacroPosNegFMeasure());
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMacroFMeasure());
+						macroPosNegFMeasureSingleRun.add(
+								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMacroPosNegFMeasure());
 
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}

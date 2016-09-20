@@ -95,13 +95,7 @@ public abstract class Predictor {
 			// class 0: Negative, 1: Neutral, 2: Positive
 			int actualClass = featuredTweet.getScore().intValue();
 
-			incrementCount(actualClass);
-
-			if (predictedClass == actualClass) {
-				incrementCorrectCount(actualClass);
-			} else {
-				incrementIncorrectCount(actualClass);
-
+			if (predictedClass != actualClass) {
 				// compare predicted classes for wrong predicted messages
 				analyseWrongPredictions(predictedClass, actualClass);
 				// collect all messages which contain Sentiment-Twitch-Emoticons
@@ -109,7 +103,10 @@ public abstract class Predictor {
 				collectWrongPredictedMsgs(featuredTweet, actualClass, predictedClass);
 			}
 
+			predictionStatistic.getCMS().updateCM((int) predictedClass, actualClass);
+
 		} else {
+			predictionStatistic.incrementEmptyFV();
 			collectNoFeatureVectorMessages(featuredTweet);
 		}
 		return predictedClass;
@@ -171,34 +168,6 @@ public abstract class Predictor {
 	public void generateARFF(List<FeaturedTweet> featuredTweets, int featureVectorSize) {
 		String outputPath = "src/main/resources/arff/Twitch/Test.arff";
 		ARFFParser.generateARFF(featuredTweets, featureVectorSize, outputPath);
-	}
-
-	private void incrementCount(int actualClass) {
-		// class statistics
-		if (actualClass == 0)
-			predictionStatistic.incrementCountNegative();
-		if (actualClass == 1)
-			predictionStatistic.incrementCountNeutral();
-		if (actualClass == 2)
-			predictionStatistic.incrementCountPositive();
-	}
-
-	private void incrementCorrectCount(int actualClass) {
-		if (actualClass == 0)
-			predictionStatistic.incrementCountCorrectNegative();
-		if (actualClass == 1)
-			predictionStatistic.incrementCountCorrectNeutral();
-		if (actualClass == 2)
-			predictionStatistic.incrementCountCorrectPositive();
-	}
-
-	private void incrementIncorrectCount(int actualClass) {
-		if (actualClass == 0)
-			predictionStatistic.incrementCountIncorrectNegative();
-		if (actualClass == 1)
-			predictionStatistic.incrementCountIncorrectNeutral();
-		if (actualClass == 2)
-			predictionStatistic.incrementCountIncorrectPositive();
 	}
 
 	private void analyseWrongPredictions(double predictedClass, int actualClass) {

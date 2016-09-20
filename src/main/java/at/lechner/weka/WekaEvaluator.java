@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import at.lechner.util.EvaluationUtil;
@@ -28,6 +29,7 @@ import at.lechner.weka.classifier.MySimpleCart;
 import at.lechner.weka.classifier.MySimpleLogistic;
 import at.lechner.weka.classifier.MyZeroR;
 import at.lechner.weka.statistic.ClassifierWrapper;
+import at.lechner.weka.statistic.ConfusionMatrixStatistic;
 import at.lechner.weka.statistic.MyEvaluation;
 import at.lechner.weka.statistic.OptionWrapper;
 import at.lechner.weka.statistic.StatisticPrinter;
@@ -292,6 +294,10 @@ public class WekaEvaluator {
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativePrecision()) + "\t");
 					statPrint.getStdDevNegativePrecisions()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativePrecision()) + "\t");
+					statPrint.getNegativeFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativeFMeasure()) + "\t");
+					statPrint.getStdDevNegativeFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativeFMeasure()) + "\t");
 
 					statPrint.getNeutralRecalls()
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralRecall()) + "\t");
@@ -301,6 +307,10 @@ public class WekaEvaluator {
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralPrecision()) + "\t");
 					statPrint.getStdDevNeutralPrecisions()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralPrecision()) + "\t");
+					statPrint.getNeutralFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralFMeasure()) + "\t");
+					statPrint.getStdDevNeutralFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralFMeasure()) + "\t");
 
 					statPrint.getPositiveRecalls()
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositiveRecall()) + "\t");
@@ -310,6 +320,10 @@ public class WekaEvaluator {
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositivePrecision()) + "\t");
 					statPrint.getStdDevPositivePrecisions()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositivePrecision()) + "\t");
+					statPrint.getPositiveFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositiveFMeasure()) + "\t");
+					statPrint.getStdDevPositiveFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositiveFMeasure()) + "\t");
 
 					statPrint.getMicroFMeasure()
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgMicroFMeasure()) + "\t");
@@ -319,6 +333,8 @@ public class WekaEvaluator {
 							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroFMeasure()) + "\t");
 					statPrint.getStdDevMacroFMeasure()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroFMeasure()) + "\t");
+
+					// TODO pos/neg f-measure if they are correct...
 				}
 				statPrint.appendAllTab();
 			}
@@ -357,23 +373,26 @@ public class WekaEvaluator {
 						Evaluation eva = option.getEvaluation();
 						WekaStatistic currentStat = allSplits.get(k).get(i).get(j);
 
-						currentStat.addOverallRecall((100 - eva.pctUnclassified()) / 100);
-						currentStat.addOverallPrecision(eva.pctCorrect() / 100);
-						currentStat.addNegativeRecall(eva.recall(0));
-						currentStat.addNegativePrecision(eva.precision(0));
-						currentStat.addNeutralRecall(eva.recall(1));
-						currentStat.addNeutralPrecision(eva.precision(1));
-						currentStat.addPositiveRecall(eva.recall(2));
-						currentStat.addPositivePrecision(eva.precision(2));
-						currentStat.addMicroFMeasureUnweighted(eva.unweightedMicroFmeasure());
-						currentStat.addMacroFMeasureWeighted(eva.weightedFMeasure());
+						currentStat.addNotUnclassified((100 - eva.pctUnclassified()) / 100);
 
+						ConfusionMatrixStatistic cms = new ConfusionMatrixStatistic(convertCM(eva.confusionMatrix()));
+						currentStat.addCMS(cms);
 					}
 				}
 			}
 		}
 
 		return allSplits;
+	}
+
+	private static int[][] convertCM(double[][] cm) {
+		int[][] newCM = new int[cm[0].length][cm[1].length];
+		for (int i = 0; i < cm[0].length; i++) {
+			for (int j = 0; j < cm[1].length; j++) {
+				newCM[i][j] = (int) cm[i][j];
+			}
+		}
+		return newCM;
 	}
 
 	private static String completeFormat(Double d) {
@@ -386,13 +405,13 @@ public class WekaEvaluator {
 	}
 
 	public static void main(String[] args) throws Exception {
-		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/Training.arff",
-				"src/main/resources/arff/Twitch/weka_testing/Test.arff");
+		WekaEvaluator weka = new WekaEvaluator("src/main/resources/arff/Twitch/weka_testing/complete/Training.arff",
+				"src/main/resources/arff/Twitch/weka_testing/complete/Test.arff");
 
 		List<MyClassifier> classifiers = WekaEvaluator.createClassifiers();
 
-		weka.optimizeParameters(classifiers);
-		// weka.evaluateAll(classifiers);
+//		weka.optimizeParameters(classifiers);
+		weka.evaluateAll(classifiers);
 	}
 
 }

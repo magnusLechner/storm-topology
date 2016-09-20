@@ -9,6 +9,7 @@ import at.illecker.sentistorm.commons.Dataset;
 import at.illecker.sentistorm.commons.FeaturedTweet;
 import at.illecker.sentistorm.commons.Tweet;
 import at.lechner.util.StopWatchCPU;
+import at.lechner.weka.statistic.ConfusionMatrixStatistic;
 
 public class PredictionStatistic {
 
@@ -18,17 +19,10 @@ public class PredictionStatistic {
 	// statistics
 	private double elapsedTime = 0.0;
 
-	private int countPositive = 0;
-	private int countNeutral = 0;
-	private int countNegative = 0;
-
-	private int countCorrectPositive = 0;
-	private int countCorrectNeutral = 0;
-	private int countCorrectNegative = 0;
-
-	private int countIncorrectPositive = 0;
-	private int countIncorrectNeutral = 0;
-	private int countIncorrectNegative = 0;
+	// fv == 0
+	private int emptyFV = 0;
+	
+	private ConfusionMatrixStatistic cms = new ConfusionMatrixStatistic();
 
 	private int countMsgsWithTwitchEmote = 0;
 	private int countMsgsWithSentimentTwitchEmote = 0;
@@ -51,42 +45,6 @@ public class PredictionStatistic {
 
 		wrongPredictedClasses.put("isNegativeButPredictedAsPositive", 0);
 		wrongPredictedClasses.put("isNegativeButPredictedAsNeutral", 0);
-	}
-
-	public void incrementCountPositive() {
-		countPositive++;
-	}
-
-	public void incrementCountNeutral() {
-		countNeutral++;
-	}
-
-	public void incrementCountNegative() {
-		countNegative++;
-	}
-
-	public void incrementCountCorrectPositive() {
-		countCorrectPositive++;
-	}
-
-	public void incrementCountCorrectNeutral() {
-		countCorrectNeutral++;
-	}
-
-	public void incrementCountCorrectNegative() {
-		countCorrectNegative++;
-	}
-
-	public void incrementCountIncorrectPositive() {
-		countIncorrectPositive++;
-	}
-
-	public void incrementCountIncorrectNeutral() {
-		countIncorrectNeutral++;
-	}
-
-	public void incrementCountIncorrectNegative() {
-		countIncorrectNegative++;
 	}
 
 	public void incrementIsNegativeButPredictedAsNeutral() {
@@ -119,167 +77,19 @@ public class PredictionStatistic {
 				wrongPredictedClasses.get("isPositiveButPredictedAsNeutral") + 1);
 	}
 
-	public Double getRecall() {
+	public void incrementEmptyFV() {
+		emptyFV++;
+	}
+
+	public Double getPercentNotEmptyFV() {
 		if (testSize == 0) {
 			return -1.0;
 		}
-		if ((countNegative + countNeutral + countPositive) == 0) {
-			return 0.0;
-		}
-		return (double) (countNegative + countNeutral + countPositive) / testSize;
+		return (double) (testSize - emptyFV) / testSize;
 	}
-
-	public Double getPrecision() {
-		if ((countNegative + countNeutral + countPositive) == 0) {
-			return -1.0;
-		}
-		if ((countCorrectNegative + countCorrectNeutral + countCorrectPositive) == 0) {
-			return 0.0;
-		}
-		return (double) (countCorrectNegative + countCorrectNeutral + countCorrectPositive)
-				/ (countNegative + countNeutral + countPositive);
-	}
-
-	public Double getRecallPositives() {
-		if (countPositive == 0) {
-			return -1.0;
-		}
-		if (countCorrectPositive == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectPositive / countPositive;
-	}
-
-	public Double getPrecisionPositives() {
-		if ((countCorrectPositive + countIncorrectPositive) == 0) {
-			return -1.0;
-		}
-		if (countCorrectPositive == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectPositive / (countCorrectPositive + countIncorrectPositive);
-	}
-
-	public Double getRecallNeutrals() {
-		if (countNeutral == 0) {
-			return -1.0;
-		}
-		if (countCorrectNeutral == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectNeutral / countNeutral;
-	}
-
-	public Double getPrecisionNeutrals() {
-		if ((countCorrectNeutral + countIncorrectNeutral) == 0) {
-			return -1.0;
-		}
-		if (countCorrectNeutral == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectNeutral / (countCorrectNeutral + countIncorrectNeutral);
-	}
-
-	public Double getRecallNegatives() {
-		if (countNegative == 0) {
-			return -1.0;
-		}
-		if (countCorrectNegative == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectNegative / countNegative;
-	}
-
-	public Double getPrecisionNegatives() {
-		if ((countCorrectNegative + countIncorrectNegative) == 0) {
-			return -1.0;
-		}
-		if (countCorrectNegative == 0) {
-			return 0.0;
-		}
-		return (double) countCorrectNegative / (countCorrectNegative + countIncorrectNegative);
-	}
-
-	public Double getPositiveFMeasure() {
-		Double recall = getRecallPositives();
-		Double precision = getPrecisionPositives();
-		return calcFMeasure(precision, recall);
-	}
-
-	public Double getNeutralFMeasure() {
-		Double recall = getRecallNeutrals();
-		Double precision = getPrecisionNeutrals();
-		return calcFMeasure(precision, recall);
-	}
-
-	public Double getNegativeFMeasure() {
-		Double recall = getRecallNegatives();
-		Double precision = getPrecisionNegatives();
-		return calcFMeasure(precision, recall);
-	}
-
-	public Double getMacroFMeasure() {
-		Double numerator = getPositiveFMeasure() + getNeutralFMeasure() + getNegativeFMeasure();
-		Double denominator = 3.0;
-		return numerator / denominator;
-	}
-
-	public Double getMacroPosNegFMeasure() {
-		Double numerator = getPositiveFMeasure() + getNegativeFMeasure();
-		Double denominator = 2.0;
-		return numerator / denominator;
-	}
-
-	public Double getMicroFMeasure() {
-		Double precision = getPrecisionForMicroFMeasure();
-		Double recall = getRecallForMicroFMeasure();
-		return calcFMeasure(precision, recall);
-	}
-
-	public Double getPrecisionForMicroFMeasure() {
-		Double numerator = (double) countCorrectPositive + countCorrectNeutral + countCorrectNegative;
-		Double denominator = (double) (countCorrectPositive + countIncorrectPositive)
-				+ (countCorrectNeutral + countIncorrectNeutral) + (countCorrectNegative + countIncorrectNegative);
-		return check(numerator, denominator);
-	}
-
-	public Double getRecallForMicroFMeasure() {
-		Double numerator = (double) countCorrectPositive + countCorrectNeutral + countCorrectNegative;
-		Double denominator = (double) countPositive + countNeutral + countNegative;
-		return check(numerator, denominator);
-	}
-
-	public Double getMicroPosNegFMeasure() {
-		Double precision = getPrecisionForMicroPosNegFMeasure();
-		Double recall = getRecallForMicroPosNegFMeasure();
-		return calcFMeasure(precision, recall);
-	}
-
-	public Double getPrecisionForMicroPosNegFMeasure() {
-		Double numerator = (double) countCorrectPositive + countCorrectNegative;
-		Double denominator = (double) (countCorrectPositive + countIncorrectPositive)
-				+ (countCorrectNegative + countIncorrectNegative);
-		return check(numerator, denominator);
-	}
-
-	public Double getRecallForMicroPosNegFMeasure() {
-		Double numerator = (double) countCorrectPositive + countCorrectNegative;
-		Double denominator = (double) countPositive + countNegative;
-		return check(numerator, denominator);
-	}
-
-	private Double calcFMeasure(Double precision, Double recall) {
-		if (precision == 0 && recall == 0) {
-			return -1.0;
-		}
-		return (2 * precision * recall) / (precision + recall);
-	}
-
-	private Double check(Double numerator, Double denominator) {
-		if (denominator == 0) {
-			return -1.0;
-		}
-		return numerator / denominator;
+	
+	public ConfusionMatrixStatistic getCMS() {
+		return cms;
 	}
 
 	public void startNewStopWatch() {

@@ -7,33 +7,15 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 public class WekaStatistic {
 
-	StandardDeviation mathStdDev = new StandardDeviation();
+	private StandardDeviation mathStdDev = new StandardDeviation();
 
 	private int testSize;
 	private int trainSize;
 	private String classifierOption;
 	private String classifierName;
 
-	private List<Double> overallRecalls = new ArrayList<Double>();
-	private List<Double> overallPrecisions = new ArrayList<Double>();
-
-	private List<Double> negativeRecalls = new ArrayList<Double>();
-	private List<Double> negativePrecisions = new ArrayList<Double>();
-
-	private List<Double> neutralRecalls = new ArrayList<Double>();
-	private List<Double> neutralPrecisions = new ArrayList<Double>();
-
-	private List<Double> positiveRecalls = new ArrayList<Double>();
-	private List<Double> positivePrecisions = new ArrayList<Double>();
-
-	private List<Double> macroOverallRecalls = new ArrayList<Double>();
-	private List<Double> macroOverallPrecisions = new ArrayList<Double>();
-
-	private List<Double> macroPosNegRecalls = new ArrayList<Double>();
-	private List<Double> macroPosNegPrecisions = new ArrayList<Double>();
-
-	private List<Double> microFMeasures = new ArrayList<Double>();
-	private List<Double> macroFMeasures = new ArrayList<Double>();
+	private List<Double> notUnclassifiedList = new ArrayList<Double>();
+	private List<ConfusionMatrixStatistic> cmsList = new ArrayList<ConfusionMatrixStatistic>();
 
 	public WekaStatistic(int trainSize, int testSize, String classifierOption, String classifierName) {
 		super();
@@ -75,194 +57,15 @@ public class WekaStatistic {
 		return classifierName;
 	}
 
-	public void addOverallRecall(Double overallRecall) {
-		overallRecalls.add(overallRecall);
+	public void addNotUnclassified(Double notUnclassified) {
+		notUnclassifiedList.add(notUnclassified);
 	}
 
-	public void addOverallPrecision(Double overallPrecision) {
-		overallPrecisions.add(overallPrecision);
+	public void addCMS(ConfusionMatrixStatistic confusionMatrixStatistic) {
+		cmsList.add(confusionMatrixStatistic);
 	}
 
-	public void addNegativeRecall(Double negativeRecall) {
-		negativeRecalls.add(negativeRecall);
-	}
-
-	public void addNegativePrecision(Double negativePrecision) {
-		negativePrecisions.add(negativePrecision);
-	}
-
-	public void addNeutralRecall(Double neutralRecall) {
-		neutralRecalls.add(neutralRecall);
-	}
-
-	public void addNeutralPrecision(Double neutralPrecision) {
-		neutralPrecisions.add(neutralPrecision);
-	}
-
-	public void addPositiveRecall(Double positiveRecall) {
-		positiveRecalls.add(positiveRecall);
-	}
-
-	public void addPositivePrecision(Double positivePrecision) {
-		positivePrecisions.add(positivePrecision);
-	}
-
-	public void addMicroFMeasureUnweighted(Double microFMeasure) {
-		microFMeasures.add(microFMeasure);
-	}
-
-	public void addMacroFMeasureWeighted(Double macroFMeasure) {
-		macroFMeasures.add(macroFMeasure);
-	}
-
-	public Double getAvgOverallRecall() {
-		return calcAvg(overallRecalls);
-	}
-
-	public Double getStdDevOverallRecall() {
-		return calcStdDev(overallRecalls);
-	}
-
-	public Double getAvgOverallPrecision() {
-		return calcAvg(overallPrecisions);
-	}
-
-	public Double getStdDevOverallPrecision() {
-		return calcStdDev(overallPrecisions);
-	}
-
-	public Double getAvgNegativeRecall() {
-		return calcAvg(negativeRecalls);
-	}
-
-	public Double getStdDevNegativeRecall() {
-		return calcStdDev(negativeRecalls);
-	}
-
-	public Double getAvgNegativePrecision() {
-		return calcAvg(negativePrecisions);
-	}
-
-	public Double getStdDevNegativePrecision() {
-		return calcStdDev(negativePrecisions);
-	}
-
-	public Double getAvgNeutralRecall() {
-		return calcAvg(neutralRecalls);
-	}
-
-	public Double getStdDevNeutralRecall() {
-		return calcStdDev(neutralRecalls);
-	}
-
-	public Double getAvgNeutralPrecision() {
-		return calcAvg(neutralPrecisions);
-	}
-
-	public Double getStdDevNeutralPrecision() {
-		return calcStdDev(neutralPrecisions);
-	}
-
-	public Double getAvgPositiveRecall() {
-		return calcAvg(positiveRecalls);
-	}
-
-	public Double getStdDevPositiveRecall() {
-		return calcStdDev(positiveRecalls);
-	}
-
-	public Double getAvgPositivePrecision() {
-		return calcAvg(positivePrecisions);
-	}
-
-	public Double getStdDevPositivePrecision() {
-		return calcStdDev(positivePrecisions);
-	}
-
-	public Double getAvgMacroOverallRecall() {
-		macroOverallRecalls = new ArrayList<Double>();
-		for (int i = 0; i < negativeRecalls.size(); i++) {
-			macroOverallRecalls.add((negativeRecalls.get(i) + neutralRecalls.get(i) + positiveRecalls.get(i)) / 3);
-		}
-		return calcAvg(macroOverallRecalls);
-	}
-
-	public Double getStdDevMacroOverallRecall() {
-		if (macroOverallRecalls.size() == 0) {
-			getAvgMacroOverallRecall();
-		}
-		return calcStdDev(macroOverallRecalls);
-	}
-
-	public Double getAvgMacroOverallPrecision() {
-		macroOverallPrecisions = new ArrayList<Double>();
-		for (int i = 0; i < negativePrecisions.size(); i++) {
-			macroOverallPrecisions
-					.add((negativePrecisions.get(i) + neutralPrecisions.get(i) + positivePrecisions.get(i)) / 3);
-		}
-		return calcAvg(macroOverallPrecisions);
-	}
-
-	public Double getStdDevMacroOverallPrecision() {
-		if (macroOverallPrecisions.size() == 0) {
-			getAvgMacroOverallPrecision();
-		}
-		return calcStdDev(macroOverallPrecisions);
-	}
-
-	public Double getAvgMacroPosNegRecall() {
-		macroPosNegRecalls = new ArrayList<Double>();
-		for (int i = 0; i < negativeRecalls.size(); i++) {
-			macroPosNegRecalls.add((negativeRecalls.get(i) + positiveRecalls.get(i)) / 2);
-		}
-		return calcAvg(macroPosNegRecalls);
-	}
-
-	public Double getStdDevMacroPosNegRecall() {
-		if (macroPosNegRecalls.size() == 0) {
-			getAvgMacroPosNegRecall();
-		}
-		return calcStdDev(macroPosNegRecalls);
-	}
-
-	public Double getAvgMacroPosNegPrecision() {
-		macroPosNegPrecisions = new ArrayList<Double>();
-		for (int i = 0; i < negativePrecisions.size(); i++) {
-			macroPosNegPrecisions.add((negativePrecisions.get(i) + positivePrecisions.get(i)) / 2);
-		}
-		return calcAvg(macroPosNegPrecisions);
-	}
-
-	public Double getStdDevMacroPosNegPrecision() {
-		if (macroPosNegPrecisions.size() == 0) {
-			getAvgMacroPosNegPrecision();
-		}
-		return calcStdDev(macroPosNegPrecisions);
-	}
-
-	public Double getAvgMicroFMeasure() {
-		return calcAvg(microFMeasures);
-	}
-
-	public Double getStdDevMicroFMeasure() {
-		if (microFMeasures.size() == 0) {
-			getAvgMicroFMeasure();
-		}
-		return calcStdDev(microFMeasures);
-	}
-
-	public Double getAvgMacroFMeasure() {
-		return calcAvg(macroFMeasures);
-	}
-
-	public Double getStdDevMacroFMeasure() {
-		if (macroFMeasures.size() == 0) {
-			getAvgMacroFMeasure();
-		}
-		return calcStdDev(macroFMeasures);
-	}
-
-	public Double calcAvg(List<Double> values) {
+	private Double calcAvg(List<Double> values) {
 		Double avg = 0.0;
 		for (Double value : values) {
 			avg += value;
@@ -271,7 +74,7 @@ public class WekaStatistic {
 	}
 
 	private Double calcStdDev(List<Double> values) {
-		if (overallRecalls.size() == 0) {
+		if (values.size() == 0) {
 			return null;
 		}
 		return mathStdDev.evaluate(toArray(values));
@@ -283,6 +86,297 @@ public class WekaStatistic {
 			result[i] = values.get(i);
 		}
 		return result;
+	}
+
+	// ##### calculations #####
+
+	// Micro Overall Recall
+	public Double getAvgOverallRecall() {
+		return calcAvg(getOverallRecalls());
+	}
+
+	public Double getStdDevOverallRecall() {
+		return calcStdDev(getOverallRecalls());
+	}
+
+	private List<Double> getOverallRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getOverallRecall());
+		}
+		return values;
+	}
+
+	// Macro Overall Recall
+	public Double getAvgMacroOverallRecall() {
+		return calcAvg(getMacroOverallRecalls());
+	}
+
+	public Double getStdDevMacroOverallRecall() {
+		return calcStdDev(getMacroOverallRecalls());
+	}
+
+	private List<Double> getMacroOverallRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroOverallRecalls());
+		}
+		return values;
+	}
+
+	// Macro Pos/Neg Recall
+	public Double getAvgMacroPosNegRecall() {
+		return calcAvg(getMacroPosNegRecalls());
+	}
+
+	public Double getStdDevMacroPosNegRecall() {
+		return calcStdDev(getMacroPosNegRecalls());
+	}
+
+	private List<Double> getMacroPosNegRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroPosNegRecalls());
+		}
+		return values;
+	}
+
+	// Micro Overall Precision
+	public Double getAvgOverallPrecision() {
+		return calcAvg(getOverallPrecisions());
+	}
+
+	public Double getStdDevOverallPrecision() {
+		return calcStdDev(getOverallPrecisions());
+	}
+
+	private List<Double> getOverallPrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getOverallPrecision());
+		}
+		return values;
+	}
+
+	// Macro Overall Precision
+	public Double getAvgMacroOverallPrecision() {
+		return calcAvg(getMacroOverallPrecisions());
+	}
+
+	public Double getStdDevMacroOverallPrecision() {
+		return calcStdDev(getMacroOverallPrecisions());
+	}
+
+	private List<Double> getMacroOverallPrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroOverallPrecision());
+		}
+		return values;
+	}
+
+	// Macro Pos/Neg Precision
+	public Double getAvgMacroPosNegPrecision() {
+		return calcAvg(getMacroPosNegPrecisions());
+	}
+
+	public Double getStdDevMacroPosNegPrecision() {
+		return calcStdDev(getMacroPosNegPrecisions());
+	}
+
+	private List<Double> getMacroPosNegPrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroPosNegPrecisions());
+		}
+		return values;
+	}
+
+	// Negative Recall
+	public Double getAvgNegativeRecall() {
+		return calcAvg(getNegativeRecalls());
+	}
+
+	public Double getStdDevNegativeRecall() {
+		return calcStdDev(getNegativeRecalls());
+	}
+
+	private List<Double> getNegativeRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getRecallNegative());
+		}
+		return values;
+	}
+
+	// Negative Precision
+	public Double getAvgNegativePrecision() {
+		return calcAvg(getNegativePrecisions());
+	}
+
+	public Double getStdDevNegativePrecision() {
+		return calcStdDev(getNegativePrecisions());
+	}
+
+	private List<Double> getNegativePrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPrecisionNegative());
+		}
+		return values;
+	}
+
+	// Negative F-Measure
+	public Double getAvgNegativeFMeasure() {
+		return calcAvg(getNegativeFMeasure());
+	}
+
+	public Double getStdDevNegativeFMeasure() {
+		return calcStdDev(getNegativeFMeasure());
+	}
+
+	private List<Double> getNegativeFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNegativeFMeasure());
+		}
+		return values;
+	}
+
+	// Neutral Recall
+	public Double getAvgNeutralRecall() {
+		return calcAvg(getNeutralRecalls());
+	}
+
+	public Double getStdDevNeutralRecall() {
+		return calcStdDev(getNeutralRecalls());
+	}
+
+	private List<Double> getNeutralRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getRecallNeutral());
+		}
+		return values;
+	}
+
+	// Neutral Precision
+	public Double getAvgNeutralPrecision() {
+		return calcAvg(getNeutralPrecisions());
+	}
+
+	public Double getStdDevNeutralPrecision() {
+		return calcStdDev(getNeutralPrecisions());
+	}
+
+	private List<Double> getNeutralPrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPrecisionNeutral());
+		}
+		return values;
+	}
+
+	// Neutral F-Measure
+	public Double getAvgNeutralFMeasure() {
+		return calcAvg(getNeutralFMeasure());
+	}
+
+	public Double getStdDevNeutralFMeasure() {
+		return calcStdDev(getNeutralFMeasure());
+	}
+
+	private List<Double> getNeutralFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNeutralFMeasure());
+		}
+		return values;
+	}
+
+	// Positive Recall
+	public Double getAvgPositiveRecall() {
+		return calcAvg(getPositiveRecalls());
+	}
+
+	public Double getStdDevPositiveRecall() {
+		return calcStdDev(getPositiveRecalls());
+	}
+
+	private List<Double> getPositiveRecalls() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getRecallPositive());
+		}
+		return values;
+	}
+
+	// Positive Precision
+	public Double getAvgPositivePrecision() {
+		return calcAvg(getPositivePrecisions());
+	}
+
+	public Double getStdDevPositivePrecision() {
+		return calcStdDev(getPositivePrecisions());
+	}
+
+	private List<Double> getPositivePrecisions() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPrecisionPositive());
+		}
+		return values;
+	}
+
+	// Positive F-Measure
+	public Double getAvgPositiveFMeasure() {
+		return calcAvg(getPositiveFMeasure());
+	}
+
+	public Double getStdDevPositiveFMeasure() {
+		return calcStdDev(getPositiveFMeasure());
+	}
+
+	private List<Double> getPositiveFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPositiveFMeasure());
+		}
+		return values;
+	}
+
+	// Micro F-Measure
+	public Double getAvgMicroFMeasure() {
+		return calcAvg(getMicroFMeasure());
+	}
+
+	public Double getStdDevMicroFMeasure() {
+		return calcAvg(getMicroFMeasure());
+	}
+
+	private List<Double> getMicroFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMicroFMeasure());
+		}
+		return values;
+	}
+
+	// Macro F-Measure
+	public Double getAvgMacroFMeasure() {
+		return calcAvg(getMacroFMeasure());
+	}
+
+	public Double getStdDevMacroFMeasure() {
+		return calcAvg(getMacroFMeasure());
+	}
+
+	private List<Double> getMacroFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroFMeasure());
+		}
+		return values;
 	}
 
 }
