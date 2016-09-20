@@ -50,6 +50,11 @@ public class StatisticPrinter {
 	private StringBuilder macroFMeasure = new StringBuilder();
 	private StringBuilder stdDevMacroFMeasure = new StringBuilder();
 
+	private StringBuilder microPosNegFMeasure = new StringBuilder();
+	private StringBuilder stdDevMicroPosNegFMeasure = new StringBuilder();
+	private StringBuilder macroPosNegFMeasure = new StringBuilder();
+	private StringBuilder stdDevMacroPosNegFMeasure = new StringBuilder();
+
 	public StatisticPrinter() {
 		allList.add(classifierName);
 		allList.add(optionName);
@@ -93,6 +98,11 @@ public class StatisticPrinter {
 		allList.add(stdDevMicroFMeasure);
 		allList.add(macroFMeasure);
 		allList.add(stdDevMacroFMeasure);
+
+		allList.add(microPosNegFMeasure);
+		allList.add(stdDevMicroPosNegFMeasure);
+		allList.add(macroPosNegFMeasure);
+		allList.add(stdDevMacroPosNegFMeasure);
 	}
 
 	public void appendAllTab() {
@@ -157,6 +167,11 @@ public class StatisticPrinter {
 		stdDevMicroFMeasure.append("StdDev Micro F-Measure: ").append("\t");
 		macroFMeasure.append("Macro F-Measure: ").append("\t");
 		stdDevMacroFMeasure.append("StdDev Macro F-Measure: ").append("\t");
+
+		microPosNegFMeasure.append("Micro PosNeg F-Measure: ").append("\t");
+		stdDevMicroPosNegFMeasure.append("StdDev Micro PosNeg F-Measure: ").append("\t");
+		macroPosNegFMeasure.append("Macro PosNeg F-Measure: ").append("\t");
+		stdDevMacroPosNegFMeasure.append("StdDev Macro PosNeg F-Measure: ").append("\t");
 	}
 
 	public List<StringBuilder> getAllList() {
@@ -307,4 +322,19 @@ public class StatisticPrinter {
 		return stdDevMacroFMeasure;
 	}
 
+	public StringBuilder getMicroPosNegFMeasure() {
+		return microFMeasure;
+	}
+
+	public StringBuilder getStdDevMicroPosNegFMeasure() {
+		return stdDevMicroFMeasure;
+	}
+
+	public StringBuilder getMacroPosNegFMeasure() {
+		return macroFMeasure;
+	}
+
+	public StringBuilder getStdDevMacroPosNegFMeasure() {
+		return stdDevMacroFMeasure;
+	}
 }

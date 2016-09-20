@@ -379,4 +379,38 @@ public class WekaStatistic {
 		return values;
 	}
 
+	// Micro Pos/Neg F-Measure
+	public Double getAvgMicroPosNegFMeasure() {
+		return calcAvg(getMicroPosNegFMeasure());
+	}
+
+	public Double getStdDevMicroPosNegFMeasure() {
+		return calcAvg(getMicroPosNegFMeasure());
+	}
+
+	private List<Double> getMicroPosNegFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMicroPosNegFMeasure());
+		}
+		return values;
+	}
+
+	// Macro Pos/Neg F-Measure
+	public Double getAvgMacroPosNegFMeasure() {
+		return calcAvg(getMacroPosNegFMeasure());
+	}
+
+	public Double getStdDevMacroPosNegFMeasure() {
+		return calcAvg(getMacroPosNegFMeasure());
+	}
+
+	private List<Double> getMacroPosNegFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getMacroPosNegFMeasure());
+		}
+		return values;
+	}
+
 }

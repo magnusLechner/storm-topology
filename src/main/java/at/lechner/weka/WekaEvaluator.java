@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import at.lechner.util.EvaluationUtil;
@@ -334,7 +333,14 @@ public class WekaEvaluator {
 					statPrint.getStdDevMacroFMeasure()
 							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroFMeasure()) + "\t");
 
-					// TODO pos/neg f-measure if they are correct...
+					statPrint.getMicroPosNegFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMicroPosNegFMeasure()) + "\t");
+					statPrint.getStdDevMicroPosNegFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMicroPosNegFMeasure()) + "\t");
+					statPrint.getMacroPosNegFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegFMeasure()) + "\t");
+					statPrint.getStdDevMacroPosNegFMeasure()
+							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegFMeasure()) + "\t");
 				}
 				statPrint.appendAllTab();
 			}
