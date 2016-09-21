@@ -102,8 +102,9 @@ public abstract class Predictor {
 				// but are wrong predicted
 				collectWrongPredictedMsgs(featuredTweet, actualClass, predictedClass);
 			}
-
-			predictionStatistic.getCMS().updateCM((int) predictedClass, actualClass);
+			
+			// thats the important step - updating the confusion matrix
+			predictionStatistic.getCMS().updateCM((int) actualClass, (int) predictedClass);
 
 		} else {
 			predictionStatistic.incrementEmptyFV();

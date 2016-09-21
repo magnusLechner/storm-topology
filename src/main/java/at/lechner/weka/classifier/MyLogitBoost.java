@@ -27,9 +27,9 @@ public class MyLogitBoost extends MyClassifier {
 	public void addTestOptions() {
 		try {
 			String[] options1 = Utils.splitOptions(
-					"-I 80 -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size");
+					"-I 80 -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1");
 			String[] options2 = Utils.splitOptions(
-					"-I 100 -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size");
+					"-I 100 -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1");
 
 			addOption(options1);
 			addOption(options2);

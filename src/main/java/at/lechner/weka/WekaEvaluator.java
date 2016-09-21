@@ -190,24 +190,24 @@ public class WekaEvaluator {
 			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
 			MyClassifier zeroR = new MyZeroR(new ZeroR());
 
-//			classifiers.add(a1de);
-//			classifiers.add(bayesNet);
-//			classifiers.add(bfTree);
-//			classifiers.add(chirp);
-//			classifiers.add(extraTree);
-//			classifiers.add(functionalTree);
-//			classifiers.add(j48);
-//			classifiers.add(lmt);
-//			classifiers.add(logistic);
-//			classifiers.add(logitBoost);
+			classifiers.add(a1de);
+			classifiers.add(bayesNet);
+			classifiers.add(bfTree);
+			classifiers.add(chirp);
+			classifiers.add(extraTree);
+			classifiers.add(functionalTree);
+			classifiers.add(j48);
+			classifiers.add(lmt);
+			classifiers.add(logistic);
+			classifiers.add(logitBoost);
 			classifiers.add(naiveBayesMultinomial);
-//			classifiers.add(nbTree);
-//			classifiers.add(part);
-//			classifiers.add(randomForest);
-//			classifiers.add(repTree);
-//			classifiers.add(simpleCart);
-//			classifiers.add(simpleLogistic);
-//			classifiers.add(zeroR);
+			classifiers.add(nbTree);
+			classifiers.add(part);
+			classifiers.add(randomForest);
+			classifiers.add(repTree);
+			classifiers.add(simpleCart);
+			classifiers.add(simpleLogistic);
+			classifiers.add(zeroR);
 
 		} catch (Exception e) {
 			e.printStackTrace();

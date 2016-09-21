@@ -351,7 +351,7 @@ public class WekaStatistic {
 	}
 
 	public Double getStdDevMicroFMeasure() {
-		return calcAvg(getMicroFMeasure());
+		return calcStdDev(getMicroFMeasure());
 	}
 
 	private List<Double> getMicroFMeasure() {
@@ -368,7 +368,7 @@ public class WekaStatistic {
 	}
 
 	public Double getStdDevMacroFMeasure() {
-		return calcAvg(getMacroFMeasure());
+		return calcStdDev(getMacroFMeasure());
 	}
 
 	private List<Double> getMacroFMeasure() {
@@ -385,7 +385,7 @@ public class WekaStatistic {
 	}
 
 	public Double getStdDevMicroPosNegFMeasure() {
-		return calcAvg(getMicroPosNegFMeasure());
+		return calcStdDev(getMicroPosNegFMeasure());
 	}
 
 	private List<Double> getMicroPosNegFMeasure() {
@@ -402,7 +402,7 @@ public class WekaStatistic {
 	}
 
 	public Double getStdDevMacroPosNegFMeasure() {
-		return calcAvg(getMacroPosNegFMeasure());
+		return calcStdDev(getMacroPosNegFMeasure());
 	}
 
 	private List<Double> getMacroPosNegFMeasure() {

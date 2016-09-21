@@ -15,9 +15,9 @@ public class ConfusionMatrixStatistic {
 	public int[][] getCM() {
 		return cm;
 	}
-
-	public void updateCM(int predictedClass, int actualClass) {
-		cm[predictedClass][actualClass] = cm[predictedClass][actualClass] + 1;
+	
+	public void updateCM(int actualClass, int predictedClass) {
+		cm[actualClass][predictedClass] = cm[actualClass][predictedClass] + 1;
 	}
 	
 	public Double getOverallRecall() {

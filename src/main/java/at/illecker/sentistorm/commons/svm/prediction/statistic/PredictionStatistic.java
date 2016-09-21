@@ -21,7 +21,7 @@ public class PredictionStatistic {
 
 	// fv == 0
 	private int emptyFV = 0;
-	
+
 	private ConfusionMatrixStatistic cms = new ConfusionMatrixStatistic();
 
 	private int countMsgsWithTwitchEmote = 0;
@@ -81,13 +81,17 @@ public class PredictionStatistic {
 		emptyFV++;
 	}
 
+	public int getCountEmptyFV() {
+		return emptyFV;
+	}
+
 	public Double getPercentNotEmptyFV() {
 		if (testSize == 0) {
 			return -1.0;
 		}
 		return (double) (testSize - emptyFV) / testSize;
 	}
-	
+
 	public ConfusionMatrixStatistic getCMS() {
 		return cms;
 	}

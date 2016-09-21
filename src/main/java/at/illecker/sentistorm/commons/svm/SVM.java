@@ -918,11 +918,11 @@ public class SVM {
 					macroPosNegFMeasure.add(macroPosNegFMeasureSingleRun);
 				}
 
-//				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
-//						startTestSize);
+				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
+						startTestSize);
 
 				// fix training and test set TODO
-				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
+//				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -945,6 +945,11 @@ public class SVM {
 					pipelineBox.getPredictor().getPredictionStatistic().startNewStopWatch();
 					pipelineBox.predict(dataset.getTestTweets(true));
 					pipelineBox.getPredictor().getPredictionStatistic().elapsedTime();
+
+//					System.out.println(
+//							"Empty FV: " + pipelineBox.getPredictor().getPredictionStatistic().getCountEmptyFV());
+//					System.out.println("CM: " + Arrays
+//							.deepToString(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getCM()));
 
 					if (currentIteration >= 0) {
 						trainingSizeSingleRun.add((double) dataset.getTrainTweets(false, true).size());
@@ -1060,10 +1065,10 @@ public class SVM {
 					complete.add(singleRun);
 				}
 
-//				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize, testSize);
+				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize, testSize);
 
 				// Fix training and test set TODO
-				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
+//				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
 				while (iter.hasNext()) {
@@ -1108,7 +1113,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 2;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1149,12 +1154,12 @@ public class SVM {
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
-					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+//			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+//					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka
-//			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-//					stepList.get(j), testSizeList.get(j));
+			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+					stepList.get(j), testSizeList.get(j));
 		}
 		svm.EXEC_SERV.shutdown();
 
@@ -1221,7 +1226,7 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 //			System.out.println("SLICES: " + slices.size());
 
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(5000, 300, 300,
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 		}
