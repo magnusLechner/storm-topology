@@ -289,7 +289,7 @@ public class Preprocessor {
 		// tweets.add(new Tweet(0L, "(6ft.10) 2),Chap 85.3%(6513 (att@m80.com)
 		// awayDAWN.com www.asdf.org"));
 		tweets.add(new Tweet(0L, "LOL LUL WutFace Dafuk 4Head Kreygasm FunRun FuzzyOtterOO GingerPower HeyGuys"));
-		tweets.add(new Tweet(0L, "wutface WutFace CoreJJ 1379"));
+		tweets.add(new Tweet(0L, "@Nonoobspleasy wutface WutFace CoreJJ 1379"));
 
 		// Tokenize
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);

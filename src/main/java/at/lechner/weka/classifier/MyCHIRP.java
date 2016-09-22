@@ -26,7 +26,7 @@ public class MyCHIRP extends MyClassifier {
 
 	public void addTestOptions() {
 		try {
-			String[] options1 = Utils.splitOptions("-V 100 -S 1");
+			String[] options1 = Utils.splitOptions("-V 25 -S 1");
 
 			addOption(options1);
 

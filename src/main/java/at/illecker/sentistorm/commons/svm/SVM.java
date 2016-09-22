@@ -861,7 +861,7 @@ public class SVM {
 		SVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = -1; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
@@ -1113,7 +1113,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 2;
+		int iterations = 100;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1214,8 +1214,8 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-			// EQUALLY DISTRIBUTED TRAININGSDATA
-//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(200, 200, 300,
+			// EQUALLY DISTRIBUTED TRAININGSDATA - 200/200/300
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(5000, 200, 300,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
@@ -1226,6 +1226,7 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 //			System.out.println("SLICES: " + slices.size());
 
+			// EQUALLY DISTRIBUTED TRAININGSDATA - 300/300/300
 			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
