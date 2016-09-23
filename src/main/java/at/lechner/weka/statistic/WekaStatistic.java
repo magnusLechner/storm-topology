@@ -413,4 +413,140 @@ public class WekaStatistic {
 		return values;
 	}
 
+	// AveragedAccuracy
+	public Double getAvgAverageAccuracy() {
+		return calcAvg(getAverageAccuracy());
+	}
+
+	public Double getStdDevAverageAccuracy() {
+		return calcStdDev(getAverageAccuracy());
+	}
+
+	private List<Double> getAverageAccuracy() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getAverageAccuracy());
+		}
+		return values;
+	}
+
+	// NegativeAccuracy
+	public Double getAvgNegativeAccuracy() {
+		return calcAvg(getNegativeAccuracy());
+	}
+
+	public Double getStdDevNegativeAccuracy() {
+		return calcStdDev(getNegativeAccuracy());
+	}
+
+	private List<Double> getNegativeAccuracy() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNegativeAccuracy());
+		}
+		return values;
+	}
+
+	// NeutralAccuracy
+	public Double getAvgNeutralAccuracy() {
+		return calcAvg(getNeutralAccuracy());
+	}
+
+	public Double getStdDevNeutralAccuracy() {
+		return calcStdDev(getNeutralAccuracy());
+	}
+
+	private List<Double> getNeutralAccuracy() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNeutralAccuracy());
+		}
+		return values;
+	}
+
+	// PositiveAccuracy
+	public Double getAvgPositiveAccuracy() {
+		return calcAvg(getPositiveAccuracy());
+	}
+
+	public Double getStdDevPositiveAccuracy() {
+		return calcStdDev(getPositiveAccuracy());
+	}
+
+	private List<Double> getPositiveAccuracy() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPositiveAccuracy());
+		}
+		return values;
+	}
+
+	// Error rate
+	public Double getAvgErrorRate() {
+		return calcAvg(getErrorRate());
+	}
+
+	public Double getStdDevErrorRate() {
+		return calcStdDev(getErrorRate());
+	}
+
+	private List<Double> getErrorRate() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getErrorRate());
+		}
+		return values;
+	}
+
+	// Negative Error rate
+	public Double getAvgNegativeErrorRate() {
+		return calcAvg(getNegativeErrorRate());
+	}
+
+	public Double getStdDevNegativeErrorRate() {
+		return calcStdDev(getNegativeErrorRate());
+	}
+
+	private List<Double> getNegativeErrorRate() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNegativeErrorRate());
+		}
+		return values;
+	}
+
+	// Neutral Error rate
+	public Double getAvgNeutralErrorRate() {
+		return calcAvg(getNeutralErrorRate());
+	}
+
+	public Double getStdDevNeutralErrorRate() {
+		return calcStdDev(getNeutralErrorRate());
+	}
+
+	private List<Double> getNeutralErrorRate() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getNeutralErrorRate());
+		}
+		return values;
+	}
+
+	// Positive Error rate
+	public Double getAvgPositiveErrorRate() {
+		return calcAvg(getPositiveErrorRate());
+	}
+
+	public Double getStdDevPositiveErrorRate() {
+		return calcStdDev(getPositiveErrorRate());
+	}
+
+	private List<Double> getPositiveErrorRate() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getPositiveErrorRate());
+		}
+		return values;
+	}
+
 }

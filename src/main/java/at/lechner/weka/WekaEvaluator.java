@@ -26,7 +26,6 @@ import at.lechner.weka.classifier.MyREPTree;
 import at.lechner.weka.classifier.MyRandomForest;
 import at.lechner.weka.classifier.MySimpleCart;
 import at.lechner.weka.classifier.MySimpleLogistic;
-import at.lechner.weka.classifier.MyZeroR;
 import at.lechner.weka.statistic.ClassifierWrapper;
 import at.lechner.weka.statistic.ConfusionMatrixStatistic;
 import at.lechner.weka.statistic.MyEvaluation;
@@ -42,7 +41,6 @@ import weka.classifiers.functions.SimpleLogistic;
 import weka.classifiers.meta.LogitBoost;
 import weka.classifiers.misc.CHIRP;
 import weka.classifiers.rules.PART;
-import weka.classifiers.rules.ZeroR;
 import weka.classifiers.trees.BFTree;
 import weka.classifiers.trees.ExtraTree;
 import weka.classifiers.trees.FT;
@@ -115,13 +113,13 @@ public class WekaEvaluator {
 		for (int i = 0; i < classifiers.size(); i++) {
 
 			long startTime = System.currentTimeMillis();
-			
+
 			System.out.println("Current Classifier: " + classifiers.get(i).getName() + "  Different Options: "
 					+ classifiers.get(i).getOptionsListSize());
 
 			List<MyEvaluation> classifierEvaluations = classify(classifiers.get(i), trainingInstance, testInstance);
 			allEvaluations.add(classifierEvaluations);
-			
+
 			long stopTime = System.currentTimeMillis();
 			System.out.println("Execution Time: " + ((stopTime - startTime) / 1000) + " sec.");
 		}
@@ -193,16 +191,14 @@ public class WekaEvaluator {
 			MyClassifier repTree = new MyREPTree(new REPTree());
 			MyClassifier simpleCart = new MySimpleCart(new SimpleCart());
 			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
-			MyClassifier zeroR = new MyZeroR(new ZeroR());
 
 //			classifiers.add(a1de);
 			classifiers.add(bayesNet);
 //			classifiers.add(bfTree);
-			classifiers.add(chirp);
+//			classifiers.add(chirp);
 			classifiers.add(extraTree);
 //			classifiers.add(functionalTree);
-			classifiers.add(j48);
-			
+//			classifiers.add(j48);
 //			classifiers.add(lmt);
 //			classifiers.add(logistic);
 //			classifiers.add(logitBoost);
@@ -213,7 +209,6 @@ public class WekaEvaluator {
 //			classifiers.add(repTree);
 //			classifiers.add(simpleCart);
 //			classifiers.add(simpleLogistic);
-			classifiers.add(zeroR);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -262,91 +257,9 @@ public class WekaEvaluator {
 				statPrint.appendStandardNames();
 
 				for (int i = 0; i < optionWrapper.getSplits().size(); i++) {
-					statPrint.getClassifierName().append("\t");
-					statPrint.getOptionName().append(String.valueOf(optionWrapper.getSplit(i).getTrainSize()) + "\t");
 
-					statPrint.getOverallRecall()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgOverallRecall()) + "\t");
-					statPrint.getStdDevOverallRecall()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevOverallRecall()) + "\t");
-					statPrint.getMacroOverallRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroOverallRecall()) + "\t");
-					statPrint.getStdDevMacroOverallRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroOverallRecall()) + "\t");
-					statPrint.getMacroPosNegRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegRecall()) + "\t");
-					statPrint.getStdDevMacroPosNegRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegRecall()) + "\t");
+					addToStatPrint(optionWrapper.getSplit(i), statPrint);
 
-					statPrint.getOverallPrecision()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgOverallPrecision()) + "\t");
-					statPrint.getStdDevOverallPrecision()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevOverallPrecision()) + "\t");
-					statPrint.getMacroOverallPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroOverallPrecision()) + "\t");
-					statPrint.getStdDevMacroOverallPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroOverallPrecision()) + "\t");
-					statPrint.getMacroPosNegPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegPrecision()) + "\t");
-					statPrint.getStdDevMacroPosNegPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegPrecision()) + "\t");
-
-					statPrint.getNegativeRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativeRecall()) + "\t");
-					statPrint.getStdDevNegativeRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativeRecall()) + "\t");
-					statPrint.getNegativePrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativePrecision()) + "\t");
-					statPrint.getStdDevNegativePrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativePrecision()) + "\t");
-					statPrint.getNegativeFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNegativeFMeasure()) + "\t");
-					statPrint.getStdDevNegativeFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNegativeFMeasure()) + "\t");
-
-					statPrint.getNeutralRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralRecall()) + "\t");
-					statPrint.getStdDevNeutralRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralRecall()) + "\t");
-					statPrint.getNeutralPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralPrecision()) + "\t");
-					statPrint.getStdDevNeutralPrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralPrecision()) + "\t");
-					statPrint.getNeutralFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgNeutralFMeasure()) + "\t");
-					statPrint.getStdDevNeutralFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevNeutralFMeasure()) + "\t");
-
-					statPrint.getPositiveRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositiveRecall()) + "\t");
-					statPrint.getStdDevPositiveRecalls()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositiveRecall()) + "\t");
-					statPrint.getPositivePrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositivePrecision()) + "\t");
-					statPrint.getStdDevPositivePrecisions()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositivePrecision()) + "\t");
-					statPrint.getPositiveFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgPositiveFMeasure()) + "\t");
-					statPrint.getStdDevPositiveFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevPositiveFMeasure()) + "\t");
-
-					statPrint.getMicroFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMicroFMeasure()) + "\t");
-					statPrint.getStdDevMicroFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMicroFMeasure()) + "\t");
-					statPrint.getMacroFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroFMeasure()) + "\t");
-					statPrint.getStdDevMacroFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroFMeasure()) + "\t");
-
-					statPrint.getMicroPosNegFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMicroPosNegFMeasure()) + "\t");
-					statPrint.getStdDevMicroPosNegFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMicroPosNegFMeasure()) + "\t");
-					statPrint.getMacroPosNegFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getAvgMacroPosNegFMeasure()) + "\t");
-					statPrint.getStdDevMacroPosNegFMeasure()
-							.append(completeFormat(optionWrapper.getSplit(i).getStdDevMacroPosNegFMeasure()) + "\t");
 				}
 				statPrint.appendAllTab();
 			}
@@ -424,6 +337,75 @@ public class WekaEvaluator {
 
 //		weka.optimizeParameters(classifiers);
 		weka.evaluateAll(classifiers);
+	}
+
+	private static void addToStatPrint(WekaStatistic weka, StatisticPrinter statPrint) {
+		statPrint.getClassifierName().append("\t");
+		statPrint.getOptionName().append(String.valueOf(weka.getTrainSize()) + "\t");
+
+		statPrint.getOverallRecall().append(completeFormat(weka.getAvgOverallRecall()) + "\t");
+		statPrint.getStdDevOverallRecall().append(completeFormat(weka.getStdDevOverallRecall()) + "\t");
+		statPrint.getMacroOverallRecalls().append(completeFormat(weka.getAvgMacroOverallRecall()) + "\t");
+		statPrint.getStdDevMacroOverallRecalls().append(completeFormat(weka.getStdDevMacroOverallRecall()) + "\t");
+		statPrint.getMacroPosNegRecalls().append(completeFormat(weka.getAvgMacroPosNegRecall()) + "\t");
+		statPrint.getStdDevMacroPosNegRecalls().append(completeFormat(weka.getStdDevMacroPosNegRecall()) + "\t");
+
+		statPrint.getOverallPrecision().append(completeFormat(weka.getAvgOverallPrecision()) + "\t");
+		statPrint.getStdDevOverallPrecision().append(completeFormat(weka.getStdDevOverallPrecision()) + "\t");
+		statPrint.getMacroOverallPrecisions().append(completeFormat(weka.getAvgMacroOverallPrecision()) + "\t");
+		statPrint.getStdDevMacroOverallPrecisions()
+				.append(completeFormat(weka.getStdDevMacroOverallPrecision()) + "\t");
+		statPrint.getMacroPosNegPrecisions().append(completeFormat(weka.getAvgMacroPosNegPrecision()) + "\t");
+		statPrint.getStdDevMacroPosNegPrecisions().append(completeFormat(weka.getStdDevMacroPosNegPrecision()) + "\t");
+
+		statPrint.getNegativeRecalls().append(completeFormat(weka.getAvgNegativeRecall()) + "\t");
+		statPrint.getStdDevNegativeRecalls().append(completeFormat(weka.getStdDevNegativeRecall()) + "\t");
+		statPrint.getNegativePrecisions().append(completeFormat(weka.getAvgNegativePrecision()) + "\t");
+		statPrint.getStdDevNegativePrecisions().append(completeFormat(weka.getStdDevNegativePrecision()) + "\t");
+		statPrint.getNegativeFMeasure().append(completeFormat(weka.getAvgNegativeFMeasure()) + "\t");
+		statPrint.getStdDevNegativeFMeasure().append(completeFormat(weka.getStdDevNegativeFMeasure()) + "\t");
+
+		statPrint.getNeutralRecalls().append(completeFormat(weka.getAvgNeutralRecall()) + "\t");
+		statPrint.getStdDevNeutralRecalls().append(completeFormat(weka.getStdDevNeutralRecall()) + "\t");
+		statPrint.getNeutralPrecisions().append(completeFormat(weka.getAvgNeutralPrecision()) + "\t");
+		statPrint.getStdDevNeutralPrecisions().append(completeFormat(weka.getStdDevNeutralPrecision()) + "\t");
+		statPrint.getNeutralFMeasure().append(completeFormat(weka.getAvgNeutralFMeasure()) + "\t");
+		statPrint.getStdDevNeutralFMeasure().append(completeFormat(weka.getStdDevNeutralFMeasure()) + "\t");
+
+		statPrint.getPositiveRecalls().append(completeFormat(weka.getAvgPositiveRecall()) + "\t");
+		statPrint.getStdDevPositiveRecalls().append(completeFormat(weka.getStdDevPositiveRecall()) + "\t");
+		statPrint.getPositivePrecisions().append(completeFormat(weka.getAvgPositivePrecision()) + "\t");
+		statPrint.getStdDevPositivePrecisions().append(completeFormat(weka.getStdDevPositivePrecision()) + "\t");
+		statPrint.getPositiveFMeasure().append(completeFormat(weka.getAvgPositiveFMeasure()) + "\t");
+		statPrint.getStdDevPositiveFMeasure().append(completeFormat(weka.getStdDevPositiveFMeasure()) + "\t");
+
+		statPrint.getMicroFMeasure().append(completeFormat(weka.getAvgMicroFMeasure()) + "\t");
+		statPrint.getStdDevMicroFMeasure().append(completeFormat(weka.getStdDevMicroFMeasure()) + "\t");
+		statPrint.getMacroFMeasure().append(completeFormat(weka.getAvgMacroFMeasure()) + "\t");
+		statPrint.getStdDevMacroFMeasure().append(completeFormat(weka.getStdDevMacroFMeasure()) + "\t");
+
+		statPrint.getMicroPosNegFMeasure().append(completeFormat(weka.getAvgMicroPosNegFMeasure()) + "\t");
+		statPrint.getStdDevMicroPosNegFMeasure().append(completeFormat(weka.getStdDevMicroPosNegFMeasure()) + "\t");
+		statPrint.getMacroPosNegFMeasure().append(completeFormat(weka.getAvgMacroPosNegFMeasure()) + "\t");
+		statPrint.getStdDevMacroPosNegFMeasure().append(completeFormat(weka.getStdDevMacroPosNegFMeasure()) + "\t");
+
+		statPrint.getAverageAccuracy().append(completeFormat(weka.getAvgAverageAccuracy()) + "\t");
+		statPrint.getStdDevAverageAccuracy().append(completeFormat(weka.getStdDevAverageAccuracy()) + "\t");
+		statPrint.getNegativeAverageAccuracy().append(completeFormat(weka.getAvgNegativeAccuracy()) + "\t");
+		statPrint.getStdDevNegativeAverageAccuracy().append(completeFormat(weka.getStdDevNegativeAccuracy()) + "\t");
+		statPrint.getNeutralAverageAccuracy().append(completeFormat(weka.getAvgNeutralAccuracy()) + "\t");
+		statPrint.getStdDevNeutralAverageAccuracy().append(completeFormat(weka.getStdDevNeutralAccuracy()) + "\t");
+		statPrint.getPositiveAverageAccuracy().append(completeFormat(weka.getAvgPositiveAccuracy()) + "\t");
+		statPrint.getStdDevPositiveAverageAccuracy().append(completeFormat(weka.getStdDevPositiveAccuracy()) + "\t");
+		
+		statPrint.getErrorRate().append(completeFormat(weka.getAvgErrorRate()) + "\t");
+		statPrint.getStdDevErrorRate().append(completeFormat(weka.getStdDevErrorRate()) + "\t");
+		statPrint.getNegativeErrorRate().append(completeFormat(weka.getAvgNegativeErrorRate()) + "\t");
+		statPrint.getStdDevNegativeErrorRate().append(completeFormat(weka.getStdDevNegativeErrorRate()) + "\t");
+		statPrint.getNeutralErrorRate().append(completeFormat(weka.getAvgNeutralErrorRate()) + "\t");
+		statPrint.getStdDevNeutralErrorRate().append(completeFormat(weka.getStdDevNeutralErrorRate()) + "\t");
+		statPrint.getPositiveErrorRate().append(completeFormat(weka.getAvgPositiveErrorRate()) + "\t");
+		statPrint.getStdDevPositiveErrorRate().append(completeFormat(weka.getStdDevPositiveErrorRate()) + "\t");
 	}
 
 }

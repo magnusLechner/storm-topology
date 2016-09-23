@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.topology.base.BaseBasicBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import at.illecker.sentistorm.bolt.values.statistic.tuple.TupleStatistic;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-public class StatisticJsonBolt extends BaseRichBolt {
+public class StatisticJsonBolt extends BaseBasicBolt {
 	private static final long serialVersionUID = 8434355720458732713L;
 	public static final String ID = "statisticJson";
 	public static final String CONF_LOGGING = ID + ".logging";
@@ -43,7 +43,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	private static final String AVG = "avg";
 	private static final String STDDEV = "stdDev";
 
-	private OutputCollector collector;
 	private Socket socket;
 	private StandardDeviation mathStdDev;
 
@@ -54,7 +53,7 @@ public class StatisticJsonBolt extends BaseRichBolt {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
+	public void prepare(Map config, TopologyContext context) {
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
@@ -62,7 +61,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 			m_logging = false;
 		}
 
-		this.collector = collector;
 		mathStdDev = new StandardDeviation();
 		firstTupelFlag = true;
 
@@ -75,7 +73,8 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		}
 	}
 
-	public void execute(Tuple tuple) {
+	@Override
+	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		TopologyRawStatistic rawStatistic = TopologyRawStatistic.getFromTuple(tuple);
 		TopologyStatistic statistic = rawToAggregated(rawStatistic);
 		JsonObject jsonObject = statisticToJson(statistic);
@@ -91,8 +90,6 @@ public class StatisticJsonBolt extends BaseRichBolt {
 		} else {
 			firstTupelFlag = false;
 		}
-
-		collector.ack(tuple);
 	}
 
 	// public TopologyStatistic rawToAggregated(TopologyRawStatistic

@@ -15,11 +15,11 @@ public class ConfusionMatrixStatistic {
 	public int[][] getCM() {
 		return cm;
 	}
-	
+
 	public void updateCM(int actualClass, int predictedClass) {
 		cm[actualClass][predictedClass] = cm[actualClass][predictedClass] + 1;
 	}
-	
+
 	public Double getOverallRecall() {
 		int truePositives = cm[0][0] + cm[1][1] + cm[2][2];
 		int goldNegative = cm[0][0] + cm[0][1] + cm[0][2];
@@ -188,6 +188,78 @@ public class ConfusionMatrixStatistic {
 		int goldNegative = cm[0][0] + cm[0][2];
 		Double allTPAndFN = (double) (goldNegative + goldPositive);
 		return checkAndDivide(truePositives, allTPAndFN);
+	}
+
+	public Double getAverageAccuracy() {
+		Double numerator = getNegativeAccuracy() + getNeutralAccuracy() + getPositiveAccuracy();
+		Double denominator = 3.0;
+		return numerator / denominator;
+	}
+
+	public Double getNegativeAccuracy() {
+		Double tp = (double) cm[0][0];
+		Double tn = (double) cm[1][1] + cm[1][2] + cm[2][1] + cm[2][2];
+		Double fn = (double) cm[0][1] + cm[0][2];
+		Double fp = (double) cm[1][0] + cm[2][0];
+		Double numerator = tp + tn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
+	}
+
+	public Double getNeutralAccuracy() {
+		Double tp = (double) cm[1][1];
+		Double tn = (double) cm[0][0] + cm[0][2] + cm[2][0] + cm[2][2];
+		Double fn = (double) cm[1][0] + cm[1][2];
+		Double fp = (double) cm[0][1] + cm[2][1];
+		Double numerator = tp + tn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
+	}
+
+	public Double getPositiveAccuracy() {
+		Double tp = (double) cm[2][2];
+		Double tn = (double) cm[0][0] + cm[0][1] + cm[1][0] + cm[1][1];
+		Double fn = (double) cm[2][0] + cm[2][1];
+		Double fp = (double) cm[0][2] + cm[1][2];
+		Double numerator = tp + tn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
+	}
+
+	public Double getErrorRate() {
+		Double numerator = getNegativeErrorRate() + getNeutralErrorRate() + getPositiveErrorRate();
+		Double denominator = 3.0;
+		return numerator / denominator;
+	}
+
+	public Double getNegativeErrorRate() {
+		Double tp = (double) cm[0][0];
+		Double tn = (double) cm[1][1] + cm[1][2] + cm[2][1] + cm[2][2];
+		Double fn = (double) cm[0][1] + cm[0][2];
+		Double fp = (double) cm[1][0] + cm[2][0];
+		Double numerator = fp + fn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
+	}
+
+	public Double getNeutralErrorRate() {
+		Double tp = (double) cm[1][1];
+		Double tn = (double) cm[0][0] + cm[0][2] + cm[2][0] + cm[2][2];
+		Double fn = (double) cm[1][0] + cm[1][2];
+		Double fp = (double) cm[0][1] + cm[2][1];
+		Double numerator = tp + tn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
+	}
+
+	public Double getPositiveErrorRate() {
+		Double tp = (double) cm[2][2];
+		Double tn = (double) cm[0][0] + cm[0][1] + cm[1][0] + cm[1][1];
+		Double fn = (double) cm[2][0] + cm[2][1];
+		Double fp = (double) cm[0][2] + cm[1][2];
+		Double numerator = tp + tn;
+		Double denominator = tp + fn + fp + tn;
+		return numerator / denominator;
 	}
 
 	private Double calcFMeasure(Double precision, Double recall) {

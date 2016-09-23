@@ -2,10 +2,10 @@ package at.illecker.sentistorm.bolt;
 
 import java.util.Map;
 
-import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.topology.base.BaseBasicBolt;
 import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +21,13 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-public class RedisPublishBolt extends BaseRichBolt {
+public class RedisPublishBolt extends BaseBasicBolt {
 	public static final String ID = "redis-publish-bolt";
 	public static final String CONF_LOGGING = ID + ".logging";
 	private static final long serialVersionUID = -3645873488892922627L;
 	private static final Logger LOG = LoggerFactory.getLogger(RedisPublishBolt.class);
 
 	private boolean m_logging = false;
-	private OutputCollector collector;
 	private JedisPool pool;
 	private String host;
 	private int port;
@@ -46,7 +45,7 @@ public class RedisPublishBolt extends BaseRichBolt {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void prepare(Map config, TopologyContext context, OutputCollector collector) {
+	public void prepare(Map config, TopologyContext context) {
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
 		} else {
@@ -54,11 +53,11 @@ public class RedisPublishBolt extends BaseRichBolt {
 		}
 
 		this.gson = new Gson();
-		this.collector = collector;
 		pool = new JedisPool(new JedisPoolConfig(), host, port);
 	}
 
-	public void execute(Tuple tuple) {
+	@Override
+	public void execute(Tuple tuple, BasicOutputCollector collector) {
 		JsonObject jsonObject = null;
 		TupleStatistic tupleStatistic;
 		if(JsonBolt.TO_REDIS_PUBLISH_STREAM.equals(tuple.getSourceStreamId())) {
@@ -82,8 +81,7 @@ public class RedisPublishBolt extends BaseRichBolt {
 			long currentTime = System.currentTimeMillis();
 			tupleStatistic.setPipelineEnd(currentTime);
 			tupleStatistic.setRealEnd(currentTime);
-			collector.emit(tuple, new RedisPublishBoltData(jsonObject, tupleStatistic));
-			collector.ack(tuple);
+			collector.emit(new RedisPublishBoltData(jsonObject, tupleStatistic));
 		}
 	}
 

@@ -1,0 +1,44 @@
+recall	0,0	
+recall StdDev	0,0	
+macro-avg. recall	0,0	
+macro-avg. recall StdDev	0,0	
+macro-avg. Pos/Neg recall	0,0	
+macro-avg. Pos/Neg recall StdDev	0,0	
+precision	0,0	
+precision StdDev	0,0	
+macro-avg. precision	0,0	
+macro-avg. precision StdDev	0,0	
+macro-avg. Pos/Neg precision	0,0	
+macro-avg. Pos/Neg precision StdDev	0,0	
+positiveRecall	0,0	
+positiveRecall StdDev	0,0	
+positivePrecision	0,0	
+positivePrecision StdDev	0,0	
+positive fmeasure	0,0	
+positive fmeasure StdDev	0,0	
+neutralRecall	0,0	
+neutralRecall StdDev	0,0	
+neutralPrecision	0,0	
+neutralPrecision StdDev	0,0	
+neutral fmeasure	0,0	
+neutral fmeasure StdDev	0,0	
+negativeRecall	0,0	
+negativeRecall StdDev	0,0	
+negativePrecision	0,0	
+negativePrecision StdDev	0,0	
+negative fmeasure	0,0	
+negative fmeasure StdDev	0,0	
+micro f-Measure	0,0	
+micro f-Measure StdDev	0,0	
+micro pos/neg f-Measure	0,0	
+micro pos/neg f-Measure StdDev	0,0	
+macro f-Measure	0,0	
+macro f-Measure StdDev	0,0	
+macro pos/neg f-Measure	0,0	
+macro pos/neg f-Measure StdDev	0,0	
+cpu-time (for complete test-set)	0,534869	
+cpu-time (for complete test-set) StdDev	0,0	
+training-size	3042,0	
+training-size StdDev	0,0	
+test-size	0,0	
+test-size StdDev	0,0	

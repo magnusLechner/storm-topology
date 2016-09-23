@@ -159,6 +159,121 @@
 			<artifactId>edu.mit.jwi_2.3.3_jdk</artifactId>
 			<version>1.0</version>
 		</dependency>
+
+		<!-- weka libs for evaluation-->
+		<!--
+			mvn install:install-file -Dfile=lib/alternatingDecisionTrees.jar -DgroupId=lechner -DartifactId=alternatingDecisionTrees -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>alternatingDecisionTrees</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/AnDE.jar -DgroupId=lechner -DartifactId=AnDE -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>AnDE</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/complementNaiveBayes.jar -DgroupId=lechner -DartifactId=complementNaiveBayes -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>complementNaiveBayes</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/DTNB.jar -DgroupId=lechner -DartifactId=DTNB -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>DTNB</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/functionalTrees.jar -DgroupId=lechner -DartifactId=functionalTrees -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>functionalTrees</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/gridSearch.jar -DgroupId=lechner -DartifactId=gridSearch -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>gridSearch</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/J48Consolidated.jar -DgroupId=lechner -DartifactId=J48Consolidated -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>J48Consolidated</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/lazyBayesianRules.jar -DgroupId=lechner -DartifactId=lazyBayesianRules -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>lazyBayesianRules</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/naiveBayesTree.jar -DgroupId=lechner -DartifactId=naiveBayesTree -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>naiveBayesTree</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/simpleCART.jar -DgroupId=lechner -DartifactId=simpleCART -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>simpleCART</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/bestFirstTree.jar -DgroupId=lechner -DartifactId=bestFirstTree -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>bestFirstTree</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/CHIRP.jar -DgroupId=lechner -DartifactId=CHIRP -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>CHIRP</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/extraTrees.jar -DgroupId=lechner -DartifactId=extraTrees -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>extraTrees</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!--
+			mvn install:install-file -Dfile=lib/LibSVM.jar -DgroupId=lechner -DartifactId=LibSVM -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true	
+		-->
+		<dependency>
+			<groupId>lechner</groupId>
+			<artifactId>LibSVM</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>

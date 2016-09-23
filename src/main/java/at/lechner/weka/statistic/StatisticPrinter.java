@@ -55,6 +55,24 @@ public class StatisticPrinter {
 	private StringBuilder macroPosNegFMeasure = new StringBuilder();
 	private StringBuilder stdDevMacroPosNegFMeasure = new StringBuilder();
 
+	private StringBuilder averageAccuracy = new StringBuilder();
+	private StringBuilder stdDevAverageAccuracy = new StringBuilder();
+	private StringBuilder negativeAverageAccuracy = new StringBuilder();
+	private StringBuilder stdDevNegativeAverageAccuracy = new StringBuilder();
+	private StringBuilder neutralAverageAccuracy = new StringBuilder();
+	private StringBuilder stdDevNeutralAverageAccuracy = new StringBuilder();
+	private StringBuilder positiveAverageAccuracy = new StringBuilder();
+	private StringBuilder stdDevPositiveAverageAccuracy = new StringBuilder();
+
+	private StringBuilder errorRate = new StringBuilder();
+	private StringBuilder stdDevErrorRate = new StringBuilder();
+	private StringBuilder negativeErrorRate = new StringBuilder();
+	private StringBuilder stdDevNegativeErrorRate = new StringBuilder();
+	private StringBuilder neutralErrorRate = new StringBuilder();
+	private StringBuilder stdDevNeutralErrorRate = new StringBuilder();
+	private StringBuilder positiveErrorRate = new StringBuilder();
+	private StringBuilder stdDevPositiveErrorRate = new StringBuilder();
+
 	public StatisticPrinter() {
 		allList.add(classifierName);
 		allList.add(optionName);
@@ -103,6 +121,24 @@ public class StatisticPrinter {
 		allList.add(stdDevMicroPosNegFMeasure);
 		allList.add(macroPosNegFMeasure);
 		allList.add(stdDevMacroPosNegFMeasure);
+
+		allList.add(averageAccuracy);
+		allList.add(stdDevAverageAccuracy);
+		allList.add(negativeAverageAccuracy);
+		allList.add(stdDevNegativeAverageAccuracy);
+		allList.add(neutralAverageAccuracy);
+		allList.add(stdDevNeutralAverageAccuracy);
+		allList.add(positiveAverageAccuracy);
+		allList.add(stdDevPositiveAverageAccuracy);
+
+		allList.add(errorRate);
+		allList.add(stdDevErrorRate);
+		allList.add(negativeErrorRate);
+		allList.add(stdDevNegativeErrorRate);
+		allList.add(neutralErrorRate);
+		allList.add(stdDevNeutralErrorRate);
+		allList.add(positiveErrorRate);
+		allList.add(stdDevPositiveErrorRate);
 	}
 
 	public void appendAllTab() {
@@ -172,6 +208,24 @@ public class StatisticPrinter {
 		stdDevMicroPosNegFMeasure.append("StdDev Micro PosNeg F-Measure: ").append("\t");
 		macroPosNegFMeasure.append("Macro PosNeg F-Measure: ").append("\t");
 		stdDevMacroPosNegFMeasure.append("StdDev Macro PosNeg F-Measure: ").append("\t");
+
+		averageAccuracy.append("Average Accuracy: ").append("\t");
+		stdDevAverageAccuracy.append("StdDev Average Accuracy: ").append("\t");
+		negativeAverageAccuracy.append("Negative Average Accuracy: ").append("\t");
+		stdDevNegativeAverageAccuracy.append("StdDev Negative Average Accuracy: ").append("\t");
+		neutralAverageAccuracy.append("Neutral Average Accuracy: ").append("\t");
+		stdDevNeutralAverageAccuracy.append("StdDev Neutral Average Accuracy: ").append("\t");
+		positiveAverageAccuracy.append("Positive Average Accuracy: ").append("\t");
+		stdDevPositiveAverageAccuracy.append("StdDev Positive Average Accuracy: ").append("\t");
+
+		errorRate.append("Error Rate: ").append("\t");
+		stdDevErrorRate.append("StdDev Error Rate: ").append("\t");
+		negativeErrorRate.append("Negative Error Rate: ").append("\t");
+		stdDevNegativeErrorRate.append("StdDev Negative Error Rate: ").append("\t");
+		neutralErrorRate.append("Neutral Error Rate: ").append("\t");
+		stdDevNeutralErrorRate.append("StdDev Neutral Error Rate: ").append("\t");
+		positiveErrorRate.append("Positive Error Rate: ").append("\t");
+		stdDevPositiveErrorRate.append("StdDev Positive Error Rate: ").append("\t");
 	}
 
 	public List<StringBuilder> getAllList() {
@@ -323,18 +377,83 @@ public class StatisticPrinter {
 	}
 
 	public StringBuilder getMicroPosNegFMeasure() {
-		return microFMeasure;
+		return microPosNegFMeasure;
 	}
 
 	public StringBuilder getStdDevMicroPosNegFMeasure() {
-		return stdDevMicroFMeasure;
+		return stdDevMicroPosNegFMeasure;
 	}
 
 	public StringBuilder getMacroPosNegFMeasure() {
-		return macroFMeasure;
+		return macroPosNegFMeasure;
 	}
 
 	public StringBuilder getStdDevMacroPosNegFMeasure() {
-		return stdDevMacroFMeasure;
+		return stdDevMacroPosNegFMeasure;
 	}
+	
+	public StringBuilder getAverageAccuracy() {
+		return averageAccuracy;
+	}
+
+	public StringBuilder getStdDevAverageAccuracy() {
+		return stdDevAverageAccuracy;
+	}
+
+	public StringBuilder getNegativeAverageAccuracy() {
+		return negativeAverageAccuracy;
+	}
+
+	public StringBuilder getStdDevNegativeAverageAccuracy() {
+		return stdDevNegativeAverageAccuracy;
+	}
+
+	public StringBuilder getNeutralAverageAccuracy() {
+		return neutralAverageAccuracy;
+	}
+
+	public StringBuilder getStdDevNeutralAverageAccuracy() {
+		return stdDevNeutralAverageAccuracy;
+	}
+	
+	public StringBuilder getPositiveAverageAccuracy() {
+		return positiveAverageAccuracy;
+	}
+
+	public StringBuilder getStdDevPositiveAverageAccuracy() {
+		return stdDevPositiveAverageAccuracy;
+	}
+	
+	public StringBuilder getErrorRate() {
+		return errorRate;
+	}
+	
+	public StringBuilder getStdDevErrorRate() {
+		return stdDevErrorRate;
+	}
+	
+	public StringBuilder getNegativeErrorRate() {
+		return negativeErrorRate;
+	}
+	
+	public StringBuilder getStdDevNegativeErrorRate() {
+		return stdDevNegativeErrorRate;
+	}
+
+	public StringBuilder getNeutralErrorRate() {
+		return neutralErrorRate;
+	}
+	
+	public StringBuilder getStdDevNeutralErrorRate() {
+		return stdDevNeutralErrorRate;
+	}
+	
+	public StringBuilder getPositiveErrorRate() {
+		return positiveErrorRate;
+	}
+	
+	public StringBuilder getStdDevPositiveErrorRate() {
+		return stdDevPositiveErrorRate;
+	}
+	
 }

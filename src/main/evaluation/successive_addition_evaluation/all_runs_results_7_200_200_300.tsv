@@ -1,0 +1,24 @@
+RUN: 1
+recall	-1,0	
+macro-avg. recall	-1,0	
+macro-avg. Pos/Neg recall	-1,0	
+precision	-1,0	
+macro-avg. precision	-1,0	
+macro-avg. Pos/Neg precision	-1,0	
+positiveRecall	-1,0	
+positivePrecision	-1,0	
+positive fmeasure	-1,0	
+neutralRecall	-1,0	
+neutralPrecision	-1,0	
+neutral fmeasure	-1,0	
+negativeRecall	-1,0	
+negativePrecision	-1,0	
+negative fmeasure	-1,0	
+micro f-Measure	-1,0	
+micro pos/neg f-Measure	-1,0	
+macro f-Measure	-1,0	
+macro pos/neg f-Measure	-1,0	
+cpu-time (for complete test-set)	0,534869	
+training-size	3042,0	
+test-size	0,0	
+

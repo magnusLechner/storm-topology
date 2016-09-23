@@ -1220,11 +1220,10 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-			// ALL DATA EVER
+			// ALL DATA EVER	500/500/300
 //			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
 //					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
-//			System.out.println("SLICES: " + slices.size());
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA - 300/300/300
 			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,

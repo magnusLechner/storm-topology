@@ -32,19 +32,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/alternatingDecisionTrees.jar"/>
-	<classpathentry kind="lib" path="lib/AnDE.jar"/>
-	<classpathentry kind="lib" path="lib/complementNaiveBayes.jar"/>
-	<classpathentry kind="lib" path="lib/DTNB.jar"/>
-	<classpathentry kind="lib" path="lib/functionalTrees.jar"/>
-	<classpathentry kind="lib" path="lib/gridSearch.jar"/>
-	<classpathentry kind="lib" path="lib/J48Consolidated.jar"/>
-	<classpathentry kind="lib" path="lib/lazyBayesianRules.jar"/>
-	<classpathentry kind="lib" path="lib/naiveBayesTree.jar"/>
-	<classpathentry kind="lib" path="lib/simpleCART.jar"/>
-	<classpathentry kind="lib" path="lib/bestFirstTree.jar"/>
-	<classpathentry kind="lib" path="lib/CHIRP.jar"/>
-	<classpathentry kind="lib" path="lib/extraTrees.jar"/>
-	<classpathentry kind="lib" path="lib/LibSVM.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

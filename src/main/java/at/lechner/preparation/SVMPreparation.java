@@ -617,9 +617,11 @@ public class SVMPreparation implements PreparationTool {
 
 		int individualTestSize = testSize / 3;
 		if (positiveTuples.length < individualTestSize || neutralTuples.length < individualTestSize
-				|| negativeTuples.length < individualTestSize || startTrainingSetSize > trainingTuples.length
-				|| trainingSteps <= 0 || startTrainingSetSize <= 0) {
+				|| negativeTuples.length < individualTestSize || trainingSteps <= 0 || startTrainingSetSize <= 0) {
 			return null;
+		}
+		if (startTrainingSetSize > trainingTuples.length) {
+			startTrainingSetSize = trainingTuples.length;
 		}
 
 		List<List<MyTuple>> slice = null;

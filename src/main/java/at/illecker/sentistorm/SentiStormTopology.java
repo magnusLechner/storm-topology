@@ -49,8 +49,7 @@ public class SentiStormTopology {
 		// TODO Things to remember:
 		// - check if LocalCluster or SubmitTopology
 		// - check if redis-spout is localhost or redis.test.svc.cluster.local
-		// - check if redis-publish is localhost or
-		// redis-integration.test.svc.cluster.local
+		// - check if redis-publish is localhost or redis-integration.test.svc.cluster.local
 		// - check Configuration class if local path or jar path
 		// - check senti-defaults.yaml if local path or jar path in Twitch
 		// - check if model.ser is there
@@ -119,15 +118,13 @@ public class SentiStormTopology {
 				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1)).shuffleGrouping(SVMBolt.ID)
 				.shuffleGrouping(JsonBolt.ID, JsonBolt.TO_REDIS_PUBLISH_STREAM);
 
-		// // RedisPublishBolt --> StatisticBolt
-		// builder.setBolt(StatisticBolt.ID, statisticBolt,
-		// Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
-		// .shuffleGrouping(RedisPublishBolt.ID);
-		//
-		// // StatisticBolt --> StatisticJsonBolt
-		// builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
-		// Configuration.get("sentistorm.bolt.statisticJson.parallelism",
-		// 1)).shuffleGrouping(StatisticBolt.ID);
+		// RedisPublishBolt --> StatisticBolt
+		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
+				.shuffleGrouping(RedisPublishBolt.ID);
+
+		// StatisticBolt --> StatisticJsonBolt
+		builder.setBolt(StatisticJsonBolt.ID, statisticJsonBolt,
+				Configuration.get("sentistorm.bolt.statisticJson.parallelism", 1)).shuffleGrouping(StatisticBolt.ID);
 
 		// Set topology config
 		conf.setNumWorkers(Configuration.get("sentistorm.workers.num", 1));
