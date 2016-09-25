@@ -1226,7 +1226,7 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA - 300/300/300
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(300, 300, 300,
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(30000, 300, 300,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
 					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 		}

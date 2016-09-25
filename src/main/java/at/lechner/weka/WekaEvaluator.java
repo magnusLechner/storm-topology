@@ -192,20 +192,20 @@ public class WekaEvaluator {
 			MyClassifier simpleCart = new MySimpleCart(new SimpleCart());
 			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
 
-//			classifiers.add(a1de);
-			classifiers.add(bayesNet);
+			classifiers.add(a1de);
+//			classifiers.add(bayesNet);	// part1
 //			classifiers.add(bfTree);
 //			classifiers.add(chirp);
-			classifiers.add(extraTree);
+//			classifiers.add(extraTree);	// part1
 //			classifiers.add(functionalTree);
 //			classifiers.add(j48);
 //			classifiers.add(lmt);
 //			classifiers.add(logistic);
 //			classifiers.add(logitBoost);
-			classifiers.add(naiveBayesMultinomial);
+//			classifiers.add(naiveBayesMultinomial);	// part1
 //			classifiers.add(nbTree);
 //			classifiers.add(part);
-			classifiers.add(randomForest);
+//			classifiers.add(randomForest);	// part1
 //			classifiers.add(repTree);
 //			classifiers.add(simpleCart);
 //			classifiers.add(simpleLogistic);
