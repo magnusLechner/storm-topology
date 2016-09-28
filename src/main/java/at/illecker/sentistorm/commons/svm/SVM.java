@@ -855,6 +855,8 @@ public class SVM {
 		List<List<Double>> microPosNegFMeasure = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> macroFMeasure = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> macroPosNegFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> averageAccuracy = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> errorRate = new ArrayList<List<Double>>(iterations);
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
@@ -887,6 +889,8 @@ public class SVM {
 				List<Double> microPosNegFMeasureSingleRun = new ArrayList<Double>();
 				List<Double> macroFMeasureSingleRun = new ArrayList<Double>();
 				List<Double> macroPosNegFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> averageAccuracySingleRun = new ArrayList<Double>();
+				List<Double> errorRateSingleRun = new ArrayList<Double>();
 
 				if (currentIteration >= 0) {
 					trainingSize.add(trainingSizeSingleRun);
@@ -916,6 +920,9 @@ public class SVM {
 					microPosNegFMeasure.add(microPosNegFMeasureSingleRun);
 					macroFMeasure.add(macroFMeasureSingleRun);
 					macroPosNegFMeasure.add(macroPosNegFMeasureSingleRun);
+					
+					averageAccuracy.add(averageAccuracySingleRun);
+					errorRate.add(errorRateSingleRun);
 				}
 
 				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
@@ -1013,6 +1020,9 @@ public class SVM {
 						macroPosNegFMeasureSingleRun.add(
 								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMacroPosNegFMeasure());
 
+						averageAccuracySingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getAverageAccuracy());
+						errorRateSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getErrorRate());
+						
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
 				}
@@ -1044,6 +1054,8 @@ public class SVM {
 		statistics.put("micro pos/neg f-Measure", microPosNegFMeasure);
 		statistics.put("macro f-Measure", macroFMeasure);
 		statistics.put("macro pos/neg f-Measure", macroPosNegFMeasure);
+		statistics.put("average accuracy", averageAccuracy);
+		statistics.put("error rate", errorRate);
 		statistics.put("cpu-time (for complete test-set)", cpuTime);
 		statistics.put("training-size", trainingSize);
 		statistics.put("test-size", testSize);
@@ -1154,12 +1166,12 @@ public class SVM {
 		testSizeList.add(300);
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-//			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
-//					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka
-			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-					stepList.get(j), testSizeList.get(j));
+//			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+//					stepList.get(j), testSizeList.get(j));
 		}
 		svm.EXEC_SERV.shutdown();
 
