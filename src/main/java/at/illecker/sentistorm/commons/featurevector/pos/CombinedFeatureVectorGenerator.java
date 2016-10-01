@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import at.illecker.sentistorm.components.POSTagger;
 import at.illecker.sentistorm.components.Preprocessor;
 import at.illecker.sentistorm.components.Tokenizer;
@@ -102,7 +102,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		LOG.info("POS Tagger finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
 		// Generate CombinedFeatureVectorGenerator
-		TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
+		TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
 				usePOSTags);
 		CombinedFeatureVectorGenerator cfvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);
 

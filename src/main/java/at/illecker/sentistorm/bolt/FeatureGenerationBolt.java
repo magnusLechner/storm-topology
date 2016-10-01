@@ -39,7 +39,7 @@ import at.illecker.sentistorm.commons.featurevector.pos.CombinedFeatureVectorGen
 import at.illecker.sentistorm.commons.featurevector.pos.FeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 

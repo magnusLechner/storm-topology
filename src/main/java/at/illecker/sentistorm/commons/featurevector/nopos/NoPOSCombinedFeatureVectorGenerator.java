@@ -26,6 +26,7 @@ import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Tweet;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
+import at.illecker.sentistorm.commons.tfidf.ngram.MessageNGrams;
 import at.illecker.sentistorm.commons.tfidf.nopos.NoPOSTweetTfIdf;
 import at.illecker.sentistorm.components.Preprocessor;
 import at.illecker.sentistorm.components.Tokenizer;
@@ -36,22 +37,9 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 	private NoPOSSentimentFeatureVectorGenerator m_sentimentFeatureVectorGenerator = null;
 	private NoPOSTfIdfFeatureVectorGenerator m_tfidfNoPOSFVG = null;
 	private NoPOSSpecialFeatureVectorGenerator m_booleanNoPosFVG = null;
+	private NoPOSNGramFeatureVectorGenerator m_nGramNoPosFVG = null;
 
-//	private List<NoPOSFeatureVectorGenerator> fvgList = null;
-
-	//TODO
-//	public NoPOSCombinedFeatureVectorGenerator(List<NoPOSFeatureVectorGenerator> fvgList) {
-//		this.fvgList = fvgList;
-//		for(int i = 0; i < fvgList.size(); i++) {
-//			int vectorStartId = 1;
-//			for(int j = 0; j < i; j++) {
-//				vectorStartId += fvg
-//			}
-//			fvgList.get(i).setVectorStartId(vectorStartId);
-//		}
-//	}
-
-	public NoPOSCombinedFeatureVectorGenerator(NoPOSTweetTfIdf tweetTfIdfNoPOS) {
+	public NoPOSCombinedFeatureVectorGenerator(NoPOSTweetTfIdf tweetTfIdfNoPOS, MessageNGrams messageNGrams) {
 		m_sentimentFeatureVectorGenerator = new NoPOSSentimentFeatureVectorGenerator(1);
 
 		m_tfidfNoPOSFVG = new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS,
@@ -59,12 +47,18 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 
 		m_booleanNoPosFVG = new NoPOSSpecialFeatureVectorGenerator(
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize() + 1);
+
+//		m_nGramNoPosFVG = new NoPOSNGramFeatureVectorGenerator(messageNGrams,
+//				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize()
+//						+ m_booleanNoPosFVG.getFeatureVectorSize() + 1);
 	}
 
 	@Override
 	public int getFeatureVectorSize() {
 		return m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + m_tfidfNoPOSFVG.getFeatureVectorSize()
-				+ m_booleanNoPosFVG.getFeatureVectorSize();
+				+ m_booleanNoPosFVG.getFeatureVectorSize()
+//				+ m_nGramNoPosFVG.getFeatureVectorSize()
+				;
 	}
 
 	@Override
@@ -75,11 +69,12 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 
 		featureVector.putAll(m_booleanNoPosFVG.generateFeatureVector(tweet));
 
+//		featureVector.putAll(m_nGramNoPosFVG.generateFeatureVector(tweet));
+
 		return featureVector;
 	}
 
 	public static void main(String[] args) {
-		boolean usePOSTags = true; // use POS tags in terms
 		Preprocessor preprocessor = Preprocessor.getInstance();
 
 		// Load tweets
@@ -96,9 +91,10 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 		LOG.info("Preprocess finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
 		// Generate CombinedFeatureVectorGenerator
-		NoPOSTweetTfIdf noPOSTweetTfIdf = NoPOSTweetTfIdf.createFromTaggedTokens(preprocessedTweets, TfType.LOG,
-				TfIdfNormalization.COS, usePOSTags);
-		NoPOSCombinedFeatureVectorGenerator cfvg = new NoPOSCombinedFeatureVectorGenerator(noPOSTweetTfIdf);
+		NoPOSTweetTfIdf noPOSTweetTfIdf = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets, TfType.RAW,
+				TfIdfNormalization.COS);
+		MessageNGrams nGrams = MessageNGrams.createFromTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.COS);
+		NoPOSCombinedFeatureVectorGenerator cfvg = new NoPOSCombinedFeatureVectorGenerator(noPOSTweetTfIdf, nGrams);
 
 		// Combined Feature Vector Generation
 		for (List<String> tokens : preprocessedTweets) {

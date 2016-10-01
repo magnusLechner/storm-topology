@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.SentimentDictionary;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class TfIdfFeatureVectorGenerator extends FeatureVectorGenerator {

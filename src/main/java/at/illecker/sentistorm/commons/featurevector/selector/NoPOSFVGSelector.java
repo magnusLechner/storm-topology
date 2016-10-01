@@ -10,6 +10,7 @@ import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSSentimentFeatureV
 import at.illecker.sentistorm.commons.featurevector.nopos.NoPOSTfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
+import at.illecker.sentistorm.commons.tfidf.ngram.MessageNGrams;
 import at.illecker.sentistorm.commons.tfidf.nopos.NoPOSTweetTfIdf;
 import at.illecker.sentistorm.components.Preprocessor;
 import at.illecker.sentistorm.components.Tokenizer;
@@ -28,15 +29,18 @@ public class NoPOSFVGSelector {
 		if (noPOSFeatureVectorGenerator.equals(NoPOSSentimentFeatureVectorGenerator.class)) {
 			return new NoPOSSentimentFeatureVectorGenerator();
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSTfIdfFeatureVectorGenerator.class)) {
-			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromTaggedTokens(preprocessedTweets, TfType.RAW,
-					TfIdfNormalization.COS, true);
+			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets,
+					TfType.RAW, TfIdfNormalization.COS);
 			return new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS);
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSSpecialFeatureVectorGenerator.class)) {
 			return new NoPOSSpecialFeatureVectorGenerator();
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSCombinedFeatureVectorGenerator.class)) {
-			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromTaggedTokens(preprocessedTweets, TfType.RAW,
-					TfIdfNormalization.COS, true);
-			return new NoPOSCombinedFeatureVectorGenerator(tweetTfIdfNoPOS);
+			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets,
+					TfType.RAW, TfIdfNormalization.COS);
+//			MessageNGrams nGrams = MessageNGrams.createFromTokens(preprocessedTweets, TfType.RAW,
+//					TfIdfNormalization.COS);
+			MessageNGrams nGrams = null;
+			return new NoPOSCombinedFeatureVectorGenerator(tweetTfIdfNoPOS, nGrams);
 		} else {
 			throw new UnsupportedOperationException(
 					"NoPOSFeatureVectorGenerator '" + noPOSFeatureVectorGenerator.getName() + "' is not supported!");

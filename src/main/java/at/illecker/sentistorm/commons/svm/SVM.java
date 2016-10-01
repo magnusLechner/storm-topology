@@ -72,7 +72,7 @@ import at.illecker.sentistorm.commons.svm.box.SVMBox;
 import at.illecker.sentistorm.commons.svm.prediction.statistic.PredictionStatistic;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
 import at.illecker.sentistorm.components.POSTagger;
 import at.illecker.sentistorm.components.Preprocessor;
@@ -140,7 +140,7 @@ public class SVM {
 		param.weight = new double[0];
 
 		// cache memory size in MB (default 100)
-		param.cache_size = 2000;
+		param.cache_size = 200;
 
 		return param;
 	}
@@ -1116,12 +1116,11 @@ public class SVM {
 		printWekaCompleteResults(complete);
 	}
 
-	// TODO
 	public static void main(String[] args) throws IOException {
 		Dataset dataset = Configuration.getDataSetTwitch();
 		// Dataset dataset = Configuration.getDataSetMyTest();
 
-		boolean parameterSearch = false;
+		boolean parameterSearch = true;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;

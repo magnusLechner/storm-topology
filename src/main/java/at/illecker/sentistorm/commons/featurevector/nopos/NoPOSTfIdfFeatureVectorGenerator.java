@@ -25,11 +25,10 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.dict.SentimentDictionary;
-import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.nopos.NoPOSTweetTfIdf;
 
 public class NoPOSTfIdfFeatureVectorGenerator extends NoPOSFeatureVectorGenerator {
-	private static final Logger LOG = LoggerFactory.getLogger(TfIdfFeatureVectorGenerator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(NoPOSTfIdfFeatureVectorGenerator.class);
 	private static final boolean LOGGING = Configuration.get("commons.featurevectorgenerator.tfidf.logging", false);
 
 	private NoPOSTweetTfIdf m_noPOSTweetTfIdf = null;
@@ -58,7 +57,7 @@ public class NoPOSTfIdfFeatureVectorGenerator extends NoPOSFeatureVectorGenerato
 
 	@Override
 	public Map<Integer, Double> generateFeatureVector(List<String> preprocessedTweet) {
-		return generateFeatureVector(m_noPOSTweetTfIdf.tfIdfFromTaggedTokens(preprocessedTweet));
+		return generateFeatureVector(m_noPOSTweetTfIdf.tfIdfFromPreprocessedTokens(preprocessedTweet));
 	}
 
 	public Map<Integer, Double> generateFeatureVector(Map<String, Double> tfIdf) {

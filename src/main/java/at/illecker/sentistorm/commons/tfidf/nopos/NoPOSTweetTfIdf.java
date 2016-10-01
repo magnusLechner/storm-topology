@@ -29,7 +29,6 @@ import at.illecker.sentistorm.commons.dict.StopWords;
 import at.illecker.sentistorm.commons.tfidf.TfIdf;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
 import at.illecker.sentistorm.commons.util.StringUtils;
 
 /**
@@ -37,19 +36,17 @@ import at.illecker.sentistorm.commons.util.StringUtils;
  * 
  */
 public class NoPOSTweetTfIdf {
-	private static final Logger LOG = LoggerFactory.getLogger(TweetTfIdf.class);
+	private static final Logger LOG = LoggerFactory.getLogger(NoPOSTweetTfIdf.class);
 
 	private TfType m_tfType;
 	private TfIdfNormalization m_tfIdfNormalization;
 	private List<Map<String, Double>> m_termFreqs;
 	private Map<String, Double> m_inverseDocFreq;
 	private Map<String, Integer> m_termIds;
-	private boolean m_usePOSTags;
 
-	private NoPOSTweetTfIdf(TfType type, TfIdfNormalization normalization, boolean usePOSTags) {
+	private NoPOSTweetTfIdf(TfType type, TfIdfNormalization normalization) {
 		this.m_tfType = type;
 		this.m_tfIdfNormalization = normalization;
-		this.m_usePOSTags = usePOSTags;
 	}
 
 	public TfType getTfType() {
@@ -72,20 +69,20 @@ public class NoPOSTweetTfIdf {
 		return m_termIds;
 	}
 
-	public Map<String, Double> tfIdfFromTaggedTokens(List<String> preprocessedTweet) {
-		return TfIdf.tfIdf(tfFromTaggedTokens(preprocessedTweet, m_tfType, m_usePOSTags), m_inverseDocFreq, m_tfIdfNormalization);
+	public Map<String, Double> tfIdfFromPreprocessedTokens(List<String> preprocessedTweet) {
+		return TfIdf.tfIdf(tfFromPreprocessedTokens(preprocessedTweet, m_tfType), m_inverseDocFreq, m_tfIdfNormalization);
 	}
 
-	public static NoPOSTweetTfIdf createFromTaggedTokens(List<List<String>> preprocessedTweets, boolean usePOSTags) {
-		return createFromTaggedTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.NONE, usePOSTags);
+	public static NoPOSTweetTfIdf createFromPreprocessedTokens(List<List<String>> preprocessedTweets) {
+		return createFromPreprocessedTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.COS);
 	}
 
-	public static NoPOSTweetTfIdf createFromTaggedTokens(List<List<String>> preprocessedTweets, TfType type,
-			TfIdfNormalization normalization, boolean usePOSTags) {
+	public static NoPOSTweetTfIdf createFromPreprocessedTokens(List<List<String>> preprocessedTweets, TfType type,
+			TfIdfNormalization normalization) {
 
-		NoPOSTweetTfIdf tweetTfIdfNoPOS = new NoPOSTweetTfIdf(type, normalization, usePOSTags);
+		NoPOSTweetTfIdf tweetTfIdfNoPOS = new NoPOSTweetTfIdf(type, normalization);
 
-		tweetTfIdfNoPOS.m_termFreqs = tfTaggedTokenTweets(preprocessedTweets, type, usePOSTags);
+		tweetTfIdfNoPOS.m_termFreqs = tfPreprocessedTokenTweets(preprocessedTweets, type);
 		tweetTfIdfNoPOS.m_inverseDocFreq = idf(tweetTfIdfNoPOS.m_termFreqs);
 
 		tweetTfIdfNoPOS.m_termIds = new HashMap<String, Integer>();
@@ -102,16 +99,15 @@ public class NoPOSTweetTfIdf {
 		return tweetTfIdfNoPOS;
 	}
 
-	public static List<Map<String, Double>> tfTaggedTokenTweets(List<List<String>> preprocessedTweets, TfType type,
-			boolean usePOSTags) {
+	public static List<Map<String, Double>> tfPreprocessedTokenTweets(List<List<String>> preprocessedTweets, TfType type) {
 		List<Map<String, Double>> termFreqs = new ArrayList<Map<String, Double>>();
 		for (List<String> tweet : preprocessedTweets) {
-			termFreqs.add(tfFromTaggedTokens(tweet, type, usePOSTags));
+			termFreqs.add(tfFromPreprocessedTokens(tweet, type));
 		}
 		return termFreqs;
 	}
 
-	public static Map<String, Double> tfFromTaggedTokens(List<String> preprocessedTweet, TfType type, boolean usePOSTags) {
+	public static Map<String, Double> tfFromPreprocessedTokens(List<String> preprocessedTweet, TfType type) {
 		Map<String, Double> termFreq = new LinkedHashMap<String, Double>();
 		StopWords stopWords = StopWords.getInstance();
 

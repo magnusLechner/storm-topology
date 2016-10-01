@@ -13,7 +13,7 @@ import at.illecker.sentistorm.commons.featurevector.pos.TfIdfAndPOSFeatureVector
 import at.illecker.sentistorm.commons.featurevector.pos.TfIdfFeatureVectorGenerator;
 import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
 import at.illecker.sentistorm.commons.tfidf.TfType;
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import at.illecker.sentistorm.components.POSTagger;
 import at.illecker.sentistorm.components.Preprocessor;
 import at.illecker.sentistorm.components.Tokenizer;

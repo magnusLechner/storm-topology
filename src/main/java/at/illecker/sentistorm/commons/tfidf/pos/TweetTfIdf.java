@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.illecker.sentistorm.commons.tfidf;
+package at.illecker.sentistorm.commons.tfidf.pos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.dict.StopWords;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
+import at.illecker.sentistorm.commons.tfidf.TfIdf;
+import at.illecker.sentistorm.commons.tfidf.TfIdfNormalization;
+import at.illecker.sentistorm.commons.tfidf.TfType;
 import at.illecker.sentistorm.commons.util.StringUtils;
 import at.illecker.sentistorm.commons.wordnet.POSTag;
 import at.illecker.sentistorm.commons.wordnet.WordNet;
@@ -78,7 +81,7 @@ public class TweetTfIdf {
 	}
 
 	public static TweetTfIdf createFromTaggedTokens(List<List<TaggedToken>> tweets, boolean usePOSTags) {
-		return createFromTaggedTokens(tweets, TfType.RAW, TfIdfNormalization.NONE, usePOSTags);
+		return createFromTaggedTokens(tweets, TfType.RAW, TfIdfNormalization.COS, usePOSTags);
 	}
 
 	public static TweetTfIdf createFromTaggedTokens(List<List<TaggedToken>> tweets, TfType type,

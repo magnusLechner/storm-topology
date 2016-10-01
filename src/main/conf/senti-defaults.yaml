@@ -59,7 +59,7 @@ global.resources.datasets.sentiment140:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 2 # RBF # 0 Linear
+        svm.kernel: 2 # 2=RBF # 0=Linear
         svm.c: 512.0 # 0.5
         svm.gamma: 0.000488281 # null
         svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
@@ -84,15 +84,14 @@ global.resources.datasets.twitch:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 2 # 2 RBF # 0 Linear # 1 polynomial # 4 sigmoid
-        #svm.c: 512.0 # 0.5                                                #standard: 512.0
-        #svm.gamma: 0.000488281 # null                                     #standard: 0.000488281
-        svm.c: 2048.0 # 0.5 
-        svm.gamma: 0.000122140625 # null
-        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
-            #0: 1.6464088397790055                                        #standard: kommt auf verteilung an, welche im trainingsdatensatz (und damit hoffentlich auch in der realität vorkommt)
-            #1: 1.0
-            #2: 1.8395061728395061           
+        svm.kernel: 0 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
+        #svm.c: 512.0								# standard: 512.0		# linear: 64
+        #svm.gamma: 0.000488281						# standard: 0.000488281	# linear: 0.001953125
+        svm.c: 2048.0
+        svm.gamma: 0.000122140625
+        #svm.c: 64.0					# use for linear
+        #svm.gamma: 0.001953125			# use for linear
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804           
             0: 3.1015325670498086
             1: 1.0
             2: 2.693843594009983

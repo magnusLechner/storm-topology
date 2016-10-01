@@ -6,7 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.illecker.sentistorm.commons.tfidf.TweetTfIdf;
+import at.illecker.sentistorm.commons.tfidf.pos.TweetTfIdf;
 import cmu.arktweetnlp.Tagger.TaggedToken;
 
 public class TfIdfAndPOSFeatureVectorGenerator extends FeatureVectorGenerator {
