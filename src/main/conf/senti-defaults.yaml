@@ -84,7 +84,7 @@ global.resources.datasets.twitch:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 0 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
+        svm.kernel: 2 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
         #svm.c: 512.0								# standard: 512.0		# linear: 64
         #svm.gamma: 0.000488281						# standard: 0.000488281	# linear: 0.001953125
         svm.c: 2048.0

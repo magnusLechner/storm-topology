@@ -1124,7 +1124,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 100;
+		int iterations = 10;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
