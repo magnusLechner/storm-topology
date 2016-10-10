@@ -1,8 +1,7 @@
-*/target/**
-*/target/*
-target/
+target/*
 .classpath
 .project
 .settings/
 push.sh
 login.sh
+!target/classes/

@@ -1,0 +1,61 @@
+
+Time taken to build model: 1.46 seconds
+Time taken to test model on training data: 0.16 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances         364               80.8889 %
+Incorrectly Classified Instances        86               19.1111 %
+Kappa statistic                          0.7133
+Mean absolute error                      0.2136
+Root mean squared error                  0.3163
+Relative absolute error                 48.0681 %
+Root relative squared error             67.1057 %
+Total Number of Instances              450     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,747    0,047    0,889      0,747    0,812      0,735    0,930     0,882     NEGATIVE
+                 0,867    0,193    0,691      0,867    0,769      0,644    0,884     0,773     NEUTRAL
+                 0,813    0,047    0,897      0,813    0,853      0,787    0,943     0,903     POSITIVE
+Weighted Avg.    0,809    0,096    0,826      0,809    0,811      0,722    0,919     0,853     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   <-- classified as
+ 112  34   4 |   a = NEGATIVE
+  10 130  10 |   b = NEUTRAL
+   4  24 122 |   c = POSITIVE
+
+
+=== Error on test data ===
+
+Correctly Classified Instances         191               73.7452 %
+Incorrectly Classified Instances        68               26.2548 %
+Kappa statistic                          0.4955
+Mean absolute error                      0.2745
+Root mean squared error                  0.3738
+Relative absolute error                 61.7555 %
+Root relative squared error             79.3032 %
+Total Number of Instances              259     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,720    0,148    0,537      0,720    0,615      0,515    0,880     0,731     NEGATIVE
+                 0,744    0,253    0,870      0,744    0,802      0,461    0,829     0,895     NEUTRAL
+                 0,724    0,074    0,553      0,724    0,627      0,579    0,875     0,686     POSITIVE
+Weighted Avg.    0,737    0,213    0,770      0,737    0,747      0,485    0,844     0,840     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   <-- classified as
+  36  13   1 |   a = NEGATIVE
+  30 134  16 |   b = NEUTRAL
+   1   7  21 |   c = POSITIVE
+

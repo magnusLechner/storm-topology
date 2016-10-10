@@ -1,0 +1,6 @@
+Mein Trainingssatz besteht aus:	(selbst gelabelt und lenn)
+2359 insgesamt	(5118 insgesamt gelabelt, Rest war undefined)
+davon 300 für Test → 2059 für training
+POS:	541	→	441
+NEU:	1390	→	1290
+NEG:	428	→	328
