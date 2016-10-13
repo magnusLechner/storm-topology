@@ -37,7 +37,7 @@ public class POSFeatureVectorGenerator extends FeatureVectorGenerator {
 	public POSFeatureVectorGenerator(boolean normalize) {
 		m_normalize = normalize;
 		m_vectorStartId = 1;
-		m_vectorSize = 8;
+		m_vectorSize = 7;
 		LOG.info("VectorSize: " + m_vectorSize);
 	}
 
@@ -66,12 +66,10 @@ public class POSFeatureVectorGenerator extends FeatureVectorGenerator {
 				resultFeatureVector.put(m_vectorStartId + 3, posTags[3]);
 			if (posTags[4] != 0) // interjection
 				resultFeatureVector.put(m_vectorStartId + 4, posTags[4]);
-			if (posTags[5] != 0) // punctuation
+			if (posTags[5] != 0) // at-mention
 				resultFeatureVector.put(m_vectorStartId + 5, posTags[5]);
-			if (posTags[6] != 0) // hashtag
+			if (posTags[6] != 0) // emoticon
 				resultFeatureVector.put(m_vectorStartId + 6, posTags[6]);
-			if (posTags[7] != 0) // emoticon
-				resultFeatureVector.put(m_vectorStartId + 7, posTags[7]);
 		}
 		if (LOGGING) {
 			LOG.info("POStags: " + Arrays.toString(posTags));
@@ -80,10 +78,8 @@ public class POSFeatureVectorGenerator extends FeatureVectorGenerator {
 	}
 
 	private double[] countPOSTagsFromTaggedTokens(List<TaggedToken> taggedTokens, boolean normalize) {
-		// 8 = [NOUN, VERB, ADJECTIVE, ADVERB, INTERJECTION, PUNCTUATION,
-		// HASHTAG,
-		// EMOTICON]
-		double[] posTags = new double[] { 0d, 0d, 0d, 0d, 0d, 0d, 0d, 0d };
+		// 8 = [NOUN, VERB, ADJECTIVE, ADVERB, INTERJECTION, AT-MENTION, SEMOTICON]
+		double[] posTags = new double[] { 0d, 0d, 0d, 0d, 0d, 0d, 0d };
 		int wordCount = 0;
 		for (TaggedToken word : taggedTokens) {
 			wordCount++;
@@ -99,12 +95,10 @@ public class POSFeatureVectorGenerator extends FeatureVectorGenerator {
 				posTags[3]++;
 			} else if (arkTag.equals("!")) {
 				posTags[4]++;
-			} else if (arkTag.equals(",")) {
+			} else if (arkTag.equals("@")) {
 				posTags[5]++;
-			} else if (arkTag.equals("#")) {
-				posTags[6]++;
 			} else if (arkTag.equals("E")) {
-				posTags[7]++;
+				posTags[6]++;
 			}
 		}
 		if (normalize) {
