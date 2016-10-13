@@ -35,7 +35,7 @@ public class FVGSelector {
 		if (featureVectorGenerator.equals(SentimentFeatureVectorGenerator.class)) {
 			return new SentimentFeatureVectorGenerator();
 		} else if (featureVectorGenerator.equals(TfIdfFeatureVectorGenerator.class)) {
-			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
+			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
 					true);
 			return new TfIdfFeatureVectorGenerator(tweetTfIdf);
 		} else if (featureVectorGenerator.equals(SentimentAndPOSFeatureVectorGenerator.class)) {
@@ -43,13 +43,13 @@ public class FVGSelector {
 		} else if (featureVectorGenerator.equals(POSFeatureVectorGenerator.class)) {
 			return new POSFeatureVectorGenerator(true);
 		} else if (featureVectorGenerator.equals(TfIdfAndPOSFeatureVectorGenerator.class)) {
-			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
+			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
 					true);
 			return new TfIdfAndPOSFeatureVectorGenerator(true, tweetTfIdf);
 		} else if (featureVectorGenerator.equals(SpecialFeatureVectorGenerator.class)) {
 			return new SpecialFeatureVectorGenerator();
 		} else if (featureVectorGenerator.equals(CombinedFeatureVectorGenerator.class)) {
-			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
+			TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
 					true);
 			return new CombinedFeatureVectorGenerator(true, tweetTfIdf);
 		} else {

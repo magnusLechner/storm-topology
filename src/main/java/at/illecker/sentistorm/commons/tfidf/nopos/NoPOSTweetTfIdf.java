@@ -74,7 +74,7 @@ public class NoPOSTweetTfIdf {
 	}
 
 	public static NoPOSTweetTfIdf createFromPreprocessedTokens(List<List<String>> preprocessedTweets) {
-		return createFromPreprocessedTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.COS);
+		return createFromPreprocessedTokens(preprocessedTweets, TfType.LOG, TfIdfNormalization.COS);
 	}
 
 	public static NoPOSTweetTfIdf createFromPreprocessedTokens(List<List<String>> preprocessedTweets, TfType type,

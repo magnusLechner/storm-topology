@@ -4,4 +4,4 @@ target/*
 .settings/
 push.sh
 login.sh
-!target/classes/
+src/main/resources/dictionaries/wordnet/wn3.1dict.tar.gz

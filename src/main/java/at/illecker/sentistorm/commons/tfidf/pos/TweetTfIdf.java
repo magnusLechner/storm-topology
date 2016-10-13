@@ -81,7 +81,7 @@ public class TweetTfIdf {
 	}
 
 	public static TweetTfIdf createFromTaggedTokens(List<List<TaggedToken>> tweets, boolean usePOSTags) {
-		return createFromTaggedTokens(tweets, TfType.RAW, TfIdfNormalization.COS, usePOSTags);
+		return createFromTaggedTokens(tweets, TfType.LOG, TfIdfNormalization.COS, usePOSTags);
 	}
 
 	public static TweetTfIdf createFromTaggedTokens(List<List<TaggedToken>> tweets, TfType type,

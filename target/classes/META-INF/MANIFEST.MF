@@ -20,10 +20,16 @@ Class-Path: slf4j-api-1.7.7.jar commons-compress-1.9.jar commons-codec
  -1.1-natives.jar netlib-native_system-win-i686-1.1-natives.jar arpack
  _combined_all-0.1.jar netlib-java-1.1.jar core-1.1.jar socket.io-clie
  nt-0.7.0.jar engine.io-client-0.7.0.jar okhttp-ws-3.0.1.jar okhttp-3.
- 0.1.jar okio-1.6.0.jar json-20090211.jar ark-tweet-nlp-0.3.2.jar libs
- vm-3.2.jar BerkeleyParser-1.7.jar pack-1.0.jar ant-contrib-0.6.jar ed
- u.mit.jwi_2.3.3_jdk-1.0.jar
-Build-Jdk: 1.7.0_101
+ 0.1.jar okio-1.6.0.jar json-20090211.jar jedis-2.9.0.jar commons-pool
+ 2-2.4.2.jar tika-core-1.13.jar langdetect-1.1-20120112.jar jsonic-1.2
+ .7.jar lucene-core-4.6.0.jar lucene-analyzers-common-4.6.0.jar ark-tw
+ eet-nlp-0.3.2.jar libsvm-3.2.jar BerkeleyParser-1.7.jar pack-1.0.jar 
+ ant-contrib-0.6.jar edu.mit.jwi_2.3.3_jdk-1.0.jar alternatingDecision
+ Trees-1.0.jar AnDE-1.0.jar complementNaiveBayes-1.0.jar DTNB-1.0.jar 
+ functionalTrees-1.0.jar gridSearch-1.0.jar J48Consolidated-1.0.jar la
+ zyBayesianRules-1.0.jar naiveBayesTree-1.0.jar simpleCART-1.0.jar bes
+ tFirstTree-1.0.jar CHIRP-1.0.jar extraTrees-1.0.jar LibSVM-1.0.jar
+Build-Jdk: 1.7.0_111
 Built-By: magnus
 Created-By: Maven Integration for Eclipse
 Main-Class: fully.qualified.MainClass

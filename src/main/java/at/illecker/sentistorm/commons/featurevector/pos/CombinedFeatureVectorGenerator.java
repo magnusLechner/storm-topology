@@ -102,7 +102,7 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		LOG.info("POS Tagger finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
 		// Generate CombinedFeatureVectorGenerator
-		TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW, TfIdfNormalization.COS,
+		TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG, TfIdfNormalization.COS,
 				usePOSTags);
 		CombinedFeatureVectorGenerator cfvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);
 

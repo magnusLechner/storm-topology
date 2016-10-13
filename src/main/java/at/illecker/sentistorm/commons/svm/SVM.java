@@ -22,7 +22,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -520,13 +523,13 @@ public class SVM {
 				fvg = new SentimentFeatureVectorGenerator();
 
 			} else if (featureVectorGenerator.equals(TfIdfFeatureVectorGenerator.class)) {
-				TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW,
+				TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG,
 						TfIdfNormalization.COS, true);
 				LOG.info("Load TfIdfFeatureVectorGenerator...");
 				fvg = new TfIdfFeatureVectorGenerator(tweetTfIdf);
 
 			} else if (featureVectorGenerator.equals(CombinedFeatureVectorGenerator.class)) {
-				TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.RAW,
+				TweetTfIdf tweetTfIdf = TweetTfIdf.createFromTaggedTokens(taggedTweets, TfType.LOG,
 						TfIdfNormalization.COS, true);
 				LOG.info("Load CombinedFeatureVectorGenerator...");
 				fvg = new CombinedFeatureVectorGenerator(true, tweetTfIdf);
@@ -920,7 +923,7 @@ public class SVM {
 					microPosNegFMeasure.add(microPosNegFMeasureSingleRun);
 					macroFMeasure.add(macroFMeasureSingleRun);
 					macroPosNegFMeasure.add(macroPosNegFMeasureSingleRun);
-					
+
 					averageAccuracy.add(averageAccuracySingleRun);
 					errorRate.add(errorRateSingleRun);
 				}
@@ -1020,9 +1023,11 @@ public class SVM {
 						macroPosNegFMeasureSingleRun.add(
 								pipelineBox.getPredictor().getPredictionStatistic().getCMS().getMacroPosNegFMeasure());
 
-						averageAccuracySingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getAverageAccuracy());
-						errorRateSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getErrorRate());
-						
+						averageAccuracySingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getAverageAccuracy());
+						errorRateSingleRun
+								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getErrorRate());
+
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
 				}
@@ -1124,7 +1129,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 10;
+		int iterations = 1;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1231,7 +1236,7 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-			// ALL DATA EVER	500/500/300
+			// ALL DATA EVER 500/500/300
 //			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
 //					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
@@ -1270,9 +1275,16 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results_"
-				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
+//		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results_"
+//				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
 
+
+
+		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "all_runs_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
+				+ testSize + ".tsv", sb.toString());
+
+		
+		
 		StandardDeviation mathStdDev = new StandardDeviation();
 		Map<String, List<Double>> results = new LinkedHashMap<String, List<Double>>();
 		int lengthOfSingleRun = statistics.get("recall").get(0).size();
@@ -1313,8 +1325,10 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/averaged_results_"
-				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
+//		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/averaged_results_"
+//				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
+		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "averaged_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
+				+ testSize + ".tsv", sb.toString());
 	}
 
 	private static void printPipelineResults(int iterations, Map<String, Double[]> statistics) {

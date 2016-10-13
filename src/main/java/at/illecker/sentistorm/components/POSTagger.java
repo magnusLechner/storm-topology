@@ -129,7 +129,7 @@ public class POSTagger {
 //		List<Tweet> tweets = Tweet.getTestTweets();
 //		List<Tweet> tweets = Tweet.getSigleTestTweet();
 //		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
-		Tweet testTweet2 = new Tweet(0L, "f0rest dodo8 Edward get_right");
+		Tweet testTweet2 = new Tweet(0L, "I book a flight and read a book.");
 //		Tweet testTweet3 = new Tweet(0L, " ");
 //		Tweet testTweet4 = new Tweet(0L, "");
 		

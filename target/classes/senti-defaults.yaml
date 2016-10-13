@@ -59,7 +59,7 @@ global.resources.datasets.sentiment140:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 2 # RBF # 0 Linear
+        svm.kernel: 2 # 2=RBF # 0=Linear
         svm.c: 512.0 # 0.5
         svm.gamma: 0.000488281 # null
         svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
@@ -69,8 +69,8 @@ global.resources.datasets.sentiment140:
 
 global.resources.datasets.twitch:
     "twitch":
-        #path: "src/main/resources/datasets/Twitch"  #for running SVM local
-        path: "datasets/Twitch"  #for running SVM on cluster
+        path: "src/main/resources/datasets/Twitch"  #for running SVM local
+        #path: "datasets/Twitch"  #for running SVM on cluster
         train.file: "twitch-training.tsv"
         dev.file: "twitch-dev.tsv"
         test.file: "twitch-test.tsv"
@@ -84,16 +84,17 @@ global.resources.datasets.twitch:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 2 # RBF # 0 Linear
-        svm.c: 4096.0 # 0.5
-        svm.gamma: 1.220703125 # null
-        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
-            #0: 1.6464088397790055
-            #1: 1.0
-            #2: 1.8395061728395061           
-            0: 1.0
+        svm.kernel: 2 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
+        #svm.c: 512.0								# standard: 512.0		# linear: 64
+        #svm.gamma: 0.000488281						# standard: 0.000488281	# linear: 0.001953125
+        svm.c: 2048.0
+        svm.gamma: 0.000122140625
+        #svm.c: 64.0					# use for linear
+        #svm.gamma: 0.001953125			# use for linear
+        svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804           
+            0: 3.1015325670498086
             1: 1.0
-            2: 1.0
+            2: 2.693843594009983
             
     "JSONtwitch":
         path: "datasets/JSONTwitch"
@@ -111,8 +112,8 @@ global.resources.datasets.twitch:
         negative.class.value: 0
         neutral.class.value: 1
         svm.kernel: 2 # RBF # 0 Linear
-        svm.c: 4096.0 # 0.5
-        svm.gamma: 1.220703125 # null
+        svm.c: 512.0 # 0.5
+        svm.gamma: 0.000488281 # null
         svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
             #0: 1.6464088397790055
             #1: 1.0
@@ -138,8 +139,8 @@ global.resources.datasets.mytest:
         negative.class.value: 0
         neutral.class.value: 1
         svm.kernel: 2 # RBF # 0 Linear
-        svm.c: 4096.0 # 0.5
-        svm.gamma: 1.220703125 # null
+        svm.c: 512.0 # 0.5
+        svm.gamma: 0.000488281 # null
         svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804
             #0: 1.6464088397790055
             #1: 1.0
@@ -155,10 +156,15 @@ global.resources.dict:
         - "dictionaries/Stopwords.txt"
     TwitchEmoticons:
         - "dictionaries/TwitchEmoticons.txt"
+    PlayerNames:
+        - "dictionaries/PlayerNames.txt"
 
 global.resources.dict.sentiment:
+    #
+    # word-sentiments
+    #
     # AFINN http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010
-    - path: "dictionaries/sentiment/AFINN-111.txt"
+    - path: "dictionaries/sentiment/word-sentiment/AFINN-111.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -168,7 +174,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "afinn"
     # SentiStrengthEmotion http://sentistrength.wlv.ac.uk/#Download
-    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmotionLookupTable.txt"
+    - path: "dictionaries/sentiment/word-sentiment/SentiStrength_Data_Sept2011_EmotionLookupTable.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: true
@@ -177,18 +183,8 @@ global.resources.dict.sentiment:
       maxValue: 5.0
       enabled: true
       name: "sentistrength_emotion"
-    # SentiStrengthEmoticon http://sentistrength.wlv.ac.uk/#Download
-    - path: "dictionaries/sentiment/SentiStrength_Data_Sept2011_EmoticonLookupTable.txt"
-      delimiter: "\\t"
-      containsPOSTags: false
-      containsRegex: false
-      featureScaling: true
-      minValue: -1.0
-      maxValue: 1.0
-      enabled: true
-      name: "sentistrength_emoticon"
     # SentiWords https://hlt.fbk.eu/technologies/sentiwords # words might contain an underscore (bi-gram)
-    - path: "dictionaries/sentiment/SentiWords_1.0.txt"
+    - path: "dictionaries/sentiment/word-sentiment/SentiWords_1.0.txt"
       delimiter: "\\t"
       containsPOSTags: true
       containsRegex: false
@@ -198,7 +194,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "sentiwords"
     # Sentiment140 http://www.saifmohammad.com/WebPages/lexicons.html
-    - path: "dictionaries/sentiment/Sentiment140_unigrams_pmilexicon.txt"
+    - path: "dictionaries/sentiment/word-sentiment/Sentiment140_unigrams_pmilexicon.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -208,7 +204,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "sentiment140"
     # BingLiu http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon
-    - path: "dictionaries/sentiment/Bing_Liu.txt"
+    - path: "dictionaries/sentiment/word-sentiment/Bing_Liu.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -218,7 +214,7 @@ global.resources.dict.sentiment:
       enabled: true
       name: "bing_liu"
     # MPQASubjectivity http://mpqa.cs.pitt.edu/lexicons/subj_lexicon/
-    - path: "dictionaries/sentiment/MPQA_subjclueslen1-HLTEMNLP05.txt"
+    - path: "dictionaries/sentiment/word-sentiment/MPQA_subjclueslen1-HLTEMNLP05.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -227,7 +223,29 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "mpqa"
-    - path: "dictionaries/sentiment/twitch-emoticons.txt"
+    - path: "dictionaries/sentiment/word-sentiment/twitch-dict-sentiment.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "twitch_dict_sentiment"
+      #
+      # Emoticons
+      #
+      # SentiStrengthEmoticon http://sentistrength.wlv.ac.uk/#Download
+    - path: "dictionaries/sentiment/emoticon-sentiment/SentiStrength_Data_Sept2011_EmoticonLookupTable.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "sentistrength_emoticon"
+    - path: "dictionaries/sentiment/emoticon-sentiment/twitch-emoticons.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false
@@ -236,6 +254,34 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "twitch_emoticons"
+    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-lines.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "toni_emoticons_lines"
+    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-twitch.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "toni_emoticons_twitch"
+      # http://people.few.eur.nl/hogenboom/files/EmoticonSentimentLexicon.zip
+    - path: "dictionaries/sentiment/emoticon-sentiment/EmoticonSentimentLexicon.txt"
+      delimiter: "\\t"
+      containsPOSTags: false
+      containsRegex: false
+      featureScaling: true
+      minValue: -1.0
+      maxValue: 1.0
+      enabled: true
+      name: "emoticon_sentiment_lexicon.txt"
 
 global.resources.dict.slang:
     # InternetSlang http://www.internetslang.com/
@@ -262,6 +308,17 @@ global.resources.dict.wordnet.path: "dictionaries/wordnet/wn3.1.dict.tar.gz"
 global.resources.postagger.model.path: "models/ark.model.20120919.txt"
 #global.resources.postagger.model.path: "resources/models/model.txt"
 
+#redis.spout.host: "localhost"
+redis.spout.host: "redis.test.svc.cluster.local"
+redis.spout.port: 6379
+#redis.spout.topic: "amb:*chatMessages*"
+redis.spout.topic: "amb*uniqueChatMsg*"
+
+#redis.publish.host: "localhost"
+redis.publish.host: "redis-integration.test.svc.cluster.local"
+redis.publish.port: 6379
+redis.publish.topic: "stomp"
+
 ##############################################################################
 ### commons.* configs are for the commons package
 ##############################################################################
@@ -273,51 +330,56 @@ commons.tfidf.logging: false
 commons.featurevectorgenerator.pos.logging: false
 commons.featurevectorgenerator.sentiment.logging: false
 commons.featurevectorgenerator.tfidf.logging: false
+commons.featurevectorgenerator.boolean.logging: false
 
 ##############################################################################
 ### sentistorm.* configs are for the SentiStorm application
 ##############################################################################
 
+#TODO setting workers.num to 2 results in kyro exception - find out why
 sentistorm.workers.num: 1
-sentistorm.workers.childopts: "-Xmx2g"
+sentistorm.workers.childopts: "-Xmx1024m"
+#sentistorm.workers.childopts: "-Xmx4g"
 #sentistorm.workers.childopts: "-Xmx512m"
 
 # supervisor childopts are useless - use storm.yaml instead
-sentistorm.supervisor.childopts: "-Xmx2g"
+sentistorm.supervisor.childopts: "-Xmx1024m"
 #sentistorm.supervisor.childopts: "-Xmx512m"
 
-sentistorm.spout.parallelism: 2
+sentistorm.spout.parallelism: 1
 sentistorm.spout.max.pending: 150
-sentistorm.spout.startup.sleep.ms: 20000 # 20 sec
+sentistorm.spout.startup.sleep.ms: 10000 # 10 sec
 sentistorm.spout.tuple.sleep.ms: null
 sentistorm.spout.tuple.sleep.ns: null # 250000 = 0.25 ms
 sentistorm.spout.filter.language: "en"
+sentistorm.spout.redis.logging: false
 
-sentistorm.bolt.json.parallelism: 2
+sentistorm.bolt.json.parallelism: 1
 sentistorm.bolt.json.logging: false
 
-sentistorm.bolt.tokenizer.parallelism: 2
+sentistorm.bolt.tokenizer.parallelism: 1
 sentistorm.bolt.tokenizer.logging: false
 
-sentistorm.bolt.preprocessor.parallelism: 2
+sentistorm.bolt.preprocessor.parallelism: 1
 sentistorm.bolt.preprocessor.logging: false
 
-sentistorm.bolt.postagger.parallelism: 2
+sentistorm.bolt.postagger.parallelism: 1
 sentistorm.bolt.postagger.logging: false
 sentistorm.bolt.postagger.model: "models/ark.model.20120919.txt"
 #sentistorm.bolt.postagger.model: "src/main/resources/models/model.txt"
 
-sentistorm.bolt.featuregeneration.parallelism: 2
+sentistorm.bolt.featuregeneration.parallelism: 1
 sentistorm.bolt.featuregeneration.logging: false
 
-sentistorm.bolt.svm.parallelism: 2
+sentistorm.bolt.svm.parallelism: 1
 sentistorm.bolt.svm.logging: false
 
-sentistorm.bolt.return.parallelism: 2
+sentistorm.bolt.redis.publish.parallelism: 1
+sentistorm.bolt.redis.publish.logging: false
 
 sentistorm.bolt.statistic.parallelism: 1  #only 1 here: contains KeyValueState
 sentistorm.bolt.statistic.logging: false
 sentistorm.bolt.statistic.interval: 1000
 
-sentistorm.bolt.statisticJson.parallelism: 2
+sentistorm.bolt.statisticJson.parallelism: 1
 sentistorm.bolt.statisticJson.logging: false

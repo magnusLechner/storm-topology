@@ -65,7 +65,7 @@ public class MessageNGrams {
 	}
 
 	public static MessageNGrams createFromTokens(List<List<String>> preprocessedTweets) {
-		return createFromTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.COS);
+		return createFromTokens(preprocessedTweets, TfType.LOG, TfIdfNormalization.COS);
 	}
 
 	public static MessageNGrams createFromTokens(List<List<String>> preprocessedTweets, TfType type,

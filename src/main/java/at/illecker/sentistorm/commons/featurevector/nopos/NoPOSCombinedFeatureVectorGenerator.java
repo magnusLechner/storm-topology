@@ -91,9 +91,9 @@ public class NoPOSCombinedFeatureVectorGenerator extends NoPOSFeatureVectorGener
 		LOG.info("Preprocess finished after " + (System.currentTimeMillis() - startTime) + " ms");
 
 		// Generate CombinedFeatureVectorGenerator
-		NoPOSTweetTfIdf noPOSTweetTfIdf = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets, TfType.RAW,
+		NoPOSTweetTfIdf noPOSTweetTfIdf = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets, TfType.LOG,
 				TfIdfNormalization.COS);
-		MessageNGrams nGrams = MessageNGrams.createFromTokens(preprocessedTweets, TfType.RAW, TfIdfNormalization.COS);
+		MessageNGrams nGrams = MessageNGrams.createFromTokens(preprocessedTweets, TfType.LOG, TfIdfNormalization.COS);
 		NoPOSCombinedFeatureVectorGenerator cfvg = new NoPOSCombinedFeatureVectorGenerator(noPOSTweetTfIdf, nGrams);
 
 		// Combined Feature Vector Generation

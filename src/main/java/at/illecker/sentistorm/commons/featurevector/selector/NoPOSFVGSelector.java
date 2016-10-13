@@ -30,13 +30,13 @@ public class NoPOSFVGSelector {
 			return new NoPOSSentimentFeatureVectorGenerator();
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSTfIdfFeatureVectorGenerator.class)) {
 			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets,
-					TfType.RAW, TfIdfNormalization.COS);
+					TfType.LOG, TfIdfNormalization.COS);
 			return new NoPOSTfIdfFeatureVectorGenerator(tweetTfIdfNoPOS);
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSSpecialFeatureVectorGenerator.class)) {
 			return new NoPOSSpecialFeatureVectorGenerator();
 		} else if (noPOSFeatureVectorGenerator.equals(NoPOSCombinedFeatureVectorGenerator.class)) {
 			NoPOSTweetTfIdf tweetTfIdfNoPOS = NoPOSTweetTfIdf.createFromPreprocessedTokens(preprocessedTweets,
-					TfType.RAW, TfIdfNormalization.COS);
+					TfType.LOG, TfIdfNormalization.COS);
 //			MessageNGrams nGrams = MessageNGrams.createFromTokens(preprocessedTweets, TfType.RAW,
 //					TfIdfNormalization.COS);
 			MessageNGrams nGrams = null;

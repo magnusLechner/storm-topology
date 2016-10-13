@@ -79,38 +79,5 @@ public class QuickTest {
 		System.out.println("RESULT words in msg: " + globalCount/ (double) lineCounter);
 		System.out.println("RESULT chars in msg: " + charCount/ (double) lineCounter);
 		System.out.println("Res emo: " + emoticonCount);
-		
-		
-//		long timestamp = System.currentTimeMillis();
-//		JsonParser parser = new JsonParser();
-//
-//		JsonObject jsonObject = (JsonObject) parser.parse(MSG_FIRST_PART + timestamp + MSG_SECOND_PART);
-//		System.out.println(jsonObject.toString());
-//		
-//		JsonObject pipeline = new JsonObject();
-//		JsonObject pipelineCycle = new JsonObject();
-//		pipelineCycle.addProperty(MIN, 0);
-//		pipelineCycle.addProperty(MAX, 10);
-//		pipelineCycle.addProperty(AVG, 5);
-//		pipelineCycle.addProperty(STDDEV, 1);
-//		pipeline.add(CYCLE, pipelineCycle);
-//		
-//		JsonObject real = new JsonObject();
-//		JsonObject realCycle = new JsonObject();
-//		realCycle.addProperty(MIN, 0);
-//		realCycle.addProperty(MAX, 10);
-//		realCycle.addProperty(AVG, 5);
-//		realCycle.addProperty(STDDEV, 1);
-//		real.add(CYCLE, realCycle);
-//		
-//		JsonObject topology = new JsonObject();
-//		topology.addProperty(PROCESSED_TUPLES_COUNT, 200);
-//		topology.add(PIPELINE, pipeline);
-//		topology.add(REAL, real);
-//
-//		JsonObject json = new JsonObject();
-//		json.add(TOPOLOGY, topology);
-//		
-//		System.out.println(json);
 	}
 }
