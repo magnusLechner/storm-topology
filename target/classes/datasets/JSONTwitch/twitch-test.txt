@@ -1,1 +1,0 @@
-{"msg":"good amazing Kreygasm","user":"animayy","channel":"biboyqg","game":"Minecraft","url":"twitch.tv/biboyqg","timeStamp":1465527600008,"sentiment":{"score":0,"comparative":0,"tokens":["vroom","vroom","keemcar","lool"],"words":[],"positive":[],"negative":[]}}

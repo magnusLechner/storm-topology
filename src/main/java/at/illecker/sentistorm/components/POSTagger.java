@@ -82,8 +82,16 @@ public class POSTagger {
 			return taggedTokens;
 		}
 		
+		List<String> nonTwitchEmoticon = new ArrayList<String>();
+		for(String token : tokens) {
+			if(!TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
+				nonTwitchEmoticon.add(token);
+			}
+		}
+		
 		Sentence sentence = new Sentence();
-		sentence.tokens = tokens;
+		sentence.tokens = nonTwitchEmoticon;
+//		sentence.tokens = tokens;
 		ModelSentence ms = new ModelSentence(sentence.T());
 		
 		
@@ -91,19 +99,30 @@ public class POSTagger {
 		// POS-Tagging happens here
 		m_featureExtractor.computeFeatures(sentence, ms);
 		m_model.greedyDecode(ms, false);
-
-		for (int t = 0; t < sentence.T(); t++) {
+		
+		int counter = 0;
+		for(int t = 0; t < tokens.size(); t++) {
 			TaggedToken tt = null;
 			String token = tokens.get(t);
 			if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
 				tt = new TaggedToken(token, "E");
-			} else if(PlayerNames.getInstance().isPlayerName(token)) {
-				tt = new TaggedToken(token, "^");
 			} else {
-				tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[t]));
+				tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[counter]));
+				counter++;
 			}
 			taggedTokens.add(tt);
 		}
+
+//		for (int t = 0; t < sentence.T(); t++) {
+//			TaggedToken tt = null;
+//			String token = tokens.get(t);
+//			if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
+//				tt = new TaggedToken(token, "E");
+//			} else {
+//				tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[t]));
+//			}
+//			taggedTokens.add(tt);
+//		}
 		return taggedTokens;
 	}
 
@@ -128,16 +147,18 @@ public class POSTagger {
 		// load tweets
 //		List<Tweet> tweets = Tweet.getTestTweets();
 //		List<Tweet> tweets = Tweet.getSigleTestTweet();
-//		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
+		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
 		Tweet testTweet2 = new Tweet(0L, "I book a flight and read a book.");
+		Tweet testTweet3 = new Tweet(0L, "The Duchess was entertaining last night.");
 //		Tweet testTweet3 = new Tweet(0L, " ");
+		Tweet testTweet4 = new Tweet(0L, "loll you never make it.");
 //		Tweet testTweet4 = new Tweet(0L, "");
 		
 		List<Tweet> tweets = new ArrayList<Tweet>();
-//		tweets.add(testTweet1);
+		tweets.add(testTweet1);
 		tweets.add(testTweet2);
-//		tweets.add(testTweet3);
-//		tweets.add(testTweet4);
+		tweets.add(testTweet3);
+		tweets.add(testTweet4);
 
 		// process tweets
 		long startTime = System.currentTimeMillis();

@@ -1,6 +1,0 @@
-{"name": "JfTR", "evaluator_id": "JfTR"}
-{"name": "9fWX", "evaluator_id": "9fWX"}
-{"name": "hw9z", "evaluator_id": "hw9z"}
-{"name": "Chro", "evaluator_id": "Chro"}
-{"name": "xNXi", "evaluator_id": "xNXi"}
-{"name": "3Dfm", "evaluator_id": "3Dfm"}
