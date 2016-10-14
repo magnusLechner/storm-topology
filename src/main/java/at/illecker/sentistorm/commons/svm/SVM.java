@@ -1129,7 +1129,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 30;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1275,13 +1275,13 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-//		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results_"
-//				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/all_runs_results_"
+				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
 
 
 
-		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "all_runs_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
-				+ testSize + ".tsv", sb.toString());
+//		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "all_runs_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
+//				+ testSize + ".tsv", sb.toString());
 
 		
 		
@@ -1325,10 +1325,12 @@ public class SVM {
 			}
 			sb.append("\n");
 		}
-//		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/averaged_results_"
-//				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
-		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "averaged_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
-				+ testSize + ".tsv", sb.toString());
+		EvaluationUtil.generateTSV("src/main/evaluation/successive_addition_evaluation/averaged_results_"
+				+ sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_" + testSize + ".tsv", sb.toString());
+		
+		
+//		EvaluationUtil.generateTSV("/home/stud/lechner/storm-topology/test/" + "averaged_results_" + sliceGenerator + "_" + startTrainingSize + "_" + stepSize + "_"
+//				+ testSize + ".tsv", sb.toString());
 	}
 
 	private static void printPipelineResults(int iterations, Map<String, Double[]> statistics) {

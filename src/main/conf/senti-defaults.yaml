@@ -254,7 +254,7 @@ global.resources.dict.sentiment:
       maxValue: 1.0
       enabled: true
       name: "twitch_emoticons"
-    - path: "dictionaries/sentiment/emoticon-sentiment/toni-emoticons-lines.txt"
+    - path: "dictionaries/sentiment/emoticon-sentiment/emoticons-lines.txt"
       delimiter: "\\t"
       containsPOSTags: false
       containsRegex: false

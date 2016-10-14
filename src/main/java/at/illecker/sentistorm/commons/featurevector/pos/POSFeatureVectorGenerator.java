@@ -74,11 +74,12 @@ public class POSFeatureVectorGenerator extends FeatureVectorGenerator {
 		if (LOGGING) {
 			LOG.info("POStags: " + Arrays.toString(posTags));
 		}
+		
 		return resultFeatureVector;
 	}
 
 	private double[] countPOSTagsFromTaggedTokens(List<TaggedToken> taggedTokens, boolean normalize) {
-		// 8 = [NOUN, VERB, ADJECTIVE, ADVERB, INTERJECTION, AT-MENTION, SEMOTICON]
+		// 8 = [NOUN, VERB, ADJECTIVE, ADVERB, INTERJECTION, AT-MENTION, EMOTICON]
 		double[] posTags = new double[] { 0d, 0d, 0d, 0d, 0d, 0d, 0d };
 		int wordCount = 0;
 		for (TaggedToken word : taggedTokens) {

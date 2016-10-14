@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import at.illecker.sentistorm.commons.Configuration;
 import at.illecker.sentistorm.commons.Tweet;
-import at.illecker.sentistorm.commons.dict.PlayerNames;
 import at.illecker.sentistorm.commons.dict.TwitchEmoticons;
 import at.illecker.sentistorm.commons.util.io.IOUtils;
 import at.illecker.sentistorm.commons.util.io.SerializationUtils;
@@ -88,31 +87,44 @@ public class POSTagger {
 				nonTwitchEmoticon.add(token);
 			}
 		}
+		boolean onlyTwitchEmoticons = false;
+		if(nonTwitchEmoticon.size() == 0) {
+			onlyTwitchEmoticons = true;
+		}
 		
-		Sentence sentence = new Sentence();
-		sentence.tokens = nonTwitchEmoticon;
-//		sentence.tokens = tokens;
-		ModelSentence ms = new ModelSentence(sentence.T());
-		
-		
-//		m_featureExtractor.dumpMode = true;
-		// POS-Tagging happens here
-		m_featureExtractor.computeFeatures(sentence, ms);
-		m_model.greedyDecode(ms, false);
-		
-		int counter = 0;
-		for(int t = 0; t < tokens.size(); t++) {
-			TaggedToken tt = null;
-			String token = tokens.get(t);
-			if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
-				tt = new TaggedToken(token, "E");
-			} else {
-				tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[counter]));
-				counter++;
+		if(!onlyTwitchEmoticons) {
+			Sentence sentence = new Sentence();
+			sentence.tokens = nonTwitchEmoticon;
+//			sentence.tokens = tokens;
+			ModelSentence ms = new ModelSentence(sentence.T());
+			
+			m_featureExtractor.computeFeatures(sentence, ms);
+			m_model.greedyDecode(ms, false);
+			
+			int counter = 0;
+			for(int t = 0; t < tokens.size(); t++) {
+				TaggedToken tt = null;
+				String token = tokens.get(t);
+				if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
+					tt = new TaggedToken(token, "E");
+				} else {
+					tt = new TaggedToken(token, m_model.labelVocab.name(ms.labels[counter]));
+					counter++;
+				}
+				taggedTokens.add(tt);
 			}
-			taggedTokens.add(tt);
+		} else {
+			for(int t = 0; t < tokens.size(); t++) {
+				TaggedToken tt = null;
+				String token = tokens.get(t);
+				if(TwitchEmoticons.getInstance().isTwitchEmoticon(token)) {
+					tt = new TaggedToken(token, "E");
+				}
+				taggedTokens.add(tt);
+			}
 		}
 
+//		//original
 //		for (int t = 0; t < sentence.T(); t++) {
 //			TaggedToken tt = null;
 //			String token = tokens.get(t);
@@ -123,6 +135,7 @@ public class POSTagger {
 //			}
 //			taggedTokens.add(tt);
 //		}
+		
 		return taggedTokens;
 	}
 
@@ -147,18 +160,18 @@ public class POSTagger {
 		// load tweets
 //		List<Tweet> tweets = Tweet.getTestTweets();
 //		List<Tweet> tweets = Tweet.getSigleTestTweet();
-		Tweet testTweet1 = new Tweet(0L, "man you :( suck Kappa WutFace 4Head");
-		Tweet testTweet2 = new Tweet(0L, "I book a flight and read a book.");
-		Tweet testTweet3 = new Tweet(0L, "The Duchess was entertaining last night.");
+		Tweet testTweet1 = new Tweet(0L, "man Kappa you :( suck Kappa WutFace 4Head");
+//		Tweet testTweet2 = new Tweet(0L, "I book a WutFace flight and read a book.");
+//		Tweet testTweet3 = new Tweet(0L, "The Duchess was entertaining last night.");
 //		Tweet testTweet3 = new Tweet(0L, " ");
-		Tweet testTweet4 = new Tweet(0L, "loll you never make it.");
+//		Tweet testTweet4 = new Tweet(0L, "i come from the future.");
 //		Tweet testTweet4 = new Tweet(0L, "");
 		
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		tweets.add(testTweet1);
-		tweets.add(testTweet2);
-		tweets.add(testTweet3);
-		tweets.add(testTweet4);
+//		tweets.add(testTweet2);
+//		tweets.add(testTweet3);
+//		tweets.add(testTweet4);
 
 		// process tweets
 		long startTime = System.currentTimeMillis();
@@ -166,16 +179,16 @@ public class POSTagger {
 			// Tokenize
 			List<String> tokens = Tokenizer.tokenize(tweet.getText());
 
-			for(int i = 0; i < tokens.size(); i++) {
-				System.out.println("TOKENS: " + tokens.get(i));
-			}
+//			for(int i = 0; i < tokens.size(); i++) {
+//				System.out.println("TOKENS: " + tokens.get(i));
+//			}
 			
 			// Preprocess
 			List<String> preprocessedTokens = preprocessor.preprocess(tokens);
 
-			for(int i = 0; i < preprocessedTokens.size(); i++) {
-				System.out.println("PREPROCESSED: " + preprocessedTokens.get(i));
-			}
+//			for(int i = 0; i < preprocessedTokens.size(); i++) {
+//				System.out.println("PREPROCESSED: " + preprocessedTokens.get(i));
+//			}
 			
 			// POS Tagging
 			List<TaggedToken> taggedTokens = posTagger.tag(preprocessedTokens);
