@@ -5,4 +5,3 @@ lul	0.5
 lawl	0.5
 noob	-0.5
 owned	0.5
-༼ つ ◕_◕ ༽つ	1
