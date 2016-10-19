@@ -38,20 +38,20 @@ public class SVMPreparation implements PreparationTool {
 	public static final String SEPARATE_MESSAGES_ALL_NEUTRAL = "src/main/resources/preparation/complete-labeling/separated-classes/neutrals.txt";
 	public static final String SEPARATE_MESSAGES_ALL_NEGATIVE = "src/main/resources/preparation/complete-labeling/separated-classes/negatives.txt";
 
-	//for smaug
+	// for smaug
 //	public static final String SEPARATE_MESSAGES_ALL_POSITIVE = "resources/preparation/complete-labeling/separated-classes/positives.txt";
 //	public static final String SEPARATE_MESSAGES_ALL_NEUTRAL = "resources/preparation/complete-labeling/separated-classes/neutrals.txt";
 //	public static final String SEPARATE_MESSAGES_ALL_NEGATIVE = "resources/preparation/complete-labeling/separated-classes/negatives.txt";
-	
-	private static final int FIX_TRAIN_SIZE = 100;
+
+	private static final int FIX_TRAIN_SIZE = 0;
 
 	public static final String TEST_TSV = "src/main/resources/datasets/Twitch/twitch-test.tsv";
 	public static final String TRAINING_TSV = "src/main/resources/datasets/Twitch/twitch-training.tsv";
 
-	//for smaug
+	// for smaug
 //	public static final String TEST_TSV = "/home/stud/lechner/twitch-test.tsv";
 //	public static final String TRAINING_TSV = "/home/stud/lechner/twitch-training.tsv";
-	
+
 	public static final String FIX_TESTING_SET_TRAINDATA = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-training.tsv";
 	public static final String FIX_TESTING_SET_TRAINDATA_NO_CONTRAVERSE = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-training-no-controverse-fv.tsv";
 	public static final String FIX_TESTING_SET_TESTDATA = "src/main/resources/datasets/Twitch/fix_testing_set/twitch-test.tsv";
@@ -64,55 +64,13 @@ public class SVMPreparation implements PreparationTool {
 		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 		// SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
-		// complete 709 as training and 300 from self+lenn for testing
-//		List<List<List<MyTuple>>> slices = prepareAdditionVsEquallyDistibutedTestRun(100, 50, 300,
-//				UNIQUE_MESSAGES_ORIGINAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE,
-//				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE,
-//				false);
-//
-//		// // test: slices size (test slice and training slice)
-//		for (int i = 0; i < slices.size(); i++) {
-//			System.out.println("TRAINING: " + slices.get(i).get(0).size());
-//			System.out.println("TEST: " + slices.get(i).get(1).size());
-//
-//			int counterPositiveTest = 0;
-//			int counterNeutralTest = 0;
-//			int counterNegativeTest = 0;
-//			for (int j = 0; j < slices.get(i).get(1).size(); j++) {
-//				if (slices.get(i).get(1).get(j).getSentiment().equals(Sentiment.POSITIVE)) {
-//					counterPositiveTest++;
-//				} else if (slices.get(i).get(1).get(j).getSentiment().equals(Sentiment.NEUTRAL)) {
-//					counterNeutralTest++;
-//				} else if (slices.get(i).get(1).get(j).getSentiment().equals(Sentiment.NEGATIVE)) {
-//					counterNegativeTest++;
-//				}
-//			}
-//			System.out.println("POSITIVE COUNTER: " + counterPositiveTest);
-//			System.out.println("NEUTRAL COUNTER: " + counterNeutralTest);
-//			System.out.println("NEGATIVE COUNTER: " + counterNegativeTest);
-//			System.out.println();
-//		}
-//
-//		for (int j = 0; j < slices.get(slices.size() - 1).get(1).size(); j++) {
-//			System.out.println(slices.get(slices.size() - 1).get(1).get(j));
-//		}
+		//3042
+//		createTestAndTrainingTSV(SEPARATE_MESSAGES_ALL_POSITIVE, SEPARATE_MESSAGES_ALL_NEUTRAL,
+//				SEPARATE_MESSAGES_ALL_NEGATIVE, TEST_TSV, TRAINING_TSV);
 
-		// createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE,
-		// SEPARATE_MESSAGES_NEUTRAL, SEPARATE_MESSAGES_NEGATIVE,
-		// TEST_TSV, TRAINING_TSV);
-
-//		 separateDataBySentiment(UNIQUE_MESSAGES_ALL,
-//		 SEPARATE_MESSAGES_ALL_POSITIVE,
-//		 SEPARATE_MESSAGES_ALL_NEUTRAL,
-//		 SEPARATE_MESSAGES_ALL_NEGATIVE);
-
-		// createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_LABELING_POSITIVE,
-		// SEPARATE_MESSAGES_SELF_LABELING_NEUTRAL,
-		// SEPARATE_MESSAGES_SELF_LABELING_NEGATIVE, TEST_TEST_TSV,
-		// TEST_TRAINING_TSV);
-
-//		 separateMergedLabelSessions(UNIQUE_MESSAGES_ALL,
-//		 UNIQUE_MESSAGES_ORIGINAL, UNIQUE_MESSAGES_SELF_LABELING_AND_LENN);
+		//2359
+		createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
+				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, TEST_TSV, TRAINING_TSV);
 	}
 
 	public static void separateMergedLabelSessions(String allPath, String toRemovePath, String resultPath) {
@@ -950,7 +908,7 @@ public class SVMPreparation implements PreparationTool {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void deleteTwitchDatasetSmaug() {
 		File svmModel = new File("/home/stud/lechner/svm_model.ser");
 		File svmProblem = new File("/home/stud/lechner/svm_problem.txt");
@@ -976,7 +934,7 @@ public class SVMPreparation implements PreparationTool {
 			}
 		}
 	}
-	
+
 	private static void deleteTwitchDataset() {
 		File svmModel = new File("src/main/resources/datasets/Twitch/svm_model.ser");
 		File svmProblem = new File("src/main/resources/datasets/Twitch/svm_problem.txt");
@@ -1002,7 +960,7 @@ public class SVMPreparation implements PreparationTool {
 			}
 		}
 	}
-	
+
 	private static String buildTSVString(List<MyTuple> tupel) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < tupel.size(); i++) {

@@ -193,21 +193,21 @@ public class WekaEvaluator {
 			MyClassifier simpleLogistic = new MySimpleLogistic(new SimpleLogistic());
 
 //			classifiers.add(a1de);
-//			classifiers.add(bayesNet);	// part1
+//			classifiers.add(bayesNet);
 //			classifiers.add(bfTree);
 //			classifiers.add(chirp);
-//			classifiers.add(extraTree);	// part1
+//			classifiers.add(extraTree);
 //			classifiers.add(functionalTree);
 //			classifiers.add(j48);
 //			classifiers.add(lmt);
 //			classifiers.add(logistic);
 //			classifiers.add(logitBoost);
-//			classifiers.add(naiveBayesMultinomial);	// part1
+//			classifiers.add(naiveBayesMultinomial);
 //			classifiers.add(nbTree);
 //			classifiers.add(part);
-//			classifiers.add(randomForest);	// part1
-			classifiers.add(repTree);
-			classifiers.add(simpleCart);
+//			classifiers.add(randomForest);
+//			classifiers.add(repTree);
+//			classifiers.add(simpleCart);
 //			classifiers.add(simpleLogistic);
 
 		} catch (Exception e) {
@@ -389,6 +389,9 @@ public class WekaEvaluator {
 		statPrint.getMacroPosNegFMeasure().append(completeFormat(weka.getAvgMacroPosNegFMeasure()) + "\t");
 		statPrint.getStdDevMacroPosNegFMeasure().append(completeFormat(weka.getStdDevMacroPosNegFMeasure()) + "\t");
 
+		statPrint.getOtherPosNegFMeasure().append(completeFormat(weka.getAvgOtherFMeasure()) + "\t");
+		statPrint.getStdDevOtherPosNegFMeasure().append(completeFormat(weka.getStdDevOtherFMeasure()) + "\t");
+		
 		statPrint.getAverageAccuracy().append(completeFormat(weka.getAvgAverageAccuracy()) + "\t");
 		statPrint.getStdDevAverageAccuracy().append(completeFormat(weka.getStdDevAverageAccuracy()) + "\t");
 		statPrint.getNegativeAverageAccuracy().append(completeFormat(weka.getAvgNegativeAccuracy()) + "\t");

@@ -6,11 +6,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tika.language.LanguageIdentifier;
+
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.cybozu.labs.langdetect.LangDetectException;
-import com.google.common.base.Optional;
 
+import at.storm.commons.dict.TwitchEmoticons;
+import at.storm.components.Tokenizer;
 import at.testing.commons.MyTuple;
 import at.testing.commons.Sentiment;
 import at.testing.preparation.SVMPreparation;
@@ -55,6 +58,19 @@ public class LanguageDetectionTest {
 		for (MyTuple tuple : tuples) {
 			String msg = tuple.getText();
 
+//			List<String> tokens = Tokenizer.tokenize(msg);
+//			List<String> asd = new ArrayList<String>();
+//			for(String s : tokens) {
+//				if(!TwitchEmoticons.getInstance().isTwitchEmoticon(s)) {
+//					asd.add(s);
+//				}	
+//			}
+//			String k = "";
+//			for(String g : asd) {
+//				k += g;
+//			}
+//			msg = k.trim();
+
 			Detector detector = DetectorFactory.create();
 			detector.append(msg);
 
@@ -80,45 +96,58 @@ public class LanguageDetectionTest {
 	}
 
 	// tika
-//	@SuppressWarnings("deprecation")
-//	public void tika() {
-//		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);
-//
-//		allSize = tuples.length;
-//		for (MyTuple tuple : tuples) {
-//			if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
-//				negativesCount++;
-//			} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
-//				neutralCount++;
-//			} else {
-//				positivesCount++;
-//			}
-//		}
-//
-//		for (MyTuple tuple : tuples) {
-//			String msg = tuple.getText();
-//
-//			Boolean languageCorrect = null;
-//			try {
-//				LanguageIdentifier identifier = new LanguageIdentifier(msg);
-//				languageCorrect = identifier.getLanguage().equals("en");
-//			} catch (Exception e) {
-//				languageCorrect = false;
-//			}
-//
-//			if (languageCorrect) {
-//				correctAll++;
-//				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
-//					correctNegative++;
-//				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
-//					correctNeutral++;
-//				} else {
-//					correctPositives++;
-//				}
-//			}
-//		}
-//		printResult();
-//	}
+	@SuppressWarnings("deprecation")
+	public void tika() {
+		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);
+
+		allSize = tuples.length;
+		for (MyTuple tuple : tuples) {
+			if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+				negativesCount++;
+			} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+				neutralCount++;
+			} else {
+				positivesCount++;
+			}
+		}
+
+		for (MyTuple tuple : tuples) {
+			String msg = tuple.getText();
+
+			List<String> tokens = Tokenizer.tokenize(msg);
+			List<String> asd = new ArrayList<String>();
+			for (String s : tokens) {
+				if (!TwitchEmoticons.getInstance().isTwitchEmoticon(s)) {
+					asd.add(s);
+				}
+			}
+			String k = "";
+			for (String g : asd) {
+				k += g;
+			}
+			msg = k.trim();
+
+			Boolean languageCorrect = null;
+			try {
+				LanguageIdentifier identifier = new LanguageIdentifier(msg);
+				languageCorrect = identifier.getLanguage().equals("en");
+			} catch (Exception e) {
+				languageCorrect = false;
+			}
+
+			if (languageCorrect) {
+				correctAll++;
+				if (tuple.getSentiment().equals(Sentiment.NEGATIVE)) {
+					correctNegative++;
+				} else if (tuple.getSentiment().equals(Sentiment.NEUTRAL)) {
+					correctNeutral++;
+				} else {
+					correctPositives++;
+				}
+			}
+		}
+		printResult();
+	}
 
 //	public void optimaize_shuyo_fork() throws IOException {
 //		MyTuple[] tuples = SVMPreparation.getMyTuples(COMPLETE);

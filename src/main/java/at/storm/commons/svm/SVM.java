@@ -328,8 +328,8 @@ public class SVM {
 				// LOG.info(result[0] + ";" + result[1] + ";" + result[3] + ";"
 				// + result[4] + ";" + result[2] + ";"
 				// + result[5]);
-				System.out.println(result[0] + ";" + result[1] + ";" + result[3] + ";" + result[4] + ";" + result[2]
-						+ ";" + result[5]);
+				System.out.println(result[0] + "\t" + result[1] + "\t" + result[3] + "\t" + result[4] + "\t" + result[2]
+						+ "\t" + result[5]);
 			}
 
 		} catch (InterruptedException e) {
@@ -617,7 +617,7 @@ public class SVM {
 //			for (int i = 0; i < 7; i++) {
 //				c[i] = Math.pow(2, 6 + i);
 //			}
-//			// gamma = 2^−14, 2^−14, ..., 2^-8
+//			// gamma = 2^−14, 2^−13, ..., 2^-8
 //			double[] gamma = new double[7];
 //			for (int j = 0; j < 7; j++) {
 //				gamma[j] = Math.pow(2, -14 + j);
@@ -862,6 +862,7 @@ public class SVM {
 		List<List<Double>> macroPosNegFMeasure = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> averageAccuracy = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> errorRate = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> otherFMeasure = new ArrayList<List<Double>>(iterations);
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
@@ -896,6 +897,7 @@ public class SVM {
 				List<Double> macroPosNegFMeasureSingleRun = new ArrayList<Double>();
 				List<Double> averageAccuracySingleRun = new ArrayList<Double>();
 				List<Double> errorRateSingleRun = new ArrayList<Double>();
+				List<Double> otherFMeasureSingleRun = new ArrayList<Double>();
 
 				if (currentIteration >= 0) {
 					trainingSize.add(trainingSizeSingleRun);
@@ -928,6 +930,8 @@ public class SVM {
 
 					averageAccuracy.add(averageAccuracySingleRun);
 					errorRate.add(errorRateSingleRun);
+					
+					otherFMeasure.add(otherFMeasureSingleRun);
 				}
 
 				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
@@ -1016,6 +1020,8 @@ public class SVM {
 						errorRateSingleRun
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getErrorRate());
 
+						otherFMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOtherPosNegFMeasure());
+						
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
 				}
@@ -1047,6 +1053,7 @@ public class SVM {
 		statistics.put("micro pos/neg f-Measure", microPosNegFMeasure);
 		statistics.put("macro f-Measure", macroFMeasure);
 		statistics.put("macro pos/neg f-Measure", macroPosNegFMeasure);
+		statistics.put("other pos/neg f-Measure", otherFMeasure);
 		statistics.put("average accuracy", averageAccuracy);
 		statistics.put("error rate", errorRate);
 		statistics.put("cpu-time (for complete test-set)", cpuTime);
@@ -1117,66 +1124,44 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 20;
+		int iterations = 100;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
+		
+		int addVsTest = 7;
+
+		//these have no real functionality atm
 		List<Integer> startTrainingSizeList = new ArrayList<Integer>();
 		List<Integer> stepList = new ArrayList<Integer>();
 		List<Integer> testSizeList = new ArrayList<Integer>();
-		//
-		// startTrainingSizeList.add(50);
-		// startTrainingSizeList.add(100);
-		// startTrainingSizeList.add(100);
-		// startTrainingSizeList.add(100);
-		//
-		// stepList.add(50);
-		// stepList.add(50);
-		// stepList.add(50);
-		// stepList.add(50);
-		//
-		// testSizeList.add(209);
-		// testSizeList.add(109);
-		// testSizeList.add(209);
-		// testSizeList.add(309);
-
-//		for (int i = 0; i < 6; i++) {
-//			for (int j = 0; j < startTrainingSizeList.size(); j++) {
-//				evaluateDynamicSlices(dataset, iterations, nFoldCrossValidation, false, i, startTrainingSizeList.get(j),
-//						stepList.get(j), testSizeList.get(j));
-//			}
-//		}
-//		svm.EXEC_SERV.shutdown();
-
-		// 709 with 300 test equally distributed from my+lenn
-		// int addVsTest = 6;
-		// my+lenn - 300 for test equally distributed
-		int addVsTest = 7;
 
 		startTrainingSizeList.add(200);
 		stepList.add(200);
 		testSizeList.add(300);
-		for (int j = 0; j < startTrainingSizeList.size(); j++) {
-			// SVM
-			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
-					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
-			// Weka
-//			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-//					stepList.get(j), testSizeList.get(j));
-		}
-		svm.EXEC_SERV.shutdown();
-
-//		if (featureVectorLevel == 0) {
-//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else if (featureVectorLevel == 1) {
-//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
-//		} else {
-//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-//					useSerialization);
+		
+//		for (int j = 0; j < startTrainingSizeList.size(); j++) {
+//			// SVM
+//			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+//					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
+//
+//			// Weka
+////			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+////					stepList.get(j), testSizeList.get(j));
 //		}
+//		svm.EXEC_SERV.shutdown();
+
+		if (featureVectorLevel == 0) {
+			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+					useSerialization);
+		} else if (featureVectorLevel == 1) {
+			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+					useSerialization);
+		} else {
+			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+					useSerialization);
+		}
 
 	}
 

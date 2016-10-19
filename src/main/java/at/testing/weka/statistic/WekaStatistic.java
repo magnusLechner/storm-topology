@@ -548,5 +548,22 @@ public class WekaStatistic {
 		}
 		return values;
 	}
+	
+	// other fmeasure
+	public Double getAvgOtherFMeasure() {
+		return calcAvg(getOtherFMeasure());
+	}
+
+	public Double getStdDevOtherFMeasure() {
+		return calcStdDev(getOtherFMeasure());
+	}
+
+	private List<Double> getOtherFMeasure() {
+		List<Double> values = new ArrayList<Double>();
+		for (int i = 0; i < cmsList.size(); i++) {
+			values.add(cmsList.get(i).getOtherPosNegFMeasure());
+		}
+		return values;
+	}
 
 }

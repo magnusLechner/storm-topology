@@ -73,6 +73,9 @@ public class StatisticPrinter {
 	private StringBuilder positiveErrorRate = new StringBuilder();
 	private StringBuilder stdDevPositiveErrorRate = new StringBuilder();
 
+	private StringBuilder otherFMeasure = new StringBuilder();
+	private StringBuilder stdDevOtherFMeasure = new StringBuilder();
+	
 	public StatisticPrinter() {
 		allList.add(classifierName);
 		allList.add(optionName);
@@ -122,6 +125,9 @@ public class StatisticPrinter {
 		allList.add(macroPosNegFMeasure);
 		allList.add(stdDevMacroPosNegFMeasure);
 
+		allList.add(otherFMeasure);
+		allList.add(stdDevOtherFMeasure);
+		
 		allList.add(averageAccuracy);
 		allList.add(stdDevAverageAccuracy);
 		allList.add(negativeAverageAccuracy);
@@ -209,6 +215,9 @@ public class StatisticPrinter {
 		macroPosNegFMeasure.append("Macro PosNeg F-Measure: ").append("\t");
 		stdDevMacroPosNegFMeasure.append("StdDev Macro PosNeg F-Measure: ").append("\t");
 
+		otherFMeasure.append("OTHER PosNeg F-Measure: ").append("\t");
+		stdDevOtherFMeasure.append("StdDev OTHER PosNeg F-Measure: ").append("\t");
+		
 		averageAccuracy.append("Average Accuracy: ").append("\t");
 		stdDevAverageAccuracy.append("StdDev Average Accuracy: ").append("\t");
 		negativeAverageAccuracy.append("Negative Average Accuracy: ").append("\t");
@@ -454,6 +463,14 @@ public class StatisticPrinter {
 	
 	public StringBuilder getStdDevPositiveErrorRate() {
 		return stdDevPositiveErrorRate;
+	}
+	
+	public StringBuilder getOtherPosNegFMeasure() {
+		return otherFMeasure;
+	}
+	
+	public StringBuilder getStdDevOtherPosNegFMeasure() {
+		return stdDevOtherFMeasure;
 	}
 	
 }
