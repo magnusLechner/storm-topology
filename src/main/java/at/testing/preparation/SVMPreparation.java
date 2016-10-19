@@ -26,9 +26,9 @@ public class SVMPreparation implements PreparationTool {
 	public static final String UNIQUE_MESSAGES_SELF_LABELING_AND_LENN = "src/main/resources/preparation/self-labeling/complete_self_labeling_and_lenn.txt";
 	public static final String UNIQUE_MESSAGES_ALL = "src/main/resources/preparation/complete-labeling/complete_all.txt";
 
-	public static final String SEPARATE_MESSAGES_POSITIVE = "src/main/resources/preparation/svm/unique-messages-positive.txt";
-	public static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/svm/unique-messages-neutral.txt";
-	public static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/svm/unique-messages-negative.txt";
+	public static final String SEPARATE_MESSAGES_POSITIVE = "src/main/resources/preparation/original-labeling/separated-classes/unique-messages-positive.txt";
+	public static final String SEPARATE_MESSAGES_NEUTRAL = "src/main/resources/preparation/original-labeling/separated-classes/unique-messages-neutral.txt";
+	public static final String SEPARATE_MESSAGES_NEGATIVE = "src/main/resources/preparation/original-labeling/separated-classes/unique-messages-negative.txt";
 
 	public static final String SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE = "src/main/resources/preparation/self-labeling/separated-classes/positives.txt";
 	public static final String SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL = "src/main/resources/preparation/self-labeling/separated-classes/neutrals.txt";
@@ -71,6 +71,10 @@ public class SVMPreparation implements PreparationTool {
 		//2359
 		createTestAndTrainingTSV(SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_POSITIVE, SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 				SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE, TEST_TSV, TRAINING_TSV);
+		
+		//709
+//		createTestAndTrainingTSV(SEPARATE_MESSAGES_POSITIVE, SEPARATE_MESSAGES_NEUTRAL,
+//				SEPARATE_MESSAGES_NEGATIVE, TEST_TSV, TRAINING_TSV);
 	}
 
 	public static void separateMergedLabelSessions(String allPath, String toRemovePath, String resultPath) {

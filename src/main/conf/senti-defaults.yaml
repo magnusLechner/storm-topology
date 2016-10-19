@@ -95,9 +95,12 @@ global.resources.datasets.twitch:
             #0: 2.76  #3042
             #1: 1.0
             #2: 2.45
-            0: 2.57   #2359
+            #0: 3.25   #2359
+            #1: 1.0
+            #2: 2.57
+            0: 2.76   #709
             1: 1.0
-            2: 3.25
+            2: 2.45
 
 global.resources.dict:
     FirstNames: # http://www.oxfordreference.com/view/10.1093/acref/9780198610601.001.0001/acref-9780198610601?hide=true&pageSize=100&sort=titlesort
