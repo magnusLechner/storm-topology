@@ -43,8 +43,7 @@ import at.storm.commons.util.io.kyro.TaggedTokenSerializer;
 import at.storm.spout.RedisSpout;
 
 public class StormTopology {
-	public static final String TOPOLOGY_NAME = "senti-storm-topology";
-	public static final String RETURN_RESULT_BOLT_ID = "return-result-bolt";
+	public static final String TOPOLOGY_NAME = "storm-topology";
 
 	public static void main(String[] args) throws Exception {
 		// TODO Things to remember:
