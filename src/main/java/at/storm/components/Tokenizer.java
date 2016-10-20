@@ -66,7 +66,7 @@ public class Tokenizer {
 		List<Tweet> tweets = new ArrayList<Tweet>();
 //		tweets.add(new Tweet(0L, "wutface WutFace kappa Kappa 4head 4Head 4HEAD"));
 //		tweets.add(new Tweet(1L, "dodo8 21Ignite2 Friberg Xist N0tail Troll2 moon12 Moon21"));
-		tweets.add(new Tweet(2L, "This is a test @Nonoobspleasy Why arty suck? I killed 2 kv-8 in one time with it"));
+		tweets.add(new Tweet(2L, "Hey cheer up ┗(＾0＾)┓ SeemsGood"));
 		for (Tweet tweet : tweets) {
 			List<String> tokenizedTweet = tokenize(tweet.getText());
 			System.out.println(tokenizedTweet);

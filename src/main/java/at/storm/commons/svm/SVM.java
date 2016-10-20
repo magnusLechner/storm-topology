@@ -257,7 +257,8 @@ public class SVM {
 		for (int i = 0; i < maxC; i++) {
 			c[i] = Math.pow(2, -5 + (i * 2));
 		}
-		int maxGamma = 10;
+//		int maxGamma = 10;
+		int maxGamma = 1;
 		double[] gamma = new double[maxGamma];
 		// gamma = 2^−15, 2^−13, ..., 2^3
 		for (int j = 0; j < maxGamma; j++) {

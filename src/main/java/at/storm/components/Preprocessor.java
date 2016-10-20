@@ -106,50 +106,51 @@ public class Preprocessor {
 				continue;
 			}
 
-			// identify token further
-			boolean tokenIsUser = StringUtils.isUser(token);
-			boolean tokenIsHashTag = StringUtils.isHashTag(token);
-			boolean tokenIsSlang = StringUtils.isSlang(token);
-			boolean tokenIsEmail = StringUtils.isEmail(token);
-			boolean tokenIsPhone = StringUtils.isPhone(token);
-			boolean tokenIsSpecialNumeric = StringUtils.isSpecialNumeric(token);
-			boolean tokenIsSeparatedNumeric = StringUtils.isSeparatedNumeric(token);
-
-			// Step 4) Slang Correction
-			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
-					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
-				String[] slangCorrection = m_slangCorrection.getCorrection(token.toLowerCase());
-				if (slangCorrection != null) {
-					for (int i = 0; i < slangCorrection.length; i++) {
-						preprocessedTokens.add(slangCorrection[i]);
-					}
-					continue;
-				}
-			} else if (tokenIsSlang) {
-				if (token.startsWith("w/")) {
-					preprocessedTokens.add("with");
-					preprocessedTokens.add(token.substring(2));
-					continue;
-				}
-			}
-
-			// Step 5) Check if there are punctuations between words
-			// e.g., L.O.V.E
-			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
-					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
-				// remove alternating letter dot pattern e.g., L.O.V.E
-				Matcher m = RegexUtils.ALTERNATING_LETTER_DOT_PATTERN.matcher(token);
-				if (m.matches()) {
-					String newToken = token.replaceAll("\\.", "");
-					if (m_wordnet.contains(newToken)) {
-						preprocessedTokens.add(newToken);
-						continue;
-					}
-				}
-			}
-
+//			// identify token further
+//			boolean tokenIsUser = StringUtils.isUser(token);
+//			boolean tokenIsHashTag = StringUtils.isHashTag(token);
+//			boolean tokenIsSlang = StringUtils.isSlang(token);
+//			boolean tokenIsEmail = StringUtils.isEmail(token);
+//			boolean tokenIsPhone = StringUtils.isPhone(token);
+//			boolean tokenIsSpecialNumeric = StringUtils.isSpecialNumeric(token);
+//			boolean tokenIsSeparatedNumeric = StringUtils.isSeparatedNumeric(token);
+//
+//			// Step 4) Slang Correction
+//			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
+//					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
+//				String[] slangCorrection = m_slangCorrection.getCorrection(token.toLowerCase());
+//				if (slangCorrection != null) {
+//					for (int i = 0; i < slangCorrection.length; i++) {
+//						preprocessedTokens.add(slangCorrection[i]);
+//					}
+//					continue;
+//				}
+//			} else if (tokenIsSlang) {
+//				if (token.startsWith("w/")) {
+//					preprocessedTokens.add("with");
+//					preprocessedTokens.add(token.substring(2));
+//					continue;
+//				}
+//			}
+//
+//			// Step 5) Check if there are punctuations between words
+//			// e.g., L.O.V.E
+//			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
+//					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
+//				// remove alternating letter dot pattern e.g., L.O.V.E
+//				Matcher m = RegexUtils.ALTERNATING_LETTER_DOT_PATTERN.matcher(token);
+//				if (m.matches()) {
+//					String newToken = token.replaceAll("\\.", "");
+//					if (m_wordnet.contains(newToken)) {
+//						preprocessedTokens.add(newToken);
+//						continue;
+//					}
+//				}
+//			}
+//
 			// Step 6) Add missing g in gerund forms e.g., goin
-			if ((!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (token.endsWith("in"))
+//			if ((!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (token.endsWith("in"))
+			if ((!tokenIsURL) && (token.endsWith("in"))
 					&& (!m_firstNames.isFirstName(token)) && (!m_wordnet.contains(token.toLowerCase()))) {
 				// append "g" if a word ends with "in" and is not in the
 				// vocabulary
@@ -157,25 +158,25 @@ public class Preprocessor {
 				preprocessedTokens.add(token);
 				continue;
 			}
-
-			// Step 7) Remove elongations of characters (suuuper)
-			// 'lollll' to 'loll' because 'loll' is found in dict
-			// TODO 'AHHHHH' to 'AH'
-			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
-					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
-
-				// remove repeating chars
-				token = removeRepeatingChars(token);
-
-				// Step 5b) Try Slang Correction again
-				String[] slangCorrection = m_slangCorrection.getCorrection(token.toLowerCase());
-				if (slangCorrection != null) {
-					for (int i = 0; i < slangCorrection.length; i++) {
-						preprocessedTokens.add(slangCorrection[i]);
-					}
-					continue;
-				}
-			}
+//
+//			 Step 7) Remove elongations of characters (suuuper)
+//			 'lollll' to 'loll' because 'loll' is found in dict
+//			 TODO 'AHHHHH' to 'AH'
+//			if ((!tokenIsEmoticon) && (!tokenIsUser) && (!tokenIsHashTag) && (!tokenIsURL) && (!tokenIsNumeric)
+//					&& (!tokenIsSpecialNumeric) && (!tokenIsSeparatedNumeric) && (!tokenIsEmail) && (!tokenIsPhone)) {
+//			if ((!tokenIsEmoticon) && (!tokenIsURL) && (!tokenIsNumeric)) {
+//				// remove repeating chars
+//				token = removeRepeatingChars(token);
+//
+//				// Step 5b) Try Slang Correction again
+//				String[] slangCorrection = m_slangCorrection.getCorrection(token.toLowerCase());
+//				if (slangCorrection != null) {
+//					for (int i = 0; i < slangCorrection.length; i++) {
+//						preprocessedTokens.add(slangCorrection[i]);
+//					}
+//					continue;
+//				}
+//			}
 
 			// default action add token
 			preprocessedTokens.add(token);
@@ -288,8 +289,8 @@ public class Preprocessor {
 		// 10.45,9 8/11/12"));
 		// tweets.add(new Tweet(0L, "(6ft.10) 2),Chap 85.3%(6513 (att@m80.com)
 		// awayDAWN.com www.asdf.org"));
-		tweets.add(new Tweet(0L, "LOL LUL WutFace Dafuk 4Head Kreygasm FunRun FuzzyOtterOO GingerPower HeyGuys"));
-		tweets.add(new Tweet(0L, "@Nonoobspleasy wutface WutFace CoreJJ 1379"));
+		tweets.add(new Tweet(0L, "LOL LUL ┗(＾0＾)┓ SeemsGood WutFace Dafuk 4Head Kreygasm FunRun FuzzyOtterOO GingerPower HeyGuys"));
+		tweets.add(new Tweet(0L, "LUUUUUUUUUUUL @Nonoobspleasy wutface WutFace CoreJJ 1379 in"));
 
 		// Tokenize
 		List<List<String>> tokenizedTweets = Tokenizer.tokenizeTweets(tweets);

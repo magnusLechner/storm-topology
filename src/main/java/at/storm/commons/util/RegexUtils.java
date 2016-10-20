@@ -16,7 +16,12 @@
  */
 package at.storm.commons.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import at.storm.commons.Tweet;
+import at.storm.components.Tokenizer;
 
 public class RegexUtils {
 	private static final String SPACE_EXCEPTIONS = "\\n\\r";
@@ -144,36 +149,53 @@ public class RegexUtils {
 	public static final Pattern SLANG_PATTERN = Pattern
 			.compile("(?<=^|" + EMOTICON_DELIMITER + ")" + SLANG + "(?=$|" + EMOTICON_DELIMITER + ")");
 
+	public static final String ASCII = "\\S+";
+	
 	// Attention: the order does matter
 	public static final Pattern TOKENIZER_PATTERN = Pattern.compile(
-			EMOTICON_PATTERN.pattern() + "|" + 
-			URL + "|" + 
-			PHONE + "|" + 
-			EMAIL_ADDRESS + "|" + 
-			USER_NAME + "|" + 
-			HASH_TAG + "|" + 
+			EMOTICON_PATTERN.pattern() + "|" +
+			URL  + "|" + 
+//			PHONE + "|" + 
+//			EMAIL_ADDRESS + "|" + 
+//			USER_NAME + "|" + 
+//			HASH_TAG + "|" + 
 			SLANG_PATTERN.pattern() + "|" +
-			ALTERNATING_LETTER_DOT + "|" + 
-//			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
+//			ALTERNATING_LETTER_DOT + "|" + 
+			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
 			SEPARATED_NUMBER + "|" +
 //			SPECIAL_NUMBER + "|" + 
 			WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + 
-			ELLIPSIS_DOTS + "|" + 
-			NOT_A_WHITESPACE);
+//			ELLIPSIS_DOTS + "|" +  
+			ASCII + "|" +
+			NOT_A_WHITESPACE
+			);
 
 	public static final String TOKENIZER_COMPLETE = 
 			EMOTICON_PATTERN.pattern() + "|" + 
 			URL + "|" + 
-			PHONE + "|" + 
-			EMAIL_ADDRESS + "|" + 
-			USER_NAME + "|" + 
-			HASH_TAG + "|" + 
+//			PHONE + "|" + 
+//			EMAIL_ADDRESS + "|" + 
+//			USER_NAME + "|" + 
+//			HASH_TAG + "|" + 
 			SLANG_PATTERN.pattern() + "|" +
-			ALTERNATING_LETTER_DOT + "|" + 
-//			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
+//			ALTERNATING_LETTER_DOT + "|" + 
+			WORDS_WITH_APOSTROPHES_DASHES + "|" + 
 			SEPARATED_NUMBER + "|" +
 //			SPECIAL_NUMBER + "|" + 
 			WORDS_WITHOUT_APOSTROPHES_DASHES + "|" + 
-			ELLIPSIS_DOTS + "|" + 
-			NOT_A_WHITESPACE;
+//			ELLIPSIS_DOTS + "|" +
+			ASCII	+ "|" +
+			NOT_A_WHITESPACE
+			;
+	
+	public static void main(String[] args) {
+		List<Tweet> tweets = new ArrayList<Tweet>();
+//		tweets.add(new Tweet(0L, "wutface WutFace kappa Kappa 4head 4Head 4HEAD"));
+//		tweets.add(new Tweet(1L, "dodo8 21Ignite2 Friberg Xist N0tail Troll2 moon12 Moon21"));
+		tweets.add(new Tweet(2L, "Hey cheer up ┗(＾0＾)┓ SeemsGood"));
+		for (Tweet tweet : tweets) {
+			List<String> tokenizedTweet = Tokenizer.tokenize(tweet.getText());
+			System.out.println(tokenizedTweet);
+		}
+	}
 }

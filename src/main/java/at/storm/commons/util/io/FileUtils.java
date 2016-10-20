@@ -227,6 +227,8 @@ public class FileUtils {
 			br = new BufferedReader(isr);
 			String line = "";
 
+//			int i = 0;
+			
 			while ((line = br.readLine()) != null) {
 				if (line.trim().length() == 0) {
 					continue;
@@ -240,6 +242,9 @@ public class FileUtils {
 					// ignore POS tag for now
 				}
 
+//				System.out.println(i);
+//				i++;
+				
 				double value = Double.parseDouble(values[1].trim());
 
 				if (featureScaling) {
