@@ -249,6 +249,10 @@ public class SVM {
 		return accuracy;
 	}
 
+	//TODO 
+	//schau kernel
+	//schau training.tsv
+	//schau yaml
 	public static void coarseGrainedParamterSearch(svm_problem svmProb, svm_parameter svmParam) {
 		// coarse grained paramter search
 		int maxC = 11;
