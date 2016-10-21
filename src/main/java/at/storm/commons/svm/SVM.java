@@ -250,23 +250,24 @@ public class SVM {
 	}
 
 	//TODO 
-	//schau kernel
-	//schau training.tsv
-	//schau yaml
+	//schau kernel 			in yaml
+	//schau training.tsv 	richtige groeße
+	//schau gewichte		in yaml	
+	//schau gamma max.		in dieser methode
 	public static void coarseGrainedParamterSearch(svm_problem svmProb, svm_parameter svmParam) {
 		// coarse grained paramter search
 		int maxC = 11;
 		double[] c = new double[maxC];
 		// C = 2^−5, 2^−3, ..., 2^15
 		for (int i = 0; i < maxC; i++) {
-			c[i] = Math.pow(2, -5 + (i * 2));
+			c[i] = Math.pow(2, -1 + (i * 2));
 		}
-//		int maxGamma = 10;
-		int maxGamma = 1;
+		int maxGamma = 10;	//rbf
+//		int maxGamma = 1;	//linear
 		double[] gamma = new double[maxGamma];
 		// gamma = 2^−15, 2^−13, ..., 2^3
 		for (int j = 0; j < maxGamma; j++) {
-			gamma[j] = Math.pow(2, -15 + (j * 2));
+			gamma[j] = Math.pow(2, -21 + (j * 2));
 		}
 
 		paramterSearch(svmProb, svmParam, c, gamma);
