@@ -11,14 +11,20 @@ public class GridSearchParser {
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/rbf/grob_2";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/rbf/grob_2";
 
-//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_1";
-		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_2";
+		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_1";
+//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_2";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/rbf/fein_1";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/rbf/fein_1";
 
+		
+		//LINEAR
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/linear/grob";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/linear/grob";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/linear/grob";
+		
+//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/linear/fein";;
+//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/linear/fein";
+//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/linear/fein";
 
 		String[] lines = BasicUtil.readLines(path);
 

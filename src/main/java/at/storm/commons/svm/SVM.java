@@ -264,14 +264,15 @@ public class SVM {
 //		}
 		
 		//linear
-		int maxC = 6;
+		int maxC = 4;
 		double[] c = new double[maxC];
 		for (int i = 0; i < maxC; i++) {
-			c[i] = Math.pow(2, 2 + i);
+			c[i] = Math.pow(2, -2 + i);
 		}
-		int maxGamma = 1;	//linear
+		int maxGamma = 1;
 		
-//		int maxGamma = 10;	//rbf
+		//rbf
+//		int maxGamma = 10;
 		double[] gamma = new double[maxGamma];
 		// gamma = 2^−15, 2^−13, ..., 2^3
 		for (int j = 0; j < maxGamma; j++) {
@@ -623,23 +624,23 @@ public class SVM {
 			svm_problem svmProb = generateProblem(featuredTrainTweets);
 
 			// 1) coarse grained paramter search
-//			coarseGrainedParamterSearch(svmProb, svmParam);
+			coarseGrainedParamterSearch(svmProb, svmParam);
 
-//			 2) fine grained paramter search
-			// C = 2^6, ..., 2^12
-			double[] c = new double[7];
-			for (int i = 0; i < 7; i++) {
-				c[i] = Math.pow(2, 12 + i);
-			}
-			// gamma = 2^−14, 2^−13, ..., 2^-8
-			double[] gamma = new double[7];
-			for (int j = 0; j < 7; j++) {
-				gamma[j] = Math.pow(2, -20 + j);
-			}
-
-			LOG.info("SVM paramterSearch...");
-			LOG.info("Kernel: " + svmParam.kernel_type);
-			paramterSearch(svmProb, svmParam, c, gamma);
+////			 2) fine grained paramter search
+//			// C = 2^6, ..., 2^12
+//			double[] c = new double[7];
+//			for (int i = 0; i < 7; i++) {
+//				c[i] = Math.pow(2, 12 + i);
+//			}
+//			// gamma = 2^−14, 2^−13, ..., 2^-8
+//			double[] gamma = new double[7];
+//			for (int j = 0; j < 7; j++) {
+//				gamma[j] = Math.pow(2, -20 + j);
+//			}
+//
+//			LOG.info("SVM paramterSearch...");
+//			LOG.info("Kernel: " + svmParam.kernel_type);
+//			paramterSearch(svmProb, svmParam, c, gamma);
 
 		} else {
 
@@ -1138,7 +1139,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 100;
+		int iterations = 1;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1155,27 +1156,27 @@ public class SVM {
 		testSizeList.add(300);
 
 		
-//		for (int j = 0; j < startTrainingSizeList.size(); j++) {
-//			// SVM
-//			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
-//					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
-//
-//			// Weka
-////			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
-////					stepList.get(j), testSizeList.get(j));
-//		}
-//		svm.EXEC_SERV.shutdown();
+		for (int j = 0; j < startTrainingSizeList.size(); j++) {
+			// SVM
+			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
-		if (featureVectorLevel == 0) {
-			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-					useSerialization);
-		} else if (featureVectorLevel == 1) {
-			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-					useSerialization);
-		} else {
-			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
-					useSerialization);
+			// Weka
+//			evaluateDynamicSlicesWeka(dataset, false, iterations, addVsTest, startTrainingSizeList.get(j),
+//					stepList.get(j), testSizeList.get(j));
 		}
+		svm.EXEC_SERV.shutdown();
+
+//		if (featureVectorLevel == 0) {
+//			SVM.svm(dataset, SentimentFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else if (featureVectorLevel == 1) {
+//			SVM.svm(dataset, TfIdfFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		} else {
+//			SVM.svm(dataset, CombinedFeatureVectorGenerator.class, nFoldCrossValidation, parameterSearch,
+//					useSerialization);
+//		}
 
 	}
 
@@ -1223,15 +1224,19 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_SELF_AND_LENN_LABELING_NEGATIVE);
 
+			
+			
 			// ALL DATA EVER 500/500/300
-//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(500, 500, 300,
-//					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
-//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(2742, 300, 300,
+					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
+					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA - 300/300/300
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(30000, 300, 300,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(2742, 300, 300,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+			
+			slices = SVMPreparation.prepareAdditionVsTestRun(2742, 300, 300, SVMPreparation.UNIQUE_MESSAGES_ALL);
 		}
 		return slices;
 	}

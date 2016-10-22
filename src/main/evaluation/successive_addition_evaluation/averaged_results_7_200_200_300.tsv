@@ -1,0 +1,50 @@
+recall	
+recall StdDev	
+macro-avg. recall	
+macro-avg. recall StdDev	
+macro-avg. Pos/Neg recall	
+macro-avg. Pos/Neg recall StdDev	
+precision	
+precision StdDev	
+macro-avg. precision	
+macro-avg. precision StdDev	
+macro-avg. Pos/Neg precision	
+macro-avg. Pos/Neg precision StdDev	
+positiveRecall	
+positiveRecall StdDev	
+positivePrecision	
+positivePrecision StdDev	
+positive fmeasure	
+positive fmeasure StdDev	
+neutralRecall	
+neutralRecall StdDev	
+neutralPrecision	
+neutralPrecision StdDev	
+neutral fmeasure	
+neutral fmeasure StdDev	
+negativeRecall	
+negativeRecall StdDev	
+negativePrecision	
+negativePrecision StdDev	
+negative fmeasure	
+negative fmeasure StdDev	
+micro f-Measure	
+micro f-Measure StdDev	
+micro pos/neg f-Measure	
+micro pos/neg f-Measure StdDev	
+macro f-Measure	
+macro f-Measure StdDev	
+macro pos/neg f-Measure	
+macro pos/neg f-Measure StdDev	
+other pos/neg f-Measure	
+other pos/neg f-Measure StdDev	
+average accuracy	
+average accuracy StdDev	
+error rate	
+error rate StdDev	
+cpu-time (for complete test-set)	
+cpu-time (for complete test-set) StdDev	
+training-size	
+training-size StdDev	
+test-size	
+test-size StdDev	
