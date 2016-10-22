@@ -85,22 +85,23 @@ global.resources.datasets.twitch:
         negative.class.value: 0
         neutral.class.value: 1
         svm.kernel: 2 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
-        #svm.c: 512.0								# standard: 512.0		# linear: 64
-        #svm.gamma: 0.000488281						# standard: 0.000488281	# linear: 0.001953125
-        svm.c: 32768.0                      #RBF: 709: 65536.0            #3042: 32768.0        LINEAR: 709: 0.25                     3042: 0.5
-        svm.gamma: 0.00000762939            #RBF: 709: 0.00000381469      #3042: 0.00000762939  LINEAR: 709: 0.00000047683716         3042: 0.00000047683716
+        svm.c: 65536.0                      #RBF: 709: 65536.0            #3042: 32768.0        LINEAR: 709: 0.25                     3042: 0.5
+        svm.gamma: 0.00000381469            #RBF: 709: 0.00000381469      #3042: 0.00000762939  LINEAR: 709: 0.00000047683716         3042: 0.00000047683716
         #svm.c: 64.0					# use for linear
         #svm.gamma: 0.001953125			# use for linear
         svm.class.weights: # http://www.csie.ntu.edu.tw/~cjlin/libsvm/faq.html#f804           
-            0: 2.76  #3042
-            1: 1.0
-            2: 2.45
+            #0: 2.76  #3042
+            #1: 1.0
+            #2: 2.45
             #0: 3.25   #2359
             #1: 1.0
             #2: 2.57
-            #0: 2.76   #709
+            0: 2.76   #709
+            1: 1.0
+            2: 2.45
+            #0: 1.0   #eq dist
             #1: 1.0
-            #2: 2.45
+            #2: 1.0
 
 global.resources.dict:
     FirstNames: # http://www.oxfordreference.com/view/10.1093/acref/9780198610601.001.0001/acref-9780198610601?hide=true&pageSize=100&sort=titlesort

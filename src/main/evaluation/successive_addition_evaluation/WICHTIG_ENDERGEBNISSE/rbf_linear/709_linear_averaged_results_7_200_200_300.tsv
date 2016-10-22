@@ -1,0 +1,50 @@
+recall	0,7744000000000001	
+recall StdDev	0,02875602703624219	
+macro-avg. recall	0,7823000000000003	
+macro-avg. recall StdDev	0,02842160936308638	
+macro-avg. Pos/Neg recall	0,8008999999999997	
+macro-avg. Pos/Neg recall StdDev	0,035706293478032586	
+precision	0,7744000000000001	
+precision StdDev	0,02875602703624219	
+macro-avg. precision	0,7691000000000001	
+macro-avg. precision StdDev	0,029817458108980545	
+macro-avg. Pos/Neg precision	0,7352000000000001	
+macro-avg. Pos/Neg precision StdDev	0,043332867130359325	
+positiveRecall	0,7945925649891532	
+positiveRecall StdDev	0,06140968583177257	
+positivePrecision	0,7563394654525526	
+positivePrecision StdDev	0,05276815442097387	
+positive fmeasure	0,7731887377884771	
+positive fmeasure StdDev	0,04363652884297939	
+neutralRecall	0,7437986935696741	
+neutralRecall StdDev	0,04751885119769132	
+neutralPrecision	0,8349989909820579	
+neutralPrecision StdDev	0,03928555155289242	
+neutral fmeasure	0,7854340797149538	
+neutral fmeasure StdDev	0,030807819793124226	
+negativeRecall	0,80829357304431	
+negativeRecall StdDev	0,046289398491911035	
+negativePrecision	0,7151899507778188	
+negativePrecision StdDev	0,05802520307646674	
+negative fmeasure	0,7569722668659373	
+negative fmeasure StdDev	0,03799495153144321	
+micro f-Measure	0,7744000000000001	
+micro f-Measure StdDev	0,02875602703624219	
+micro pos/neg f-Measure	0,7645000000000001	
+micro pos/neg f-Measure StdDev	0,03232958428749156	
+macro f-Measure	0,7720999999999999	
+macro f-Measure StdDev	0,028543604778257688	
+macro pos/neg f-Measure	0,7648	
+macro pos/neg f-Measure StdDev	0,03173374076641935	
+other pos/neg f-Measure	0,765	
+other pos/neg f-Measure StdDev	0,03304420057921197	
+average accuracy	0,8492999999999999	
+average accuracy StdDev	0,01838175423861632	
+error rate	0,6137999999999999	
+error rate StdDev	0,012125605264493118	
+cpu-time (for complete test-set)	11,33704922	
+cpu-time (for complete test-set) StdDev	3,032630384979472	
+training-size	509,0	
+training-size StdDev	0,0	
+test-size	200,0	
+test-size StdDev	0,0	

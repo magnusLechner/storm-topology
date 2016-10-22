@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.storm.tuple.Tuple;
+
 import at.testing.commons.MyTuple;
 import at.testing.commons.Sentiment;
 import at.testing.util.BasicUtil;
@@ -443,11 +445,12 @@ public class SVMPreparation implements PreparationTool {
 		List<List<List<MyTuple>>> slices = new ArrayList<List<List<MyTuple>>>();
 		MyTuple[] tupels = createMyTupelsFromFile(filePath);
 
-		if (testSize >= tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps <= 0
+		if (testSize > tupels.length || startTrainingSetSize + testSize > tupels.length || trainingSteps < 0
 				|| startTrainingSetSize <= 0) {
 			return null;
 		}
 		int randomIndex = 0;
+
 		int[] randoms = getRandoms(tupels.length, tupels.length);
 
 		List<List<MyTuple>> slice = null;
@@ -466,6 +469,11 @@ public class SVMPreparation implements PreparationTool {
 					trainingSet.add(tupels[randoms[randomIndex]]);
 					randomIndex++;
 					if (randomIndex == randoms.length) {
+						List<MyTuple> newTrainingSet = new ArrayList<MyTuple>(trainingSet);
+						List<MyTuple> newTestSet = new ArrayList<MyTuple>(testSet);
+						slice.add(newTrainingSet);
+						slice.add(newTestSet);
+						slices.add(slice);
 						return slices;
 					}
 				}

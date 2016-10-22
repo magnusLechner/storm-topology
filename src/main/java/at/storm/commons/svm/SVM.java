@@ -884,7 +884,7 @@ public class SVM {
 		SVMBox pipelineBox = null;
 
 		try {
-			for (int currentIteration = -1; currentIteration < iterations; currentIteration++) {
+			for (int currentIteration = 0; currentIteration < iterations; currentIteration++) {
 
 				System.err.println("ITERATION: " + currentIteration);
 
@@ -948,11 +948,11 @@ public class SVM {
 					
 					otherFMeasure.add(otherFMeasureSingleRun);
 				}
-
+				
 				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
 						startTestSize);
 
-				// fix training and test set TODO
+				// fix training and test set
 //				List<List<List<MyTuple>>> slices = getFixTrainAndTest();
 
 				Iterator<List<List<MyTuple>>> iter = slices.iterator();
@@ -1139,7 +1139,7 @@ public class SVM {
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
-		int iterations = 1;
+		int iterations = 100;
 
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
@@ -1227,16 +1227,17 @@ public class SVM {
 			
 			
 			// ALL DATA EVER 500/500/300
-			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(2742, 300, 300,
-					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
-					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
+//			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestRun(2742, 300, 300,
+//					SVMPreparation.UNIQUE_MESSAGES_ALL, SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE,
+//					SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL, SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 
 			// EQUALLY DISTRIBUTED TRAININGSDATA - 300/300/300
 //			slices = SVMPreparation.prepareAdditionVsEquallyDistibutedTestAndTrainingRun(2742, 300, 300,
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_POSITIVE, SVMPreparation.SEPARATE_MESSAGES_ALL_NEUTRAL,
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 			
-			slices = SVMPreparation.prepareAdditionVsTestRun(2742, 300, 300, SVMPreparation.UNIQUE_MESSAGES_ALL);
+			
+			slices = SVMPreparation.prepareAdditionVsTestRun(509, 300, 200, SVMPreparation.UNIQUE_MESSAGES_ORIGINAL);
 		}
 		return slices;
 	}

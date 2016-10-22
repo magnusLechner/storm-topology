@@ -1,0 +1,50 @@
+recall	0,7916	
+recall StdDev	0,024647822449765242	
+macro-avg. recall	0,7983	
+macro-avg. recall StdDev	0,026325660562280365	
+macro-avg. Pos/Neg recall	0,8132	
+macro-avg. Pos/Neg recall StdDev	0,04072276309809336	
+precision	0,7916	
+precision StdDev	0,024647822449765242	
+macro-avg. precision	0,7866000000000004	
+macro-avg. precision StdDev	0,025114686435380288	
+macro-avg. Pos/Neg precision	0,7637999999999999	
+macro-avg. Pos/Neg precision StdDev	0,037518480294867554	
+positiveRecall	0,8325299664318141	
+positiveRecall StdDev	0,05553066811570716	
+positivePrecision	0,778540355928631	
+positivePrecision StdDev	0,048002492450073694	
+positive fmeasure	0,8030019581555361	
+positive fmeasure StdDev	0,03680162641047328	
+neutralRecall	0,7688893521791335	
+neutralRecall StdDev	0,042068963575133296	
+neutralPrecision	0,8322504157437473	
+neutralPrecision StdDev	0,03961815553535301	
+neutral fmeasure	0,7981109155574679	
+neutral fmeasure StdDev	0,027464695783422647	
+negativeRecall	0,7941481322860663	
+negativeRecall StdDev	0,057063627386310545	
+negativePrecision	0,7488862960736065	
+negativePrecision StdDev	0,06306632992608657	
+negative fmeasure	0,7683413784533115	
+negative fmeasure StdDev	0,04216383170514883	
+micro f-Measure	0,7916	
+micro f-Measure StdDev	0,024647822449765242	
+micro pos/neg f-Measure	0,7855000000000003	
+micro pos/neg f-Measure StdDev	0,030529833066538482	
+macro f-Measure	0,7896	
+macro f-Measure StdDev	0,025462192213618073	
+macro pos/neg f-Measure	0,7856000000000002	
+macro pos/neg f-Measure StdDev	0,031215121950488003	
+other pos/neg f-Measure	0,7858000000000002	
+other pos/neg f-Measure StdDev	0,030885255218291306	
+average accuracy	0,8606999999999998	
+average accuracy StdDev	0,0165300461052722	
+error rate	0,6161999999999996	
+error rate StdDev	0,010325999352424094	
+cpu-time (for complete test-set)	11,109875980000002	
+cpu-time (for complete test-set) StdDev	3,0593588808096035	
+training-size	509,0	
+training-size StdDev	0,0	
+test-size	200,0	
+test-size StdDev	0,0	
