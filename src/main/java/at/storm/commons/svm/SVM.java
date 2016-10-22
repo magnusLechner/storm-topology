@@ -256,20 +256,28 @@ public class SVM {
 	//schau gamma max.		in dieser methode
 	public static void coarseGrainedParamterSearch(svm_problem svmProb, svm_parameter svmParam) {
 		// coarse grained paramter search
-		int maxC = 11;
+//		int maxC = 11;
+//		double[] c = new double[maxC];
+//		// C = 2^−5, 2^−3, ..., 2^15
+//		for (int i = 0; i < maxC; i++) {
+//			c[i] = Math.pow(2, -1 + (i * 2));
+//		}
+		
+		//linear
+		int maxC = 6;
 		double[] c = new double[maxC];
-		// C = 2^−5, 2^−3, ..., 2^15
 		for (int i = 0; i < maxC; i++) {
-			c[i] = Math.pow(2, -1 + (i * 2));
+			c[i] = Math.pow(2, 2 + i);
 		}
-		int maxGamma = 10;	//rbf
-//		int maxGamma = 1;	//linear
+		int maxGamma = 1;	//linear
+		
+//		int maxGamma = 10;	//rbf
 		double[] gamma = new double[maxGamma];
 		// gamma = 2^−15, 2^−13, ..., 2^3
 		for (int j = 0; j < maxGamma; j++) {
 			gamma[j] = Math.pow(2, -21 + (j * 2));
 		}
-
+		
 		paramterSearch(svmProb, svmParam, c, gamma);
 	}
 
@@ -615,23 +623,23 @@ public class SVM {
 			svm_problem svmProb = generateProblem(featuredTrainTweets);
 
 			// 1) coarse grained paramter search
-			coarseGrainedParamterSearch(svmProb, svmParam);
+//			coarseGrainedParamterSearch(svmProb, svmParam);
 
-			// 2) fine grained paramter search
-//			// C = 2^6, ..., 2^12
-//			double[] c = new double[7];
-//			for (int i = 0; i < 7; i++) {
-//				c[i] = Math.pow(2, 6 + i);
-//			}
-//			// gamma = 2^−14, 2^−13, ..., 2^-8
-//			double[] gamma = new double[7];
-//			for (int j = 0; j < 7; j++) {
-//				gamma[j] = Math.pow(2, -14 + j);
-//			}
-//
-//			LOG.info("SVM paramterSearch...");
-//			LOG.info("Kernel: " + svmParam.kernel_type);
-//			paramterSearch(svmProb, svmParam, c, gamma);
+//			 2) fine grained paramter search
+			// C = 2^6, ..., 2^12
+			double[] c = new double[7];
+			for (int i = 0; i < 7; i++) {
+				c[i] = Math.pow(2, 12 + i);
+			}
+			// gamma = 2^−14, 2^−13, ..., 2^-8
+			double[] gamma = new double[7];
+			for (int j = 0; j < 7; j++) {
+				gamma[j] = Math.pow(2, -20 + j);
+			}
+
+			LOG.info("SVM paramterSearch...");
+			LOG.info("Kernel: " + svmParam.kernel_type);
+			paramterSearch(svmProb, svmParam, c, gamma);
 
 		} else {
 
