@@ -1237,7 +1237,8 @@ public class SVM {
 //					SVMPreparation.SEPARATE_MESSAGES_ALL_NEGATIVE);
 			
 			
-			slices = SVMPreparation.prepareAdditionVsTestRun(509, 300, 200, SVMPreparation.UNIQUE_MESSAGES_ORIGINAL);
+//			slices = SVMPreparation.prepareAdditionVsTestRun(509, 300, 200, SVMPreparation.UNIQUE_MESSAGES_ORIGINAL);
+			slices = SVMPreparation.prepareAdditionVsTestRun(2442, 300, 600, SVMPreparation.UNIQUE_MESSAGES_ALL);
 		}
 		return slices;
 	}

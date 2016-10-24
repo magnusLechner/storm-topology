@@ -1,0 +1,50 @@
+recall	0,7899	
+recall StdDev	0,016236571763345323	
+macro-avg. recall	0,7667000000000006	
+macro-avg. recall StdDev	0,0172360322603785	
+macro-avg. Pos/Neg recall	0,7341	
+macro-avg. Pos/Neg recall StdDev	0,02534987498225903	
+precision	0,7899	
+precision StdDev	0,016236571763345323	
+macro-avg. precision	0,7660000000000003	
+macro-avg. precision StdDev	0,018909673650694195	
+macro-avg. Pos/Neg precision	0,7303999999999995	
+macro-avg. Pos/Neg precision StdDev	0,02881217475549901	
+positiveRecall	0,7518960857852562	
+positiveRecall StdDev	0,03506966041957031	
+positivePrecision	0,7283341602465744	
+positivePrecision StdDev	0,03694290317612666	
+positive fmeasure	0,7391936378698831	
+positive fmeasure StdDev	0,027839684751902207	
+neutralRecall	0,8325777702351397	
+neutralRecall StdDev	0,022582628040540006	
+neutralPrecision	0,8367688874054683	
+neutralPrecision StdDev	0,021307173824469818	
+neutral fmeasure	0,834366547627359	
+neutral fmeasure StdDev	0,015163444964780906	
+negativeRecall	0,7154804429451267	
+negativeRecall StdDev	0,03867793157156639	
+negativePrecision	0,7328913684930859	
+negativePrecision StdDev	0,04309123794308826	
+negative fmeasure	0,723158159536808	
+negative fmeasure StdDev	0,031828676332636245	
+micro f-Measure	0,7899	
+micro f-Measure StdDev	0,016236571763345323	
+micro pos/neg f-Measure	0,7316999999999999	
+micro pos/neg f-Measure StdDev	0,0201537023192196	
+macro f-Measure	0,7653000000000003	
+macro f-Measure StdDev	0,016964311916133793	
+macro pos/neg f-Measure	0,7295	
+macro pos/neg f-Measure StdDev	0,02056647266742157	
+other pos/neg f-Measure	0,7310999999999999	
+other pos/neg f-Measure StdDev	0,020932551616363405	
+average accuracy	0,8601999999999999	
+average accuracy StdDev	0,010728984626287394	
+error rate	0,6008000000000006	
+error rate StdDev	0,008724747109298476	
+cpu-time (for complete test-set)	39,18022449000001	
+cpu-time (for complete test-set) StdDev	5,207734923318665	
+training-size	2442,0	
+training-size StdDev	0,0	
+test-size	600,0	
+test-size StdDev	0,0	

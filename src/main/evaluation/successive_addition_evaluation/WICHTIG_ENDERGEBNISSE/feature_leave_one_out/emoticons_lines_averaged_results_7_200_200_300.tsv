@@ -1,0 +1,50 @@
+recall	0,7864999999999999	
+recall StdDev	0,015000000000000008	
+macro-avg. recall	0,7645000000000006	
+macro-avg. recall StdDev	0,016537377315791302	
+macro-avg. Pos/Neg recall	0,7322999999999997	
+macro-avg. Pos/Neg recall StdDev	0,02330539452876554	
+precision	0,7864999999999999	
+precision StdDev	0,015000000000000008	
+macro-avg. precision	0,7633000000000003	
+macro-avg. precision StdDev	0,018260461233069788	
+macro-avg. Pos/Neg precision	0,7289000000000001	
+macro-avg. Pos/Neg precision StdDev	0,02773958991198048	
+positiveRecall	0,7402455732948227	
+positiveRecall StdDev	0,033887753667249484	
+positivePrecision	0,7260080223284651	
+positivePrecision StdDev	0,036364360338252515	
+positive fmeasure	0,7323019576873567	
+positive fmeasure StdDev	0,0258428001862284	
+neutralRecall	0,8296111567796456	
+neutralRecall StdDev	0,02039420908301746	
+neutralPrecision	0,8335838224094445	
+neutralPrecision StdDev	0,0181384404591708	
+neutral fmeasure	0,831357383810482	
+neutral fmeasure StdDev	0,013260980649147167	
+negativeRecall	0,7232536059192711	
+negativeRecall StdDev	0,03391907271049506	
+negativePrecision	0,7307449563267613	
+negativePrecision StdDev	0,038725209676316465	
+negative fmeasure	0,7261130081176179	
+negative fmeasure StdDev	0,02639199475265613	
+micro f-Measure	0,7864999999999999	
+micro f-Measure StdDev	0,015000000000000008	
+micro pos/neg f-Measure	0,7297999999999999	
+micro pos/neg f-Measure StdDev	0,02029977359678695	
+macro f-Measure	0,7632000000000003	
+macro f-Measure StdDev	0,01626050553962085	
+macro pos/neg f-Measure	0,7285999999999997	
+macro pos/neg f-Measure StdDev	0,019899748742132413	
+other pos/neg f-Measure	0,7293	
+other pos/neg f-Measure StdDev	0,020012874643967376	
+average accuracy	0,8581999999999997	
+average accuracy StdDev	0,009574798571080635	
+error rate	0,5993000000000006	
+error rate StdDev	0,008439325934114778	
+cpu-time (for complete test-set)	39,7181135	
+cpu-time (for complete test-set) StdDev	5,347490972433165	
+training-size	2442,0	
+training-size StdDev	0,0	
+test-size	600,0	
+test-size StdDev	0,0	
