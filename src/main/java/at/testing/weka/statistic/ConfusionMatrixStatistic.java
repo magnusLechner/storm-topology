@@ -1,6 +1,5 @@
 package at.testing.weka.statistic;
 
-import java.io.ObjectInputStream.GetField;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -182,6 +181,13 @@ public class ConfusionMatrixStatistic {
 	
 	public Double getOtherPosNegFMeasure() {
 		return round((getPositiveFMeasure() + getNegativeFMeasure()) /2);
+	}
+	
+	//TODO
+	public Double getAccuracy() {
+		Double tp = (double) cm[0][0] + cm[1][1] + cm [2][2];
+		Double falseStuff = (double) cm[1][0] + cm[2][0] + cm [0][1] + cm [2][1] + cm [0][2] + cm [1][2] + tp;
+		return tp/falseStuff;
 	}
 	
 	public Double getAverageAccuracy() {

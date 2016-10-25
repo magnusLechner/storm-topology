@@ -84,8 +84,8 @@ global.resources.datasets.twitch:
         positive.class.value: 2
         negative.class.value: 0
         neutral.class.value: 1
-        svm.kernel: 2 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
-        svm.c: 32768.0                       #RBF: 709: 65536.0            #3042: 32768.0        LINEAR: 709: 0.25                     3042: 0.5
+        svm.kernel: 0 								# 2=RBF 0=Linear 1=polynomial 4=sigmoid
+        svm.c: 0.5                       #RBF: 709: 65536.0            #3042: 32768.0        LINEAR: 709: 0.25                     3042: 0.5
         svm.gamma: 0.00000762939            #RBF: 709: 0.00000381469      #3042: 0.00000762939  LINEAR: 709: 0.00000047683716         3042: 0.00000047683716
         #svm.c: 64.0					# use for linear
         #svm.gamma: 0.001953125			# use for linear
@@ -184,7 +184,7 @@ global.resources.dict.sentiment:
       featureScaling: true
       minValue: -1.0
       maxValue: 1.0
-      enabled: true
+      enabled: false
       name: "twitch_dict_sentiment"
       #
       # Emoticons
@@ -234,7 +234,7 @@ global.resources.dict.sentiment:
       featureScaling: true
       minValue: -1.0
       maxValue: 1.0
-      enabled: true
+      enabled: false
       name: "emoticon_sentiment_lexicon.txt"
 
 global.resources.dict.slang:

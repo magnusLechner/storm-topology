@@ -878,6 +878,7 @@ public class SVM {
 		List<List<Double>> averageAccuracy = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> errorRate = new ArrayList<List<Double>>(iterations);
 		List<List<Double>> otherFMeasure = new ArrayList<List<Double>>(iterations);
+		List<List<Double>> accuracy = new ArrayList<List<Double>>(iterations);
 
 		Map<String, List<List<Double>>> statistics = new LinkedHashMap<String, List<List<Double>>>();
 
@@ -913,6 +914,7 @@ public class SVM {
 				List<Double> averageAccuracySingleRun = new ArrayList<Double>();
 				List<Double> errorRateSingleRun = new ArrayList<Double>();
 				List<Double> otherFMeasureSingleRun = new ArrayList<Double>();
+				List<Double> accuracySingleRun = new ArrayList<Double>();
 
 				if (currentIteration >= 0) {
 					trainingSize.add(trainingSizeSingleRun);
@@ -947,6 +949,7 @@ public class SVM {
 					errorRate.add(errorRateSingleRun);
 					
 					otherFMeasure.add(otherFMeasureSingleRun);
+					accuracy.add(accuracySingleRun);
 				}
 				
 				List<List<List<MyTuple>>> slices = getSlices(sliceGenerator, startTrainingSetSize, stepSize,
@@ -1036,6 +1039,7 @@ public class SVM {
 								.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getErrorRate());
 
 						otherFMeasureSingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getOtherPosNegFMeasure());
+						accuracySingleRun.add(pipelineBox.getPredictor().getPredictionStatistic().getCMS().getAccuracy());
 						
 						activateDebugOutput(false, iter.hasNext(), currentIteration, pipelineBox);
 					}
@@ -1069,6 +1073,7 @@ public class SVM {
 		statistics.put("macro f-Measure", macroFMeasure);
 		statistics.put("macro pos/neg f-Measure", macroPosNegFMeasure);
 		statistics.put("other pos/neg f-Measure", otherFMeasure);
+		statistics.put("accuracy", accuracy);
 		statistics.put("average accuracy", averageAccuracy);
 		statistics.put("error rate", errorRate);
 		statistics.put("cpu-time (for complete test-set)", cpuTime);
@@ -1140,7 +1145,8 @@ public class SVM {
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
 		int iterations = 100;
-
+		boolean withPOS = false;
+		
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
 		
@@ -1158,7 +1164,7 @@ public class SVM {
 		
 		for (int j = 0; j < startTrainingSizeList.size(); j++) {
 			// SVM
-			evaluateDynamicSlices(dataset, false, iterations, nFoldCrossValidation, false, addVsTest,
+			evaluateDynamicSlices(dataset, withPOS, iterations, nFoldCrossValidation, false, addVsTest,
 					startTrainingSizeList.get(j), stepList.get(j), testSizeList.get(j));
 
 			// Weka

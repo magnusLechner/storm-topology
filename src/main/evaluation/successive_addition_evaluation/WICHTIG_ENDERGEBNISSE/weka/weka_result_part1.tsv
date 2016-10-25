@@ -1,0 +1,236 @@
+BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			BayesNet			
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S MDL -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S ENTROPY -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S MDL -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S ENTROPY -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5 	1566		
+Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		Overall Recall: 	0,6808		
+StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		StdDev Overall Recall: 	0,0261		
+Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		Macro Overall Recall: 	0,6808		
+StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		StdDev Macro Overall Recall: 	0,0261		
+Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		Macro Pos/Neg Recall: 	0,6794		
+StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		StdDev Macro Pos/Neg Recall: 	0,0327		
+Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		Overall Precision: 	0,6808		
+StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		StdDev Overall Precision: 	0,0261		
+Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		Macro Overall Precision: 	0,6885		
+StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		StdDev Macro Overall Precision: 	0,026		
+Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		Macro Pos/Neg Precision: 	0,7293		
+StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		StdDev Macro Pos/Neg Precision: 	0,0279		
+Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		Negative Recall: 	0,6728		
+StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		StdDev Negative Recall: 	0,0448		
+Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		Negative Precision: 	0,7032		
+StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		StdDev Negative Precision: 	0,0454		
+Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		Negative F-Measure: 	0,6861		
+StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		StdDev Negative F-Measure: 	0,0315		
+Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		Neutral Recalls: 	0,6859		
+StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		StdDev Neutral Recalls: 	0,0492		
+Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		Neutral Precision: 	0,6067		
+StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		StdDev Neutral Precision: 	0,0385		
+Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		Neutral F-Measure: 	0,6429		
+StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		StdDev Neutral F-Measure: 	0,0353		
+Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		Positive Recall: 	0,6831		
+StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		StdDev Positive Recall: 	0,0448		
+Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		Positive Precision: 	0,7554		
+StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		StdDev Positive Precision: 	0,0379		
+Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		Positive F-Measure: 	0,7165		
+StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		StdDev Positive F-Measure: 	0,033		
+Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		Micro F-Measure: 	0,6808		
+StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		StdDev Micro F-Measure: 	0,0261		
+Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		Macro F-Measure: 	0,6815		
+StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		StdDev Macro F-Measure: 	0,0258		
+Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		Micro PosNeg F-Measure: 	0,701		
+StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		StdDev Micro PosNeg F-Measure: 	0,0263		
+Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		Macro PosNeg F-Measure: 	0,7017		
+StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		StdDev Macro PosNeg F-Measure: 	0,026		
+OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		OTHER PosNeg F-Measure: 	0,7012		
+StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		StdDev OTHER PosNeg F-Measure: 	0,0262		
+Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		Average Accuracy: 	0,7865		
+StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		StdDev Average Accuracy: 	0,0179		
+Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		Negative Average Accuracy: 	0,7949		
+StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		StdDev Negative Average Accuracy: 	0,0222		
+Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		Neutral Average Accuracy: 	0,7462		
+StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		StdDev Neutral Average Accuracy: 	0,0261		
+Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		Positive Average Accuracy: 	0,8201		
+StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		StdDev Positive Average Accuracy: 	0,02		
+Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		Error Rate: 	0,5902		
+StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		StdDev Error Rate: 	0,0122		
+Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		Negative Error Rate: 	0,2051		
+StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		StdDev Negative Error Rate: 	0,0222		
+Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		Neutral Error Rate: 	0,7462		
+StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		StdDev Neutral Error Rate: 	0,0261		
+Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		Positive Error Rate: 	0,8201		
+StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		StdDev Positive Error Rate: 	0,02		
+
+J48			J48			J48			J48			
+-C 0.05 -M 2 -A 	1566		-C 0.05 -M 2 	1566		-R -N 4 -Q 1 -M 2 -A 	1566		-R -N 4 -Q 1 -M 2 	1566		
+Overall Recall: 	0,6965		Overall Recall: 	0,6965		Overall Recall: 	0,6869		Overall Recall: 	0,6869		
+StdDev Overall Recall: 	0,0283		StdDev Overall Recall: 	0,0283		StdDev Overall Recall: 	0,0268		StdDev Overall Recall: 	0,0268		
+Macro Overall Recall: 	0,6965		Macro Overall Recall: 	0,6965		Macro Overall Recall: 	0,6869		Macro Overall Recall: 	0,6869		
+StdDev Macro Overall Recall: 	0,0283		StdDev Macro Overall Recall: 	0,0283		StdDev Macro Overall Recall: 	0,0268		StdDev Macro Overall Recall: 	0,0268		
+Macro Pos/Neg Recall: 	0,7031		Macro Pos/Neg Recall: 	0,7031		Macro Pos/Neg Recall: 	0,7008		Macro Pos/Neg Recall: 	0,7008		
+StdDev Macro Pos/Neg Recall: 	0,0383		StdDev Macro Pos/Neg Recall: 	0,0383		StdDev Macro Pos/Neg Recall: 	0,044		StdDev Macro Pos/Neg Recall: 	0,044		
+Overall Precision: 	0,6965		Overall Precision: 	0,6965		Overall Precision: 	0,6869		Overall Precision: 	0,6869		
+StdDev Overall Precision: 	0,0283		StdDev Overall Precision: 	0,0283		StdDev Overall Precision: 	0,0268		StdDev Overall Precision: 	0,0268		
+Macro Overall Precision: 	0,7047		Macro Overall Precision: 	0,7047		Macro Overall Precision: 	0,6932		Macro Overall Precision: 	0,6932		
+StdDev Macro Overall Precision: 	0,0281		StdDev Macro Overall Precision: 	0,0281		StdDev Macro Overall Precision: 	0,0275		StdDev Macro Overall Precision: 	0,0275		
+Macro Pos/Neg Precision: 	0,7432		Macro Pos/Neg Precision: 	0,7432		Macro Pos/Neg Precision: 	0,7247		Macro Pos/Neg Precision: 	0,7247		
+StdDev Macro Pos/Neg Precision: 	0,0338		StdDev Macro Pos/Neg Precision: 	0,0338		StdDev Macro Pos/Neg Precision: 	0,0344		StdDev Macro Pos/Neg Precision: 	0,0344		
+Negative Recall: 	0,6566		Negative Recall: 	0,6566		Negative Recall: 	0,659		Negative Recall: 	0,659		
+StdDev Negative Recall: 	0,0546		StdDev Negative Recall: 	0,0546		StdDev Negative Recall: 	0,0567		StdDev Negative Recall: 	0,0567		
+Negative Precision: 	0,7475		Negative Precision: 	0,7475		Negative Precision: 	0,7182		Negative Precision: 	0,7182		
+StdDev Negative Precision: 	0,0599		StdDev Negative Precision: 	0,0599		StdDev Negative Precision: 	0,057		StdDev Negative Precision: 	0,057		
+Negative F-Measure: 	0,6965		Negative F-Measure: 	0,6965		Negative F-Measure: 	0,6844		Negative F-Measure: 	0,6844		
+StdDev Negative F-Measure: 	0,0378		StdDev Negative F-Measure: 	0,0378		StdDev Negative F-Measure: 	0,0353		StdDev Negative F-Measure: 	0,0353		
+Neutral Recalls: 	0,6849		Neutral Recalls: 	0,6849		Neutral Recalls: 	0,661		Neutral Recalls: 	0,661		
+StdDev Neutral Recalls: 	0,0594		StdDev Neutral Recalls: 	0,0594		StdDev Neutral Recalls: 	0,0637		StdDev Neutral Recalls: 	0,0637		
+Neutral Precision: 	0,6275		Neutral Precision: 	0,6275		Neutral Precision: 	0,6269		Neutral Precision: 	0,6269		
+StdDev Neutral Precision: 	0,0477		StdDev Neutral Precision: 	0,0477		StdDev Neutral Precision: 	0,0443		StdDev Neutral Precision: 	0,0443		
+Neutral F-Measure: 	0,6528		Neutral F-Measure: 	0,6528		Neutral F-Measure: 	0,6408		Neutral F-Measure: 	0,6408		
+StdDev Neutral F-Measure: 	0,0384		StdDev Neutral F-Measure: 	0,0384		StdDev Neutral F-Measure: 	0,0349		StdDev Neutral F-Measure: 	0,0349		
+Positive Recall: 	0,7477		Positive Recall: 	0,7477		Positive Recall: 	0,7398		Positive Recall: 	0,7398		
+StdDev Positive Recall: 	0,0589		StdDev Positive Recall: 	0,0589		StdDev Positive Recall: 	0,0664		StdDev Positive Recall: 	0,0664		
+Positive Precision: 	0,7386		Positive Precision: 	0,7386		Positive Precision: 	0,7329		Positive Precision: 	0,7329		
+StdDev Positive Precision: 	0,0446		StdDev Positive Precision: 	0,0446		StdDev Positive Precision: 	0,0479		StdDev Positive Precision: 	0,0479		
+Positive F-Measure: 	0,7407		Positive F-Measure: 	0,7407		Positive F-Measure: 	0,7339		Positive F-Measure: 	0,7339		
+StdDev Positive F-Measure: 	0,0306		StdDev Positive F-Measure: 	0,0306		StdDev Positive F-Measure: 	0,0397		StdDev Positive F-Measure: 	0,0397		
+Micro F-Measure: 	0,6965		Micro F-Measure: 	0,6965		Micro F-Measure: 	0,6869		Micro F-Measure: 	0,6869		
+StdDev Micro F-Measure: 	0,0283		StdDev Micro F-Measure: 	0,0283		StdDev Micro F-Measure: 	0,0268		StdDev Micro F-Measure: 	0,0268		
+Macro F-Measure: 	0,697		Macro F-Measure: 	0,697		Macro F-Measure: 	0,6862		Macro F-Measure: 	0,6862		
+StdDev Macro F-Measure: 	0,0283		StdDev Macro F-Measure: 	0,0283		StdDev Macro F-Measure: 	0,0264		StdDev Macro F-Measure: 	0,0264		
+Micro PosNeg F-Measure: 	0,7194		Micro PosNeg F-Measure: 	0,7194		Micro PosNeg F-Measure: 	0,7098		Micro PosNeg F-Measure: 	0,7098		
+StdDev Micro PosNeg F-Measure: 	0,0274		StdDev Micro PosNeg F-Measure: 	0,0274		StdDev Micro PosNeg F-Measure: 	0,0304		StdDev Micro PosNeg F-Measure: 	0,0304		
+Macro PosNeg F-Measure: 	0,7206		Macro PosNeg F-Measure: 	0,7206		Macro PosNeg F-Measure: 	0,7102		Macro PosNeg F-Measure: 	0,7102		
+StdDev Macro PosNeg F-Measure: 	0,0264		StdDev Macro PosNeg F-Measure: 	0,0264		StdDev Macro PosNeg F-Measure: 	0,0304		StdDev Macro PosNeg F-Measure: 	0,0304		
+OTHER PosNeg F-Measure: 	0,7187		OTHER PosNeg F-Measure: 	0,7187		OTHER PosNeg F-Measure: 	0,709		OTHER PosNeg F-Measure: 	0,709		
+StdDev OTHER PosNeg F-Measure: 	0,0271		StdDev OTHER PosNeg F-Measure: 	0,0271		StdDev OTHER PosNeg F-Measure: 	0,0301		StdDev OTHER PosNeg F-Measure: 	0,0301		
+Average Accuracy: 	0,798		Average Accuracy: 	0,798		Average Accuracy: 	0,7907		Average Accuracy: 	0,7907		
+StdDev Average Accuracy: 	0,0186		StdDev Average Accuracy: 	0,0186		StdDev Average Accuracy: 	0,018		StdDev Average Accuracy: 	0,018		
+Negative Average Accuracy: 	0,8095		Negative Average Accuracy: 	0,8095		Negative Average Accuracy: 	0,7977		Negative Average Accuracy: 	0,7977		
+StdDev Negative Average Accuracy: 	0,025		StdDev Negative Average Accuracy: 	0,025		StdDev Negative Average Accuracy: 	0,0243		StdDev Negative Average Accuracy: 	0,0243		
+Neutral Average Accuracy: 	0,7574		Neutral Average Accuracy: 	0,7574		Neutral Average Accuracy: 	0,7537		Neutral Average Accuracy: 	0,7537		
+StdDev Neutral Average Accuracy: 	0,029		StdDev Neutral Average Accuracy: 	0,029		StdDev Neutral Average Accuracy: 	0,0252		StdDev Neutral Average Accuracy: 	0,0252		
+Positive Average Accuracy: 	0,8259		Positive Average Accuracy: 	0,8259		Positive Average Accuracy: 	0,8218		Positive Average Accuracy: 	0,8218		
+StdDev Positive Average Accuracy: 	0,0203		StdDev Positive Average Accuracy: 	0,0203		StdDev Positive Average Accuracy: 	0,0251		StdDev Positive Average Accuracy: 	0,0251		
+Error Rate: 	0,5914		Error Rate: 	0,5914		Error Rate: 	0,5927		Error Rate: 	0,5927		
+StdDev Error Rate: 	0,013		StdDev Error Rate: 	0,013		StdDev Error Rate: 	0,0154		StdDev Error Rate: 	0,0154		
+Negative Error Rate: 	0,1905		Negative Error Rate: 	0,1905		Negative Error Rate: 	0,2023		Negative Error Rate: 	0,2023		
+StdDev Negative Error Rate: 	0,025		StdDev Negative Error Rate: 	0,025		StdDev Negative Error Rate: 	0,0243		StdDev Negative Error Rate: 	0,0243		
+Neutral Error Rate: 	0,7574		Neutral Error Rate: 	0,7574		Neutral Error Rate: 	0,7537		Neutral Error Rate: 	0,7537		
+StdDev Neutral Error Rate: 	0,029		StdDev Neutral Error Rate: 	0,029		StdDev Neutral Error Rate: 	0,0252		StdDev Neutral Error Rate: 	0,0252		
+Positive Error Rate: 	0,8259		Positive Error Rate: 	0,8259		Positive Error Rate: 	0,8218		Positive Error Rate: 	0,8218		
+StdDev Positive Error Rate: 	0,0203		StdDev Positive Error Rate: 	0,0203		StdDev Positive Error Rate: 	0,0251		StdDev Positive Error Rate: 	0,0251		
+
+NaiveBayesMultinomial			
+	1566		
+Overall Recall: 	0,692		
+StdDev Overall Recall: 	0,0282		
+Macro Overall Recall: 	0,692		
+StdDev Macro Overall Recall: 	0,0282		
+Macro Pos/Neg Recall: 	0,6791		
+StdDev Macro Pos/Neg Recall: 	0,0332		
+Overall Precision: 	0,692		
+StdDev Overall Precision: 	0,0282		
+Macro Overall Precision: 	0,6994		
+StdDev Macro Overall Precision: 	0,0284		
+Macro Pos/Neg Precision: 	0,7363		
+StdDev Macro Pos/Neg Precision: 	0,0308		
+Negative Recall: 	0,6853		
+StdDev Negative Recall: 	0,0434		
+Negative Precision: 	0,7038		
+StdDev Negative Precision: 	0,0387		
+Negative F-Measure: 	0,6937		
+StdDev Negative F-Measure: 	0,0345		
+Neutral Recalls: 	0,7189		
+StdDev Neutral Recalls: 	0,0488		
+Neutral Precision: 	0,6258		
+StdDev Neutral Precision: 	0,035		
+Neutral F-Measure: 	0,6684		
+StdDev Neutral F-Measure: 	0,0354		
+Positive Recall: 	0,6711		
+StdDev Positive Recall: 	0,0458		
+Positive Precision: 	0,7687		
+StdDev Positive Precision: 	0,0392		
+Positive F-Measure: 	0,7157		
+StdDev Positive F-Measure: 	0,0353		
+Micro F-Measure: 	0,692		
+StdDev Micro F-Measure: 	0,0282		
+Macro F-Measure: 	0,6925		
+StdDev Macro F-Measure: 	0,028		
+Micro PosNeg F-Measure: 	0,7043		
+StdDev Micro PosNeg F-Measure: 	0,0296		
+Macro PosNeg F-Measure: 	0,7046		
+StdDev Macro PosNeg F-Measure: 	0,0288		
+OTHER PosNeg F-Measure: 	0,7044		
+StdDev OTHER PosNeg F-Measure: 	0,0296		
+Average Accuracy: 	0,7942		
+StdDev Average Accuracy: 	0,0192		
+Negative Average Accuracy: 	0,7984		
+StdDev Negative Average Accuracy: 	0,023		
+Neutral Average Accuracy: 	0,7625		
+StdDev Neutral Average Accuracy: 	0,0248		
+Positive Average Accuracy: 	0,8226		
+StdDev Positive Average Accuracy: 	0,0207		
+Error Rate: 	0,5957		
+StdDev Error Rate: 	0,0109		
+Negative Error Rate: 	0,2016		
+StdDev Negative Error Rate: 	0,023		
+Neutral Error Rate: 	0,7625		
+StdDev Neutral Error Rate: 	0,0248		
+Positive Error Rate: 	0,8226		
+StdDev Positive Error Rate: 	0,0207		
+
+RandomForest			
+-P 100 -I 200 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -N 2 -U 	1566		
+Overall Recall: 	0,7127		
+StdDev Overall Recall: 	0,0262		
+Macro Overall Recall: 	0,7127		
+StdDev Macro Overall Recall: 	0,0262		
+Macro Pos/Neg Recall: 	0,723		
+StdDev Macro Pos/Neg Recall: 	0,0271		
+Overall Precision: 	0,7127		
+StdDev Overall Precision: 	0,0262		
+Macro Overall Precision: 	0,7159		
+StdDev Macro Overall Precision: 	0,0261		
+Macro Pos/Neg Precision: 	0,7411		
+StdDev Macro Pos/Neg Precision: 	0,0313		
+Negative Recall: 	0,7016		
+StdDev Negative Recall: 	0,0428		
+Negative Precision: 	0,7236		
+StdDev Negative Precision: 	0,0516		
+Negative F-Measure: 	0,7108		
+StdDev Negative F-Measure: 	0,0332		
+Neutral Recalls: 	0,6914		
+StdDev Neutral Recalls: 	0,0508		
+Neutral Precision: 	0,6667		
+StdDev Neutral Precision: 	0,0383		
+Neutral F-Measure: 	0,6778		
+StdDev Neutral F-Measure: 	0,0359		
+Positive Recall: 	0,7449		
+StdDev Positive Recall: 	0,0459		
+Positive Precision: 	0,758		
+StdDev Positive Precision: 	0,0419		
+Positive F-Measure: 	0,75		
+StdDev Positive F-Measure: 	0,0296		
+Micro F-Measure: 	0,7127		
+StdDev Micro F-Measure: 	0,0262		
+Macro F-Measure: 	0,713		
+StdDev Macro F-Measure: 	0,0262		
+Micro PosNeg F-Measure: 	0,7302		
+StdDev Micro PosNeg F-Measure: 	0,0259		
+Macro PosNeg F-Measure: 	0,7295		
+StdDev Macro PosNeg F-Measure: 	0,0252		
+OTHER PosNeg F-Measure: 	0,73		
+StdDev OTHER PosNeg F-Measure: 	0,0255		
+Average Accuracy: 	0,8084		
+StdDev Average Accuracy: 	0,0177		
+Negative Average Accuracy: 	0,8095		
+StdDev Negative Average Accuracy: 	0,0251		
+Neutral Average Accuracy: 	0,7812		
+StdDev Neutral Average Accuracy: 	0,0239		
+Positive Average Accuracy: 	0,8346		
+StdDev Positive Average Accuracy: 	0,0201		
+Error Rate: 	0,602		
+StdDev Error Rate: 	0,0121		
+Negative Error Rate: 	0,1905		
+StdDev Negative Error Rate: 	0,0251		
+Neutral Error Rate: 	0,7812		
+StdDev Neutral Error Rate: 	0,0239		
+Positive Error Rate: 	0,8346		
+StdDev Positive Error Rate: 	0,0201		
+

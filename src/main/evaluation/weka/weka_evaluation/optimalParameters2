@@ -1,0 +1,72 @@
+A1DE
+-F 1 -M 1.5 -W
+-F 1 -M 1.5
+
+BayesNet
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S MDL -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S ENTROPY -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S MDL -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S ENTROPY -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -mbc -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5
+
+CHIRP
+-V 25 -S 1
+
+ExtraTree
+-N 6 -K -1 -S 1
+
+FunctionalTree
+-I 15 -F 0 -M 15 -W 0.0
+-M 25 -I 15 -F 0 -W 0.0 -A
+-F 0 -M 25 -I 15 -W 0.0 -A
+-F 0 -I 20 -M 15 -W 0.0 -A
+
+J48
+-C 0.05 -M 2 -A
+-C 0.05 -M 2
+-N 4 -R -Q 1 -M 2 -A
+-N 4 -R -Q 1 -M 2
+
+LMT
+-C -I -1 -M 15 -W 0.0
+-C -I -1 -M 15 -W 0.0 -A
+-I 20 -M 15 -W 0.0
+-I 20 -M 15 -W 0.0 -A
+
+Logistic
+-R 1.0E-7 -M -1 -num-decimal-places 4
+
+LogitBoost
+-I 80 -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size
+-I 100 -Q -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 4 -E 4 -S 1 -W weka.classifiers.trees.DecisionStump -batch-size
+
+NaiveBayesMultinomial
+//no options
+
+NBTree
+//no options
+
+PART
+-C 0.25 -M 2 -Q 1
+-C 0.25 -M 2 -Q 1 -doNotMakeSplitPointActualValue
+-N 4 -R -M 2 -Q 1
+-N 4 -R -M 2 -Q 1 -doNotMakeSplitPointActualValue
+
+RandomForest
+-I 200 -N 2 -P 100 -num-slots 0 -K 0 -M 1.0 -V 0.001 -S 1 -U
+
+REPTree
+-M 2 -V 1.0E-4 -N 5 -S 1 -L -1 -I 0.0
+
+SimpleCart
+-M 4 -N 15 -C 1.0 -S 1
+-M 3 -N 15 -A -C 1.0 -S 1
+
+SimpleLogistic
+-H 30 -M 150 -I 0 -W 0.0
+-H 15 -M 150 -I 0 -W 0.0 -A
