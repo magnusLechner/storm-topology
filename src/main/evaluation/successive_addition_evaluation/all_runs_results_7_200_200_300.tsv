@@ -1,2800 +1,2800 @@
 RUN: 1
-recall	0,81	
-macro-avg. recall	0,78	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,81	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7384615384615385	
-positivePrecision	0,7559055118110236	
-positive fmeasure	0,7470817120622568	
-neutralRecall	0,8562691131498471	
-neutralPrecision	0,8484848484848485	
-neutral fmeasure	0,8523592085235921	
-negativeRecall	0,7416666666666667	
-negativePrecision	0,7416666666666667	
-negative fmeasure	0,7416666666666667	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,74	
-accuracy	0,8058925476603119	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	76,713542	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 2
-recall	0,81	
-macro-avg. recall	0,8	
-macro-avg. Pos/Neg recall	0,78	
-precision	0,81	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7903225806451613	
-positivePrecision	0,7480916030534351	
-positive fmeasure	0,7686274509803923	
-neutralRecall	0,8384146341463414	
-neutralPrecision	0,870253164556962	
-neutral fmeasure	0,8540372670807453	
-negativeRecall	0,7631578947368421	
-negativePrecision	0,7310924369747899	
-negative fmeasure	0,7467811158798283	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,76	
-accuracy	0,8127208480565371	
-average accuracy	0,88	
-error rate	0,61	
-cpu-time (for complete test-set)	47,364549	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 3
-recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,79	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,6915887850467289	
-positivePrecision	0,6548672566371682	
-positive fmeasure	0,6727272727272727	
-neutralRecall	0,8352272727272727	
-neutralPrecision	0,8521739130434782	
-neutral fmeasure	0,8436154949784792	
-negativeRecall	0,75	
-negativePrecision	0,7435897435897436	
-negative fmeasure	0,7467811158798283	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7913043478260869	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	48,731231	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 4
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7633587786259542	
-positivePrecision	0,684931506849315	
-positive fmeasure	0,7220216606498194	
-neutralRecall	0,8056426332288401	
-neutralPrecision	0,8453947368421053	
-neutral fmeasure	0,8250401284109149	
-negativeRecall	0,7258064516129032	
-negativePrecision	0,7258064516129032	
-negative fmeasure	0,7258064516129032	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7787456445993032	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	40,334667	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 5
-recall	0,76	
-macro-avg. recall	0,73	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,76	
+recall	0,77	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,77	
 macro-avg. precision	0,72	
-macro-avg. Pos/Neg precision	0,68	
-positiveRecall	0,6953125	
-positivePrecision	0,6691729323308271	
-positive fmeasure	0,6819923371647509	
-neutralRecall	0,8066465256797583	
-neutralPrecision	0,8165137614678899	
-neutral fmeasure	0,8115501519756838	
-negativeRecall	0,6818181818181818	
-negativePrecision	0,6880733944954128	
-negative fmeasure	0,684931506849315	
-micro f-Measure	0,76	
+macro-avg. Pos/Neg precision	0,66	
+positiveRecall	0,7355371900826446	
+positivePrecision	0,6402877697841727	
+positive fmeasure	0,6846153846153846	
+neutralRecall	0,8100558659217877	
+neutralPrecision	0,8430232558139535	
+neutral fmeasure	0,8262108262108262	
+negativeRecall	0,6638655462184874	
+negativePrecision	0,6869565217391305	
+negative fmeasure	0,6752136752136753	
+micro f-Measure	0,77	
 micro pos/neg f-Measure	0,68	
 macro f-Measure	0,73	
 macro pos/neg f-Measure	0,68	
 other pos/neg f-Measure	0,68	
-accuracy	0,7574692442882249	
+accuracy	0,7658862876254181	
 average accuracy	0,84	
+error rate	0,6	
+cpu-time (for complete test-set)	240,646462	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 2
+recall	0,78	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,78	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8125	
+positivePrecision	0,6797385620915033	
+positive fmeasure	0,7402135231316727	
+neutralRecall	0,8040345821325648	
+neutralPrecision	0,8454545454545455	
+neutral fmeasure	0,8242245199409158	
+negativeRecall	0,6721311475409836	
+negativePrecision	0,7192982456140351	
+negative fmeasure	0,6949152542372881	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7788944723618091	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	211,788999	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 3
+recall	0,78	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,78	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7580645161290323	
+positivePrecision	0,6573426573426573	
+positive fmeasure	0,7041198501872659	
+neutralRecall	0,8252148997134671	
+neutralPrecision	0,8421052631578947	
+neutral fmeasure	0,833574529667149	
+negativeRecall	0,6585365853658537	
+negativePrecision	0,7297297297297297	
+negative fmeasure	0,6923076923076923	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7768456375838926	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	228,217022	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 4
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7762237762237763	
+positivePrecision	0,7115384615384616	
+positive fmeasure	0,7424749163879598	
+neutralRecall	0,8162650602409639	
+neutralPrecision	0,8287461773700305	
+neutral fmeasure	0,8224582701062215	
+negativeRecall	0,65	
+negativePrecision	0,6964285714285714	
+negative fmeasure	0,6724137931034482	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,71	
+accuracy	0,773109243697479	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	212,861603	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 5
+recall	0,78	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,78	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7063492063492064	
+positivePrecision	0,664179104477612	
+positive fmeasure	0,6846153846153847	
+neutralRecall	0,824773413897281	
+neutralPrecision	0,8297872340425532	
+neutral fmeasure	0,8272727272727273	
+negativeRecall	0,7463768115942029	
+negativePrecision	0,7803030303030303	
+negative fmeasure	0,762962962962963	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7815126050420168	
+average accuracy	0,85	
 error rate	0,59	
-cpu-time (for complete test-set)	45,399297	
+cpu-time (for complete test-set)	212,533686	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 6
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,78	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,684931506849315	
-positivePrecision	0,7575757575757576	
-positive fmeasure	0,7194244604316548	
-neutralRecall	0,8456375838926175	
-neutralPrecision	0,805111821086262	
-neutral fmeasure	0,8248772504091652	
-negativeRecall	0,7559055118110236	
-negativePrecision	0,7619047619047619	
-negative fmeasure	0,758893280632411	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,74	
-accuracy	0,7845884413309983	
-average accuracy	0,86	
+recall	0,76	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7357142857142858	
+positivePrecision	0,673202614379085	
+positive fmeasure	0,7030716723549488	
+neutralRecall	0,7922848664688428	
+neutralPrecision	0,8240740740740741	
+neutral fmeasure	0,8078668683812406	
+negativeRecall	0,7213114754098361	
+negativePrecision	0,7213114754098361	
+negative fmeasure	0,7213114754098362	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7646076794657763	
+average accuracy	0,84	
 error rate	0,59	
-cpu-time (for complete test-set)	41,040158	
+cpu-time (for complete test-set)	212,602352	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 7
-recall	0,8	
-macro-avg. recall	0,77	
+recall	0,77	
+macro-avg. recall	0,75	
 macro-avg. Pos/Neg recall	0,73	
-precision	0,8	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,7633587786259542	
-positivePrecision	0,746268656716418	
-positive fmeasure	0,7547169811320754	
-neutralRecall	0,8554216867469879	
-neutralPrecision	0,8328445747800587	
-neutral fmeasure	0,8439821693907874	
-negativeRecall	0,7027027027027027	
-negativePrecision	0,7878787878787878	
-negative fmeasure	0,7428571428571429	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8048780487804879	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	40,184044	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7517241379310344	
+positivePrecision	0,6687116564417178	
+positive fmeasure	0,7077922077922076	
+neutralRecall	0,7958579881656804	
+neutralPrecision	0,8432601880877743	
+neutral fmeasure	0,8188736681887365	
+negativeRecall	0,7130434782608696	
+negativePrecision	0,7068965517241379	
+negative fmeasure	0,7099567099567101	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7692307692307693	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	214,500691	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 8
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,7685185185185185	
-positivePrecision	0,7094017094017094	
-positive fmeasure	0,7377777777777778	
-neutralRecall	0,8029850746268656	
-neutralPrecision	0,838006230529595	
-neutral fmeasure	0,8201219512195123	
-negativeRecall	0,7153846153846154	
-negativePrecision	0,6888888888888889	
-negative fmeasure	0,7018867924528303	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7766143106457243	
-average accuracy	0,85	
-error rate	0,61	
-cpu-time (for complete test-set)	41,814067	
+recall	0,8	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,76	
+precision	0,8	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,7923076923076923	
+positivePrecision	0,6866666666666666	
+positive fmeasure	0,7357142857142858	
+neutralRecall	0,8352941176470589	
+neutralPrecision	0,8554216867469879	
+neutral fmeasure	0,8452380952380952	
+negativeRecall	0,71875	
+negativePrecision	0,7931034482758621	
+negative fmeasure	0,7540983606557378	
+micro f-Measure	0,8	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,78	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,74	
+accuracy	0,8010033444816054	
+average accuracy	0,87	
+error rate	0,6	
+cpu-time (for complete test-set)	218,578328	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 9
-recall	0,82	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,82	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,7741935483870968	
-positivePrecision	0,8	
-positive fmeasure	0,7868852459016393	
-neutralRecall	0,8731563421828908	
-neutralPrecision	0,8654970760233918	
-neutral fmeasure	0,8693098384728339	
-negativeRecall	0,7184466019417476	
-negativePrecision	0,7115384615384616	
-negative fmeasure	0,7149758454106281	
-micro f-Measure	0,82	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,823321554770318	
-average accuracy	0,88	
-error rate	0,62	
-cpu-time (for complete test-set)	38,54245	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7571428571428571	
+positivePrecision	0,6503067484662577	
+positive fmeasure	0,6996699669966997	
+neutralRecall	0,794392523364486	
+neutralPrecision	0,804416403785489	
+neutral fmeasure	0,799373040752351	
+negativeRecall	0,6666666666666666	
+negativePrecision	0,7758620689655172	
+negative fmeasure	0,7171314741035856	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7567114093959731	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	214,515309	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 10
-recall	0,81	
-macro-avg. recall	0,78	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,81	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,8029197080291971	
-positivePrecision	0,7746478873239436	
-positive fmeasure	0,7885304659498208	
-neutralRecall	0,85	
-neutralPrecision	0,8318042813455657	
-neutral fmeasure	0,8408037094281299	
-negativeRecall	0,6916666666666667	
-negativePrecision	0,7685185185185185	
-negative fmeasure	0,7280701754385966	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,76	
-accuracy	0,8058925476603119	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	37,785452	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,76	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7959183673469388	
+positivePrecision	0,6464088397790055	
+positive fmeasure	0,7134146341463414	
+neutralRecall	0,7828746177370031	
+neutralPrecision	0,8178913738019169	
+neutral fmeasure	0,8	
+negativeRecall	0,6475409836065574	
+negativePrecision	0,7745098039215687	
+negative fmeasure	0,7053571428571429	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7583892617449665	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	209,082776	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 11
-recall	0,79	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7132867132867133	
-positivePrecision	0,7611940298507462	
-positive fmeasure	0,7364620938628158	
-neutralRecall	0,8562300319488818	
-neutralPrecision	0,8145896656534954	
-neutral fmeasure	0,8348909657320872	
-negativeRecall	0,6814159292035398	
-negativePrecision	0,7264150943396226	
-negative fmeasure	0,7031963470319634	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7855887521968365	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	38,95392	
+recall	0,75	
+macro-avg. recall	0,72	
+macro-avg. Pos/Neg recall	0,68	
+precision	0,75	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,7391304347826086	
+positivePrecision	0,6666666666666666	
+positive fmeasure	0,7010309278350515	
+neutralRecall	0,7982456140350878	
+neutralPrecision	0,8100890207715133	
+neutral fmeasure	0,8041237113402061	
+negativeRecall	0,6153846153846154	
+negativePrecision	0,6728971962616822	
+negative fmeasure	0,6428571428571428	
+micro f-Measure	0,75	
+micro pos/neg f-Measure	0,68	
+macro f-Measure	0,72	
+macro pos/neg f-Measure	0,67	
+other pos/neg f-Measure	0,67	
+accuracy	0,7487437185929648	
+average accuracy	0,83	
+error rate	0,59	
+cpu-time (for complete test-set)	205,954642	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 12
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,744	
-positivePrecision	0,6595744680851063	
-positive fmeasure	0,6992481203007519	
-neutralRecall	0,808641975308642	
-neutralPrecision	0,8478964401294499	
-neutral fmeasure	0,8278041074249606	
-negativeRecall	0,7295081967213115	
-negativePrecision	0,7355371900826446	
-negative fmeasure	0,7325102880658436	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7775831873905429	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	41,931244	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,6962962962962963	
+positivePrecision	0,6573426573426573	
+positive fmeasure	0,6762589928057553	
+neutralRecall	0,7921686746987951	
+neutralPrecision	0,7993920972644377	
+neutral fmeasure	0,7957639939485629	
+negativeRecall	0,7307692307692307	
+negativePrecision	0,76	
+negative fmeasure	0,7450980392156863	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7571189279731994	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	199,87409	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 13
-recall	0,79	
+recall	0,78	
 macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7372881355932204	
-positivePrecision	0,71900826446281	
-positive fmeasure	0,7280334728033473	
-neutralRecall	0,8372781065088757	
-neutralPrecision	0,8422619047619048	
-neutral fmeasure	0,8397626112759643	
-negativeRecall	0,7105263157894737	
-negativePrecision	0,7168141592920354	
-negative fmeasure	0,7136563876651983	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,78	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7517241379310344	
+positivePrecision	0,6646341463414634	
+positive fmeasure	0,7055016181229774	
+neutralRecall	0,8114285714285714	
+neutralPrecision	0,8427299703264095	
+neutral fmeasure	0,826783114992722	
+negativeRecall	0,7058823529411765	
+negativePrecision	0,75	
+negative fmeasure	0,7272727272727272	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,75	
 macro pos/neg f-Measure	0,72	
 other pos/neg f-Measure	0,72	
-accuracy	0,7912280701754386	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	38,202577	
+accuracy	0,7788944723618091	
+average accuracy	0,85	
+error rate	0,58	
+cpu-time (for complete test-set)	208,280684	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 14
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,79	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7829457364341085	
-positivePrecision	0,7013888888888888	
-positive fmeasure	0,7399267399267399	
-neutralRecall	0,8285714285714286	
-neutralPrecision	0,8312101910828026	
-neutral fmeasure	0,8298887122416534	
-negativeRecall	0,7111111111111111	
-negativePrecision	0,7933884297520661	
-negative fmeasure	0,75	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,74	
-accuracy	0,7910189982728842	
-average accuracy	0,86	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,76	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,75177304964539	
+positivePrecision	0,7310344827586207	
+positive fmeasure	0,7412587412587412	
+neutralRecall	0,8078078078078078	
+neutralPrecision	0,817629179331307	
+neutral fmeasure	0,8126888217522659	
+negativeRecall	0,6557377049180327	
+negativePrecision	0,6557377049180327	
+negative fmeasure	0,6557377049180327	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,7	
+accuracy	0,7634228187919463	
+average accuracy	0,84	
 error rate	0,6	
-cpu-time (for complete test-set)	39,815142	
+cpu-time (for complete test-set)	204,819145	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 15
 recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,77	
 precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7286821705426356	
-positivePrecision	0,7014925373134329	
-positive fmeasure	0,714828897338403	
-neutralRecall	0,809375	
-neutralPrecision	0,819620253164557	
-neutral fmeasure	0,8144654088050314	
-negativeRecall	0,7355371900826446	
-negativePrecision	0,7416666666666667	
-negative fmeasure	0,7385892116182573	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,75	
+positiveRecall	0,7964071856287425	
+positivePrecision	0,7228260869565217	
+positive fmeasure	0,7578347578347578	
+neutralRecall	0,7785016286644951	
+neutralPrecision	0,8074324324324325	
+neutral fmeasure	0,7927031509121062	
+negativeRecall	0,7377049180327869	
+negativePrecision	0,7758620689655172	
+negative fmeasure	0,7563025210084033	
 micro f-Measure	0,78	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,73	
-accuracy	0,775438596491228	
+micro pos/neg f-Measure	0,76	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,76	
+other pos/neg f-Measure	0,76	
+accuracy	0,7751677852348994	
 average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	41,571767	
+error rate	0,58	
+cpu-time (for complete test-set)	203,151487	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 16
-recall	0,82	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,82	
-macro-avg. precision	0,8	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,824	
-positivePrecision	0,7410071942446043	
-positive fmeasure	0,7803030303030303	
-neutralRecall	0,8731563421828908	
-neutralPrecision	0,8705882352941177	
-neutral fmeasure	0,8718703976435935	
-negativeRecall	0,672566371681416	
-negativePrecision	0,7755102040816326	
-negative fmeasure	0,7203791469194313	
-micro f-Measure	0,82	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8232235701906413	
-average accuracy	0,88	
-error rate	0,62	
-cpu-time (for complete test-set)	38,582809	
+recall	0,77	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7814569536423841	
+positivePrecision	0,7108433734939759	
+positive fmeasure	0,7444794952681388	
+neutralRecall	0,8037383177570093	
+neutralPrecision	0,8138801261829653	
+neutral fmeasure	0,8087774294670846	
+negativeRecall	0,6929133858267716	
+negativePrecision	0,7586206896551724	
+negative fmeasure	0,7242798353909465	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7746243739565943	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	207,283072	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 17
 recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,77	
 precision	0,79	
 macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,6716417910447762	
-positivePrecision	0,75	
-positive fmeasure	0,7086614173228347	
-neutralRecall	0,8456591639871383	
-neutralPrecision	0,8142414860681114	
-neutral fmeasure	0,8296529968454259	
-negativeRecall	0,7606837606837606	
-negativePrecision	0,7478991596638656	
-negative fmeasure	0,7542372881355932	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,796875	
+positivePrecision	0,6580645161290323	
+positive fmeasure	0,7208480565371025	
+neutralRecall	0,8100890207715133	
+neutralPrecision	0,861198738170347	
+neutral fmeasure	0,8348623853211008	
+negativeRecall	0,7348484848484849	
+negativePrecision	0,776	
+negative fmeasure	0,754863813229572	
 micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7864768683274022	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7906197654941374	
 average accuracy	0,86	
-error rate	0,59	
-cpu-time (for complete test-set)	39,860754	
+error rate	0,6	
+cpu-time (for complete test-set)	203,211324	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 18
-recall	0,78	
+recall	0,75	
 macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7264957264957265	
-positivePrecision	0,6910569105691057	
-positive fmeasure	0,7083333333333334	
-neutralRecall	0,8493975903614458	
-neutralPrecision	0,831858407079646	
-neutral fmeasure	0,8405365126676602	
-negativeRecall	0,6528925619834711	
-negativePrecision	0,7314814814814815	
-negative fmeasure	0,6899563318777292	
-micro f-Measure	0,78	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,75	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,7285714285714285	
+positivePrecision	0,6845637583892618	
+positive fmeasure	0,7058823529411764	
+neutralRecall	0,7787610619469026	
+neutralPrecision	0,822429906542056	
+neutral fmeasure	0,7999999999999999	
+negativeRecall	0,7094017094017094	
+negativePrecision	0,6587301587301587	
+negative fmeasure	0,6831275720164609	
+micro f-Measure	0,75	
 micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7824561403508772	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	45,161044	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7533557046979866	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	206,93248	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 19
-recall	0,79	
+recall	0,77	
 macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7357142857142858	
-positivePrecision	0,7984496124031008	
-positive fmeasure	0,7657992565055762	
-neutralRecall	0,8434504792332268	
-neutralPrecision	0,822429906542056	
-neutral fmeasure	0,8328075709779179	
-negativeRecall	0,6942148760330579	
-negativePrecision	0,6774193548387096	
-negative fmeasure	0,6857142857142856	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7571428571428571	
+positivePrecision	0,654320987654321	
+positive fmeasure	0,7019867549668874	
+neutralRecall	0,7958579881656804	
+neutralPrecision	0,8328173374613003	
+neutral fmeasure	0,8139183055975793	
+negativeRecall	0,7166666666666667	
+negativePrecision	0,7610619469026548	
+negative fmeasure	0,7381974248927038	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
 macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,73	
-accuracy	0,7857142857142857	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	38,0054	
+other pos/neg f-Measure	0,72	
+accuracy	0,7709030100334449	
+average accuracy	0,85	
+error rate	0,58	
+cpu-time (for complete test-set)	209,257793	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 20
-recall	0,79	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,67	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7317073170731707	
-positivePrecision	0,7317073170731707	
-positive fmeasure	0,7317073170731707	
-neutralRecall	0,8699690402476781	
-neutralPrecision	0,8074712643678161	
-neutral fmeasure	0,8375558867362146	
-negativeRecall	0,6134453781512605	
-negativePrecision	0,776595744680851	
-negative fmeasure	0,6854460093896713	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7858407079646018	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	34,474766	
+recall	0,78	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,78	
+precision	0,78	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,8251748251748252	
+positivePrecision	0,686046511627907	
+positive fmeasure	0,7492063492063491	
+neutralRecall	0,7804878048780488	
+neutralPrecision	0,8504983388704319	
+neutral fmeasure	0,8139904610492845	
+negativeRecall	0,7295081967213115	
+negativePrecision	0,7416666666666667	
+negative fmeasure	0,7355371900826447	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7807757166947723	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	201,211476	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 21
 recall	0,76	
 macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,7	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7723577235772358	
+positivePrecision	0,5974842767295597	
+positive fmeasure	0,6737588652482269	
+neutralRecall	0,7946428571428571	
+neutralPrecision	0,8190184049079755	
+neutral fmeasure	0,8066465256797583	
+negativeRecall	0,6444444444444445	
+negativePrecision	0,7981651376146789	
+negative fmeasure	0,7131147540983607	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,69	
+accuracy	0,7558922558922558	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	204,403796	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 22
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,78	
+positivePrecision	0,7222222222222222	
+positive fmeasure	0,7500000000000001	
+neutralRecall	0,7915407854984894	
+neutralPrecision	0,842443729903537	
+neutral fmeasure	0,8161993769470405	
+negativeRecall	0,6890756302521008	
+negativePrecision	0,6456692913385826	
+negative fmeasure	0,6666666666666666	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,71	
+accuracy	0,7683333333333333	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	189,911709	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 23
+recall	0,79	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,79	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7785234899328859	
+positivePrecision	0,7204968944099379	
+positive fmeasure	0,7483870967741935	
+neutralRecall	0,8328267477203647	
+neutralPrecision	0,8353658536585366	
+neutral fmeasure	0,8340943683409435	
+negativeRecall	0,6779661016949152	
+negativePrecision	0,7476635514018691	
+negative fmeasure	0,711111111111111	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7885906040268457	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	199,307735	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 24
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,69	
 precision	0,76	
 macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7021276595744681	
-positivePrecision	0,7333333333333333	
-positive fmeasure	0,7173913043478262	
-neutralRecall	0,8163934426229508	
-neutralPrecision	0,7980769230769231	
-neutral fmeasure	0,807131280388979	
-negativeRecall	0,7024793388429752	
-negativePrecision	0,7083333333333334	
-negative fmeasure	0,7053941908713693	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7207792207792207	
+positivePrecision	0,7254901960784313	
+positive fmeasure	0,7231270358306189	
+neutralRecall	0,8233438485804416	
+neutralPrecision	0,7933130699088146	
+neutral fmeasure	0,8080495356037153	
+negativeRecall	0,6612903225806451	
+negativePrecision	0,7256637168141593	
+negative fmeasure	0,6919831223628691	
 micro f-Measure	0,76	
 micro pos/neg f-Measure	0,71	
 macro f-Measure	0,74	
 macro pos/neg f-Measure	0,71	
 other pos/neg f-Measure	0,71	
-accuracy	0,763668430335097	
+accuracy	0,7630252100840336	
 average accuracy	0,84	
 error rate	0,59	
-cpu-time (for complete test-set)	36,437566	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 22
-recall	0,79	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7	
-positivePrecision	0,7398373983739838	
-positive fmeasure	0,7193675889328062	
-neutralRecall	0,8557993730407524	
-neutralPrecision	0,8348623853211009	
-neutral fmeasure	0,8452012383900929	
-negativeRecall	0,6974789915966386	
-negativePrecision	0,7033898305084746	
-negative fmeasure	0,7004219409282699	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7869718309859155	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	35,712956	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 23
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,808	
-positivePrecision	0,6733333333333333	
-positive fmeasure	0,7345454545454546	
-neutralRecall	0,803680981595092	
-neutralPrecision	0,8343949044585988	
-neutral fmeasure	0,8187500000000001	
-negativeRecall	0,6666666666666666	
-negativePrecision	0,75	
-negative fmeasure	0,7058823529411765	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7764084507042254	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	38,050785	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 24
-recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7293233082706767	
-positivePrecision	0,697841726618705	
-positive fmeasure	0,7132352941176471	
-neutralRecall	0,8354430379746836	
-neutralPrecision	0,822429906542056	
-neutral fmeasure	0,8288854003139716	
-negativeRecall	0,6774193548387096	
-negativePrecision	0,7433628318584071	
-negative fmeasure	0,7088607594936708	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7766143106457243	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	35,475816	
+cpu-time (for complete test-set)	213,099925	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 25
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7480916030534351	
-positivePrecision	0,7424242424242424	
-positive fmeasure	0,7452471482889734	
-neutralRecall	0,8237082066869301	
-neutralPrecision	0,8390092879256966	
-neutral fmeasure	0,8312883435582823	
-negativeRecall	0,7478260869565218	
-negativePrecision	0,7166666666666667	
-negative fmeasure	0,7319148936170212	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,74	
-accuracy	0,7913043478260869	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	39,932894	
+recall	0,8	
+macro-avg. recall	0,79	
+macro-avg. Pos/Neg recall	0,78	
+precision	0,8	
+macro-avg. precision	0,79	
+macro-avg. Pos/Neg precision	0,77	
+positiveRecall	0,8163265306122449	
+positivePrecision	0,7058823529411765	
+positive fmeasure	0,7570977917981073	
+neutralRecall	0,8181818181818182	
+neutralPrecision	0,84375	
+neutral fmeasure	0,8307692307692308	
+negativeRecall	0,743801652892562	
+negativePrecision	0,8333333333333334	
+negative fmeasure	0,7860262008733625	
+micro f-Measure	0,8	
+micro pos/neg f-Measure	0,77	
+macro f-Measure	0,79	
+macro pos/neg f-Measure	0,77	
+other pos/neg f-Measure	0,77	
+accuracy	0,802675585284281	
+average accuracy	0,87	
+error rate	0,59	
+cpu-time (for complete test-set)	203,634134	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 26
 recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,746031746031746	
-positivePrecision	0,706766917293233	
-positive fmeasure	0,725868725868726	
-neutralRecall	0,8312883435582822	
-neutralPrecision	0,8041543026706232	
-neutral fmeasure	0,8174962292609351	
-negativeRecall	0,6638655462184874	
-negativePrecision	0,7821782178217822	
-negative fmeasure	0,7181818181818181	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8260869565217391	
+positivePrecision	0,6867469879518072	
+positive fmeasure	0,75	
+neutralRecall	0,7946428571428571	
+neutralPrecision	0,8476190476190476	
+neutral fmeasure	0,8202764976958524	
+negativeRecall	0,6721311475409836	
+negativePrecision	0,7130434782608696	
+negative fmeasure	0,6919831223628692	
 micro f-Measure	0,78	
 micro pos/neg f-Measure	0,72	
 macro f-Measure	0,75	
 macro pos/neg f-Measure	0,72	
 other pos/neg f-Measure	0,72	
-accuracy	0,7775831873905429	
+accuracy	0,7768456375838926	
 average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	35,530864	
+error rate	0,6	
+cpu-time (for complete test-set)	201,241729	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 27
 recall	0,8	
-macro-avg. recall	0,78	
-macro-avg. Pos/Neg recall	0,75	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,74	
 precision	0,8	
 macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,7697841726618705	
-positivePrecision	0,781021897810219	
-positive fmeasure	0,7753623188405797	
-neutralRecall	0,8442906574394463	
-neutralPrecision	0,8187919463087249	
-neutral fmeasure	0,8313458262350937	
-negativeRecall	0,7272727272727273	
-negativePrecision	0,768	
-negative fmeasure	0,7470817120622568	
+macro-avg. Pos/Neg precision	0,78	
+positiveRecall	0,782608695652174	
+positivePrecision	0,7455621301775148	
+positive fmeasure	0,7636363636363637	
+neutralRecall	0,8446601941747572	
+neutralPrecision	0,8207547169811321	
+neutral fmeasure	0,832535885167464	
+negativeRecall	0,696	
+negativePrecision	0,8055555555555556	
+negative fmeasure	0,7467811158798283	
 micro f-Measure	0,8	
 micro pos/neg f-Measure	0,76	
 macro f-Measure	0,78	
 macro pos/neg f-Measure	0,76	
 other pos/neg f-Measure	0,76	
-accuracy	0,7982142857142858	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	34,432751	
+accuracy	0,7966386554621848	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	201,203564	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 28
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,746031746031746	
-positivePrecision	0,7121212121212122	
-positive fmeasure	0,7286821705426357	
-neutralRecall	0,8303030303030303	
-neutralPrecision	0,85625	
-neutral fmeasure	0,8430769230769231	
-negativeRecall	0,7372881355932204	
-negativePrecision	0,7131147540983607	
-negative fmeasure	0,725	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,73	
-accuracy	0,7926829268292683	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	35,770723	
+recall	0,74	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,74	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,66	
+positiveRecall	0,75	
+positivePrecision	0,61875	
+positive fmeasure	0,6780821917808221	
+neutralRecall	0,7669616519174042	
+neutralPrecision	0,8253968253968254	
+neutral fmeasure	0,7951070336391438	
+negativeRecall	0,68	
+negativePrecision	0,7024793388429752	
+negative fmeasure	0,6910569105691057	
+micro f-Measure	0,74	
+micro pos/neg f-Measure	0,68	
+macro f-Measure	0,72	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,68	
+accuracy	0,7449664429530202	
+average accuracy	0,83	
+error rate	0,58	
+cpu-time (for complete test-set)	207,469747	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 29
-recall	0,8	
-macro-avg. recall	0,79	
+recall	0,79	
+macro-avg. recall	0,78	
 macro-avg. Pos/Neg recall	0,76	
-precision	0,8	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,7786259541984732	
-positivePrecision	0,723404255319149	
-positive fmeasure	0,75	
-neutralRecall	0,8359621451104101	
-neutralPrecision	0,8412698412698413	
-neutral fmeasure	0,8386075949367088	
-negativeRecall	0,7410714285714286	
-negativePrecision	0,7980769230769231	
-negative fmeasure	0,7685185185185186	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,76	
-accuracy	0,8035714285714286	
-average accuracy	0,87	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,75	
+positivePrecision	0,7105263157894737	
+positive fmeasure	0,7297297297297298	
+neutralRecall	0,815028901734104	
+neutralPrecision	0,8676923076923077	
+neutral fmeasure	0,8405365126676603	
+negativeRecall	0,7706422018348624	
+negativePrecision	0,6885245901639344	
+negative fmeasure	0,7272727272727273	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7913188647746243	
+average accuracy	0,86	
 error rate	0,6	
-cpu-time (for complete test-set)	36,140825	
+cpu-time (for complete test-set)	225,971617	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 30
-recall	0,79	
+recall	0,78	
 macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7716535433070866	
-positivePrecision	0,7424242424242424	
-positive fmeasure	0,7567567567567567	
-neutralRecall	0,8282208588957055	
-neutralPrecision	0,84375	
-neutral fmeasure	0,8359133126934984	
-negativeRecall	0,6982758620689655	
-negativePrecision	0,6923076923076923	
-negative fmeasure	0,6952789699570816	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,73	
-accuracy	0,789103690685413	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	35,779923	
+macro-avg. Pos/Neg recall	0,75	
+precision	0,78	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,7872340425531915	
+positivePrecision	0,6727272727272727	
+positive fmeasure	0,7254901960784313	
+neutralRecall	0,7994186046511628	
+neutralPrecision	0,8647798742138365	
+neutral fmeasure	0,8308157099697886	
+negativeRecall	0,7102803738317757	
+negativePrecision	0,6972477064220184	
+negative fmeasure	0,7037037037037038	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7804054054054054	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	199,005768	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 31
-recall	0,78	
+recall	0,76	
 macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,68	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,6783216783216783	
-positivePrecision	0,7348484848484849	
-positive fmeasure	0,7054545454545454	
-neutralRecall	0,8660436137071651	
-neutralPrecision	0,8176470588235294	
-neutral fmeasure	0,8411497730711043	
-negativeRecall	0,6851851851851852	
-negativePrecision	0,74	
-negative fmeasure	0,7115384615384615	
-micro f-Measure	0,78	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7757575757575758	
+positivePrecision	0,6844919786096256	
+positive fmeasure	0,7272727272727273	
+neutralRecall	0,801948051948052	
+neutralPrecision	0,8125	
+neutral fmeasure	0,8071895424836601	
+negativeRecall	0,6370967741935484	
+negativePrecision	0,7452830188679245	
+negative fmeasure	0,6869565217391305	
+micro f-Measure	0,76	
 micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
+macro f-Measure	0,74	
 macro pos/neg f-Measure	0,71	
 other pos/neg f-Measure	0,71	
-accuracy	0,784965034965035	
-average accuracy	0,86	
+accuracy	0,7604690117252931	
+average accuracy	0,84	
 error rate	0,59	
-cpu-time (for complete test-set)	34,866551	
+cpu-time (for complete test-set)	214,963264	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 32
-recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7555555555555555	
-positivePrecision	0,7445255474452555	
-positive fmeasure	0,75	
-neutralRecall	0,84375	
-neutralPrecision	0,8256880733944955	
-neutral fmeasure	0,8346213292117466	
-negativeRecall	0,6695652173913044	
-negativePrecision	0,7264150943396226	
-negative fmeasure	0,6968325791855203	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,787719298245614	
+recall	0,8	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,76	
+precision	0,8	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,75	
+positiveRecall	0,7753623188405797	
+positivePrecision	0,7278911564625851	
+positive fmeasure	0,7508771929824561	
+neutralRecall	0,8240740740740741	
+neutralPrecision	0,8369905956112853	
+neutral fmeasure	0,8304821150855366	
+negativeRecall	0,7481481481481481	
+negativePrecision	0,7709923664122137	
+negative fmeasure	0,7593984962406015	
+micro f-Measure	0,8	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,78	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,76	
+accuracy	0,7956448911222781	
 average accuracy	0,86	
 error rate	0,6	
-cpu-time (for complete test-set)	36,464907	
+cpu-time (for complete test-set)	209,111446	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 33
-recall	0,77	
-macro-avg. recall	0,73	
+recall	0,74	
+macro-avg. recall	0,72	
 macro-avg. Pos/Neg recall	0,69	
-precision	0,77	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,736	
-positivePrecision	0,6433566433566433	
-positive fmeasure	0,6865671641791045	
-neutralRecall	0,8251533742331288	
-neutralPrecision	0,8151515151515152	
-neutral fmeasure	0,8201219512195123	
-negativeRecall	0,635593220338983	
-negativePrecision	0,78125	
-negative fmeasure	0,7009345794392523	
-micro f-Measure	0,77	
-micro pos/neg f-Measure	0,69	
-macro f-Measure	0,74	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,69	
-accuracy	0,7662565905096661	
-average accuracy	0,84	
+precision	0,74	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,7746478873239436	
+positivePrecision	0,6666666666666666	
+positive fmeasure	0,7166123778501627	
+neutralRecall	0,7791044776119403	
+neutralPrecision	0,7981651376146789	
+neutral fmeasure	0,7885196374622357	
+negativeRecall	0,6	
+negativePrecision	0,6857142857142857	
+negative fmeasure	0,64	
+micro f-Measure	0,74	
+micro pos/neg f-Measure	0,68	
+macro f-Measure	0,72	
+macro pos/neg f-Measure	0,68	
+other pos/neg f-Measure	0,68	
+accuracy	0,7420435510887772	
+average accuracy	0,83	
 error rate	0,59	
-cpu-time (for complete test-set)	39,54765	
+cpu-time (for complete test-set)	215,011456	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 34
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,78	
-macro-avg. precision	0,74	
+recall	0,76	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,76	
+macro-avg. precision	0,73	
 macro-avg. Pos/Neg precision	0,69	
-positiveRecall	0,7355371900826446	
-positivePrecision	0,6742424242424242	
-positive fmeasure	0,7035573122529644	
-neutralRecall	0,8171091445427728	
-neutralPrecision	0,8470948012232415	
-neutral fmeasure	0,8318318318318317	
-negativeRecall	0,7155963302752294	
-negativePrecision	0,7090909090909091	
-negative fmeasure	0,7123287671232876	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7803163444639719	
-average accuracy	0,85	
+positiveRecall	0,7753623188405797	
+positivePrecision	0,6815286624203821	
+positive fmeasure	0,7254237288135593	
+neutralRecall	0,7982456140350878	
+neutralPrecision	0,8198198198198198	
+neutral fmeasure	0,8088888888888889	
+negativeRecall	0,6293103448275862	
+negativePrecision	0,6886792452830188	
+negative fmeasure	0,6576576576576576	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7600671140939598	
+average accuracy	0,84	
 error rate	0,59	
-cpu-time (for complete test-set)	34,717736	
+cpu-time (for complete test-set)	193,802422	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 35
 recall	0,78	
 macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
+macro-avg. Pos/Neg recall	0,73	
 precision	0,78	
-macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,69	
-positiveRecall	0,7045454545454546	
-positivePrecision	0,75	
-positive fmeasure	0,7265625	
-neutralRecall	0,8303571428571429	
-neutralPrecision	0,8584615384615385	
-neutral fmeasure	0,8441754916792739	
-negativeRecall	0,7378640776699029	
-negativePrecision	0,6229508196721312	
-negative fmeasure	0,6755555555555557	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,7761194029850746	
+positivePrecision	0,7222222222222222	
+positive fmeasure	0,7482014388489208	
+neutralRecall	0,819620253164557	
+neutralPrecision	0,8119122257053292	
+neutral fmeasure	0,815748031496063	
+negativeRecall	0,6805555555555556	
+negativePrecision	0,7480916030534351	
+negative fmeasure	0,7127272727272729	
 micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7845884413309983	
-average accuracy	0,86	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7760942760942761	
+average accuracy	0,85	
 error rate	0,61	
-cpu-time (for complete test-set)	37,17902	
+cpu-time (for complete test-set)	208,367245	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 36
-recall	0,78	
+recall	0,76	
 macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,6776315789473685	
-positivePrecision	0,7803030303030303	
-positive fmeasure	0,7253521126760564	
-neutralRecall	0,8535031847133758	
-neutralPrecision	0,8170731707317073	
-neutral fmeasure	0,8348909657320872	
-negativeRecall	0,719626168224299	
-negativePrecision	0,6814159292035398	
-negative fmeasure	0,7	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,76	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7482517482517482	
+positivePrecision	0,6948051948051948	
+positive fmeasure	0,7205387205387205	
+neutralRecall	0,8	
+neutralPrecision	0,8048780487804879	
+neutral fmeasure	0,8024316109422494	
+negativeRecall	0,6904761904761905	
+negativePrecision	0,7435897435897436	
+negative fmeasure	0,7160493827160495	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,72	
 macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7818499127399651	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	36,376005	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7646076794657763	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	209,108165	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 37
-recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,6814814814814815	
-positivePrecision	0,7131782945736435	
-positive fmeasure	0,696969696969697	
-neutralRecall	0,8466453674121406	
-neutralPrecision	0,8103975535168195	
-neutral fmeasure	0,828125	
-negativeRecall	0,6956521739130435	
-negativePrecision	0,7476635514018691	
-negative fmeasure	0,7207207207207206	
-micro f-Measure	0,78	
+recall	0,77	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7534246575342466	
+positivePrecision	0,650887573964497	
+positive fmeasure	0,6984126984126984	
+neutralRecall	0,7896341463414634	
+neutralPrecision	0,8381877022653722	
+neutral fmeasure	0,8131868131868132	
+negativeRecall	0,7235772357723578	
+negativePrecision	0,7478991596638656	
+negative fmeasure	0,7355371900826446	
+micro f-Measure	0,77	
 micro pos/neg f-Measure	0,71	
 macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7761989342806395	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	37,517577	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7671691792294807	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	204,086734	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 38
-recall	0,81	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,81	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7966101694915254	
-positivePrecision	0,7121212121212122	
-positive fmeasure	0,7520000000000001	
-neutralRecall	0,843558282208589	
-neutralPrecision	0,8540372670807453	
-neutral fmeasure	0,8487654320987655	
-negativeRecall	0,717741935483871	
-negativePrecision	0,7807017543859649	
-negative fmeasure	0,7478991596638656	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8063380281690141	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	36,395399	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 39
-recall	0,79	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7054263565891473	
-positivePrecision	0,7222222222222222	
-positive fmeasure	0,7137254901960784	
-neutralRecall	0,8505747126436781	
-neutralPrecision	0,8433048433048433	
-neutral fmeasure	0,8469241773962803	
-negativeRecall	0,7083333333333334	
-negativePrecision	0,7083333333333334	
-negative fmeasure	0,7083333333333334	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,794066317626527	
-average accuracy	0,86	
-error rate	0,59	
-cpu-time (for complete test-set)	37,373521	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 40
-recall	0,79	
+recall	0,78	
 macro-avg. recall	0,76	
 macro-avg. Pos/Neg recall	0,73	
-precision	0,79	
+precision	0,78	
 macro-avg. precision	0,76	
 macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,75	
-positivePrecision	0,6976744186046512	
-positive fmeasure	0,7228915662650603	
-neutralRecall	0,8354037267080745	
-neutralPrecision	0,840625	
-neutral fmeasure	0,838006230529595	
-negativeRecall	0,703125	
-negativePrecision	0,743801652892562	
-negative fmeasure	0,7228915662650603	
-micro f-Measure	0,79	
+positiveRecall	0,8055555555555556	
+positivePrecision	0,6783625730994152	
+positive fmeasure	0,7365079365079366	
+neutralRecall	0,8106508875739645	
+neutralPrecision	0,8379204892966361	
+neutral fmeasure	0,8240601503759399	
+negativeRecall	0,6578947368421053	
+negativePrecision	0,7653061224489796	
+negative fmeasure	0,7075471698113208	
+micro f-Measure	0,78	
 micro pos/neg f-Measure	0,72	
 macro f-Measure	0,76	
 macro pos/neg f-Measure	0,72	
 other pos/neg f-Measure	0,72	
-accuracy	0,787719298245614	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	35,943415	
+accuracy	0,7802013422818792	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	203,299599	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 39
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,77	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,78125	
+positivePrecision	0,6535947712418301	
+positive fmeasure	0,7117437722419929	
+neutralRecall	0,8235294117647058	
+neutralPrecision	0,8184615384615385	
+neutral fmeasure	0,8209876543209877	
+negativeRecall	0,6597222222222222	
+negativePrecision	0,811965811965812	
+negative fmeasure	0,7279693486590039	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7747899159663866	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	195,004348	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 40
+recall	0,8	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,8	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7768595041322314	
+positivePrecision	0,6861313868613139	
+positive fmeasure	0,7286821705426357	
+neutralRecall	0,8379120879120879	
+neutralPrecision	0,8591549295774648	
+neutral fmeasure	0,8484005563282336	
+negativeRecall	0,7079646017699115	
+negativePrecision	0,7547169811320755	
+negative fmeasure	0,730593607305936	
+micro f-Measure	0,8	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,8010033444816054	
+average accuracy	0,87	
+error rate	0,6	
+cpu-time (for complete test-set)	217,835857	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 41
 recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,73	
 precision	0,78	
 macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7045454545454546	
-positivePrecision	0,7209302325581395	
-positive fmeasure	0,7126436781609196	
-neutralRecall	0,851063829787234	
-neutralPrecision	0,8259587020648967	
-neutral fmeasure	0,8383233532934131	
-negativeRecall	0,6666666666666666	
-negativePrecision	0,7128712871287128	
-negative fmeasure	0,6889952153110047	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8253968253968254	
+positivePrecision	0,6624203821656051	
+positive fmeasure	0,7349823321554769	
+neutralRecall	0,8144927536231884	
+neutralPrecision	0,8413173652694611	
+neutral fmeasure	0,8276877761413844	
+negativeRecall	0,626984126984127	
+negativePrecision	0,7452830188679245	
+negative fmeasure	0,6810344827586207	
 micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
+micro pos/neg f-Measure	0,71	
 macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7820738137082601	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7772194304857621	
 average accuracy	0,85	
 error rate	0,6	
-cpu-time (for complete test-set)	37,394804	
+cpu-time (for complete test-set)	214,095817	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 42
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,79	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,7611940298507462	
-positivePrecision	0,7391304347826086	
-positive fmeasure	0,75	
-neutralRecall	0,8170731707317073	
-neutralPrecision	0,8535031847133758	
-neutral fmeasure	0,8348909657320872	
-negativeRecall	0,7280701754385965	
-negativePrecision	0,6693548387096774	
-negative fmeasure	0,6974789915966387	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7864583333333334	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	39,811219	
+recall	0,77	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,75	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,7886178861788617	
+positivePrecision	0,6339869281045751	
+positive fmeasure	0,7028985507246377	
+neutralRecall	0,782991202346041	
+neutralPrecision	0,8557692307692307	
+neutral fmeasure	0,8177641653905054	
+negativeRecall	0,7099236641221374	
+negativePrecision	0,7153846153846154	
+negative fmeasure	0,7126436781609196	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7680672268907563	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	228,930484	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 43
-recall	0,82	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,82	
-macro-avg. precision	0,8	
-macro-avg. Pos/Neg precision	0,78	
-positiveRecall	0,7698412698412699	
-positivePrecision	0,782258064516129	
-positive fmeasure	0,7760000000000001	
-neutralRecall	0,8646153846153846	
-neutralPrecision	0,8489425981873112	
-neutral fmeasure	0,8567073170731707	
-negativeRecall	0,75	
-negativePrecision	0,7758620689655172	
-negative fmeasure	0,7627118644067795	
-micro f-Measure	0,82	
-micro pos/neg f-Measure	0,77	
-macro f-Measure	0,8	
-macro pos/neg f-Measure	0,77	
-other pos/neg f-Measure	0,77	
-accuracy	0,819614711033275	
-average accuracy	0,88	
-error rate	0,61	
-cpu-time (for complete test-set)	39,176177	
+recall	0,79	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7661290322580645	
+positivePrecision	0,6785714285714286	
+positive fmeasure	0,7196969696969697	
+neutralRecall	0,8205882352941176	
+neutralPrecision	0,8378378378378378	
+neutral fmeasure	0,8291233283803863	
+negativeRecall	0,7230769230769231	
+negativePrecision	0,7768595041322314	
+negative fmeasure	0,7490039840637449	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7878787878787878	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	213,495176	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 44
 recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7923076923076923	
-positivePrecision	0,7463768115942029	
-positive fmeasure	0,7686567164179103	
-neutralRecall	0,827922077922078	
-neutralPrecision	0,819935691318328	
-neutral fmeasure	0,8239095315024233	
-negativeRecall	0,6589147286821705	
-negativePrecision	0,7203389830508474	
-negative fmeasure	0,6882591093117408	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,7762237762237763	
+positivePrecision	0,6894409937888198	
+positive fmeasure	0,7302631578947367	
+neutralRecall	0,8090909090909091	
+neutralPrecision	0,826625386996904	
+neutral fmeasure	0,8177641653905053	
+negativeRecall	0,717741935483871	
+negativePrecision	0,7876106194690266	
+negative fmeasure	0,7510548523206751	
 micro f-Measure	0,78	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,781305114638448	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7822445561139029	
 average accuracy	0,85	
-error rate	0,61	
-cpu-time (for complete test-set)	40,822685	
+error rate	0,59	
+cpu-time (for complete test-set)	198,410176	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 45
-recall	0,82	
-macro-avg. recall	0,8	
-macro-avg. Pos/Neg recall	0,77	
-precision	0,82	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7755102040816326	
-positivePrecision	0,7808219178082192	
-positive fmeasure	0,7781569965870306	
-neutralRecall	0,8501529051987767	
-neutralPrecision	0,8714733542319749	
-neutral fmeasure	0,8606811145510835	
-negativeRecall	0,7714285714285715	
-negativePrecision	0,7105263157894737	
-negative fmeasure	0,7397260273972601	
-micro f-Measure	0,82	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,76	
-accuracy	0,8169257340241797	
-average accuracy	0,88	
-error rate	0,61	
-cpu-time (for complete test-set)	41,267618	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 46
-recall	0,81	
-macro-avg. recall	0,8	
-macro-avg. Pos/Neg recall	0,79	
-precision	0,81	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,8373983739837398	
-positivePrecision	0,7357142857142858	
-positive fmeasure	0,7832699619771863	
-neutralRecall	0,8138138138138138	
-neutralPrecision	0,8770226537216829	
-neutral fmeasure	0,8442367601246106	
-negativeRecall	0,7478991596638656	
-negativePrecision	0,7063492063492064	
-negative fmeasure	0,7265306122448979	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8052173913043478	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	41,954601	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 47
-recall	0,8	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,8	
-macro-avg. precision	0,8	
-macro-avg. Pos/Neg precision	0,79	
-positiveRecall	0,7846153846153846	
-positivePrecision	0,7132867132867133	
-positive fmeasure	0,7472527472527474	
-neutralRecall	0,861198738170347	
-neutralPrecision	0,8272727272727273	
-neutral fmeasure	0,8438948995363215	
-negativeRecall	0,675	
-negativePrecision	0,8617021276595744	
-negative fmeasure	0,7570093457943925	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,75	
-accuracy	0,8042328042328042	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	38,926702	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 48
 recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,72	
+macro-avg. recall	0,79	
+macro-avg. Pos/Neg recall	0,78	
 precision	0,79	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,7114093959731543	
-positivePrecision	0,75177304964539	
-positive fmeasure	0,7310344827586207	
-neutralRecall	0,8506493506493507	
-neutralPrecision	0,81875	
-neutral fmeasure	0,8343949044585987	
-negativeRecall	0,7350427350427351	
-negativePrecision	0,7610619469026548	
-negative fmeasure	0,7478260869565218	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8492063492063492	
+positivePrecision	0,6903225806451613	
+positive fmeasure	0,7615658362989324	
+neutralRecall	0,7982708933717579	
+neutralPrecision	0,8738170347003155	
+neutral fmeasure	0,8343373493975904	
+negativeRecall	0,71900826446281	
+negativePrecision	0,7131147540983607	
+negative fmeasure	0,7160493827160493	
 micro f-Measure	0,79	
 micro pos/neg f-Measure	0,74	
 macro f-Measure	0,77	
 macro pos/neg f-Measure	0,74	
 other pos/neg f-Measure	0,74	
-accuracy	0,7909407665505227	
+accuracy	0,7929292929292929	
 average accuracy	0,86	
+error rate	0,61	
+cpu-time (for complete test-set)	216,169782	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 46
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7851851851851852	
+positivePrecision	0,6666666666666666	
+positive fmeasure	0,7210884353741498	
+neutralRecall	0,7987804878048781	
+neutralPrecision	0,8291139240506329	
+neutral fmeasure	0,8136645962732919	
+negativeRecall	0,6791044776119403	
+negativePrecision	0,7459016393442623	
+negative fmeasure	0,7109374999999999	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7688442211055276	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	195,706716	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 47
+recall	0,77	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,76	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,8076923076923077	
+positivePrecision	0,6402439024390244	
+positive fmeasure	0,7142857142857143	
+neutralRecall	0,7819767441860465	
+neutralPrecision	0,8539682539682539	
+neutral fmeasure	0,8163884673748102	
+negativeRecall	0,7096774193548387	
+negativePrecision	0,7394957983193278	
+negative fmeasure	0,7242798353909465	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7725752508361204	
+average accuracy	0,85	
 error rate	0,59	
-cpu-time (for complete test-set)	36,18669	
+cpu-time (for complete test-set)	199,126363	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 48
+recall	0,78	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,69	
+precision	0,78	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,7637795275590551	
+positivePrecision	0,6830985915492958	
+positive fmeasure	0,7211895910780669	
+neutralRecall	0,827683615819209	
+neutralPrecision	0,839541547277937	
+neutral fmeasure	0,8335704125177809	
+negativeRecall	0,6260869565217392	
+negativePrecision	0,6857142857142857	
+negative fmeasure	0,6545454545454545	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,68	
+other pos/neg f-Measure	0,69	
+accuracy	0,7751677852348994	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	211,797045	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 49
-recall	0,77	
-macro-avg. recall	0,73	
-macro-avg. Pos/Neg recall	0,68	
-precision	0,77	
-macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,69	
-positiveRecall	0,6507936507936508	
-positivePrecision	0,6666666666666666	
-positive fmeasure	0,6586345381526104	
-neutralRecall	0,8328173374613003	
-neutralPrecision	0,8276923076923077	
-neutral fmeasure	0,8302469135802469	
-negativeRecall	0,71900826446281	
-negativePrecision	0,7131147540983607	
-negative fmeasure	0,7160493827160493	
-micro f-Measure	0,77	
-micro pos/neg f-Measure	0,69	
-macro f-Measure	0,73	
-macro pos/neg f-Measure	0,68	
-other pos/neg f-Measure	0,69	
-accuracy	0,7684210526315789	
-average accuracy	0,85	
+recall	0,79	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,76	
+precision	0,79	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8028169014084507	
+positivePrecision	0,6826347305389222	
+positive fmeasure	0,7378640776699029	
+neutralRecall	0,797752808988764	
+neutralPrecision	0,8632218844984803	
+neutral fmeasure	0,8291970802919708	
+negativeRecall	0,7244897959183674	
+negativePrecision	0,71	
+negative fmeasure	0,7171717171717172	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7869127516778524	
+average accuracy	0,86	
 error rate	0,59	
-cpu-time (for complete test-set)	35,473154	
+cpu-time (for complete test-set)	192,136019	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 50
-recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7615384615384615	
-positivePrecision	0,6923076923076923	
-positive fmeasure	0,7252747252747254	
-neutralRecall	0,8410596026490066	
-neutralPrecision	0,8220064724919094	
-neutral fmeasure	0,8314238952536825	
-negativeRecall	0,6616541353383458	
-negativePrecision	0,7787610619469026	
-negative fmeasure	0,7154471544715447	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7805309734513274	
-average accuracy	0,85	
+recall	0,77	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7379310344827587	
+positivePrecision	0,722972972972973	
+positive fmeasure	0,7303754266211604	
+neutralRecall	0,8195718654434251	
+neutralPrecision	0,8145896656534954	
+neutral fmeasure	0,8170731707317074	
+negativeRecall	0,664	
+negativePrecision	0,6916666666666667	
+negative fmeasure	0,6775510204081633	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7671691792294807	
+average accuracy	0,84	
 error rate	0,6	
-cpu-time (for complete test-set)	39,586051	
+cpu-time (for complete test-set)	193,566791	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 51
 recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,71	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,76	
 precision	0,79	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,78	
-positiveRecall	0,7481481481481481	
-positivePrecision	0,7593984962406015	
-positive fmeasure	0,753731343283582	
-neutralRecall	0,864516129032258	
-neutralPrecision	0,8096676737160121	
-neutral fmeasure	0,8361934477379095	
-negativeRecall	0,6744186046511628	
-negativePrecision	0,7909090909090909	
-negative fmeasure	0,7280334728033473	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,8148148148148148	
+positivePrecision	0,6962025316455697	
+positive fmeasure	0,7508532423208192	
+neutralRecall	0,8083832335329342	
+neutralPrecision	0,84375	
+neutral fmeasure	0,8256880733944955	
+negativeRecall	0,696	
+negativePrecision	0,75	
+negative fmeasure	0,7219917012448134	
 micro f-Measure	0,79	
 micro pos/neg f-Measure	0,74	
 macro f-Measure	0,77	
 macro pos/neg f-Measure	0,74	
 other pos/neg f-Measure	0,74	
-accuracy	0,794425087108014	
+accuracy	0,7861952861952862	
 average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	43,456982	
+error rate	0,6	
+cpu-time (for complete test-set)	215,698714	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 52
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7142857142857143	
-positivePrecision	0,7142857142857143	
-positive fmeasure	0,7142857142857143	
-neutralRecall	0,8263473053892215	
-neutralPrecision	0,8518518518518519	
-neutral fmeasure	0,8389057750759878	
-negativeRecall	0,7669902912621359	
-negativePrecision	0,6991150442477876	
-negative fmeasure	0,7314814814814814	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7894736842105263	
-average accuracy	0,86	
+recall	0,76	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,67	
+precision	0,76	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7171052631578947	
+positivePrecision	0,7218543046357616	
+positive fmeasure	0,7194719471947196	
+neutralRecall	0,8333333333333334	
+neutralPrecision	0,7848837209302325	
+neutral fmeasure	0,8083832335329341	
+negativeRecall	0,6311475409836066	
+negativePrecision	0,7475728155339806	
+negative fmeasure	0,6844444444444444	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7625418060200669	
+average accuracy	0,84	
 error rate	0,59	
-cpu-time (for complete test-set)	34,196431	
+cpu-time (for complete test-set)	204,479807	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 53
-recall	0,79	
-macro-avg. recall	0,76	
+recall	0,77	
+macro-avg. recall	0,74	
 macro-avg. Pos/Neg recall	0,71	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7054263565891473	
-positivePrecision	0,7165354330708661	
-positive fmeasure	0,7109375	
-neutralRecall	0,8544891640866873	
-neutralPrecision	0,8414634146341463	
-neutral fmeasure	0,847926267281106	
-negativeRecall	0,7241379310344828	
-negativePrecision	0,7433628318584071	
-negative fmeasure	0,7336244541484715	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7940140845070423	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	34,798432	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7647058823529411	
+positivePrecision	0,6882352941176471	
+positive fmeasure	0,7244582043343653	
+neutralRecall	0,803680981595092	
+neutralPrecision	0,8213166144200627	
+neutral fmeasure	0,8124031007751938	
+negativeRecall	0,6637931034482759	
+negativePrecision	0,7264150943396226	
+negative fmeasure	0,6936936936936937	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7663865546218488	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	204,139288	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 54
 recall	0,77	
-macro-avg. recall	0,73	
-macro-avg. Pos/Neg recall	0,66	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
 precision	0,77	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,6717557251908397	
-positivePrecision	0,7521367521367521	
-positive fmeasure	0,7096774193548386	
-neutralRecall	0,8607594936708861	
-neutralPrecision	0,8071216617210683	
-neutral fmeasure	0,8330781010719756	
-negativeRecall	0,6581196581196581	
-negativePrecision	0,7	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7655172413793103	
+positivePrecision	0,69375	
+positive fmeasure	0,7278688524590162	
+neutralRecall	0,8095238095238095	
+neutralPrecision	0,8242424242424242	
+neutral fmeasure	0,8168168168168167	
+negativeRecall	0,652542372881356	
+negativePrecision	0,7064220183486238	
 negative fmeasure	0,6784140969162995	
 micro f-Measure	0,77	
-micro pos/neg f-Measure	0,69	
+micro pos/neg f-Measure	0,71	
 macro f-Measure	0,74	
-macro pos/neg f-Measure	0,69	
-other pos/neg f-Measure	0,69	
-accuracy	0,774822695035461	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7679465776293823	
 average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	41,284383	
+error rate	0,59	
+cpu-time (for complete test-set)	202,965607	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 55
-recall	0,78	
+recall	0,77	
 macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,78	
-macro-avg. precision	0,73	
-macro-avg. Pos/Neg precision	0,66	
-positiveRecall	0,775	
-positivePrecision	0,6549295774647887	
-positive fmeasure	0,7099236641221375	
-neutralRecall	0,8033707865168539	
-neutralPrecision	0,8666666666666667	
-neutral fmeasure	0,8338192419825071	
-negativeRecall	0,6914893617021277	
-negativePrecision	0,6632653061224489	
-negative fmeasure	0,6770833333333333	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,74	
-macro pos/neg f-Measure	0,69	
-other pos/neg f-Measure	0,69	
-accuracy	0,7789473684210526	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7461538461538462	
+positivePrecision	0,6466666666666666	
+positive fmeasure	0,6928571428571428	
+neutralRecall	0,7940298507462686	
+neutralPrecision	0,8338557993730408	
+neutral fmeasure	0,8134556574923547	
+negativeRecall	0,7272727272727273	
+negativePrecision	0,75	
+negative fmeasure	0,7384615384615384	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7688442211055276	
 average accuracy	0,85	
 error rate	0,59	
-cpu-time (for complete test-set)	40,980076	
+cpu-time (for complete test-set)	212,096395	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 56
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7950819672131147	
-positivePrecision	0,6643835616438356	
-positive fmeasure	0,7238805970149252	
-neutralRecall	0,8363636363636363	
-neutralPrecision	0,8518518518518519	
-neutral fmeasure	0,8440366972477065	
-negativeRecall	0,6639344262295082	
-negativePrecision	0,7788461538461539	
-negative fmeasure	0,7168141592920353	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7909407665505227	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	36,524713	
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8068965517241379	
+positivePrecision	0,6842105263157895	
+positive fmeasure	0,7405063291139241	
+neutralRecall	0,8006042296072508	
+neutralPrecision	0,8307210031347962	
+neutral fmeasure	0,8153846153846155	
+negativeRecall	0,6386554621848739	
+negativePrecision	0,7238095238095238	
+negative fmeasure	0,6785714285714285	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7697478991596639	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	202,186671	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 57
-recall	0,76	
-macro-avg. recall	0,72	
-macro-avg. Pos/Neg recall	0,64	
-precision	0,76	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,6357615894039735	
-positivePrecision	0,732824427480916	
-positive fmeasure	0,6808510638297872	
-neutralRecall	0,8762886597938144	
-neutralPrecision	0,770392749244713	
-neutral fmeasure	0,8199356913183279	
-negativeRecall	0,6456692913385826	
-negativePrecision	0,7663551401869159	
-negative fmeasure	0,7008547008547008	
-micro f-Measure	0,76	
-micro pos/neg f-Measure	0,69	
-macro f-Measure	0,73	
-macro pos/neg f-Measure	0,69	
-other pos/neg f-Measure	0,69	
-accuracy	0,7609841827768014	
-average accuracy	0,84	
+recall	0,77	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7443609022556391	
+positivePrecision	0,6556291390728477	
+positive fmeasure	0,6971830985915494	
+neutralRecall	0,7928994082840237	
+neutralPrecision	0,8454258675078864	
+neutral fmeasure	0,8183206106870229	
+negativeRecall	0,744	
+negativePrecision	0,7265625	
+negative fmeasure	0,7351778656126482	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,72	
+accuracy	0,7718120805369127	
+average accuracy	0,85	
 error rate	0,59	
-cpu-time (for complete test-set)	36,8706	
+cpu-time (for complete test-set)	196,546027	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 58
-recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,79	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,751937984496124	
-positivePrecision	0,7637795275590551	
-positive fmeasure	0,7578125	
-neutralRecall	0,8690095846645367	
-neutralPrecision	0,8095238095238095	
-neutral fmeasure	0,8382126348228043	
-negativeRecall	0,6564885496183206	
-negativePrecision	0,7818181818181819	
-negative fmeasure	0,7136929460580913	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,74	
-accuracy	0,794066317626527	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	37,757453	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7388059701492538	
+positivePrecision	0,6644295302013423	
+positive fmeasure	0,6996466431095406	
+neutralRecall	0,8073394495412844	
+neutralPrecision	0,8148148148148148	
+neutral fmeasure	0,8110599078341013	
+negativeRecall	0,6791044776119403	
+negativePrecision	0,7459016393442623	
+negative fmeasure	0,7109374999999999	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7630252100840336	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	198,050031	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 59
-recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7424242424242424	
-positivePrecision	0,7313432835820896	
-positive fmeasure	0,736842105263158	
-neutralRecall	0,8364779874213837	
-neutralPrecision	0,8085106382978723	
-neutral fmeasure	0,8222565687789799	
-negativeRecall	0,6611570247933884	
-negativePrecision	0,7407407407407407	
-negative fmeasure	0,6986899563318777	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7775831873905429	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	35,880776	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 60
-recall	0,81	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,81	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7	
-positivePrecision	0,7711864406779662	
-positive fmeasure	0,7338709677419355	
-neutralRecall	0,8466257668711656	
-neutralPrecision	0,8492307692307692	
-neutral fmeasure	0,847926267281106	
-negativeRecall	0,8165137614678899	
-negativePrecision	0,7295081967213115	
-negative fmeasure	0,7705627705627706	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8070796460176991	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	37,319086	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 61
-recall	0,75	
-macro-avg. recall	0,73	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,75	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
 macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,6592592592592592	
-positivePrecision	0,6793893129770993	
-positive fmeasure	0,6691729323308272	
-neutralRecall	0,7980132450331126	
-neutralPrecision	0,7901639344262295	
-neutral fmeasure	0,7940691927512354	
-negativeRecall	0,7424242424242424	
-negativePrecision	0,7368421052631579	
-negative fmeasure	0,739622641509434	
-micro f-Measure	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,78125	
+positivePrecision	0,625	
+positive fmeasure	0,6944444444444444	
+neutralRecall	0,8018018018018018	
+neutralPrecision	0,8190184049079755	
+neutral fmeasure	0,8103186646433991	
+negativeRecall	0,6323529411764706	
+negativePrecision	0,7747747747747747	
+negative fmeasure	0,6963562753036436	
+micro f-Measure	0,76	
 micro pos/neg f-Measure	0,7	
 macro f-Measure	0,73	
 macro pos/neg f-Measure	0,7	
 other pos/neg f-Measure	0,7	
-accuracy	0,7521968365553603	
-average accuracy	0,83	
-error rate	0,58	
-cpu-time (for complete test-set)	37,788	
+accuracy	0,7587939698492462	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	204,343817	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 60
+recall	0,79	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,79	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,75	
+positiveRecall	0,7801418439716312	
+positivePrecision	0,7482993197278912	
+positive fmeasure	0,763888888888889	
+neutralRecall	0,8338461538461538	
+neutralPrecision	0,8287461773700305	
+neutral fmeasure	0,8312883435582822	
+negativeRecall	0,7045454545454546	
+negativePrecision	0,75	
+negative fmeasure	0,7265625	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,75	
+accuracy	0,7926421404682275	
+average accuracy	0,86	
+error rate	0,61	
+cpu-time (for complete test-set)	213,344618	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 61
+recall	0,79	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,78	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,8013698630136986	
+positivePrecision	0,7267080745341615	
+positive fmeasure	0,762214983713355	
+neutralRecall	0,7852760736196319	
+neutralPrecision	0,8504983388704319	
+neutral fmeasure	0,8165869218500796	
+negativeRecall	0,768	
+negativePrecision	0,7111111111111111	
+negative fmeasure	0,7384615384615385	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,75	
+accuracy	0,7855946398659966	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	221,886989	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 62
-recall	0,78	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7669172932330827	
-positivePrecision	0,7555555555555555	
-positive fmeasure	0,7611940298507462	
-neutralRecall	0,8262295081967214	
-neutralPrecision	0,8289473684210527	
-neutral fmeasure	0,8275862068965518	
-negativeRecall	0,7054263565891473	
-negativePrecision	0,7109375	
-negative fmeasure	0,708171206225681	
-micro f-Measure	0,78	
+recall	0,79	
+macro-avg. recall	0,79	
+macro-avg. Pos/Neg recall	0,78	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8125	
+positivePrecision	0,6842105263157895	
+positive fmeasure	0,742857142857143	
+neutralRecall	0,7958579881656804	
+neutralPrecision	0,8762214983713354	
+neutral fmeasure	0,834108527131783	
+negativeRecall	0,751937984496124	
+negativePrecision	0,7132352941176471	
+negative fmeasure	0,732075471698113	
+micro f-Measure	0,79	
 micro pos/neg f-Measure	0,74	
 macro f-Measure	0,77	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7848324514991182	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7899159663865546	
 average accuracy	0,86	
 error rate	0,61	
-cpu-time (for complete test-set)	40,664479	
+cpu-time (for complete test-set)	206,153495	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 63
-recall	0,81	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,81	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,7364341085271318	
-positivePrecision	0,7364341085271318	
-positive fmeasure	0,7364341085271318	
-neutralRecall	0,8703703703703703	
-neutralPrecision	0,834319526627219	
-neutral fmeasure	0,851963746223565	
-negativeRecall	0,7058823529411765	
-negativePrecision	0,8	
-negative fmeasure	0,7500000000000001	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,74	
-accuracy	0,8059440559440559	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	37,127356	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7682119205298014	
+positivePrecision	0,6946107784431138	
+positive fmeasure	0,729559748427673	
+neutralRecall	0,7940298507462686	
+neutralPrecision	0,8260869565217391	
+neutral fmeasure	0,8097412480974124	
+negativeRecall	0,6576576576576577	
+negativePrecision	0,6759259259259259	
+negative fmeasure	0,6666666666666667	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7621440536013401	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	212,043997	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 64
 recall	0,79	
 macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,72	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,79	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,78	
-positiveRecall	0,7248322147651006	
-positivePrecision	0,7769784172661871	
-positive fmeasure	0,75	
-neutralRecall	0,8637873754152824	
-neutralPrecision	0,8099688473520249	
-neutral fmeasure	0,8360128617363344	
-negativeRecall	0,712	
-negativePrecision	0,7739130434782608	
-negative fmeasure	0,7416666666666666	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7887323943661971	
+positivePrecision	0,7044025157232704	
+positive fmeasure	0,7441860465116279	
+neutralRecall	0,8228228228228228	
+neutralPrecision	0,845679012345679	
+neutral fmeasure	0,8340943683409436	
+negativeRecall	0,7083333333333334	
+negativePrecision	0,7589285714285714	
+negative fmeasure	0,7327586206896552	
 micro f-Measure	0,79	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,7947826086956522	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7915966386554621	
 average accuracy	0,86	
 error rate	0,6	
-cpu-time (for complete test-set)	33,246061	
+cpu-time (for complete test-set)	191,8396	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 65
-recall	0,8	
-macro-avg. recall	0,78	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,8	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,6971830985915493	
-positivePrecision	0,7983870967741935	
-positive fmeasure	0,7443609022556391	
-neutralRecall	0,8643533123028391	
-neutralPrecision	0,8328267477203647	
-neutral fmeasure	0,848297213622291	
-negativeRecall	0,7739130434782608	
-negativePrecision	0,7355371900826446	
-negative fmeasure	0,7542372881355932	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8048780487804879	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	35,603313	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,76	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,704225352112676	
+positivePrecision	0,704225352112676	
+positive fmeasure	0,704225352112676	
+neutralRecall	0,8258064516129032	
+neutralPrecision	0,7925696594427245	
+neutral fmeasure	0,8088467614533964	
+negativeRecall	0,6901408450704225	
+negativePrecision	0,7596899224806202	
+negative fmeasure	0,7232472324723247	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7643097643097643	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	200,361069	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 66
-recall	0,78	
-macro-avg. recall	0,75	
+recall	0,76	
+macro-avg. recall	0,74	
 macro-avg. Pos/Neg recall	0,71	
-precision	0,78	
+precision	0,76	
 macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,69	
-positiveRecall	0,7368421052631579	
-positivePrecision	0,7101449275362319	
-positive fmeasure	0,7232472324723246	
-neutralRecall	0,8368580060422961	
-neutralPrecision	0,8575851393188855	
-neutral fmeasure	0,8470948012232417	
-negativeRecall	0,6846846846846847	
-negativePrecision	0,6666666666666666	
-negative fmeasure	0,6755555555555556	
-micro f-Measure	0,78	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,7698412698412699	
+positivePrecision	0,610062893081761	
+positive fmeasure	0,6807017543859649	
+neutralRecall	0,8017751479289941	
+neutralPrecision	0,8237082066869301	
+neutral fmeasure	0,8125937031484257	
+negativeRecall	0,6511627906976745	
+negativePrecision	0,8	
+negative fmeasure	0,7179487179487181	
+micro f-Measure	0,76	
 micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
 other pos/neg f-Measure	0,7	
-accuracy	0,7843478260869565	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	38,569833	
+accuracy	0,7622259696458684	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	201,282786	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 67
-recall	0,8	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,8	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,75	
-positiveRecall	0,7285714285714285	
-positivePrecision	0,7611940298507462	
-positive fmeasure	0,7445255474452556	
-neutralRecall	0,8402555910543131	
-neutralPrecision	0,8456591639871383	
-neutral fmeasure	0,842948717948718	
-negativeRecall	0,7876106194690266	
-negativePrecision	0,7355371900826446	
-negative fmeasure	0,7606837606837605	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8021201413427562	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	34,671827	
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7304964539007093	
+positivePrecision	0,6518987341772152	
+positive fmeasure	0,6889632107023411	
+neutralRecall	0,793939393939394	
+neutralPrecision	0,81875	
+neutral fmeasure	0,8061538461538461	
+negativeRecall	0,704	
+negativePrecision	0,7457627118644068	
+negative fmeasure	0,7242798353909465	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7600671140939598	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	196,104319	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 68
-recall	0,8	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,78	
-precision	0,8	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,8211382113821138	
-positivePrecision	0,7013888888888888	
-positive fmeasure	0,7565543071161047	
-neutralRecall	0,8082595870206489	
-neutralPrecision	0,8753993610223643	
-neutral fmeasure	0,8404907975460122	
-negativeRecall	0,7456140350877193	
-negativePrecision	0,7142857142857143	
-negative fmeasure	0,7296137339055795	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,74	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,74	
-accuracy	0,7986111111111112	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	37,419594	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 69
-recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,67	
-precision	0,78	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,697841726618705	
-positivePrecision	0,697841726618705	
-positive fmeasure	0,697841726618705	
-neutralRecall	0,8629283489096573	
-neutralPrecision	0,8123167155425219	
-neutral fmeasure	0,8368580060422961	
-negativeRecall	0,6491228070175439	
-negativePrecision	0,7872340425531915	
-negative fmeasure	0,7115384615384615	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7804878048780488	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	34,065366	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 70
-recall	0,81	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,81	
-macro-avg. precision	0,81	
-macro-avg. Pos/Neg precision	0,8	
-positiveRecall	0,728	
-positivePrecision	0,7	
-positive fmeasure	0,7137254901960783	
-neutralRecall	0,8892405063291139	
-neutralPrecision	0,8289085545722714	
-neutral fmeasure	0,8580152671755725	
-negativeRecall	0,7	
-negativePrecision	0,8921568627450981	
-negative fmeasure	0,7844827586206896	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8108581436077058	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	35,403193	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 71
-recall	0,8	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,77	
-precision	0,8	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,7307692307692307	
-positivePrecision	0,753968253968254	
-positive fmeasure	0,7421874999999999	
-neutralRecall	0,8225806451612904	
-neutralPrecision	0,8252427184466019	
-neutral fmeasure	0,8239095315024233	
-negativeRecall	0,8062015503875969	
-negativePrecision	0,7761194029850746	
-negative fmeasure	0,7908745247148288	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,77	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,77	
-other pos/neg f-Measure	0,77	
-accuracy	0,7978910369068541	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	39,021034	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 72
-recall	0,78	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7165354330708661	
-positivePrecision	0,6791044776119403	
-positive fmeasure	0,6973180076628352	
-neutralRecall	0,8158730158730159	
-neutralPrecision	0,8344155844155844	
-neutral fmeasure	0,8250401284109148	
-negativeRecall	0,7559055118110236	
-negativePrecision	0,7559055118110236	
-negative fmeasure	0,7559055118110235	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7803163444639719	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	40,795818	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 73
-recall	0,84	
-macro-avg. recall	0,82	
-macro-avg. Pos/Neg recall	0,79	
-precision	0,84	
-macro-avg. precision	0,81	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,8333333333333334	
-positivePrecision	0,8029197080291971	
-positive fmeasure	0,8178438661710038	
-neutralRecall	0,8666666666666667	
-neutralPrecision	0,8881987577639752	
-neutral fmeasure	0,8773006134969324	
-negativeRecall	0,7477477477477478	
-negativePrecision	0,7280701754385965	
-negative fmeasure	0,7377777777777778	
-micro f-Measure	0,84	
-micro pos/neg f-Measure	0,78	
-macro f-Measure	0,81	
-macro pos/neg f-Measure	0,78	
-other pos/neg f-Measure	0,78	
-accuracy	0,8359511343804538	
-average accuracy	0,89	
-error rate	0,63	
-cpu-time (for complete test-set)	39,641355	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 74
-recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,78	
-macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,68	
-positiveRecall	0,7007874015748031	
-positivePrecision	0,6953125	
-positive fmeasure	0,6980392156862745	
-neutralRecall	0,8388059701492537	
-neutralPrecision	0,8515151515151516	
-neutral fmeasure	0,8451127819548874	
-negativeRecall	0,6929824561403509	
-negativePrecision	0,6694915254237288	
-negative fmeasure	0,6810344827586207	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,69	
-macro f-Measure	0,74	
-macro pos/neg f-Measure	0,69	
-other pos/neg f-Measure	0,69	
-accuracy	0,7795138888888888	
-average accuracy	0,85	
-error rate	0,61	
-cpu-time (for complete test-set)	41,663442	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 75
-recall	0,81	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,81	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,7692307692307693	
-positivePrecision	0,7692307692307693	
-positive fmeasure	0,7692307692307693	
-neutralRecall	0,846875	
-neutralPrecision	0,8442367601246106	
-neutral fmeasure	0,8455538221528862	
-negativeRecall	0,75	
-negativePrecision	0,7565217391304347	
-negative fmeasure	0,7532467532467532	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,76	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,76	
-other pos/neg f-Measure	0,76	
-accuracy	0,8091872791519434	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	34,69649	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 76
-recall	0,78	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,76	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,8034188034188035	
-positivePrecision	0,7175572519083969	
-positive fmeasure	0,7580645161290324	
-neutralRecall	0,8053892215568862	
-neutralPrecision	0,8512658227848101	
-neutral fmeasure	0,8276923076923077	
-negativeRecall	0,7083333333333334	
-negativePrecision	0,6854838709677419	
-negative fmeasure	0,6967213114754098	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7845884413309983	
-average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	34,977847	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 77
 recall	0,76	
-macro-avg. recall	0,73	
-macro-avg. Pos/Neg recall	0,67	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,72	
 precision	0,76	
-macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,65625	
-positivePrecision	0,717948717948718	
-positive fmeasure	0,6857142857142856	
-neutralRecall	0,8306709265175719	
-neutralPrecision	0,7926829268292683	
-neutral fmeasure	0,811232449297972	
-negativeRecall	0,6893939393939394	
-negativePrecision	0,7109375	
-negative fmeasure	0,7000000000000001	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,7611940298507462	
+positivePrecision	0,6181818181818182	
+positive fmeasure	0,6822742474916388	
+neutralRecall	0,7774566473988439	
+neutralPrecision	0,8354037267080745	
+neutral fmeasure	0,8053892215568863	
+negativeRecall	0,6810344827586207	
+negativePrecision	0,7247706422018348	
+negative fmeasure	0,7022222222222222	
 micro f-Measure	0,76	
 micro pos/neg f-Measure	0,69	
 macro f-Measure	0,73	
 macro pos/neg f-Measure	0,69	
 other pos/neg f-Measure	0,69	
-accuracy	0,7591623036649214	
+accuracy	0,7550335570469798	
 average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	201,835273	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 69
+recall	0,79	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,79	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,795774647887324	
+positivePrecision	0,710691823899371	
+positive fmeasure	0,7508305647840531	
+neutralRecall	0,8368580060422961	
+neutralPrecision	0,8293413173652695	
+neutral fmeasure	0,8330827067669173	
+negativeRecall	0,639344262295082	
+negativePrecision	0,7647058823529411	
+negative fmeasure	0,6964285714285714	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,72	
+accuracy	0,7865546218487395	
+average accuracy	0,86	
 error rate	0,6	
-cpu-time (for complete test-set)	39,743792	
+cpu-time (for complete test-set)	191,459238	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 70
+recall	0,75	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,75	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,7841726618705036	
+positivePrecision	0,689873417721519	
+positive fmeasure	0,734006734006734	
+neutralRecall	0,7737003058103975	
+neutralPrecision	0,8108974358974359	
+neutral fmeasure	0,7918622848200313	
+negativeRecall	0,6412213740458015	
+negativePrecision	0,6614173228346457	
+negative fmeasure	0,6511627906976745	
+micro f-Measure	0,75	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7470686767169179	
+average accuracy	0,83	
+error rate	0,6	
+cpu-time (for complete test-set)	209,512073	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 71
+recall	0,77	
+macro-avg. recall	0,72	
+macro-avg. Pos/Neg recall	0,68	
+precision	0,77	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7518796992481203	
+positivePrecision	0,6493506493506493	
+positive fmeasure	0,6968641114982578	
+neutralRecall	0,8207282913165266	
+neutralPrecision	0,8230337078651685	
+neutral fmeasure	0,8218793828892005	
+negativeRecall	0,5981308411214953	
+negativePrecision	0,735632183908046	
+negative fmeasure	0,6597938144329896	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,68	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,68	
+other pos/neg f-Measure	0,68	
+accuracy	0,7654941373534339	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	213,232906	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 72
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,8062015503875969	
+positivePrecision	0,6540880503144654	
+positive fmeasure	0,7222222222222221	
+neutralRecall	0,808695652173913	
+neutralPrecision	0,8303571428571429	
+neutral fmeasure	0,8193832599118942	
+negativeRecall	0,648	
+negativePrecision	0,7788461538461539	
+negative fmeasure	0,7074235807860262	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,71	
+accuracy	0,7746243739565943	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	206,871705	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 73
+recall	0,79	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,76	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8321678321678322	
+positivePrecision	0,7083333333333334	
+positive fmeasure	0,7652733118971061	
+neutralRecall	0,7982456140350878	
+neutralPrecision	0,8557993730407524	
+neutral fmeasure	0,8260211800302573	
+negativeRecall	0,6880733944954128	
+negativePrecision	0,7009345794392523	
+negative fmeasure	0,6944444444444443	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7861952861952862	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	201,99171	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 74
+recall	0,76	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,73	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7777777777777778	
+positivePrecision	0,6746987951807228	
+positive fmeasure	0,7225806451612904	
+neutralRecall	0,7767584097859327	
+neutralPrecision	0,8167202572347267	
+neutral fmeasure	0,7962382445141067	
+negativeRecall	0,6829268292682927	
+negativePrecision	0,717948717948718	
+negative fmeasure	0,7000000000000001	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7575757575757576	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	205,854781	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 75
+recall	0,77	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7631578947368421	
+positivePrecision	0,7116564417177914	
+positive fmeasure	0,7365079365079366	
+neutralRecall	0,8193146417445483	
+neutralPrecision	0,8117283950617284	
+neutral fmeasure	0,8155038759689923	
+negativeRecall	0,6507936507936508	
+negativePrecision	0,7321428571428571	
+negative fmeasure	0,6890756302521008	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7696160267111853	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	210,419183	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 76
+recall	0,79	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,79	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,75	
+positiveRecall	0,7867647058823529	
+positivePrecision	0,6772151898734177	
+positive fmeasure	0,7278911564625851	
+neutralRecall	0,844311377245509	
+neutralPrecision	0,8294117647058824	
+neutral fmeasure	0,8367952522255192	
+negativeRecall	0,6484375	
+negativePrecision	0,83	
+negative fmeasure	0,7280701754385964	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,76	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7892976588628763	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	199,290015	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 77
+recall	0,79	
+macro-avg. recall	0,79	
+macro-avg. Pos/Neg recall	0,78	
+precision	0,79	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,8043478260869565	
+positivePrecision	0,6894409937888198	
+positive fmeasure	0,7424749163879597	
+neutralRecall	0,7926829268292683	
+neutralPrecision	0,8552631578947368	
+neutral fmeasure	0,8227848101265822	
+negativeRecall	0,7633587786259542	
+negativePrecision	0,7575757575757576	
+negative fmeasure	0,7604562737642585	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,78	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,75	
+accuracy	0,7889447236180904	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	203,475944	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 78
 recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,79	
 macro-avg. precision	0,77	
 macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7552447552447552	
-positivePrecision	0,7659574468085106	
-positive fmeasure	0,7605633802816901	
-neutralRecall	0,8317460317460318	
-neutralPrecision	0,8238993710691824	
-neutral fmeasure	0,8278041074249605	
-negativeRecall	0,7079646017699115	
-negativePrecision	0,7142857142857143	
-negative fmeasure	0,7111111111111112	
+positiveRecall	0,795774647887324	
+positivePrecision	0,7197452229299363	
+positive fmeasure	0,7558528428093644	
+neutralRecall	0,8286604361370716	
+neutralPrecision	0,8417721518987342	
+neutral fmeasure	0,8351648351648352	
+negativeRecall	0,6992481203007519	
+negativePrecision	0,7560975609756098	
+negative fmeasure	0,7265625000000001	
 micro f-Measure	0,79	
 micro pos/neg f-Measure	0,74	
 macro f-Measure	0,77	
-macro pos/neg f-Measure	0,73	
+macro pos/neg f-Measure	0,74	
 other pos/neg f-Measure	0,74	
-accuracy	0,7880910683012259	
+accuracy	0,7919463087248322	
 average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	37,396913	
+error rate	0,61	
+cpu-time (for complete test-set)	209,046769	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 79
-recall	0,79	
+recall	0,76	
 macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7304347826086957	
-positivePrecision	0,6942148760330579	
-positive fmeasure	0,7118644067796609	
-neutralRecall	0,8475609756097561	
-neutralPrecision	0,8298507462686567	
-neutral fmeasure	0,8386123680241327	
-negativeRecall	0,680327868852459	
-negativePrecision	0,7614678899082569	
-negative fmeasure	0,7186147186147185	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7876106194690266	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	35,039485	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7661290322580645	
+positivePrecision	0,6209150326797386	
+positive fmeasure	0,6859205776173285	
+neutralRecall	0,7906976744186046	
+neutralPrecision	0,8192771084337349	
+neutral fmeasure	0,8047337278106508	
+negativeRecall	0,6796875	
+negativePrecision	0,7837837837837838	
+negative fmeasure	0,7280334728033473	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,71	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,761744966442953	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	213,718424	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 80
 recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7213114754098361	
-positivePrecision	0,6875	
-positive fmeasure	0,7040000000000001	
-neutralRecall	0,8348909657320872	
-neutralPrecision	0,8401253918495298	
-neutral fmeasure	0,8375	
-negativeRecall	0,7368421052631579	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,8026315789473685	
+positivePrecision	0,7176470588235294	
+positive fmeasure	0,7577639751552795	
+neutralRecall	0,8165137614678899	
+neutralPrecision	0,8369905956112853	
+neutral fmeasure	0,826625386996904	
+negativeRecall	0,7	
 negativePrecision	0,7636363636363637	
-negative fmeasure	0,7499999999999999	
+negative fmeasure	0,7304347826086957	
 micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7899461400359067	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,74	
+other pos/neg f-Measure	0,74	
+accuracy	0,7896494156928213	
 average accuracy	0,86	
-error rate	0,59	
-cpu-time (for complete test-set)	36,650128	
+error rate	0,6	
+cpu-time (for complete test-set)	201,349147	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 81
 recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,71	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,78	
 macro-avg. precision	0,75	
 macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,7251908396946565	
-positivePrecision	0,7307692307692307	
-positive fmeasure	0,7279693486590039	
-neutralRecall	0,826625386996904	
-neutralPrecision	0,8369905956112853	
-neutral fmeasure	0,8317757009345794	
-negativeRecall	0,7	
-negativePrecision	0,672	
-negative fmeasure	0,6857142857142857	
+positiveRecall	0,8582677165354331	
+positivePrecision	0,6526946107784432	
+positive fmeasure	0,7414965986394558	
+neutralRecall	0,7936046511627907	
+neutralPrecision	0,8557993730407524	
+neutral fmeasure	0,8235294117647058	
+negativeRecall	0,6507936507936508	
+negativePrecision	0,7387387387387387	
+negative fmeasure	0,6919831223628692	
 micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
+micro pos/neg f-Measure	0,72	
 macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,71	
-accuracy	0,7770034843205574	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7772194304857621	
 average accuracy	0,85	
-error rate	0,61	
-cpu-time (for complete test-set)	38,018841	
+error rate	0,6	
+cpu-time (for complete test-set)	194,708922	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 82
-recall	0,78	
+recall	0,76	
 macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,7	
-precision	0,78	
-macro-avg. precision	0,74	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,6833333333333333	
-positivePrecision	0,6890756302521008	
-positive fmeasure	0,6861924686192469	
-neutralRecall	0,8313253012048193	
-neutralPrecision	0,8363636363636363	
-neutral fmeasure	0,8338368580060422	
-negativeRecall	0,7203389830508474	
-negativePrecision	0,7024793388429752	
-negative fmeasure	0,711297071129707	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,74	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7771929824561403	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	35,48115	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,728	
+positivePrecision	0,6319444444444444	
+positive fmeasure	0,6765799256505577	
+neutralRecall	0,7994186046511628	
+neutralPrecision	0,8333333333333334	
+neutral fmeasure	0,8160237388724035	
+negativeRecall	0,6821705426356589	
+negativePrecision	0,7096774193548387	
+negative fmeasure	0,6956521739130435	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7591973244147158	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	203,542676	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 83
-recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,71	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,7	
-positiveRecall	0,7131147540983607	
-positivePrecision	0,6850393700787402	
-positive fmeasure	0,6987951807228915	
-neutralRecall	0,8284023668639053	
-neutralPrecision	0,835820895522388	
-neutral fmeasure	0,8320950965824666	
-negativeRecall	0,7027027027027027	
-negativePrecision	0,7155963302752294	
-negative fmeasure	0,7090909090909091	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7793345008756567	
-average accuracy	0,85	
-error rate	0,59	
-cpu-time (for complete test-set)	37,240487	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 84
-recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,78	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7046979865771812	
-positivePrecision	0,7777777777777778	
-positive fmeasure	0,7394366197183099	
-neutralRecall	0,8548387096774194	
-neutralPrecision	0,8103975535168195	
-neutral fmeasure	0,8320251177394035	
-negativeRecall	0,6666666666666666	
-negativePrecision	0,6851851851851852	
-negative fmeasure	0,6757990867579909	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7789473684210526	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	40,855487	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 85
-recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,73	
-precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7659574468085106	
-positivePrecision	0,7058823529411765	
-positive fmeasure	0,7346938775510204	
-neutralRecall	0,832258064516129	
-neutralPrecision	0,8431372549019608	
-neutral fmeasure	0,8376623376623378	
-negativeRecall	0,6956521739130435	
-negativePrecision	0,7476635514018691	
-negative fmeasure	0,7207207207207206	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7879858657243817	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	36,951383	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 86
 recall	0,79	
 macro-avg. recall	0,77	
 macro-avg. Pos/Neg recall	0,75	
 precision	0,79	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7686567164179104	
-positivePrecision	0,7923076923076923	
-positive fmeasure	0,7803030303030302	
-neutralRecall	0,8164556962025317	
-neutralPrecision	0,8349514563106796	
-neutral fmeasure	0,8256	
-negativeRecall	0,7355371900826446	
-negativePrecision	0,6742424242424242	
-negative fmeasure	0,7035573122529644	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7894736842105263	
+positivePrecision	0,7407407407407407	
+positive fmeasure	0,7643312101910827	
+neutralRecall	0,8090909090909091	
+neutralPrecision	0,8369905956112853	
+neutral fmeasure	0,822804314329738	
+negativeRecall	0,7130434782608696	
+negativePrecision	0,7068965517241379	
+negative fmeasure	0,7099567099567101	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,74	
+accuracy	0,7855946398659966	
+average accuracy	0,86	
+error rate	0,6	
+cpu-time (for complete test-set)	205,712797	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 84
+recall	0,79	
+macro-avg. recall	0,78	
+macro-avg. Pos/Neg recall	0,77	
+precision	0,79	
+macro-avg. precision	0,76	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,808	
+positivePrecision	0,6778523489932886	
+positive fmeasure	0,7372262773722629	
+neutralRecall	0,8023255813953488	
+neutralPrecision	0,8625	
+neutral fmeasure	0,8313253012048193	
+negativeRecall	0,734375	
+negativePrecision	0,734375	
+negative fmeasure	0,734375	
 micro f-Measure	0,79	
 micro pos/neg f-Measure	0,74	
 macro f-Measure	0,77	
 macro pos/neg f-Measure	0,74	
 other pos/neg f-Measure	0,74	
-accuracy	0,7880910683012259	
+accuracy	0,7889447236180904	
 average accuracy	0,86	
-error rate	0,61	
-cpu-time (for complete test-set)	41,193151	
+error rate	0,6	
+cpu-time (for complete test-set)	202,799847	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 85
+recall	0,77	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,68	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,72	
+positiveRecall	0,7538461538461538	
+positivePrecision	0,6758620689655173	
+positive fmeasure	0,7127272727272727	
+neutralRecall	0,8363095238095238	
+neutralPrecision	0,8097982708933718	
+neutral fmeasure	0,8228404099560761	
+negativeRecall	0,6060606060606061	
+negativePrecision	0,7547169811320755	
+negative fmeasure	0,6722689075630252	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,69	
+accuracy	0,7675585284280937	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	206,70336	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 86
+recall	0,8	
+macro-avg. recall	0,79	
+macro-avg. Pos/Neg recall	0,77	
+precision	0,8	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,74	
+positiveRecall	0,8455882352941176	
+positivePrecision	0,6804733727810651	
+positive fmeasure	0,7540983606557377	
+neutralRecall	0,8258258258258259	
+neutralPrecision	0,8675078864353313	
+neutral fmeasure	0,8461538461538463	
+negativeRecall	0,689922480620155	
+negativePrecision	0,7946428571428571	
+negative fmeasure	0,7385892116182573	
+micro f-Measure	0,8	
+micro pos/neg f-Measure	0,75	
+macro f-Measure	0,78	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,75	
+accuracy	0,8010033444816054	
+average accuracy	0,87	
+error rate	0,6	
+cpu-time (for complete test-set)	204,368004	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 87
-recall	0,78	
+recall	0,79	
 macro-avg. recall	0,76	
 macro-avg. Pos/Neg recall	0,73	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7348484848484849	
-positivePrecision	0,7404580152671756	
-positive fmeasure	0,7376425855513309	
-neutralRecall	0,8226299694189603	
-neutralPrecision	0,8432601880877743	
-neutral fmeasure	0,8328173374613004	
-negativeRecall	0,7289719626168224	
-negativePrecision	0,6724137931034483	
-negative fmeasure	0,6995515695067265	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,784452296819788	
+precision	0,79	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7153846153846154	
+positivePrecision	0,6595744680851063	
+positive fmeasure	0,6863468634686346	
+neutralRecall	0,8402366863905325	
+neutralPrecision	0,8402366863905325	
+neutral fmeasure	0,8402366863905325	
+negativeRecall	0,7384615384615385	
+negativePrecision	0,8067226890756303	
+negative fmeasure	0,7710843373493975	
+micro f-Measure	0,79	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7909698996655519	
 average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	37,593638	
+error rate	0,59	
+cpu-time (for complete test-set)	211,47721	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 88
-recall	0,77	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,77	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7253521126760564	
-positivePrecision	0,7518248175182481	
-positive fmeasure	0,7383512544802867	
-neutralRecall	0,8152866242038217	
-neutralPrecision	0,807570977917981	
-neutral fmeasure	0,8114104595879555	
-negativeRecall	0,7058823529411765	
-negativePrecision	0,6942148760330579	
-negative fmeasure	0,7000000000000001	
-micro f-Measure	0,77	
-micro pos/neg f-Measure	0,72	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,7704347826086957	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	35,422319	
+recall	0,78	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,78	
+macro-avg. precision	0,78	
+macro-avg. Pos/Neg precision	0,76	
+positiveRecall	0,8	
+positivePrecision	0,6666666666666666	
+positive fmeasure	0,7272727272727272	
+neutralRecall	0,8222222222222222	
+neutralPrecision	0,819620253164557	
+neutral fmeasure	0,820919175911252	
+negativeRecall	0,6785714285714286	
+negativePrecision	0,8558558558558559	
+negative fmeasure	0,756972111553785	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,74	
+macro f-Measure	0,77	
+macro pos/neg f-Measure	0,75	
+other pos/neg f-Measure	0,74	
+accuracy	0,7831932773109244	
+average accuracy	0,86	
+error rate	0,59	
+cpu-time (for complete test-set)	210,793396	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 89
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,75	
-positivePrecision	0,7164179104477612	
-positive fmeasure	0,7328244274809161	
-neutralRecall	0,8271604938271605	
-neutralPrecision	0,8427672955974843	
-neutral fmeasure	0,8348909657320872	
-negativeRecall	0,7203389830508474	
-negativePrecision	0,7203389830508474	
-negative fmeasure	0,7203389830508474	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,76	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,787719298245614	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	36,448267	
+recall	0,76	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,76	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,68	
+positiveRecall	0,7153846153846154	
+positivePrecision	0,6326530612244898	
+positive fmeasure	0,6714801444043321	
+neutralRecall	0,8104956268221575	
+neutralPrecision	0,8273809523809523	
+neutral fmeasure	0,8188512518409425	
+negativeRecall	0,6774193548387096	
+negativePrecision	0,7368421052631579	
+negative fmeasure	0,7058823529411764	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7621440536013401	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	210,824478	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 90
-recall	0,79	
-macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,79	
-macro-avg. precision	0,76	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,6857142857142857	
-positivePrecision	0,7619047619047619	
-positive fmeasure	0,7218045112781954	
-neutralRecall	0,8424242424242424	
-neutralPrecision	0,8323353293413174	
-neutral fmeasure	0,8373493975903615	
-negativeRecall	0,7589285714285714	
-negativePrecision	0,6967213114754098	
-negative fmeasure	0,7264957264957265	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,72	
+recall	0,78	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,78	
+macro-avg. precision	0,77	
+macro-avg. Pos/Neg precision	0,75	
+positiveRecall	0,75	
+positivePrecision	0,7248322147651006	
+positive fmeasure	0,7372013651877134	
+neutralRecall	0,8317757009345794	
+neutralPrecision	0,8066465256797583	
+neutral fmeasure	0,8190184049079753	
+negativeRecall	0,676923076923077	
+negativePrecision	0,7652173913043478	
+negative fmeasure	0,7183673469387756	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,73	
 macro f-Measure	0,76	
-macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,72	
-accuracy	0,788659793814433	
-average accuracy	0,86	
+macro pos/neg f-Measure	0,73	
+other pos/neg f-Measure	0,73	
+accuracy	0,7781512605042017	
+average accuracy	0,85	
 error rate	0,6	
-cpu-time (for complete test-set)	36,764156	
+cpu-time (for complete test-set)	198,732102	
 training-size	2442,0	
 test-size	600,0	
 
 RUN: 91
 recall	0,77	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,77	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,672	
-positivePrecision	0,7	
-positive fmeasure	0,6857142857142857	
-neutralRecall	0,8369905956112853	
-neutralPrecision	0,8190184049079755	
-neutral fmeasure	0,8279069767441861	
-negativeRecall	0,7076923076923077	
-negativePrecision	0,71875	
-negative fmeasure	0,7131782945736435	
-micro f-Measure	0,77	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,74	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7717770034843205	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	34,492062	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 92
-recall	0,81	
-macro-avg. recall	0,8	
-macro-avg. Pos/Neg recall	0,77	
-precision	0,81	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,73	
-positiveRecall	0,7686567164179104	
-positivePrecision	0,7463768115942029	
-positive fmeasure	0,7573529411764706	
-neutralRecall	0,8375	
-neutralPrecision	0,8758169934640523	
-neutral fmeasure	0,8562300319488819	
-negativeRecall	0,7807017543859649	
-negativePrecision	0,717741935483871	
-negative fmeasure	0,7478991596638656	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,8098591549295775	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	38,845555	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 93
-recall	0,81	
-macro-avg. recall	0,79	
-macro-avg. Pos/Neg recall	0,77	
-precision	0,81	
-macro-avg. precision	0,79	
-macro-avg. Pos/Neg precision	0,77	
-positiveRecall	0,7730496453900709	
-positivePrecision	0,7730496453900709	
-positive fmeasure	0,7730496453900709	
-neutralRecall	0,8454258675078864	
-neutralPrecision	0,8454258675078864	
-neutral fmeasure	0,8454258675078864	
-negativeRecall	0,7586206896551724	
-negativePrecision	0,7586206896551724	
-negative fmeasure	0,7586206896551724	
-micro f-Measure	0,81	
-micro pos/neg f-Measure	0,77	
-macro f-Measure	0,79	
-macro pos/neg f-Measure	0,77	
-other pos/neg f-Measure	0,77	
-accuracy	0,8101045296167247	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	35,399622	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 94
-recall	0,8	
-macro-avg. recall	0,78	
-macro-avg. Pos/Neg recall	0,75	
-precision	0,8	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7910447761194029	
-positivePrecision	0,7361111111111112	
-positive fmeasure	0,7625899280575541	
-neutralRecall	0,832807570977918	
-neutralPrecision	0,8434504792332268	
-neutral fmeasure	0,8380952380952381	
-negativeRecall	0,7131147540983607	
-negativePrecision	0,75	
-negative fmeasure	0,7310924369747899	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,78	
-macro pos/neg f-Measure	0,74	
-other pos/neg f-Measure	0,75	
-accuracy	0,7975567190226877	
-average accuracy	0,87	
-error rate	0,61	
-cpu-time (for complete test-set)	33,940799	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 95
-recall	0,78	
-macro-avg. recall	0,75	
-macro-avg. Pos/Neg recall	0,72	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7350427350427351	
-positivePrecision	0,7543859649122807	
-positive fmeasure	0,7445887445887446	
-neutralRecall	0,8154761904761905	
-neutralPrecision	0,8303030303030303	
-neutral fmeasure	0,8228228228228228	
-negativeRecall	0,7107438016528925	
-negativePrecision	0,6615384615384615	
-negative fmeasure	0,6852589641434262	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,71	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,71	
-other pos/neg f-Measure	0,71	
-accuracy	0,7770034843205574	
-average accuracy	0,85	
-error rate	0,61	
-cpu-time (for complete test-set)	39,451702	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 96
-recall	0,78	
-macro-avg. recall	0,74	
-macro-avg. Pos/Neg recall	0,69	
-precision	0,78	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,704	
-positivePrecision	0,7213114754098361	
-positive fmeasure	0,7125506072874493	
-neutralRecall	0,8414634146341463	
-neutralPrecision	0,8189910979228486	
-neutral fmeasure	0,8300751879699247	
-negativeRecall	0,6756756756756757	
-negativePrecision	0,7142857142857143	
-negative fmeasure	0,6944444444444444	
-micro f-Measure	0,78	
-micro pos/neg f-Measure	0,7	
-macro f-Measure	0,75	
-macro pos/neg f-Measure	0,7	
-other pos/neg f-Measure	0,7	
-accuracy	0,7783687943262412	
-average accuracy	0,85	
-error rate	0,6	
-cpu-time (for complete test-set)	39,205732	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 97
-recall	0,77	
 macro-avg. recall	0,76	
-macro-avg. Pos/Neg recall	0,74	
+macro-avg. Pos/Neg recall	0,75	
 precision	0,77	
 macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,71	
-positiveRecall	0,7218045112781954	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,8115942028985508	
 positivePrecision	0,6956521739130435	
-positive fmeasure	0,7084870848708488	
-neutralRecall	0,8	
-neutralPrecision	0,8327645051194539	
-neutral fmeasure	0,8160535117056856	
-negativeRecall	0,7575757575757576	
-negativePrecision	0,7194244604316546	
-negative fmeasure	0,7380073800738006	
+positive fmeasure	0,7491638795986622	
+neutralRecall	0,7910447761194029	
+neutralPrecision	0,8359621451104101	
+neutral fmeasure	0,8128834355828221	
+negativeRecall	0,68	
+negativePrecision	0,7083333333333334	
+negative fmeasure	0,6938775510204083	
 micro f-Measure	0,77	
 micro pos/neg f-Measure	0,72	
 macro f-Measure	0,75	
 macro pos/neg f-Measure	0,72	
 other pos/neg f-Measure	0,72	
-accuracy	0,7719298245614035	
+accuracy	0,7725752508361204	
 average accuracy	0,85	
 error rate	0,6	
-cpu-time (for complete test-set)	40,334063	
+cpu-time (for complete test-set)	214,873982	
 training-size	2442,0	
 test-size	600,0	
 
-RUN: 98
-recall	0,79	
-macro-avg. recall	0,77	
-macro-avg. Pos/Neg recall	0,74	
-precision	0,79	
-macro-avg. precision	0,78	
-macro-avg. Pos/Neg precision	0,76	
-positiveRecall	0,7265625	
-positivePrecision	0,75	
-positive fmeasure	0,7380952380952381	
-neutralRecall	0,8338658146964856	
-neutralPrecision	0,815625	
-neutral fmeasure	0,8246445497630333	
-negativeRecall	0,751937984496124	
-negativePrecision	0,7698412698412699	
-negative fmeasure	0,7607843137254903	
-micro f-Measure	0,79	
-micro pos/neg f-Measure	0,75	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,75	
-other pos/neg f-Measure	0,75	
-accuracy	0,7912280701754386	
-average accuracy	0,86	
-error rate	0,6	
-cpu-time (for complete test-set)	36,933503	
-training-size	2442,0	
-test-size	600,0	
-
-RUN: 99
-recall	0,8	
-macro-avg. recall	0,76	
+RUN: 92
+recall	0,78	
+macro-avg. recall	0,75	
 macro-avg. Pos/Neg recall	0,72	
-precision	0,8	
-macro-avg. precision	0,77	
-macro-avg. Pos/Neg precision	0,74	
-positiveRecall	0,7235772357723578	
-positivePrecision	0,717741935483871	
-positive fmeasure	0,7206477732793523	
-neutralRecall	0,8495575221238938	
-neutralPrecision	0,8396501457725948	
-neutral fmeasure	0,844574780058651	
-negativeRecall	0,7207207207207207	
-negativePrecision	0,7547169811320755	
-negative fmeasure	0,7373271889400921	
-micro f-Measure	0,8	
-micro pos/neg f-Measure	0,73	
-macro f-Measure	0,77	
-macro pos/neg f-Measure	0,73	
-other pos/neg f-Measure	0,73	
-accuracy	0,7975567190226877	
-average accuracy	0,87	
-error rate	0,6	
-cpu-time (for complete test-set)	39,87028	
+precision	0,78	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,71	
+positiveRecall	0,75177304964539	
+positivePrecision	0,7066666666666667	
+positive fmeasure	0,7285223367697595	
+neutralRecall	0,8192419825072886	
+neutralPrecision	0,8289085545722714	
+neutral fmeasure	0,8240469208211143	
+negativeRecall	0,6818181818181818	
+negativePrecision	0,7142857142857143	
+negative fmeasure	0,6976744186046512	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,72	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,71	
+other pos/neg f-Measure	0,71	
+accuracy	0,7777777777777778	
+average accuracy	0,85	
+error rate	0,59	
+cpu-time (for complete test-set)	210,427189	
 training-size	2442,0	
 test-size	600,0	
 
-RUN: 100
+RUN: 93
+recall	0,78	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,75	
+precision	0,78	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7922077922077922	
+positivePrecision	0,7305389221556886	
+positive fmeasure	0,7601246105919003	
+neutralRecall	0,7889908256880734	
+neutralPrecision	0,8459016393442623	
+neutral fmeasure	0,8164556962025318	
+negativeRecall	0,7130434782608696	
+negativePrecision	0,6612903225806451	
+negative fmeasure	0,6861924686192469	
+micro f-Measure	0,78	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7751677852348994	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	195,510694	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 94
+recall	0,77	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,77	
+macro-avg. precision	0,72	
+macro-avg. Pos/Neg precision	0,66	
+positiveRecall	0,7301587301587301	
+positivePrecision	0,6618705035971223	
+positive fmeasure	0,6943396226415094	
+neutralRecall	0,7972602739726027	
+neutralPrecision	0,8410404624277457	
+neutral fmeasure	0,8185654008438819	
+negativeRecall	0,7009345794392523	
+negativePrecision	0,6637168141592921	
+negative fmeasure	0,6818181818181819	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,69	
+accuracy	0,7658862876254181	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	198,114446	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 95
+recall	0,77	
+macro-avg. recall	0,76	
+macro-avg. Pos/Neg recall	0,74	
+precision	0,77	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,66	
+positiveRecall	0,7804878048780488	
+positivePrecision	0,6486486486486487	
+positive fmeasure	0,7084870848708487	
+neutralRecall	0,7837078651685393	
+neutralPrecision	0,8584615384615385	
+neutral fmeasure	0,8193832599118943	
+negativeRecall	0,7094017094017094	
+negativePrecision	0,6747967479674797	
+negative fmeasure	0,6916666666666667	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7684563758389261	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	204,74143	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 96
 recall	0,76	
 macro-avg. recall	0,75	
 macro-avg. Pos/Neg recall	0,73	
 precision	0,76	
-macro-avg. precision	0,75	
-macro-avg. Pos/Neg precision	0,72	
-positiveRecall	0,7432432432432432	
-positivePrecision	0,6918238993710691	
+macro-avg. precision	0,73	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,7534246575342466	
+positivePrecision	0,6832298136645962	
 positive fmeasure	0,7166123778501627	
-neutralRecall	0,7953795379537953	
-neutralPrecision	0,8060200668896321	
-neutral fmeasure	0,8006644518272424	
-negativeRecall	0,711864406779661	
-negativePrecision	0,7567567567567568	
-negative fmeasure	0,7336244541484717	
+neutralRecall	0,7886904761904762	
+neutralPrecision	0,8412698412698413	
+neutral fmeasure	0,8141321044546851	
+negativeRecall	0,7017543859649122	
+negativePrecision	0,6666666666666666	
+negative fmeasure	0,6837606837606838	
 micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7634228187919463	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	200,859068	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 97
+recall	0,76	
+macro-avg. recall	0,74	
+macro-avg. Pos/Neg recall	0,71	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,7	
+positiveRecall	0,7588652482269503	
+positivePrecision	0,66875	
+positive fmeasure	0,7109634551495015	
+neutralRecall	0,803680981595092	
+neutralPrecision	0,8161993769470405	
+neutral fmeasure	0,8098918083462132	
+negativeRecall	0,6511627906976745	
+negativePrecision	0,7304347826086957	
+negative fmeasure	0,6885245901639344	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,7	
+macro f-Measure	0,74	
+macro pos/neg f-Measure	0,7	
+other pos/neg f-Measure	0,7	
+accuracy	0,7600671140939598	
+average accuracy	0,84	
+error rate	0,59	
+cpu-time (for complete test-set)	207,99559	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 98
+recall	0,76	
+macro-avg. recall	0,73	
+macro-avg. Pos/Neg recall	0,7	
+precision	0,76	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,69	
+positiveRecall	0,7971014492753623	
+positivePrecision	0,6285714285714286	
+positive fmeasure	0,7028753993610224	
+neutralRecall	0,7958579881656804	
+neutralPrecision	0,8328173374613003	
+neutral fmeasure	0,8139183055975793	
+negativeRecall	0,603448275862069	
+negativePrecision	0,7446808510638298	
+negative fmeasure	0,6666666666666665	
+micro f-Measure	0,76	
+micro pos/neg f-Measure	0,69	
+macro f-Measure	0,73	
+macro pos/neg f-Measure	0,69	
+other pos/neg f-Measure	0,68	
+accuracy	0,7584459459459459	
+average accuracy	0,84	
+error rate	0,58	
+cpu-time (for complete test-set)	187,370676	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 99
+recall	0,78	
+macro-avg. recall	0,77	
+macro-avg. Pos/Neg recall	0,77	
+precision	0,78	
+macro-avg. precision	0,74	
+macro-avg. Pos/Neg precision	0,67	
+positiveRecall	0,8333333333333334	
+positivePrecision	0,7100591715976331	
+positive fmeasure	0,7667731629392972	
+neutralRecall	0,7809798270893372	
+neutralPrecision	0,8798701298701299	
+neutral fmeasure	0,8274809160305344	
+negativeRecall	0,7102803738317757	
+negativePrecision	0,628099173553719	
+negative fmeasure	0,6666666666666666	
+micro f-Measure	0,78	
 micro pos/neg f-Measure	0,72	
 macro f-Measure	0,75	
 macro pos/neg f-Measure	0,72	
-other pos/neg f-Measure	0,73	
-accuracy	0,7644991212653779	
-average accuracy	0,84	
-error rate	0,58	
-cpu-time (for complete test-set)	34,444061	
+other pos/neg f-Measure	0,72	
+accuracy	0,7809364548494984	
+average accuracy	0,85	
+error rate	0,61	
+cpu-time (for complete test-set)	218,754462	
+training-size	2442,0	
+test-size	600,0	
+
+RUN: 100
+recall	0,77	
+macro-avg. recall	0,75	
+macro-avg. Pos/Neg recall	0,72	
+precision	0,77	
+macro-avg. precision	0,75	
+macro-avg. Pos/Neg precision	0,73	
+positiveRecall	0,7973856209150327	
+positivePrecision	0,7349397590361446	
+positive fmeasure	0,7648902821316615	
+neutralRecall	0,8050314465408805	
+neutralPrecision	0,8	
+neutral fmeasure	0,8025078369905957	
+negativeRecall	0,6428571428571429	
+negativePrecision	0,7297297297297297	
+negative fmeasure	0,6835443037974683	
+micro f-Measure	0,77	
+micro pos/neg f-Measure	0,73	
+macro f-Measure	0,75	
+macro pos/neg f-Measure	0,72	
+other pos/neg f-Measure	0,72	
+accuracy	0,7688442211055276	
+average accuracy	0,85	
+error rate	0,6	
+cpu-time (for complete test-set)	209,392543	
 training-size	2442,0	
 test-size	600,0	
 

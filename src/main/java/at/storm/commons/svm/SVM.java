@@ -1145,7 +1145,7 @@ public class SVM {
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;
 		int iterations = 100;
-		boolean withPOS = false;
+		boolean withPOS = true;
 		
 		// evaluateBoxesPipeline(dataset, iterations, nFoldCrossValidation);
 
