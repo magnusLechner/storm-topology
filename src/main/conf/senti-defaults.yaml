@@ -184,7 +184,7 @@ global.resources.dict.sentiment:
       featureScaling: true
       minValue: -1.0
       maxValue: 1.0
-      enabled: false
+      enabled: true
       name: "twitch_dict_sentiment"
       #
       # Emoticons
@@ -206,7 +206,7 @@ global.resources.dict.sentiment:
       featureScaling: true
       minValue: -1.0
       maxValue: 1.0
-      enabled: false
+      enabled: true
       name: "twitch_emoticons"
     - path: "dictionaries/sentiment/emoticon-sentiment/emoticons-lines.txt"
       delimiter: "\\t"

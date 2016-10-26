@@ -1,0 +1,52 @@
+recall	0,779				
+recall StdDev	0,0172034763				
+macro-avg. recall	0,7551				
+macro-avg. recall StdDev	0,0207191416				
+macro-avg. Pos/Neg recall	0,7211				
+macro-avg. Pos/Neg recall StdDev	0,0292289811				
+precision	0,779				
+precision StdDev	0,0172034763				
+macro-avg. precision	0,7557				
+macro-avg. precision StdDev	0,0208532632				
+macro-avg. Pos/Neg precision	0,7207				
+macro-avg. Pos/Neg precision StdDev	0,0296189606				
+positiveRecall	0,7393946904				
+positiveRecall StdDev	0,037069044				
+positivePrecision	0,713054213				
+positivePrecision StdDev	0,0440789418				
+positive fmeasure	0,7252334776				
+positive fmeasure StdDev	0,0335521749				
+neutralRecall	0,8236371931				
+neutralRecall StdDev	0,0213715462				
+neutralPrecision	0,8250715502				
+neutralPrecision StdDev	0,0203459626				
+neutral fmeasure	0,8240971409				
+neutral fmeasure StdDev	0,0147846819				
+negativeRecall	0,7022881652				
+negativeRecall StdDev	0,0440297844				
+negativePrecision	0,7288786482				
+negativePrecision StdDev	0,0414955705				
+negative fmeasure	0,7144197306				
+negative fmeasure StdDev	0,0341248237				
+micro f-Measure	0,779		0,779	0,7543	0,7182
+micro f-Measure StdDev	0,0172034763		0,0172034763	0,0198608798	0,024469317
+micro pos/neg f-Measure	0,7209				
+micro pos/neg f-Measure StdDev	0,0244162142				
+macro f-Measure	0,7543				
+macro f-Measure StdDev	0,0198608798				
+macro pos/neg f-Measure	0,7182				
+macro pos/neg f-Measure StdDev	0,024469317				
+other pos/neg f-Measure	0,7199				
+other pos/neg f-Measure StdDev	0,0242668248				
+accuracy	0,7789233714				
+accuracy StdDev	0,0168476986				
+average accuracy	0,8524				
+average accuracy StdDev	0,0116445678				
+error rate	0,5971				
+error rate StdDev	0,0093522536				
+cpu-time (for complete test-set)	203,38182395				
+cpu-time (for complete test-set) StdDev	9,9457765451				
+training-size	2442				
+training-size StdDev	0				
+test-size	600				
+test-size StdDev	0				

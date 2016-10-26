@@ -9,9 +9,9 @@ public class GridSearchParser {
 	public static void main(String[] args) {
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/grob_2";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/rbf/grob_2";
-//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/rbf/grob_2";
+		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/rbf/grob_2";
 
-		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_1";
+//		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_1";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/3042/pos/rbf/fein_2";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/2359/pos/rbf/fein_1";
 //		String path = "/home/magnus/workspace/storm-topology/src/main/evaluation/parameter_search_results/709/pos/rbf/fein_1";
@@ -56,7 +56,7 @@ public class GridSearchParser {
 
 		double max = -100.0;
 		double min = 10000.0;
-		DecimalFormat df = new DecimalFormat("0.000");
+		DecimalFormat df = new DecimalFormat("0.0");
 		for (int i = cLenght - 1; i >= 0; i--) {
 			String line = "";
 			for (int j = 0; j < gammaLength; j++) {
@@ -72,7 +72,7 @@ public class GridSearchParser {
 				}
 				
 
-				String val = df.format(grid[i][j]).replace(".", ",") + "(" + (c-1) + ")" + "\t";
+				String val = "$" + df.format(grid[i][j] * 100).replace(".", ",") + "\\%$\t";//+ "(" + (c-1) + ")" + "\t";
 				if (grid[i][j] > max) {
 					max = grid[i][j];
 				}

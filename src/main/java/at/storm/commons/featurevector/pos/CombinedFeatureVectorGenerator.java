@@ -44,16 +44,19 @@ public class CombinedFeatureVectorGenerator extends FeatureVectorGenerator {
 		m_sentimentFeatureVectorGenerator = new SentimentFeatureVectorGenerator(1);
 
 		m_posFeatureVectorGenerator = new POSFeatureVectorGenerator(normalizePOSCounts,
-				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() + 1);
+				m_sentimentFeatureVectorGenerator.getFeatureVectorSize() 
+				+ 1);
 
 		m_tfidfFeatureVectorGenerator = new TfIdfFeatureVectorGenerator(tweetTfIdf,
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
-						+ m_posFeatureVectorGenerator.getFeatureVectorSize() + 1);
+						+ m_posFeatureVectorGenerator.getFeatureVectorSize() 
+						+ 1);
 
 		m_booleanFeatureVectorGenerator = new SpecialFeatureVectorGenerator(
 				m_sentimentFeatureVectorGenerator.getFeatureVectorSize()
 						+ m_posFeatureVectorGenerator.getFeatureVectorSize()
-						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() + 1);
+						+ m_tfidfFeatureVectorGenerator.getFeatureVectorSize() 
+						+ 1);
 
 		LOG.info("VectorSize: " + getFeatureVectorSize());
 	}
