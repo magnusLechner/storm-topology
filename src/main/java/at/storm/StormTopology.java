@@ -87,15 +87,11 @@ public class StormTopology {
 
 		// Set Spout
 		builder.setSpout(RedisSpout.ID, spout, Configuration.get("sentistorm.spout.parallelism", 1));
-
-		// Set Spout --> JSONBolt
-		builder.setBolt(JsonBolt.ID, jsonBolt, Configuration.get("sentistorm.bolt.json.parallelism", 1))
-				.shuffleGrouping(RedisSpout.ID);
-
-		// Set JSONBolt --> TokenizerBolt
+		
+		// Set RedisSpout --> TokenizerBolt
 		builder.setBolt(TokenizerBolt.ID, tokenizerBolt, Configuration.get("sentistorm.bolt.tokenizer.parallelism", 1))
-				.shuffleGrouping(JsonBolt.ID, JsonBolt.PIPELINE_STREAM);
-
+				.shuffleGrouping(RedisSpout.ID, RedisSpout.PIPELINE_STREAM);
+		
 		// TokenizerBolt --> PreprocessorBolt
 		builder.setBolt(PreprocessorBolt.ID, preprocessorBolt,
 				Configuration.get("sentistorm.bolt.preprocessor.parallelism", 1)).shuffleGrouping(TokenizerBolt.ID);
@@ -114,10 +110,11 @@ public class StormTopology {
 				.shuffleGrouping(FeatureGenerationBolt.ID);
 
 		// SVMBolt --> RedisPublishBolt
-		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt,
-				Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1)).shuffleGrouping(SVMBolt.ID)
-				.shuffleGrouping(JsonBolt.ID, JsonBolt.TO_REDIS_PUBLISH_STREAM);
-
+		// RedisSpout --> RedisPublishBolt
+		builder.setBolt(RedisPublishBolt.ID, redisPublishBolt, Configuration.get("sentistorm.bolt.redis.publish.parallelism", 1))
+				.shuffleGrouping(SVMBolt.ID)
+				.shuffleGrouping(RedisSpout.ID, RedisSpout.TO_REDIS_PUBLISH_STREAM);
+		
 		// RedisPublishBolt --> StatisticBolt
 		builder.setBolt(StatisticBolt.ID, statisticBolt, Configuration.get("sentistorm.bolt.statistic.parallelism", 1))
 				.shuffleGrouping(RedisPublishBolt.ID);
@@ -160,10 +157,10 @@ public class StormTopology {
 		conf.registerSerialization(TaggedToken.class, TaggedTokenSerializer.class);
 		conf.registerSerialization(TreeMap.class, TreeMapSerializer.class);
 
-		// LocalCluster cluster = new LocalCluster();
-		// cluster.submitTopology(TOPOLOGY_NAME, conf,
-		// builder.createTopology());
-		// cluster.shutdown();
+//		 LocalCluster cluster = new LocalCluster();
+//		 cluster.submitTopology(TOPOLOGY_NAME, conf,
+//		 builder.createTopology());
+//		 cluster.shutdown();
 
 		StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, builder.createTopology());
 

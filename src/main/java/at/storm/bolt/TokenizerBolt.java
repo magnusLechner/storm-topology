@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import at.storm.bolt.values.data.JsonBoltData;
+import at.storm.bolt.values.data.RedisSpoutData;
 import at.storm.bolt.values.data.TokenizerBoltData;
 import at.storm.bolt.values.statistic.tuple.TupleStatistic;
 import at.storm.components.Tokenizer;
@@ -60,11 +60,16 @@ public class TokenizerBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		JsonBoltData jsonBoltValue = JsonBoltData.getFromTuple(tuple);
-		JsonObject jsonObject = jsonBoltValue.getJsonObject();
-		TupleStatistic tupleStatistic = jsonBoltValue.getTupleStatistic();
-		String msg = jsonObject.get("msg").getAsString();
+//		asdJsonBoltData jsonBoltValue = JsonBoltData.getFromTuple(tuple);
+//		JsonObject jsonObject = jsonBoltValue.getJsonObject();
+//		TupleStatistic tupleStatistic = jsonBoltValue.getTupleStatistic();
+//		String msg = jsonObject.get("msg").getAsString();
 
+		RedisSpoutData redisSpoutValue = RedisSpoutData.getFromTuple(tuple);
+		JsonObject jsonObject = redisSpoutValue.getJsonObject();
+		TupleStatistic tupleStatistic = redisSpoutValue.getTupleStatistic();
+		String msg = jsonObject.get("msg").getAsString();
+		
 		List<String> tokens = Tokenizer.tokenize(msg);
 
 		if (m_logging) {

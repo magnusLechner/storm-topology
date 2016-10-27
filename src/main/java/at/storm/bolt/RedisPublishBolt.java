@@ -13,10 +13,12 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import at.storm.bolt.values.data.JsonBoltData;
+import at.storm.bolt.values.data.DataValue;
 import at.storm.bolt.values.data.RedisPublishBoltData;
+import at.storm.bolt.values.data.RedisSpoutData;
 import at.storm.bolt.values.data.SVMBoltData;
 import at.storm.bolt.values.statistic.tuple.TupleStatistic;
+import at.storm.spout.RedisSpout;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -58,17 +60,17 @@ public class RedisPublishBolt extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple tuple, BasicOutputCollector collector) {
-		JsonObject jsonObject = null;
+		DataValue dataValue;
+		JsonObject jsonObject;
 		TupleStatistic tupleStatistic;
-		if(JsonBolt.TO_REDIS_PUBLISH_STREAM.equals(tuple.getSourceStreamId())) {
-			JsonBoltData jsonBoltData = JsonBoltData.getFromTuple(tuple);
-			jsonObject = jsonBoltData.getJsonObject();
-			tupleStatistic = jsonBoltData.getTupleStatistic();
+		if(RedisSpout.TO_REDIS_PUBLISH_STREAM.equals(tuple.getSourceStreamId())) {
+			dataValue = RedisSpoutData.getFromTuple(tuple);
 		} else {
-			SVMBoltData svmBoltData = SVMBoltData.getFromTuple(tuple);
-			jsonObject = svmBoltData.getJsonObject();
-			tupleStatistic = svmBoltData.getTupleStatistic();	
+			dataValue = SVMBoltData.getFromTuple(tuple);	
 		}
+		jsonObject = dataValue.getJsonObject();
+		tupleStatistic = dataValue.getTupleStatistic();
+		
 		String current = generatePublishString(jsonObject);
 		if (current != null) {
 

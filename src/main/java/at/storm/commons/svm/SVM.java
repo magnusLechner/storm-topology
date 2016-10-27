@@ -256,23 +256,23 @@ public class SVM {
 	//schau gamma max.		in dieser methode
 	public static void coarseGrainedParamterSearch(svm_problem svmProb, svm_parameter svmParam) {
 		// coarse grained paramter search
-//		int maxC = 11;
-//		double[] c = new double[maxC];
-//		// C = 2^−5, 2^−3, ..., 2^15
-//		for (int i = 0; i < maxC; i++) {
-//			c[i] = Math.pow(2, -1 + (i * 2));
-//		}
+		int maxC = 11;
+		double[] c = new double[maxC];
+		// C = 2^−5, 2^−3, ..., 2^15
+		for (int i = 0; i < maxC; i++) {
+			c[i] = Math.pow(2, -1 + (i * 2));
+		}
 		
 		//linear
-		int maxC = 4;
-		double[] c = new double[maxC];
-		for (int i = 0; i < maxC; i++) {
-			c[i] = Math.pow(2, -2 + i);
-		}
-		int maxGamma = 1;
+//		int maxC = 4;
+//		double[] c = new double[maxC];
+//		for (int i = 0; i < maxC; i++) {
+//			c[i] = Math.pow(2, -2 + i);
+//		}
+//		int maxGamma = 1;
 		
 		//rbf
-//		int maxGamma = 10;
+		int maxGamma = 10;
 		double[] gamma = new double[maxGamma];
 		// gamma = 2^−15, 2^−13, ..., 2^3
 		for (int j = 0; j < maxGamma; j++) {
@@ -1140,7 +1140,7 @@ public class SVM {
 		Dataset dataset = Configuration.getDataSetTwitch();
 		// Dataset dataset = Configuration.getDataSetMyTest();
 
-		boolean parameterSearch = true;
+		boolean parameterSearch = false;
 		boolean useSerialization = true;
 		int nFoldCrossValidation = 1;
 		int featureVectorLevel = 2;

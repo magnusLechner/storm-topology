@@ -7,13 +7,16 @@ import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
-import org.apache.storm.tuple.Fields;
-import org.apache.storm.tuple.Values;
 import org.apache.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import at.storm.bolt.values.data.RedisSpoutData;
 import at.storm.bolt.values.statistic.tuple.TupleStatistic;
+import at.storm.commons.LanguageDetection;
 import at.storm.commons.util.TimeUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -25,9 +28,13 @@ public class RedisSpout extends BaseRichSpout {
 	public static final String ID = "redis-spout";
 	public static final String CONF_LOGGING = ID + ".logging";
 	public static final String CONF_STARTUP_SLEEP_MS = ID + ".startup.sleep.ms";
+	public static final String PIPELINE_STREAM = "pipeline-stream";
+	public static final String TO_REDIS_PUBLISH_STREAM = "not-english-stream";
 	private static final Logger LOG = LoggerFactory.getLogger(RedisSpout.class);
 	private boolean m_logging = false;
-
+	
+	private JsonParser jsonParser;
+	
 	SpoutOutputCollector collector;
 	final String host;
 	final int port;
@@ -105,9 +112,11 @@ public class RedisSpout extends BaseRichSpout {
 	@SuppressWarnings("rawtypes")
 	public void open(Map config, TopologyContext context, SpoutOutputCollector collector) {
 		this.collector = collector;
+		this.jsonParser = new JsonParser();
+		
 		queue = new LinkedBlockingQueue<String>(5000);
 		pool = new JedisPool(new JedisPoolConfig(), host, port);
-
+		
 		// Optional set logging
 		if (config.get(CONF_LOGGING) != null) {
 			m_logging = (Boolean) config.get(CONF_LOGGING);
@@ -136,11 +145,39 @@ public class RedisSpout extends BaseRichSpout {
 			if (m_logging) {
 				LOG.info("REDIS-SPOUT: " + jsonAsString);
 			}
-
+			
+			JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonAsString);
+			
+			if (m_logging) {
+				LOG.info("JSON: " + jsonObject.toString());
+			}
+			
 			TupleStatistic tupleStatistic = new TupleStatistic();
-			//set realStart must happen in JsonBolt
 			tupleStatistic.setPipelineStart(System.currentTimeMillis());
-			collector.emit(new Values(jsonAsString, tupleStatistic));
+			tupleStatistic.setRealStart(jsonObject.get("timestamp").getAsLong());
+			
+			String message = jsonObject.get("msg").getAsString();
+			
+			if(!LanguageDetection.isEnglish(message)) {
+				JsonObject score = new JsonObject();
+				score.addProperty("score", 0);
+				
+				jsonObject.add("sentiment", score);
+				
+				if (m_logging) {
+					LOG.info("NOT ENGLISH: " + jsonObject.toString());
+				}
+				
+				
+				collector.emit(TO_REDIS_PUBLISH_STREAM, new RedisSpoutData(jsonObject, tupleStatistic));
+			} else {
+				
+				if (m_logging) {
+					LOG.info("ENGLISH: " + jsonObject.toString());
+				}
+				
+				collector.emit(PIPELINE_STREAM, new RedisSpoutData(jsonObject, tupleStatistic));	
+			}
 		}
 	}
 
@@ -153,7 +190,9 @@ public class RedisSpout extends BaseRichSpout {
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("jsonString", "tupleStatistic"));
+//		declarer.declare(new Fields("jsonString", "tupleStatistic"));
+		declarer.declareStream(PIPELINE_STREAM, RedisSpoutData.getSchema());
+		declarer.declareStream(TO_REDIS_PUBLISH_STREAM, RedisSpoutData.getSchema());
 	}
 
 	public boolean isDistributed() {
